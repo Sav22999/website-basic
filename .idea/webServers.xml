@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="41f1c0e7-1eb1-4d61-b3a0-5b0d4583dbae" name="ftp.savpdfviewer.com" url="https://www.savpdfviewer.com">
+        <fileTransfer rootFolder="/www.savpdfviewer.com/" host="ftp.savpdfviewer.com" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
