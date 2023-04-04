@@ -13,7 +13,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         <div class="horizontal-center">
             <img src="/images/icon.png" class="image-square-100px">
             <h1 class="title-section">Sav PDF Viewer</h1>
-            <h2 class="subtitle-section no-bold font-small">Android app to read your PDFs.<br><i>Your privacy is important. <b>You are important</b>.</i></h2>
+            <h2 class="subtitle-section no-bold font-small">Android app to read your PDFs.<br><i>Your privacy is
+                    important. <b>You are important</b>.</i></h2>
             <br>
             <br>
             <input type="button" class="button button-with-icon button-install" value="Install"

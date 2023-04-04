@@ -5,7 +5,7 @@
     include_once($_SERVER['DOCUMENT_ROOT'] . "/include/header.php");
     ?>
 </head>
-<body onload="expandContainer()">
+<body>
 <?php
 $selected_menu = "news";
 include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
@@ -91,7 +91,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 • Added "Bookmarks": now you can add, remove and manage bookmarks
                 <br>
                 • Created the <a href="https://www.instagram.com/savpdfviewer/">Intagram account</a> of the app <a
-                        href="https://www.instagram.com/savpdfviewer/">@savpdfviewer</a>!
+                    href="https://www.instagram.com/savpdfviewer/">@savpdfviewer</a>!
                 <br>
                 • Improved the backend code and the frontend UI
             </p>
