@@ -5,7 +5,7 @@
     include_once($_SERVER['DOCUMENT_ROOT'] . "/include/header.php");
     ?>
 </head>
-<body>
+<body onload="expandContainer()">
 <?php
 $selected_menu = "news";
 include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");

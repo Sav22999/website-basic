@@ -1,8 +1,9 @@
 <?php
 global $selected_menu;
 if (!isset($selected_menu) || $selected_menu == "") {
-    $selected_menu = "-";
+    $selected_menu = "";
 }
+echo '<script>setAction("' . $selected_menu . '");</script>';
 ?>
 <nav class="topbar">
     <div class="menu">
