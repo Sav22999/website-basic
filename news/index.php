@@ -5,11 +5,21 @@
     include_once($_SERVER['DOCUMENT_ROOT'] . "/include/header.php");
     ?>
 </head>
-<body onload="expandContainer()">
+<body>
 <?php
 $selected_menu = "news";
 include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
 ?>
+
+<script>
+    document.addEventListener("readystatechange", (event) => {
+        switch (document.readyState) {
+            case "complete":
+                expandContainer();
+                break;
+        }
+    });
+</script>
 
 <main class="padding-top-menu">
     <div class="horizontal-center">
@@ -231,6 +241,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         </div>
     </div>
 </main>
+
 
 </body>
 </html>

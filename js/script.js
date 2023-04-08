@@ -13,11 +13,10 @@ function expandContainer() {
 
     for (let i = 0; i < items.length; i++) {
         items[i].onclick = function () {
-            console.log(`--> ${i}`);
             this.classList.toggle("expanding-item--expanded");
             let detailsElement = document.getElementsByClassName("expanding-item--expanded-details")[i];
             detailsElement.classList.toggle("hidden");
-        };
+        }
     }
 }
 
