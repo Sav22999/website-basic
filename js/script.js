@@ -8,19 +8,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function expandContainer() {
     //Expand or reduce the container
-    var coll = document.getElementsByClassName("expanding-item");
-    var i;
+    var items = document.getElementsByClassName("expanding-item");
+    var items = document.querySelectorAll(".expanding-item");
 
-    for (i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function () {
+    for (let i = 0; i < items.length; i++) {
+        items[i].onclick = function () {
+            console.log(`--> ${i}`);
             this.classList.toggle("expanding-item--expanded");
-            var content = this.nextElementSibling;
-            if (content.style.display === "block") {
-                content.style.display = "none";
-            } else {
-                content.style.display = "block";
-            }
-        });
+            let detailsElement = document.getElementsByClassName("expanding-item--expanded-details")[i];
+            detailsElement.classList.toggle("hidden");
+        };
     }
 }
 

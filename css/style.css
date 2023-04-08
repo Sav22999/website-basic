@@ -374,7 +374,6 @@ br.big-space {
 
 .expanding-item--expanded-details {
     padding: 10px 15px;
-    display: none;
     overflow: hidden;
     background-color: var(--primary-color);
     color: var(--on-primary-color);
