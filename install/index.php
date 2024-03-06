@@ -23,7 +23,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <input type="button" class="button button-with-icon button-googlechrome" value="Google Chrome"
                    onclick="location.href='https://chromewebstore.google.com/detail/agcdffobijddcccbfnhfjmaohnljefpm'">
             <input type="button" class="button button-with-icon button-microsoftedge" value="Microsoft Edge"
-                   onclick="location.href='https://microsoftedge.microsoft.com/addons/detail/jdgcfpdoiojfebhafmihkihficfnpahk'">
+                   onclick="location.href='https://microsoftedge.microsoft.com/addons/detail/lkahmkadpaibphpoiofpdinacjffddda'">
             <br>
             <h2 class="subtitle-section no-bold font-very-small">you can also install the app from:</h2>
             <br>

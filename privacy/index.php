@@ -31,9 +31,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         <br>
         It does not collect any personal data, except for your email and the data that you decide to save in the add-on.
         <br>
-        It saves your email (plaintext), your password (encrypted), and the notes that you decide to save.
-        <br>
-        Your email is saved not encrypted because it is used to identify you in the database.
+        It saves your email, your password, and the notes that you decide to save. All data saved in the database are encrypted.
         <br>
         All your notes are encrypted with your password, so only you can read them.
         <br class="big-space">

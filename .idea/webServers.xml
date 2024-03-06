@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="00e2851b-d169-4595-a79f-8d8f2c99713f" name="ftp.notefox.eu" url="https://notefox.eu">
+        <fileTransfer rootFolder="/www.notefox.eu/" host="ftp.notefox.eu" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
