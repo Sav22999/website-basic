@@ -22,16 +22,11 @@ if ($condition) {
         //check if login-id (already encrypted) from logins table exists, in case 401
 
         $query_check = "SELECT * FROM $logins_table WHERE `login-id` = ?";
-        if($stmt_check = $c->prepare($query_check)) {
-            $stmt_check->bind_param("s", $login_id);
-            $stmt_check->execute();
-            $result_check = $stmt_check->get_result();
-            $stmt_check->close();
-        } else {
-            $response = echo_error(402);
-            echo json_encode($response);
-            return;
-        }
+        $stmt_check = $c->prepare($query_check);
+        $stmt_check->bind_param("s", $login_id);
+        $stmt_check->execute();
+        $result_check = $stmt_check->get_result();
+        $stmt_check->close();
 
         //if exists, update the status to 0 (inactive) but, before,
         //check if it's passed (GET) "all-devices" -> if it's "true", then ALL login-id and not only the login-id passed
@@ -64,6 +59,8 @@ if ($condition) {
         }
 
         $c->close();
+    } else {
+        $response = echo_error(402);
     }
 
     echo json_encode($response);
@@ -89,7 +86,7 @@ function echo_error($code)
             $response["description"] = "Invalid parameters";
             break;
         case 402:
-            $response["description"] = "Database error";
+            $response["description"] = "Connection error";
             break;
         case 403:
             $response["description"] = "Login ID not found";

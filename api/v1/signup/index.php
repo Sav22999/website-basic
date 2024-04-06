@@ -96,6 +96,9 @@ function echo_error($code)
         case 403:
             $response["description"] = "Error while connecting to the database";
             break;
+        default:
+            $response["description"] = "Unknown error";
+            break;
     }
     return $response;
 }
