@@ -22,21 +22,24 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
 </script>
 
 <main class="padding-top-menu">
-    <div class="horizontal-center">
-        <h1 class="title-section">Privacy policy</h1>
+    <div class="horizontal-center ">
+        <div class="center-content justify">
+            <h1 class="title-section center">Privacy policy</h1>
+            <p>
+                <i>Notefox: websites notes</i> is an open-source project developed by Saverio Morelli.
+            </p>
+            <p>
+                It does not collect any personal data, except for your email and the data that you decide to save in the add-on.
+                <br>
+                It saves your email, your password, and the notes that you decide to save. All data saved in the database are encrypted.
+                <br>
+                All your notes are encrypted with your password, so only you can read them.
+            </p>
+            <p>
+                To get more details, please <a href="/help/">contact me</a>.
+            </p>
+        </div>
     </div>
-    <br class="big-space">
-    <p class="horizontal-center">
-        <i>Notefox: websites notes</i> is an open-source project developed by Saverio Morelli.
-        <br>
-        It does not collect any personal data, except for your email and the data that you decide to save in the add-on.
-        <br>
-        It saves your email, your password, and the notes that you decide to save. All data saved in the database are encrypted.
-        <br>
-        All your notes are encrypted with your password, so only you can read them.
-        <br class="big-space">
-        To get more details, please <a href="/help/">contact me</a>.
-    </p>
 </main>
 
 

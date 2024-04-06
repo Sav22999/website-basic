@@ -29,6 +29,26 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
     </div>
     <br class="big-space">
     <div class="expanding-container">
+        <button type="button" class="expanding-item">Release 3.11.2 – 21 Mar 2024</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Add option to disable "Shantell sans" font
+                <br>
+                • Updated languages
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 3.11, 3.11.1 – 18 Mar 2024</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Changed the font-family in a handwriting one
+                <br>
+                • Added new button: insert (or remove) link
+                <br>
+                • Fixed an important bug present in the previous release
+            </p>
+        </div>
+
         <button type="button" class="expanding-item">Release 3.10.1 – 27 Feb 2024</button>
         <div class="expanding-item--expanded-details hidden">
             <p>

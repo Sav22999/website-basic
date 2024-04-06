@@ -25,17 +25,17 @@ if (!isset($url_opengraph) || $url_opengraph == "") {
 
 <meta property="og:locale" content="it_IT"/>
 <meta property="og:type" content="website"/>
-<meta property="og:title" content="Sav PDF Viewer"/>
+<meta property="og:title" content="Notefox"/>
 <meta property="og:description"
-      content="Sav PDF Viewer – The app to open quickly your PDF files, but with an eye to protect your privacy!"/>
+      content="Notefox: Take notes on every website in a smart and simple way!"/>
 <meta property="og:url" content="https://www.notefox.eu/"/>
-<meta property="og:site_name" content="Sav PDF Viewer"/>
+<meta property="og:site_name" content="Notefox"/>
 <meta property="og:image" content="<?php echo $url_opengraph; ?>"/>
 <meta property="og:image:secure_url" content="<?php echo $url_opengraph; ?>"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:description"
-      content="Sav PDF Viewer – The app to open quickly your PDF files, but with an eye to protect your privacy!"/>
-<meta name="twitter:title" content="Sav PDF Viewer"/>
+      content="Notefox: Take notes on every website in a smart and simple way!"/>
+<meta name="twitter:title" content="Notefox"/>
 <meta name="twitter:site" content="@Sav22999"/>
 <meta name="twitter:image" content="<?php echo $url_opengraph; ?>"/>
 <meta name="twitter:creator" content="@Sav22999"/>

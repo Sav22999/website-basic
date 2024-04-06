@@ -55,3 +55,7 @@ function sendStatistics() {
 function setAction(actionToSet = "") {
     action = actionToSet
 }
+
+function goto(url) {
+    location.href = url;
+}

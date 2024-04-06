@@ -113,6 +113,7 @@ a:visited {
         padding: 20px 5px;
         border-left: 1px solid rgba(238, 238, 238, 0.3);
     }
+
     .nav-button:first-child {
         border-left: 0px;
     }
@@ -366,6 +367,7 @@ br.big-space {
         top: 138px;
         right: -40%;
     }
+
     .button-prev {
         top: 138px;
         left: -40%;
@@ -386,13 +388,18 @@ br.big-space {
         top: 188px;
         right: -47%;
     }
+
     .button-prev {
         top: 188px;
         left: -47%;
     }
 }
 
-.expanding-item {
+p {
+    text-align: justify;
+}
+
+.expanding-item, .help-faq-item {
     background-color: var(--tertiary-color);
     transition: var(--transition);
     color: var(--on-tertiary-color);
@@ -406,7 +413,20 @@ br.big-space {
     border-radius: var(--border-radius);
 }
 
-.expanding-item--expanded, .expanding-item:hover {
+.help-faq-item, .expanding-item, .expanding-item--expanded {
+    background-image: url("/images/arrow-down.svg");
+    background-repeat: no-repeat;
+    background-size: 20px auto;
+    background-position: center right 20px;
+    padding-right: 50px;
+    min-height: 40px;
+}
+
+.help-faq-item {
+    background-image: url("/images/arrow-right.svg");
+}
+
+.expanding-item--expanded, .expanding-item:hover, .help-faq-item:hover {
     background-color: var(--primary-color);
     color: var(--on-primary-color);
 }
@@ -416,17 +436,8 @@ br.big-space {
     border-bottom-right-radius: 0px;
 }
 
-.expanding-item:after {
-    content: '\002B';
-    color: var(--on-tertiary-color);
-    font-weight: bold;
-    float: right;
-    margin: 0px 5px;
-}
-
-.expanding-item--expanded:after {
-    color: var(--on-primary-color);
-    content: "\2212";
+.expanding-item--expanded {
+    background-image: url("/images/arrow-up.svg");
 }
 
 .expanding-item--expanded-details {
@@ -507,4 +518,39 @@ blockquote:before {
     line-height: 0.1em;
     margin-right: 0.25em;
     vertical-align: -0.4em;
+}
+
+code {
+    background-color: var(--primary-color-variant-transparence);
+    padding: 0px 5px;
+    border-radius: var(--border-radius);
+}
+
+.center-content {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    text-align: inherit;
+}
+
+@media only screen and (max-width: 800px) {
+    .center-content {
+        width: 90%;
+        text-align: justify;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .center-content {
+        width: 100%;
+    }
+}
+
+hr.hr-big-space {
+    padding: 0px;
+    background-color: var(--primary-color-variant-transparence);
+    height: 1px;
+    width: 90%;
+    margin: 50px auto;
+    border: 0px solid transparent;
 }
