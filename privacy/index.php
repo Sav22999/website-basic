@@ -29,14 +29,17 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <i>Notefox: websites notes</i> is an open-source project developed by Saverio Morelli.
             </p>
             <p>
-                It does not collect any personal data, except for your email and the data that you decide to save in the add-on.
+                It does not collect any personal data, except for your email and the data that you decide to save in the add-on, which are anyway <b>encrypted</b><sup>*</sup>.
                 <br>
-                It saves your email, your password, and the notes that you decide to save. All data saved in the database are encrypted.
+                All your data are encrypted with your password, so only you can read them.
                 <br>
-                All your notes are encrypted with your password, so only you can read them.
+                If you lose or forget your password, you will not be able to recover your data in any way.
             </p>
             <p>
                 To get more details, please <a href="/help/">contact me</a>.
+            </p>
+            <p>
+                <sup>*</sup> Your data are encrypted with the AES-256 algorithm with your password as the key. The password is hashed with the SHA-512 algorithm.
             </p>
         </div>
     </div>

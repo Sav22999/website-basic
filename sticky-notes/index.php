@@ -32,6 +32,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 • Write your notes: click on the text area and write your notes
                 <br>
                 • Format your notes using the keyboard shortcuts: Ctrl+B for bold, Ctrl+I for italic, Ctrl+U for underline, Ctrl+S for strikethrough, Ctrl+L for link
+                <br>
+                • Paste images: copy an image and paste it in the text area
             </p>
         </div>
     </div>
@@ -543,6 +545,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
     }
 
     function onInputText(text) {
+        listenerLinks(text);
     }
 
     function onKeyDownText(text, e) {
@@ -782,10 +785,9 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         let notes = element;
         if (notes.innerHTML !== "" && notes.innerHTML !== "<br>") {
             let links = notes.querySelectorAll('a');
-            if (settings_json["open-links-only-with-ctrl"] === undefined) settings_json["open-links-only-with-ctrl"] = "yes";
             links.forEach(link => {
-                function onMouseOverDown(event, settings_json, link) {
-                    if (settings_json["open-links-only-with-ctrl"] === "yes" && (event.ctrlKey || event.metaKey)) {
+                function onMouseOverDown(event, link) {
+                    if (event.ctrlKey || event.metaKey) {
                         link.style.textDecorationStyle = "solid";
                         link.style.cursor = "pointer";
                     }
@@ -797,10 +799,10 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 }
 
                 link.onmousedown = function (event) {
-                    onMouseOverDown(event, settings_json, link);
+                    onMouseOverDown(event, link);
                 }
                 link.onmouseover = function (event) {
-                    onMouseOverDown(event, settings_json, link);
+                    onMouseOverDown(event, link);
                 }
                 link.onmouseup = function (event) {
                     onMouseLeaveUp(link);
@@ -809,11 +811,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                     onMouseLeaveUp(link);
                 }
                 link.onclick = function (event) {
-                    if (settings_json["open-links-only-with-ctrl"] === true && (event.ctrlKey || event.metaKey)) {
-                        window.open(link.href, '_blank');
-                    } else {
-                        // Prevent the default link behavior
-                    }
+                    location.href = link.href;
+
                     event.preventDefault();
                 }
             });

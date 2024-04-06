@@ -12,8 +12,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
     <div class="vertical-middle">
         <div class="horizontal-center">
             <img src="/images/icon.png" class="image-square-100px">
-            <h1 class="title-section">Notefox</h1>
-            <h2 class="subtitle-section no-bold font-small"><b>Take notes</b> on every website in a <b>smart</b> and <b>simple</b> way!</h2>
+            <h1 class="title-section shantell">Notefox</h1>
+            <h2 class="subtitle-section no-bold font-small shantell"><b>Take notes</b> on every website in a <b>smart</b> and <b>simple</b> way!</h2>
             <br>
             <br>
             <input type="button" class="button button-with-icon button-install" value="Install"
@@ -35,7 +35,9 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
 <footer class="font-color-tertiary-color-variant horizontal-center font-very-small">
     Developed with
     <div class="image-heart image-background-primary image-square-20px"></div>
-    by <a href="https://saveriomorelli.com">Saverio Morelli</a> | <a href="/privacy/">Privacy policy</a>
+    by <a href="https://saveriomorelli.com">Saverio Morelli</a>
+    <br>
+    <a href="/privacy/">Privacy policy</a> | <a href="/terms/">Terms of service</a>
 </footer>
 
 </body>

@@ -28,6 +28,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <button type="button" class="help-faq-item" onclick="goto('./translate/')">How to translate Notefox</button>
             <button type="button" class="help-faq-item" onclick="goto('/sticky-notes/')">Simulate the sticky-notes feature</button>
             <button type="button" class="help-faq-item" onclick="goto('/privacy/')">Privacy policy</button>
+            <button type="button" class="help-faq-item" onclick="goto('/terms/')">Terms of service</button>
         </div>
     </div>
 </main>
