@@ -15,11 +15,11 @@ if ($condition) {
         $c->set_charset("utf8mb4");
 
         $username = encryptTextWithPassword($post["username"], $post["password"]);
-        $email = encryptHash($post["email"]);
+        $email = encryptTextWithPassword($post["email"], $post["password"]);
         $password = encryptHash($post["password"]);
-        $ip_address = encryptTextWithPassword(getIpAddress(), $post["password"]);
+        $ip_address = getIpAddress();
         $created = getTimestamp();
-        $verification_code = encryptTextWithPassword(getNewValidationCode(6), $post["email"]);
+        $verification_code = encryptTextWithPassword(getNewValidationCode(6), $post["password"]);
 
         $link_email_verify = "https://notefox.eu/account/verify/?";
 
@@ -50,7 +50,7 @@ if ($condition) {
                 $to = $post["email"];
                 $subject = "Notefox account: verify your email";
                 $message = "Hello " . decryptTextWithPassword($username, $post["password"]) . ",<br>";
-                $message .= "Thank you for signing up to Notefox. To verify your email, please use the following code: <b><code>" . decryptTextWithPassword($verification_code, $post["email"]) . "</code></b> or <a href='" . $link_email_verify . "code=" . decryptTextWithPassword($verification_code, $post["email"]) . "&email=" . $post["email"] . "'>click here</a> to verify automatically.<br><br>";
+                $message .= "Thank you for signing up to Notefox. To verify your email, please use the following code: <b><code>" . decryptTextWithPassword($verification_code, $post["password"]) . "</code></b> or <a href='" . $link_email_verify . "code=" . decryptTextWithPassword($verification_code, $post["email"]) . "&email=" . $post["email"] . "'>click here</a> to verify automatically.<br><br>";
                 $message .= "<small>If you didn't sign up to Notefox, please ignore this email.</small><br><br>";
                 $message .= "Best regards,<br>Sav, the developer of Notefox";
                 $headers = "From: no-reply@notefox.eu\r\n";

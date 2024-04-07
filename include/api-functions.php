@@ -51,4 +51,9 @@ function getNewValidationCode($length)
     return $randomString;
 }
 
+function getCorrectedDateTimestamp($date)
+{
+    return date('Y-m-d H:i:s', strtotime($date));
+}
+
 ?>

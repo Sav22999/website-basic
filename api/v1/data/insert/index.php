@@ -6,7 +6,7 @@ header("Content-Type:application/json");
 $post = json_decode(file_get_contents('php://input'), true); //POST request
 $get = $_GET; //GET request
 
-$condition = isset($post["login-id"]) && isset($post["data"]) && isset($post["updated-locally"]);
+$condition = isset($post["login-id"]) && isset($post["data"]) && isset($post["updated-locally"]) && isset($post["password"]);
 if ($condition) {
     $response = null;
 
@@ -23,9 +23,11 @@ if ($condition) {
         //if there are issues to insert data, return 404
 
         $login_id = $post["login-id"];
+        $password = $post["password"];
+        $data = encryptTextWithPassword($post["data"], $password);
 
         //check login-id, status and expiry date
-        $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND `expiry` > NOW()");
+        $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)");
 
         $stmt->bind_param("s", $login_id);
         $stmt->execute();
@@ -36,7 +38,7 @@ if ($condition) {
             $row = $result->fetch_assoc();
             $user_id = $row["user-id"];
 
-            $ip_address = encryptTextWithPassword(getIpAddress(), $user_id);
+            $ip_address = getIpAddress();
             $now = getTimestamp();
 
             $stmt = $c->prepare("SELECT * FROM $users_table WHERE `email` = ?");
@@ -48,7 +50,7 @@ if ($condition) {
             if ($result->num_rows > 0) {
                 $stmt = $c->prepare("INSERT INTO $data_table (`id`, `user-id`, `data`, `updated-locally-date`, `inserted-date`, `ip-address`) VALUES (NULL, ?, ?, ?, ?, ?)");
                 $c->query("LOCK TABLES $data_table WRITE");
-                $stmt->bind_param("sssss", $user_id, $post["data"], $post["updated-locally"], $now, $ip_address);
+                $stmt->bind_param("sssss", $user_id, $data, $post["updated-locally"], $now, $ip_address);
                 $c->query("UNLOCK TABLES");
                 $stmt->execute();
                 $stmt->close();

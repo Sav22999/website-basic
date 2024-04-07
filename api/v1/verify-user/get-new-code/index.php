@@ -6,6 +6,8 @@ header("Content-Type:application/json");
 $post = json_decode(file_get_contents('php://input'), true); //POST request
 $get = $_GET; //GET request
 
+$link_email_verify = "https://notefox.eu/verify-email?";
+
 $condition = isset($post["email"]) && isset($post["password"]);
 if ($condition) {
     $response = null;
@@ -19,12 +21,11 @@ if ($condition) {
         //if email exists, check if password is correct, in case 402
         //then, update the verification code with a new one and send it to the email ONLY IF the "status" field is 0
 
-        $email = encryptHash($post["email"]);
         $password = encryptHash($post["password"]);
 
-        $query_check = "SELECT * FROM $users_table WHERE `email` = ?";
+        $query_check = "SELECT * FROM $users_table WHERE `password` = ?";
         $stmt_check = $c->prepare($query_check);
-        $stmt_check->bind_param("s", $email);
+        $stmt_check->bind_param("s", $password);
         $stmt_check->execute();
         $result_check = $stmt_check->get_result();
         $stmt_check->close();
@@ -32,13 +33,13 @@ if ($condition) {
         if ($result_check->num_rows > 0) {
             $row = $result_check->fetch_assoc();
             if ($row["status"] === 0) {
-                if ($row["password"] === $password) {
-                    $verification_code = encryptTextWithPassword(getNewValidationCode(6), $post["email"]);
+                if (decryptTextWithPassword($row["email"], $post["password"]) === $post["email"] && $row["password"] === $password) {
+                    $verification_code = encryptTextWithPassword(getNewValidationCode(6), $post["password"]);
 
                     $query_update = "UPDATE $users_table SET `verification-code` = ? WHERE `email` = ?";
                     $stmt_update = $c->prepare($query_update);
                     $c->query("LOCK TABLES $users_table WRITE");
-                    $stmt_update->bind_param("ss", $verification_code, $email);
+                    $stmt_update->bind_param("ss", $verification_code, $row["email"]);
                     $c->query("UNLOCK TABLES");
                     $stmt_update->execute();
                     $stmt_update->close();
@@ -47,7 +48,7 @@ if ($condition) {
                     $to = $post["email"];
                     $subject = "Notefox account: verify your email";
                     $message = "Hello " . decryptTextWithPassword($row["username"], $post["password"]) . ",<br>";
-                    $message .= "You required another verification code.<br>To verify your email, please use the following code: <b><code>" . decryptTextWithPassword($verification_code, $post["email"]) . "</code></b> or <a href='" . $link_email_verify . "code=" . decryptTextWithPassword($verification_code, $post["email"]) . "&email=" . $post["email"] . "'>click here</a> to verify automatically.<br><br>";
+                    $message .= "You required another verification code.<br>To verify your email, please use the following code: <b><code>" . decryptTextWithPassword($verification_code, $post["password"]) . "</code></b> or <a href='" . $link_email_verify . "code=" . decryptTextWithPassword($verification_code, $post["email"]) . "&email=" . $post["email"] . "'>click here</a> to verify automatically.<br><br>";
                     $message .= "<small>If you didn't sign up to Notefox, please ignore this email.</small><br><br>";
                     $message .= "Best regards,<br>Sav, the developer of Notefox";
                     $headers = "From: no-reply@notefox.eu\r\n";
@@ -93,13 +94,13 @@ function echo_error($code)
             $response["description"] = "Connection error";
             break;
         case 402:
-            $response["description"] = "Email doesn't exist";
+            $response["description"] = "Invalid password";
             break;
         case 403:
-            $response["description"] = "Email already verified";
+            $response["description"] = "User already verified";
             break;
         case 404:
-            $response["description"] = "Password is incorrect";
+            $response["description"] = "Email or password incorrect";
             break;
         default:
             $response["description"] = "Unknown error";

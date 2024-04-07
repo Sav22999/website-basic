@@ -19,7 +19,7 @@ if ($condition) {
         //from logins, get the user-id and then get the latest data from the data table
         $login_id = $post["login-id"];
         //check login-id, status and expiry date
-        $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND `expiry` > NOW()");
+        $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND  AND (`expiry` > NOW() OR `expiry` IS NULL)");
         $stmt->bind_param("s", $login_id);
         $stmt->execute();
         $result = $stmt->get_result();

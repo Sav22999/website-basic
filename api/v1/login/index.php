@@ -16,14 +16,13 @@ if ($condition) {
 
         global $users_table, $logins_table;
 
-        $email = encryptHash($post["email"]);
         $password = encryptHash($post["password"]);
 
 
         //check if email exists, in case 401
-        $query_check = "SELECT * FROM $users_table WHERE `email` = ?";
+        $query_check = "SELECT * FROM $users_table WHERE `password` = ?";
         $stmt_check = $c->prepare($query_check);
-        $stmt_check->bind_param("s", $email);
+        $stmt_check->bind_param("s", $password);
         $stmt_check->execute();
         $result_check = $stmt_check->get_result();
         $stmt_check->close();
@@ -31,13 +30,13 @@ if ($condition) {
         //if email exists, check if password is correct, in case 402
         if ($result_check->num_rows > 0) {
             $row = $result_check->fetch_assoc();
-            if ($row["password"] === $password) {
+            if (decryptTextWithPassword($row["email"], $post["password"]) === $post["email"] && $row["password"] === $password) {
                 //password is correct, check if user is active, in case 405
                 if ($row["status"] == 1) {
                     //user is active, generate login-id and insert it into logins table
                     $user_id = $row["email"];
                     $username = decryptTextWithPassword($row["username"], $post["password"]);
-                    $ip_address = encryptTextWithPassword(getIpAddress(), $post["password"]);
+                    $ip_address = getIpAddress();
 
                     $login_id = encryptHash($user_id . $ip_address . getTimestamp());
                     $expiry = null;
@@ -85,10 +84,10 @@ function echo_error($code)
         case 400:
             $response["description"] = "Missing parameters";
             break;
-        case 401:
+        case 402:
             $response["description"] = "Email doesn't exist";
             break;
-        case 402:
+        case 401:
             $response["description"] = "Password is incorrect";
             break;
         case 403:

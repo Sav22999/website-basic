@@ -40,6 +40,11 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 On your web browser it will be stored your password and your login-id, which is used to authenticate your requests, and data will be stored on your local storage encrypted in AES-256.
             </p>
             <p>
+                The service now is provided for free, but it is not guaranteed the service will be available in the future, and it is not guaranteed the data will be stored forever.
+                <br>
+                Notefox is not responsible for any data loss or data corruption, and it is not responsible for any damage caused by the use of the service.
+            </p>
+            <p>
                 To get more details, please <a href="/help/">contact me</a>.
             </p>
             <p>
