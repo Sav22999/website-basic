@@ -56,7 +56,7 @@ if ($condition) {
                 $stmt->execute();
                 $stmt->close();
 
-                $stmt = $c->prepare("SELECT * FROM $data_table WHERE `user-id` = ?");
+                $stmt = $c->prepare("SELECT * FROM $data_table WHERE `user-id` = ? LIMIT 50"); //update only the latest 50 data
                 $stmt->bind_param("s", $user_id);
                 $stmt->execute();
                 $result = $stmt->get_result();
@@ -66,10 +66,11 @@ if ($condition) {
                 while ($result->num_rows > 0 && $row = $result->fetch_assoc()) {
                     $new_data = encryptTextWithPassword(decryptTextWithPassword($row["data"], $password), $new_password);
                     $old_data = $row["data"];
+                    $id = $row["id"];
 
-                    $stmt = $c->prepare("UPDATE $data_table SET `data` = ?, `user-id` = ? WHERE `user-id` = ? AND `data` = ?");
+                    $stmt = $c->prepare("UPDATE $data_table SET `data` = ?, `user-id` = ? WHERE `user-id` = ? AND `data` = ? AND `id` = ?");
                     $c->query("LOCK TABLES $data_table WRITE");
-                    $stmt->bind_param("ssss", $new_data, $new_user_id, $user_id, $old_data);
+                    $stmt->bind_param("ssssi", $new_data, $new_user_id, $user_id, $old_data, $id);
                     $c->query("UNLOCK TABLES");
                     $stmt->execute();
                     $stmt->close();

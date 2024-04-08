@@ -36,7 +36,7 @@ if ($condition) {
             $row = $result->fetch_assoc();
             $user_id = $row["user-id"];
 
-            $stmt = $c->prepare("SELECT * FROM $data_table WHERE `user-id` = ? ORDER BY `updated-locally-date` DESC LIMIT 1");
+            $stmt = $c->prepare("SELECT * FROM $data_table WHERE `user-id` = ? ORDER BY `updated-locally-date` DESC LIMIT 1"); //get the latest data
             $stmt->bind_param("s", $user_id);
             $stmt->execute();
             $result = $stmt->get_result();
