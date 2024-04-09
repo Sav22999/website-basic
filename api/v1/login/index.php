@@ -14,7 +14,7 @@ if ($condition) {
     if ($c = new mysqli($localhost_db, $username_db, $password_db, $database_notefox)) {
         $c->set_charset("utf8mb4");
 
-        global $users_table, $logins_table;
+        global $users_table, $logins_table, $tokens_table;
 
         $password = encryptHash($post["password"]);
 
@@ -37,19 +37,22 @@ if ($condition) {
                     $user_id = $row["email"];
                     $username = decryptTextWithPassword($row["username"], $post["password"]);
                     $ip_address = getIpAddress();
+                    $verification_code = encryptTextWithPassword(getNewValidationCode(6), $post["password"]);
 
                     $login_id = encryptHash($user_id . $ip_address . getTimestamp());
                     $expiry = null;
 
-                    $query_insert = "INSERT INTO $logins_table (`login-id`, `user-id`, `expiry`, `status`, `ip-address`) VALUES (?, ?, ?, 1, ?)";
+                    $query_insert = "INSERT INTO $logins_table (`login-id`, `user-id`, `expiry`, `status`, `ip-address`, `verified`, `verification-code`) VALUES (?, ?, ?, 0, ?, NULL, ?)";
                     $stmt_insert = $c->prepare($query_insert);
                     $c->query("LOCK TABLES $logins_table WRITE");
-                    $stmt_insert->bind_param("ssss", $login_id, $user_id, $expiry, $ip_address);
+                    $stmt_insert->bind_param("sssss", $login_id, $user_id, $expiry, $ip_address, $verification_code);
                     $c->query("UNLOCK TABLES");
                     $stmt_insert->execute();
                     $stmt_insert->close();
 
-                    $response = echo_result(array("login-id" => $login_id, "expiry" => $expiry, "username" => $username));
+                    sendEmailLogin(decryptTextWithPassword($username, $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), false);
+
+                    $response = echo_result(array("login-id" => $login_id));
                 } else {
                     $response = echo_error(405);
                 }

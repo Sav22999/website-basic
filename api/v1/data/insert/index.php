@@ -6,7 +6,7 @@ header("Content-Type:application/json");
 $post = json_decode(file_get_contents('php://input'), true); //POST request
 $get = $_GET; //GET request
 
-$condition = isset($post["login-id"]) && isset($post["data"]) && isset($post["updated-locally"]) && isset($post["password"]);
+$condition = isset($post["login-id"]) && isset($post["data"]) && isset($post["updated-locally"]) && isset($post["token"]);
 if ($condition) {
     $response = null;
 
@@ -14,7 +14,7 @@ if ($condition) {
     if ($c = new mysqli($localhost_db, $username_db, $password_db, $database_notefox)) {
         $c->set_charset("utf8mb4");
 
-        global $logins_table, $data_table, $users_table;
+        global $logins_table, $data_table, $users_table, $tokens_table;
 
         //from logins, get the user-id
         //then, insert the data in the data table
@@ -22,13 +22,10 @@ if ($condition) {
         //if password is wrong, return 403
         //if there are issues to insert data, return 404
 
+
         $login_id = $post["login-id"];
-        $password = $post["password"];
-        $data = encryptTextWithPassword($post["data"], $password);
 
-        //check login-id, status and expiry date
-        $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)");
-
+        $stmt = $c->prepare("SELECT * FROM $tokens_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL) ORDER BY `inserted-date` DESC");
         $stmt->bind_param("s", $login_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -36,28 +33,50 @@ if ($condition) {
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            $user_id = $row["user-id"];
+            $password_encrypted = $row["password"];
+            $password = decryptTextWithPassword($password_encrypted, $post["token"]);
+            $password_hash = encryptHash($password);
 
-            $ip_address = getIpAddress();
-            $now = getTimestamp();
-
-            $stmt = $c->prepare("SELECT * FROM $users_table WHERE `email` = ?");
-            $stmt->bind_param("s", $user_id);
+            $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)");
+            $stmt->bind_param("s", $login_id);
             $stmt->execute();
             $result = $stmt->get_result();
             $stmt->close();
 
             if ($result->num_rows > 0) {
-                $stmt = $c->prepare("INSERT INTO $data_table (`id`, `user-id`, `data`, `updated-locally-date`, `inserted-date`, `ip-address`) VALUES (NULL, ?, ?, ?, ?, ?)");
-                $c->query("LOCK TABLES $data_table WRITE");
-                $stmt->bind_param("sssss", $user_id, $data, $post["updated-locally"], $now, $ip_address);
-                $c->query("UNLOCK TABLES");
+                $row = $result->fetch_assoc();
+                $user_id = $row["user-id"];
+
+                $stmt = $c->prepare("SELECT * FROM $users_table WHERE `password` = ?");
+                $stmt->bind_param("s", $password_hash);
                 $stmt->execute();
+                $result = $stmt->get_result();
                 $stmt->close();
 
-                $response = echo_result(null);
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $email = $row["email"];
+
+                    $ip_address = getIpAddress();
+                    $now = getTimestamp();
+
+                    if (decryptTextWithPassword($email, $password) == decryptTextWithPassword($user_id, $password)) {
+                        $data = encryptTextWithPassword($post["data"], $password);
+                        $stmt = $c->prepare("INSERT INTO $data_table (`id`, `user-id`, `data`, `updated-locally-date`, `inserted-date`, `ip-address`) VALUES (NULL, ?, ?, ?, ?, ?)");
+                        $c->query("LOCK TABLES $data_table WRITE");
+                        $stmt->bind_param("sssss", $user_id, $data, $post["updated-locally"], $now, $ip_address);
+                        $c->query("UNLOCK TABLES");
+                        $stmt->execute();
+                        $stmt->close();
+
+                        $response = echo_result(null);
+                    } else {
+                        $response = echo_error(405);
+                    }
+                } else {
+                    $response = echo_error(404);
+                }
             } else {
-                //login-id looks like correct, but not linked to any user (maybe the user has been deleted)
                 $response = echo_error(403);
             }
         } else {
@@ -92,13 +111,16 @@ function echo_error($code)
             $response["description"] = "Database connection error";
             break;
         case 402:
-            $response["description"] = "Login-id not found, disabled or expired";
+            $response["description"] = "Invalid login id";
             break;
         case 403:
-            $response["description"] = "User not found";
+            $response["description"] = "Login id is disabled";
             break;
         case 404:
-            $response["description"] = "Error inserting data";
+            $response["description"] = "Invalid password";
+            break;
+        case 405:
+            $response["description"] = "Invalid email";
             break;
         default:
             $response["description"] = "Unknown error";

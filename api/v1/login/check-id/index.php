@@ -23,7 +23,7 @@ if ($condition) {
         //if it's true, return 200
 
         //check login-id, status and expiry date
-        $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND  AND (`expiry` > NOW() OR `expiry` IS NULL)");
+        $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1  AND (`expiry` > NOW() OR `expiry` IS NULL)");
         $stmt->bind_param("s", $login_id);
         $stmt->execute();
         $result = $stmt->get_result();

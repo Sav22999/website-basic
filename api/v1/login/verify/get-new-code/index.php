@@ -8,7 +8,7 @@ $get = $_GET; //GET request
 
 $link_email_verify = "https://notefox.eu/verify-email?";
 
-$condition = isset($post["email"]) && isset($post["password"]);
+$condition = isset($post["email"]) && isset($post["password"]) && isset($post["login-id"]);
 if ($condition) {
     $response = null;
 
@@ -16,12 +16,16 @@ if ($condition) {
     if ($c = new mysqli($localhost_db, $username_db, $password_db, $database_notefox)) {
         $c->set_charset("utf8mb4");
 
-        global $users_table;
+        global $logins_table, $users_table, $logins_table;
 
         //if email exists, check if password is correct, in case 402
         //then, update the verification code with a new one and send it to the email ONLY IF the "status" field is 0
 
         $password = encryptHash($post["password"]);
+
+        //if email exists, check if password is correct
+        //then, check if login-id is linked to the email (which is the user-id of logins)
+        //if it's correct, update the verification code with a new one and send it to the email
 
         $query_check = "SELECT * FROM $users_table WHERE `password` = ?";
         $stmt_check = $c->prepare($query_check);
@@ -32,38 +36,37 @@ if ($condition) {
 
         if ($result_check->num_rows > 0) {
             $row = $result_check->fetch_assoc();
-            if ($row["status"] === 0) {
-                if (decryptTextWithPassword($row["email"], $post["password"]) === $post["email"] && $row["password"] === $password) {
+
+            $user_id = $row["email"];
+
+            if (decryptTextWithPassword($row["email"], $post["password"]) === $post["email"] && $row["password"] === $password) {
+                $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `user-id` = ? AND `status` = 0");
+                $stmt->bind_param("ss", $post["login-id"], $user_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $stmt->close();
+
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
                     $verification_code = encryptTextWithPassword(getNewValidationCode(6), $post["password"]);
-
-                    $query_update = "UPDATE $users_table SET `verification-code` = ? WHERE `email` = ?";
-                    $stmt_update = $c->prepare($query_update);
-                    $c->query("LOCK TABLES $users_table WRITE");
-                    $stmt_update->bind_param("ss", $verification_code, $row["email"]);
+                    $stmt = $c->prepare("UPDATE $logins_table SET `verification-code` = ? WHERE `login-id` = ? AND `user-id` = ? AND `status` = 0");
+                    $c->query("LOCK TABLES $logins_table WRITE");
+                    $stmt->bind_param("sss", $verification_code, $post["login-id"], $user_id);
                     $c->query("UNLOCK TABLES");
-                    $stmt_update->execute();
-                    $stmt_update->close();
+                    $stmt->execute();
+                    $stmt->close();
 
-                    //send email from no-reply@notefox.eu to the email with the verification code (unencrypted)
-                    $to = $post["email"];
-                    $subject = "Notefox account: verify your email";
-                    $message = "Hello " . decryptTextWithPassword($row["username"], $post["password"]) . ",<br>";
-                    $message .= "You required another verification code.<br>To verify your email, please use the following code: <b><code>" . decryptTextWithPassword($verification_code, $post["password"]) . "</code></b> or <a href='" . $link_email_verify . "code=" . decryptTextWithPassword($verification_code, $post["email"]) . "&email=" . $post["email"] . "'>click here</a> to verify automatically.<br><br>";
-                    $message .= "<small>If you didn't sign up to Notefox, please ignore this email.</small><br><br>";
-                    $message .= "Best regards,<br>Sav, the developer of Notefox";
-                    $headers = "From: no-reply@notefox.eu\r\n";
-                    $headers .= "Content-Type: text/html; charset=utf-8\r\n";
-                    mail($to, $subject, $message, $headers);
+                    sendEmailLogin(decryptTextWithPassword($row["username"], $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), true);
 
                     $response = echo_result(null);
                 } else {
-                    $response = echo_error(404);
+                    $response = echo_error(403);
                 }
             } else {
-                $response = echo_error(403);
+                $response = echo_error(402);
             }
         } else {
-            $response = echo_error(402);
+            $response = echo_error(404);
         }
 
         $c->close();
