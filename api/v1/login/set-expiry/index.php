@@ -6,7 +6,7 @@ header("Content-Type:application/json");
 $post = json_decode(file_get_contents('php://input'), true); //POST request
 $get = $_GET; //GET request
 
-$condition = isset($post["password"]) && isset($post["login-id"]) && isset($post["expiry"]);
+$condition = isset($post["token"]) && isset($post["login-id"]) && isset($post["expiry"]);
 if ($condition) {
     $response = null;
 
@@ -14,15 +14,16 @@ if ($condition) {
     if ($c = new mysqli($localhost_db, $username_db, $password_db, $database_notefox)) {
         $c->set_charset("utf8mb4");
 
-        global $logins_table, $users_table;
-        $login_id = $post["login-id"];
-        $expiry = getCorrectedDateTimestamp($post["expiry"]);
-        $password = encryptHash($post["password"]);
 
         //from logins, get the user-id via login-id (users_table)
         //then, update the expiry date in the logins table only if the user-id and password are correct
 
-        $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1  AND (`expiry` > NOW() OR `expiry` IS NULL)");
+        global $logins_table, $data_table, $users_table, $tokens_table;
+
+        $login_id = $post["login-id"];
+        $expiry = getCorrectedDateTimestamp($post["expiry"]);
+
+        $stmt = $c->prepare("SELECT * FROM $tokens_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL) ORDER BY `inserted-date` DESC");
         $stmt->bind_param("s", $login_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -30,29 +31,60 @@ if ($condition) {
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            $user_id = $row["user-id"];
-            $stmt = $c->prepare("SELECT * FROM $users_table WHERE `email` = ? AND `password` = ?");
-            $stmt->bind_param("ss", $user_id, $password);
+            $password_encrypted = $row["password"];
+            $password = decryptTextWithPassword($password_encrypted, $post["token"]);
+            $password_hash = encryptHash($password);
+
+            $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)");
+            $stmt->bind_param("s", $login_id);
             $stmt->execute();
             $result = $stmt->get_result();
             $stmt->close();
 
             if ($result->num_rows > 0) {
-                $stmt = $c->prepare("UPDATE $logins_table SET `expiry` = ? WHERE `login-id` = ? AND `status` = 1 AND  AND (`expiry` > NOW() OR `expiry` IS NULL)");
-                $c->query("LOCK TABLES $logins_table WRITE");
-                $stmt->bind_param("ss", $expiry, $login_id);
-                $c->query("UNLOCK TABLES");
+                $row = $result->fetch_assoc();
+                $user_id = $row["user-id"];
+
+                $stmt = $c->prepare("SELECT * FROM $users_table WHERE `password` = ?");
+                $stmt->bind_param("s", $password_hash);
                 $stmt->execute();
+                $result = $stmt->get_result();
                 $stmt->close();
 
-                $response = echo_result(null);
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $email = $row["email"];
+
+                    if (decryptTextWithPassword($email, $password) == decryptTextWithPassword($user_id, $password)) {
+
+                        //here the code after the checking of the password
+
+                        if ($result->num_rows > 0) {
+                            $stmt = $c->prepare("UPDATE $logins_table SET `expiry` = ? WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)");
+                            $c->query("LOCK TABLES $logins_table WRITE");
+                            $stmt->bind_param("ss", $expiry, $login_id);
+                            $c->query("UNLOCK TABLES");
+                            $stmt->execute();
+                            $stmt->close();
+
+                            $response = echo_result(null);
+                        } else {
+                            $response = echo_error(406);
+                        }
+
+                        //end of the code after the checking of the password
+                    } else {
+                        $response = echo_error(405);
+                    }
+                } else {
+                    $response = echo_error(404);
+                }
             } else {
                 $response = echo_error(403);
             }
         } else {
             $response = echo_error(402);
         }
-
         $c->close();
     } else {
         $response = echo_error(401);
@@ -81,10 +113,19 @@ function echo_error($code)
             $response["description"] = "Database connection error";
             break;
         case 402:
-            $response["description"] = "Login-id not found or already expired: you can only update the expiry date of an active login-id";
+            $response["description"] = "Invalid token";
             break;
         case 403:
-            $response["description"] = "Password is incorrect";
+            $response["description"] = "Invalid login id";
+            break;
+        case 404:
+            $response["description"] = "Invalid password"; //or email wrong
+            break;
+        case 405:
+            $response["description"] = "Invalid password"; //or email wrong
+            break;
+        case 406:
+            $response["description"] = "Invalid expiry date";
             break;
         default:
             $response["description"] = "Unknown error";

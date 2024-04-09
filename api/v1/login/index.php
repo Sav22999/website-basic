@@ -19,7 +19,6 @@ if ($condition) {
         $password = encryptHash($post["password"]);
 
 
-        //check if email exists, in case 401
         $query_check = "SELECT * FROM $users_table WHERE `password` = ?";
         $stmt_check = $c->prepare($query_check);
         $stmt_check->bind_param("s", $password);
@@ -27,11 +26,10 @@ if ($condition) {
         $result_check = $stmt_check->get_result();
         $stmt_check->close();
 
-        //if email exists, check if password is correct, in case 402
         if ($result_check->num_rows > 0) {
             $row = $result_check->fetch_assoc();
             if (decryptTextWithPassword($row["email"], $post["password"]) === $post["email"] && $row["password"] === $password) {
-                //password is correct, check if user is active, in case 405
+                //password is correct, check if user is active
                 if ($row["status"] == 1) {
                     //user is active, generate login-id and insert it into logins table
                     $user_id = $row["email"];
@@ -54,18 +52,21 @@ if ($condition) {
 
                     $response = echo_result(array("login-id" => $login_id));
                 } else {
-                    $response = echo_error(405);
+                    $response = echo_error(404);
                 }
             } else {
-                $response = echo_error(402);
+                $email_decrypted = decryptTextWithPassword($row["email"], $post["password"]);
+                $password_decrypted = decryptTextWithPassword($row["password"], $post["password"]);
+                $username_decrypted = decryptTextWithPassword($row["username"], $post["password"]);
+                $response = echo_error("403 - emailRow ${row['email']} - emailDecrypted $email_decrypted - email ${post["email"]} - password ${$post["password"]} - passwordDecrypted $password_decrypted - status ${$row["status"]} - user-id ${$row["email"]} - username $username_decrypted");
             }
         } else {
-            $response = echo_error(401);
+            $response = echo_error(402);
         }
 
         $c->close();
     } else {
-        $response = echo_error(403);
+        $response = echo_error(401);
     }
 
     echo json_encode($response);
@@ -87,20 +88,17 @@ function echo_error($code)
         case 400:
             $response["description"] = "Missing parameters";
             break;
-        case 402:
-            $response["description"] = "Email doesn't exist";
-            break;
         case 401:
-            $response["description"] = "Password is incorrect";
+            $response["description"] = "Database connection error";
+            break;
+        case 402:
+            $response["description"] = "Email not found";
             break;
         case 403:
-            $response["description"] = "Connection error";
+            $response["description"] = "Wrong password";
             break;
         case 404:
-            $response["description"] = "Insert error";
-            break;
-        case 405:
-            $response["description"] = "User is not active";
+            $response["description"] = "User is inactive";
             break;
         default:
             $response["description"] = "Unknown error";

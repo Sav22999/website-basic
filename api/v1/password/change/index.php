@@ -14,7 +14,7 @@ if ($condition) {
     if ($c = new mysqli($localhost_db, $username_db, $password_db, $database_notefox)) {
         $c->set_charset("utf8mb4");
 
-        global $logins_table, $users_table, $data_table;
+        global $logins_table, $users_table, $data_table, $tokens_table;
 
         $login_id = $post["login-id"];
         $password = $post["password"];
@@ -76,6 +76,26 @@ if ($condition) {
                     $stmt->close();
                 }
 
+                //all tokens with the old password (so linked to the userid) became invalid (status = 0)
+                //get all unique login-id from logins where user-id = $user_id
+                //then, update all tokens with the old password (so linked to the userid) to status = 0
+                $stmt = $c->prepare("SELECT DISTINCT `login-id` FROM $logins_table WHERE `user-id` = ?");
+                $stmt->bind_param("s", $user_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $stmt->close();
+
+                while ($result->num_rows > 0 && $row = $result->fetch_assoc()) {
+                    $login_id = $row["login-id"];
+                    $stmt = $c->prepare("UPDATE $tokens_table SET `status` = 0 WHERE `login-id` = ?");
+                    $c->query("LOCK TABLES $tokens_table WRITE");
+                    $stmt->bind_param("s", $login_id);
+                    $c->query("UNLOCK TABLES");
+                    $stmt->execute();
+                    $stmt->close();
+                }
+
+
                 $stmt = $c->prepare("UPDATE $logins_table SET `user-id` = ? WHERE `user-id` = ?");
                 $c->query("LOCK TABLES $logins_table WRITE");
                 $stmt->bind_param("ss", $new_user_id, $user_id);
@@ -83,7 +103,7 @@ if ($condition) {
                 $stmt->execute();
                 $stmt->close();
 
-                $response = echo_result(null);
+                $response = echo_result("old email ${row["email"]} - new email $new_user_id - old username ${row["username"]} - new username $new_username - old password $password - new password $new_password");
             } else {
                 $response = echo_error(403);
             }

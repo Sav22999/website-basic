@@ -14,14 +14,14 @@ if ($condition) {
     if ($c = new mysqli($localhost_db, $username_db, $password_db, $database_notefox)) {
         $c->set_charset("utf8mb4");
 
-        global $logins_table, $data_table, $users_table, $tokens_table;
-
         //get the password using the token passed as the decrypting key from tokens table
         //decrypt the password using the token passed
         //get the user-id from logins where login-id = $login_id
         //get the email from users where password = $password_hash
         //if email is correct, then get the latest data from data table where user-id = $user_id (sort by "updated-locally-date")
         //then return the data
+
+        global $logins_table, $data_table, $users_table, $tokens_table;
 
         $login_id = $post["login-id"];
 

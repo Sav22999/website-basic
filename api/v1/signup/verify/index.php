@@ -31,28 +31,33 @@ if ($condition) {
         $row = $result_check->fetch_assoc();
         //check there is at least one row
         if ($result_check->num_rows > 0) {
-            if (decryptTextWithPassword($row["email"], $post["password"]) === $post["email"]) {
-                if ($row["verified"] === null) {
-                    if (decryptTextWithPassword($row["verification-code"], $post["password"]) === $verification_code) {
-                        //update the status to 1 (verified), verified with the current datetime (getTimestamp()) and verification code to NULL
-                        //where email is the email passed and the verification code is the verification code passed
-                        $query_update = "UPDATE $users_table SET `status` = 1, `verification-code` = NULL, `verified` = ? WHERE `email` = ?";
-                        $stmt_update = $c->prepare($query_update);
-                        $stmt_update->bind_param("ss", $now, $row["email"]);
-                        $c->query("LOCK TABLES $users_table WRITE");
-                        $stmt_update->execute();
-                        $c->query("UNLOCK TABLES");
-                        $stmt_update->close();
+            $found = false;
+            while ($row = $result_check->fetch_assoc() && !$found) {
+                if (decryptTextWithPassword($row["email"], $post["password"]) === $post["email"]) {
+                    $found = true;
+                    if ($row["verified"] === null) {
+                        if (decryptTextWithPassword($row["verification-code"], $post["password"]) === $verification_code) {
+                            //update the status to 1 (verified), verified with the current datetime (getTimestamp()) and verification code to NULL
+                            //where email is the email passed and the verification code is the verification code passed
+                            $query_update = "UPDATE $users_table SET `status` = 1, `verification-code` = NULL, `verified` = ? WHERE `email` = ?";
+                            $stmt_update = $c->prepare($query_update);
+                            $stmt_update->bind_param("ss", $now, $row["email"]);
+                            $c->query("LOCK TABLES $users_table WRITE");
+                            $stmt_update->execute();
+                            $c->query("UNLOCK TABLES");
+                            $stmt_update->close();
 
-                        $response = echo_result(null);
+                            $response = echo_result(null);
+                        } else {
+                            $response = echo_error(404);
+                        }
                     } else {
-                        $response = echo_error(404);
+                        $response = echo_error(403);
                     }
                 } else {
-                    $response = echo_error(403);
+                    $response = echo_error(402);
                 }
-            } else {
-                $response = echo_error(402);
+                if($found) break;
             }
         } else {
             $response = echo_error(405);
