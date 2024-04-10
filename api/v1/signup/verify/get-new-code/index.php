@@ -47,7 +47,7 @@ if ($condition) {
 
             $response = echo_result(null);
         } else {
-            $response = echo_error(402);
+            $response = echo_error(421);
         }
 
         $c->close();
@@ -77,14 +77,8 @@ function echo_error($code)
         case 401:
             $response["description"] = "Connection error";
             break;
-        case 402:
-            $response["description"] = "Invalid password";
-            break;
-        case 403:
-            $response["description"] = "User already verified";
-            break;
-        case 404:
-            $response["description"] = "Email or password incorrect";
+        case 412:
+            $response["description"] = "Invalid credentials or already verified";
             break;
         default:
             $response["description"] = "Unknown error";

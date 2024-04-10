@@ -85,7 +85,7 @@ if ($condition) {
                             $row = $result->fetch_assoc();
                             $response = echo_result(array("data" => decryptTextWithPassword($row["data"], $password_decrypted), "updated-locally" => $row["updated-locally-date"], "updated-server" => $row["inserted-date"]));
                         } else {
-                            $response = echo_error(405);
+                            $response = echo_error(450);
                         }
 
                         //END of the code ====
@@ -127,18 +127,21 @@ function echo_error($code)
             $response["description"] = "Missing parameters";
             break;
         case 401:
-            $response["description"] = "Connection error";
+            $response["description"] = "Database connection error";
             break;
         case 402:
-            $response["description"] = "Login-id not found or inactive"; //in tokens
+            $response["description"] = "Login-id not found, disabled, expired or invalid";
             break;
         case 403:
-            $response["description"] = "Login-id not found or inactive"; //in logins
+            $response["description"] = "User-id not found";
             break;
         case 404:
-            $response["description"] = "Email or password incorrect";
+            $response["description"] = "Token not found, disabled, expired or invalid";
             break;
         case 405:
+            $response["description"] = "Token not valid";
+            break;
+        case 450:
             $response["description"] = "Data not found";
             break;
         default:

@@ -47,13 +47,13 @@ if ($condition) {
 
                     $response = echo_result(null);
                 } else {
-                    $response = echo_error(404);
+                    $response = echo_error(413);
                 }
             } else {
-                $response = echo_error(403);
+                $response = echo_error(414);
             }
         } else {
-            $response = echo_error(402);
+            $response = echo_error(410);
         }
 
         $stmt_check->close();
@@ -86,14 +86,14 @@ function echo_error($code)
         case 401:
             $response["description"] = "Database connection error";
             break;
-        case 402:
-            $response["description"] = "Email not found or wrong password";
+        case 410:
+            $response["description"] = "Invalid credentials";
             break;
-        case 403:
-            $response["description"] = "Email already verified";
+        case 414:
+            $response["description"] = "User already verified";
             break;
-        case 404:
-            $response["description"] = "Wrong verification code";
+        case 413:
+            $response["description"] = "Invalid verification code";
             break;
         case 405:
 

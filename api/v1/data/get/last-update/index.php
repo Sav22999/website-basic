@@ -39,7 +39,7 @@ if ($condition) {
                 $row = $result->fetch_assoc();
                 $response = echo_result(array("updated-locally" => $row["updated-locally-date"], "updated-server" => $row["inserted-date"]));
             } else {
-                $response = echo_error(403);
+                $response = echo_error(450);
             }
         } else {
             $response = echo_error(402);
@@ -75,7 +75,7 @@ function echo_error($code)
         case 402:
             $response["description"] = "Login-id not found, disabled or expired";
             break;
-        case 403:
+        case 450:
             $response["description"] = "Data not found";
             break;
         default:

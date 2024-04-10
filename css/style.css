@@ -522,7 +522,7 @@ blockquote:before {
 
 code {
     background-color: var(--primary-color-variant-transparence);
-    padding: 0px 5px;
+    padding: 1px 3px;
     border-radius: var(--border-radius);
 }
 

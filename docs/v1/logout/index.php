@@ -1,7 +1,11 @@
 <html>
 <head>
     <?php
-    $title = "Docs – Notefox";
+    $docs_title = "/v1/";
+
+    global $docs_end_point;
+
+    $title = "Docs: $docs_title – Notefox";
     include_once($_SERVER['DOCUMENT_ROOT'] . "/include/header.php");
     ?>
 </head>
@@ -14,59 +18,39 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
 <main class="padding-top-menu">
     <div class="horizontal-center ">
         <div class="center-content justify">
-            <h1 class="title-section center">/v1/logout/</h1>
+            <h1 class="title-section center"><?php echo $docs_title; ?></h1>
             <h2 class="subtitle-section no-bold font-small">
-                This permits you to log out from one device or all devices linked to your account.
+
             </h2>
             <p>
                 <b>API Link</b>
                 <code>
-                    https://notefox.eu/api/v1/logout/
+                    <?php echo $docs_end_point . $docs_title; ?>
                 </code>
 
                 <br>
-
-                <b>POST params</b>
+                <b>Method</b>
+                <code>POST</code>
                 <br>
-                <code>
-                    {
-                    "login-id": "&lt;YOUR LOGIN ID&gt;",
-                    }
-                </code>
-
-                <br>
-
-                <b>Optional GET params</b>
-                <br>
-                <code>
-                    {
-                    "all-devices": &lt;true/false&gt;
-                    }
-                </code>
-
-                <br>
-
-                <b>Possible responses</b>
-                <br>
-                <code>
-                    {
-                    "": "",
-                    "": ""
-                    }
-                </code>
+                <b>Headers</b>
+                <code>{ "Content-Type": "application/json" }</code>
             </p>
             <p>
-                <b>Example</b>
+                <b>Request</b>
                 <br>
-                <code>
-                    https://notefox.eu/api/v1/logout/?all-devices=false
-                </code>
+                <code></code> (type): description
                 <br>
-                <code>
-                    {
-                    "login-id": "XYZ123"
-                    }
-                </code>
+                <code></code> (type): description
+            </p>
+            <p>
+                <b>Response (success)</b>
+                <br>
+                <code></code> (type): description
+            </p>
+            <p>
+                <b>Response (error)</b>
+                <br>
+                <code></code> (type): description
             </p>
         </div>
     </div>

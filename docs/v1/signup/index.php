@@ -1,7 +1,11 @@
 <html>
 <head>
     <?php
-    $title = "Docs – Notefox";
+    $docs_title = "/v1/";
+
+    global $docs_end_point;
+
+    $title = "Docs: $docs_title – Notefox";
     include_once($_SERVER['DOCUMENT_ROOT'] . "/include/header.php");
     ?>
 </head>
@@ -14,53 +18,39 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
 <main class="padding-top-menu">
     <div class="horizontal-center ">
         <div class="center-content justify">
-            <h1 class="title-section center">/v1/singup/</h1>
+            <h1 class="title-section center"><?php echo $docs_title; ?></h1>
             <h2 class="subtitle-section no-bold font-small">
-                This permits you to create a new Notefox account.
+
             </h2>
             <p>
                 <b>API Link</b>
                 <code>
-                    https://notefox.eu/api/v1/signup/
+                    <?php echo $docs_end_point . $docs_title; ?>
                 </code>
 
                 <br>
-
-                <b>POST params</b>
+                <b>Method</b>
+                <code>POST</code>
                 <br>
-                <code>
-                    {
-                    "email": "&lt;YOUR EMAIL&gt;",
-                    "password": "&lt;YOUR PASSWORD&gt;",
-                    "username": "&lt;YOUR USERNAME&gt;"
-                    }
-                </code>
-
-                <br>
-
-                <b>Possible responses</b>
-                <br>
-                <code>
-                    {
-                    "": "",
-                    "": ""
-                    }
-                </code>
+                <b>Headers</b>
+                <code>{ "Content-Type": "application/json" }</code>
             </p>
             <p>
-                <b>Example</b>
+                <b>Request</b>
                 <br>
-                <code>
-                    https://notefox.eu/api/v1/signup/
-                </code>
+                <code></code> (type): description
                 <br>
-                <code>
-                    {
-                    "email": "example@notefox.eu",
-                    "password": "example-password",
-                    "username": "example-username"
-                    }
-                </code>
+                <code></code> (type): description
+            </p>
+            <p>
+                <b>Response (success)</b>
+                <br>
+                <code></code> (type): description
+            </p>
+            <p>
+                <b>Response (error)</b>
+                <br>
+                <code></code> (type): description
             </p>
         </div>
     </div>

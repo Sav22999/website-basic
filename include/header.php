@@ -9,6 +9,8 @@ if (isset($title)) {
 if (!isset($url_opengraph) || $url_opengraph == "") {
     $url_opengraph = "https://www.notefox.eu/images/opengraph.png";
 }
+
+$docs_end_point = "https://www.notefox.eu";
 ?>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">

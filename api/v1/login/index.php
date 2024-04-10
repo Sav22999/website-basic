@@ -53,10 +53,10 @@ if ($condition) {
 
                 $response = echo_result(array("login-id" => $login_id));
             } else {
-                $response = echo_error(404);
+                $response = echo_error(411);
             }
         } else {
-            $response = echo_error(402);
+            $response = echo_error(410);
         }
 
         $c->close();
@@ -86,14 +86,11 @@ function echo_error($code)
         case 401:
             $response["description"] = "Database connection error";
             break;
-        case 402:
-            $response["description"] = "Email not found";
+        case 410:
+            $response["description"] = "Invalid credentials";
             break;
-        case 403:
-            $response["description"] = "Wrong password";
-            break;
-        case 404:
-            $response["description"] = "User is inactive";
+        case 411:
+            $response["description"] = "User is not active";
             break;
         default:
             $response["description"] = "Unknown error";

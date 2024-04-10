@@ -63,7 +63,7 @@ function echo_error($code)
             $response["description"] = "Database connection error";
             break;
         case 402:
-            $response["description"] = "Login-id not found, disabled or expired";
+            $response["description"] = "Login-id not found, disabled, expired or invalid";
             break;
         default:
             $response["description"] = "Unknown error";

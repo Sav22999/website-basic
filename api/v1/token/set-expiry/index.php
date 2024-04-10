@@ -125,13 +125,16 @@ function echo_error($code)
             $response["description"] = "Database connection error";
             break;
         case 402:
-            $response["description"] = "Invalid login-id or password";
+            $response["description"] = "Login-id not found, disabled, expired or invalid";
             break;
         case 403:
-            $response["description"] = "Invalid user";
+            $response["description"] = "User-id not found";
             break;
         case 404:
-            $response["description"] = "Invalid token";
+            $response["description"] = "Token not found, disabled, expired or invalid";
+            break;
+        case 405:
+            $response["description"] = "Token not valid";
             break;
         default:
             $response["description"] = "Unknown error";

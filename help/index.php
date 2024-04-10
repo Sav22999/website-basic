@@ -18,15 +18,20 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <h2 class="subtitle-section no-bold font-small">To get help, please contact me via Telegram or e-mail</h2>
             <br>
             <br>
-            <input type="button" class="button button-with-icon button-telegram" value="Telegram"
-                   onclick="location.href='https://t.me/sav_projects/7'">
-            <input type="button" class="button button-with-icon button-email" value="Email"
-                   onclick="location.href='mailto:saverio.morelli@protonmail.com'">
+            <div class="center">
+                <input type="button" class="button button-with-icon button-telegram" value="Telegram"
+                       onclick="location.href='https://t.me/sav_projects/7'">
+                <input type="button" class="button button-with-icon button-email" value="Email"
+                       onclick="location.href='mailto:saverio.morelli@protonmail.com'">
+            </div>
             <hr class="hr-big-space">
             <button type="button" class="help-faq-item" onclick="goto('./first-run/')">First run tutorial</button>
-            <button type="button" class="help-faq-item" onclick="goto('./search/')">How the search feature works</button>
+            <button type="button" class="help-faq-item" onclick="goto('./search/')">How the search feature works
+            </button>
             <button type="button" class="help-faq-item" onclick="goto('./translate/')">How to translate Notefox</button>
-            <button type="button" class="help-faq-item" onclick="goto('/sticky-notes/')">Simulate the sticky-notes feature</button>
+            <button type="button" class="help-faq-item" onclick="goto('/sticky-notes/')">Simulate the sticky-notes
+                feature
+            </button>
             <button type="button" class="help-faq-item" onclick="goto('/privacy/')">Privacy policy</button>
             <button type="button" class="help-faq-item" onclick="goto('/terms/')">Terms of service</button>
         </div>

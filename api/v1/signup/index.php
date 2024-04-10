@@ -31,25 +31,21 @@ if ($condition) {
         $result_check = $stmt_check->get_result();
         $stmt_check->close();
 
-        if ($result_check->num_rows > 0) {
-            //if email already exists
-            $response = echo_error(402);
-        } else {
+        if ($result_check->num_rows === 0) {
             //if email doesn't exist
             $query = "INSERT INTO $users_table (`username`, `email`, `password`, `ip-address`, `created`, `verification-code`, `verified`, `status`) VALUES (?, ?, ?, ?, ?, ?, NULL, 0)";
-            if ($stmt = $c->prepare($query)) {
-                $c->query("LOCK TABLES $users_table WRITE");
-                $stmt->bind_param("ssssss", $username, $email, $password, $ip_address, $created, $verification_code);
-                $c->query("UNLOCK TABLES");
-                $stmt->execute();
-                $stmt->close();
+            $stmt = $c->prepare($query);
+            $c->query("LOCK TABLES $users_table WRITE");
+            $stmt->bind_param("ssssss", $username, $email, $password, $ip_address, $created, $verification_code);
+            $c->query("UNLOCK TABLES");
+            $stmt->execute();
+            $stmt->close();
 
-                sendEmailSignup(decryptTextWithPassword($username, $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), false);
+            sendEmailSignup(decryptTextWithPassword($username, $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), false);
 
-                $response = echo_result(null);
-            } else {
-                $response = echo_error(403);
-            }
+            $response = echo_result(null);
+        } else {//if email already exists
+            $response = echo_error(416);
         }
 
         $c->close();
@@ -79,11 +75,8 @@ function echo_error($code)
         case 401:
             $response["description"] = "Database connection error";
             break;
-        case 402:
-            $response["description"] = "Email already exists";
-            break;
-        case 403:
-            $response["description"] = "Database query error";
+        case 416:
+            $response["description"] = "Email already used for another account";
             break;
         default:
             $response["description"] = "Unknown error";

@@ -1,7 +1,11 @@
 <html>
 <head>
     <?php
-    $title = "Docs – Notefox";
+    $docs_title = "/v1/data/get/";
+
+    global $docs_end_point;
+
+    $title = "Docs: $docs_title – Notefox";
     include_once($_SERVER['DOCUMENT_ROOT'] . "/include/header.php");
     ?>
 </head>
@@ -14,51 +18,42 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
 <main class="padding-top-menu">
     <div class="horizontal-center ">
         <div class="center-content justify">
-            <h1 class="title-section center">/v1/data/get/</h1>
+            <h1 class="title-section center"><?php echo $docs_title; ?></h1>
             <h2 class="subtitle-section no-bold font-small">
-                This permits you to get your encrypted data from the database: you'll need to use your password to decrypt them.
+                This API permits to get data from the database. Data is returned in JSON format.
             </h2>
             <p>
                 <b>API Link</b>
                 <code>
-                    https://notefox.eu/api/v1/data/get/
+                    <?php echo $docs_end_point . $docs_title; ?>
                 </code>
 
                 <br>
-
-                <b>POST params</b>
+                <b>Method</b>
+                <code>POST</code>
                 <br>
-                <code>
-                    {
-                    "login-id": "&lt;YOUR LOGIN ID&gt;",
-                    "password": "&lt;YOUR PASSWORD&gt;"
-                    }
-                </code>
-
-                <br>
-
-                <b>Possible responses</b>
-                <br>
-                <code>
-                    {
-                    "": "",
-                    "": ""
-                    }
-                </code>
+                <b>Headers</b>
+                <code>{ "Content-Type": "application/json" }</code>
             </p>
             <p>
-                <b>Example</b>
+                <b>Request</b>
                 <br>
-                <code>
-                    https://notefox.eu/api/v1/data/get/
-                </code>
+                <code>login-id</code> (STRING): the login-id generated during the login
                 <br>
-                <code>
-                    {
-                    "login-id": "XYZ123",
-                    "password": "password123"
-                    }
-                </code>
+                <code>token</code> (STRING): the token generated during the login
+            </p>
+            <p>
+                <b>Response (success: code 200)</b>
+                <br>
+                <code>data</code> (JSON): the data from the database
+                <code>updated-locally</code> (DATETIME): the last time the data was updated locally
+                <code>updated-server</code> (DATETIME): the last time the data was updated on the server (uploaded
+                datetime)
+            </p>
+            <p>
+                <b>Response (error)</b>
+                <br>
+                <code>code </code> (type): description
             </p>
         </div>
     </div>

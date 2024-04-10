@@ -62,13 +62,13 @@ if ($condition) {
 
                 $response = echo_result(null);
             } else {
-                $response = echo_error(403);
+                $response = echo_error(415);
             }
 
             //end of the code after the checking of the password
 
         } else {
-            $response = echo_error(404);
+            $response = echo_error(410);
         }
 
         $c->close();
@@ -96,16 +96,13 @@ function echo_error($code)
             $response["description"] = "Missing parameters";
             break;
         case 401:
-            $response["description"] = "Connection error";
+            $response["description"] = "Database connection error";
             break;
-        case 402:
-            $response["description"] = "Invalid password";
+        case 410:
+            $response["description"] = "Invalid credentials";
             break;
-        case 403:
-            $response["description"] = "User already verified";
-            break;
-        case 404:
-            $response["description"] = "Email or password incorrect";
+        case 415:
+            $response["description"] = "Invalid login-id or already verified";
             break;
         default:
             $response["description"] = "Unknown error";

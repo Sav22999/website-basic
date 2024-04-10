@@ -66,7 +66,6 @@ if ($condition) {
                             $password_encrypted = $row["password"];
                         }
                     }
-                    $row = $result->fetch_assoc();
 
                     if ($found) {
                         $password_hash = encryptHash($password_decrypted);
@@ -74,18 +73,14 @@ if ($condition) {
                         //now it's found the password using token, login-id
                         // START of the code ====
 
-                        if ($result->num_rows > 0) {
-                            $stmt = $c->prepare("UPDATE $logins_table SET `expiry` = ? WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)");
-                            $c->query("LOCK TABLES $logins_table WRITE");
-                            $stmt->bind_param("ss", $expiry, $login_id);
-                            $c->query("UNLOCK TABLES");
-                            $stmt->execute();
-                            $stmt->close();
+                        $stmt = $c->prepare("UPDATE $logins_table SET `expiry` = ? WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)");
+                        $c->query("LOCK TABLES $logins_table WRITE");
+                        $stmt->bind_param("ss", $expiry, $login_id);
+                        $c->query("UNLOCK TABLES");
+                        $stmt->execute();
+                        $stmt->close();
 
-                            $response = echo_result(null);
-                        } else {
-                            $response = echo_error(406);
-                        }
+                        $response = echo_result(null);
 
                         //END of the code ====
                     } else {
@@ -129,19 +124,16 @@ function echo_error($code)
             $response["description"] = "Database connection error";
             break;
         case 402:
-            $response["description"] = "Invalid token";
+            $response["description"] = "Login-id not found, disabled, expired or invalid";
             break;
         case 403:
-            $response["description"] = "Invalid login id";
+            $response["description"] = "User-id not found";
             break;
         case 404:
-            $response["description"] = "Invalid password"; //or email wrong
+            $response["description"] = "Token not found, disabled, expired or invalid";
             break;
         case 405:
-            $response["description"] = "Invalid password"; //or email wrong
-            break;
-        case 406:
-            $response["description"] = "Invalid expiry date";
+            $response["description"] = "Token not valid";
             break;
         default:
             $response["description"] = "Unknown error";

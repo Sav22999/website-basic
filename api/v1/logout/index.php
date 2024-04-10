@@ -21,7 +21,7 @@ if ($condition) {
 
         //check if login-id (already encrypted) from logins table exists, in case 401
 
-        $query_check = "SELECT * FROM $logins_table WHERE `login-id` = ?";
+        $query_check = "SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)";
         $stmt_check = $c->prepare($query_check);
         $stmt_check->bind_param("s", $login_id);
         $stmt_check->execute();
@@ -55,12 +55,12 @@ if ($condition) {
 
             $response = echo_result(null);
         } else {
-            $response = echo_error(403);
+            $response = echo_error(451);
         }
 
         $c->close();
     } else {
-        $response = echo_error(402);
+        $response = echo_error(401);
     }
 
     echo json_encode($response);
@@ -83,13 +83,10 @@ function echo_error($code)
             $response["description"] = "Missing parameters";
             break;
         case 401:
-            $response["description"] = "Invalid parameters";
+            $response["description"] = "Database connection error";
             break;
-        case 402:
-            $response["description"] = "Connection error";
-            break;
-        case 403:
-            $response["description"] = "Login ID not found";
+        case 451:
+            $response["description"] = "Login-id already disabled or expired";
             break;
         default:
             $response["description"] = "Unknown error";

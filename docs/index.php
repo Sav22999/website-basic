@@ -22,13 +22,20 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                         href="https://github.com/Sav22999/website-basic/tree/notefox.eu">GitHub</a>.
             </h2>
             <hr class="hr-big-space">
-            <button type="button" class="help-faq-item" onclick="goto('./v1/signup/')">/v1/signup/</button>
-            <button type="button" class="help-faq-item" onclick="goto('./v1/login/')">/v1/login/</button>
-            <button type="button" class="help-faq-item" onclick="goto('./v1/logout/')">/v1/logout/</button>
-            <button type="button" class="help-faq-item" onclick="goto('./v1/last-update/get')">/v1/last-update/get/
-            </button>
             <button type="button" class="help-faq-item" onclick="goto('./v1/data/get/')">/v1/data/get/</button>
-            <button type="button" class="help-faq-item" onclick="goto('./v1/data/update/')">/v1/data/update/</button>
+            <button type="button" class="help-faq-item" onclick="goto('./v1/data/get/last-update/')">/v1/data/get/last-update/</button>
+            <button type="button" class="help-faq-item" onclick="goto('./v1/data/insert/')">/v1/data/insert/</button>
+            <button type="button" class="help-faq-item" onclick="goto('./v1/login/')">/v1/login/</button>
+            <button type="button" class="help-faq-item" onclick="goto('./v1/login/check-in/')">/v1/login/check-in/</button>
+            <button type="button" class="help-faq-item" onclick="goto('./v1/login/set-expiry/')">/v1/login/set-expiry/</button>
+            <button type="button" class="help-faq-item" onclick="goto('./v1/login/verify/')">/v1/login/verify/</button>
+            <button type="button" class="help-faq-item" onclick="goto('./v1/login/verify/get-new-code/')">/v1/login/verify/get-new-code/</button>
+            <button type="button" class="help-faq-item" onclick="goto('./v1/logout/')">/v1/logout/</button>
+            <button type="button" class="help-faq-item" onclick="goto('./v1/password/edit/')">/v1/password/edit/</button>
+            <button type="button" class="help-faq-item" onclick="goto('./v1/signup/')">/v1/signup/</button>
+            <button type="button" class="help-faq-item" onclick="goto('./v1/signup/verify/')">/v1/signup/verify/</button>
+            <button type="button" class="help-faq-item" onclick="goto('./v1/signup/verify/get-new-code/')">/v1/signup/verify/get-new-code/</button>
+            <button type="button" class="help-faq-item" onclick="goto('./v1/token/set-expiry/')">/v1/token/set-expiry/</button>
         </div>
     </div>
 </main>

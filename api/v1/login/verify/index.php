@@ -75,10 +75,10 @@ if ($condition) {
 
                     //end
                 } else {
-                    $response = echo_error(404);
+                    $response = echo_error(410);
                 }
             } else {
-                $response = echo_error(403);
+                $response = echo_error(414);
             }
         } else {
             $response = echo_error(402);
@@ -113,16 +113,13 @@ function echo_error($code)
             $response["description"] = "Database connection error";
             break;
         case 402:
-            $response["description"] = "Invalid login id";
+            $response["description"] = "Login-id not found, disabled, expired or invalid";
             break;
-        case 403:
+        case 414:
             $response["description"] = "User already verified";
             break;
-        case 404:
-            $response["description"] = "Email or password incorrect";
-            break;
-        case 405:
-            $response["description"] = "Invalid password";
+        case 410:
+            $response["description"] = "Invalid credentials";
             break;
         default:
             $response["description"] = "Unknown error";
