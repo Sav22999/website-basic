@@ -95,8 +95,6 @@ function echo_error($code)
         case 413:
             $response["description"] = "Invalid verification code";
             break;
-        case 405:
-
         default:
             $response["description"] = "Unknown error";
             break;

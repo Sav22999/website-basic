@@ -3,6 +3,7 @@
     <?php
     $docs_title = "/v1/data/get/";
 
+    include_once($_SERVER['DOCUMENT_ROOT'] . "/include/docs-functions.php");
     global $docs_end_point;
 
     $title = "Docs: $docs_title – Notefox";
@@ -45,15 +46,29 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <p>
                 <b>Response (success: code 200)</b>
                 <br>
-                <code>data</code> (JSON): the data from the database
+                <code>data</code> (TEXT: JSON): the data from the database
+                <br>
                 <code>updated-locally</code> (DATETIME): the last time the data was updated locally
+                <br>
                 <code>updated-server</code> (DATETIME): the last time the data was updated on the server (uploaded
                 datetime)
             </p>
             <p>
                 <b>Response (error)</b>
                 <br>
-                <code>code </code> (type): description
+                <code>400</code>: <?php echo getErrorDescription(400); ?>
+                <br>
+                <code>401</code>: <?php echo getErrorDescription(401); ?>
+                <br>
+                <code>402</code>: <?php echo getErrorDescription(402); ?>
+                <br>
+                <code>403</code>: <?php echo getErrorDescription(403); ?>
+                <br>
+                <code>404</code>: <?php echo getErrorDescription(404); ?>
+                <br>
+                <code>405</code>: <?php echo getErrorDescription(405); ?>
+                <br>
+                <code>450</code>: <?php echo getErrorDescription(450); ?>
             </p>
         </div>
     </div>

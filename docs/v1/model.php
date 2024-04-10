@@ -3,6 +3,7 @@
     <?php
     $docs_title = "/v1/";
 
+    include_once($_SERVER['DOCUMENT_ROOT'] . "/include/docs-functions.php");
     global $docs_end_point;
 
     $title = "Docs: $docs_title – Notefox";
