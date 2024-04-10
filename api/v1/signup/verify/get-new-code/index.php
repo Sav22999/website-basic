@@ -22,37 +22,32 @@ if ($condition) {
         //then, update the verification code with a new one and send it to the email ONLY IF the "status" field is 0
 
         $password = encryptHash($post["password"]);
+        $email_hash = encryptHash($post["email"]);
 
-        $query_check = "SELECT * FROM $users_table WHERE `password` = ?";
+        $query_check = "SELECT * FROM $users_table WHERE `password` = ? AND `email` = ? AND `status` = 0";
         $stmt_check = $c->prepare($query_check);
-        $stmt_check->bind_param("s", $password);
+        $stmt_check->bind_param("ss", $password, $email_hash);
         $stmt_check->execute();
         $result_check = $stmt_check->get_result();
         $stmt_check->close();
 
         if ($result_check->num_rows > 0) {
             $row = $result_check->fetch_assoc();
-            if ($row["status"] === 0) {
-                if (decryptTextWithPassword($row["email"], $post["password"]) === $post["email"] && $row["password"] === $password) {
-                    $verification_code = encryptTextWithPassword(getNewValidationCode(6), $post["password"]);
+            $verification_code = encryptTextWithPassword(getNewValidationCode(6), $post["password"]);
 
-                    $query_update = "UPDATE $users_table SET `verification-code` = ? WHERE `email` = ?";
-                    $stmt_update = $c->prepare($query_update);
-                    $c->query("LOCK TABLES $users_table WRITE");
-                    $stmt_update->bind_param("ss", $verification_code, $row["email"]);
-                    $c->query("UNLOCK TABLES");
-                    $stmt_update->execute();
-                    $stmt_update->close();
+            $query_update = "UPDATE $users_table SET `verification-code` = ? WHERE `email` = ? AND `password` = ?";
+            $stmt_update = $c->prepare($query_update);
+            $c->query("LOCK TABLES $users_table WRITE");
+            $stmt_update->bind_param("sss", $verification_code, $row["email"], $password);
+            $c->query("UNLOCK TABLES");
+            $stmt_update->execute();
+            $stmt_update->close();
 
-                    sendEmailSignup(decryptTextWithPassword($row["username"], $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), true);
+            $username = decryptTextWithPassword($row["username"], $post["password"]);
+            $verification_code = decryptTextWithPassword($verification_code, $post["password"]);
+            sendEmailSignup($username, $post["email"], $verification_code, true);
 
-                    $response = echo_result(null);
-                } else {
-                    $response = echo_error(404);
-                }
-            } else {
-                $response = echo_error(403);
-            }
+            $response = echo_result(null);
         } else {
             $response = echo_error(402);
         }

@@ -16,8 +16,8 @@ if ($condition) {
 
         global $logins_table, $users_table, $tokens_table;
         $login_id = $post["login-id"];
+        $token = $post["token"];
         $expiry = getCorrectedDateTimestamp($post["expiry"]);
-        $password = encryptHash($post["password"]);
 
         //from logins, get the user-id via login-id (users_table)
         //then, from tokens get the password via login-id -> the password is the decrypted using the token as key
@@ -40,28 +40,53 @@ if ($condition) {
             $stmt->close();
 
             if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                $password_from_users_table = $row["password"];
+
                 $stmt = $c->prepare("SELECT * FROM $tokens_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)");
                 $stmt->bind_param("s", $login_id);
                 $stmt->execute();
                 $result = $stmt->get_result();
                 $stmt->close();
 
+
                 if ($result->num_rows > 0) {
+                    $found = false;
+                    $password_decrypted = null;
+                    $password_encrypted = null;
+
+                    while ($row = $result->fetch_assoc() && !$found) {
+                        $password_temp_decrypted = decryptTextWithPassword($row["password"], $token);
+
+                        if (encryptHash($password_temp_decrypted) == $password_from_users_table) {
+                            $found = true;
+                            $password_decrypted = $password_temp_decrypted;
+                            $password_encrypted = $row["password"];
+                        }
+                    }
                     $row = $result->fetch_assoc();
 
-                    $old_expiry = $row["expiry"];
+                    if ($found) {
+                        $password_hash = encryptHash($password_decrypted);
 
-                    $token = $row["password"];
-                    $password = decryptTextWithPassword($password, $token);
+                        //now it's found the password using token, login-id
+                        // START of the code ====
 
-                    $stmt = $c->prepare("UPDATE $tokens_table SET `expiry` = ? WHERE `login-id` = ? AND `password` = ?");
-                    $c->query("LOCK TABLES $tokens_table WRITE");
-                    $stmt->bind_param("sss", $expiry, $login_id, $password);
-                    $c->query("UNLOCK TABLES");
-                    $stmt->execute();
-                    $stmt->close();
+                        $old_expiry = $row["expiry"];
 
-                    $response = echo_result(array("old_expiry" => $old_expiry, "new_expiry" => $expiry));
+                        $stmt = $c->prepare("UPDATE $tokens_table SET `expiry` = ? WHERE `login-id` = ? AND `password` = ?");
+                        $c->query("LOCK TABLES $tokens_table WRITE");
+                        $stmt->bind_param("sss", $expiry, $login_id, $password_encrypted);
+                        $c->query("UNLOCK TABLES");
+                        $stmt->execute();
+                        $stmt->close();
+
+                        $response = echo_result(array("old_expiry" => $old_expiry, "new_expiry" => $expiry));
+
+                        //END of the code ====
+                    } else {
+                        $response = echo_error(405);
+                    }
                 } else {
                     $response = echo_error(404);
                 }

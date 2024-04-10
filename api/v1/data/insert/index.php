@@ -14,18 +14,11 @@ if ($condition) {
     if ($c = new mysqli($localhost_db, $username_db, $password_db, $database_notefox)) {
         $c->set_charset("utf8mb4");
 
-        global $logins_table, $data_table, $users_table, $tokens_table;
-
-        //from logins, get the user-id
-        //then, insert the data in the data table
-        //if login-id is wrong (disabled, not existing, expiry < current_time ...), return 402
-        //if password is wrong, return 403
-        //if there are issues to insert data, return 404
-
-
+        global $logins_table, $users_table, $tokens_table, $data_table;
         $login_id = $post["login-id"];
+        $token = $post["token"];
 
-        $stmt = $c->prepare("SELECT * FROM $tokens_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL) ORDER BY `inserted-date` DESC");
+        $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)");
         $stmt->bind_param("s", $login_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -33,35 +26,51 @@ if ($condition) {
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            $password_encrypted = $row["password"];
-            $password = decryptTextWithPassword($password_encrypted, $post["token"]);
-            $password_hash = encryptHash($password);
+            $user_id = $row["user-id"];
 
-            $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)");
-            $stmt->bind_param("s", $login_id);
+            $stmt = $c->prepare("SELECT * FROM $users_table WHERE `email` = ?");
+            $stmt->bind_param("s", $user_id);
             $stmt->execute();
             $result = $stmt->get_result();
             $stmt->close();
 
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
-                $user_id = $row["user-id"];
+                $password_from_users_table = $row["password"];
 
-                $stmt = $c->prepare("SELECT * FROM $users_table WHERE `password` = ?");
-                $stmt->bind_param("s", $password_hash);
+                $stmt = $c->prepare("SELECT * FROM $tokens_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)");
+                $stmt->bind_param("s", $login_id);
                 $stmt->execute();
                 $result = $stmt->get_result();
                 $stmt->close();
 
+
                 if ($result->num_rows > 0) {
+                    $found = false;
+                    $password_decrypted = null;
+                    $password_encrypted = null;
+
+                    while ($row = $result->fetch_assoc() && !$found) {
+                        $password_temp_decrypted = decryptTextWithPassword($row["password"], $token);
+
+                        if (encryptHash($password_temp_decrypted) == $password_from_users_table) {
+                            $found = true;
+                            $password_decrypted = $password_temp_decrypted;
+                            $password_encrypted = $row["password"];
+                        }
+                    }
                     $row = $result->fetch_assoc();
-                    $email = $row["email"];
 
-                    $ip_address = getIpAddress();
-                    $now = getTimestamp();
+                    if ($found) {
+                        $password_hash = encryptHash($password_decrypted);
 
-                    if (decryptTextWithPassword($email, $password) == decryptTextWithPassword($user_id, $password)) {
-                        $data = encryptTextWithPassword($post["data"], $password);
+                        //now it's found the password using token, login-id
+                        // START of the code ====
+
+                        $ip_address = getIpAddress();
+                        $now = getTimestamp();
+
+                        $data = encryptTextWithPassword($post["data"], $password_decrypted);
                         $stmt = $c->prepare("INSERT INTO $data_table (`id`, `user-id`, `data`, `updated-locally-date`, `inserted-date`, `ip-address`) VALUES (NULL, ?, ?, ?, ?, ?)");
                         $c->query("LOCK TABLES $data_table WRITE");
                         $stmt->bind_param("sssss", $user_id, $data, $post["updated-locally"], $now, $ip_address);
@@ -70,6 +79,8 @@ if ($condition) {
                         $stmt->close();
 
                         $response = echo_result(null);
+
+                        //END of the code ====
                     } else {
                         $response = echo_error(405);
                     }
@@ -117,10 +128,7 @@ function echo_error($code)
             $response["description"] = "Login id is disabled";
             break;
         case 404:
-            $response["description"] = "Invalid password";
-            break;
-        case 405:
-            $response["description"] = "Invalid email";
+            $response["description"] = "Email or password is incorrect";
             break;
         default:
             $response["description"] = "Unknown error";

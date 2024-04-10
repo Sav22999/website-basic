@@ -29,7 +29,7 @@ if ($condition) {
         //then, update the password in logins (decrypt with the old password and encrypt with the new password)
         //BEFORE to update all data, in all tables, LOCK the tables and then UNLOCK them at the end
 
-        $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ?");
+        $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)");
         $stmt->bind_param("s", $login_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -38,7 +38,6 @@ if ($condition) {
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $new_username = encryptTextWithPassword(decryptTextWithPassword($row["username"], $password), $new_password);
-            $new_user_id = encryptTextWithPassword(decryptTextWithPassword($row["email"], $password), $new_password);
 
             $user_id = $row["user-id"];
 
@@ -49,9 +48,9 @@ if ($condition) {
             $stmt->close();
 
             if ($result->num_rows > 0) {
-                $stmt = $c->prepare("UPDATE $users_table SET `password` = ?, `username` = ?, `email` = ? WHERE `email` = ? AND `password` = ?");
+                $stmt = $c->prepare("UPDATE $users_table SET `password` = ?, `username` = ? WHERE `email` = ? AND `password` = ?");
                 $c->query("LOCK TABLES $users_table WRITE");
-                $stmt->bind_param("sssss", $new_password_hash, $new_username, $new_user_id, $user_id, $password_hash);
+                $stmt->bind_param("ssss", $new_password_hash, $new_username, $user_id, $password_hash);
                 $c->query("UNLOCK TABLES");
                 $stmt->execute();
                 $stmt->close();
@@ -68,9 +67,9 @@ if ($condition) {
                     $old_data = $row["data"];
                     $id = $row["id"];
 
-                    $stmt = $c->prepare("UPDATE $data_table SET `data` = ?, `user-id` = ? WHERE `user-id` = ? AND `data` = ? AND `id` = ?");
+                    $stmt = $c->prepare("UPDATE $data_table SET `data` = ? WHERE `user-id` = ? AND `data` = ? AND `id` = ?");
                     $c->query("LOCK TABLES $data_table WRITE");
-                    $stmt->bind_param("ssssi", $new_data, $new_user_id, $user_id, $old_data, $id);
+                    $stmt->bind_param("ssssi", $new_data, $new_user_id, $old_data, $id);
                     $c->query("UNLOCK TABLES");
                     $stmt->execute();
                     $stmt->close();
@@ -103,6 +102,7 @@ if ($condition) {
                 $stmt->execute();
                 $stmt->close();
 
+                //$response = echo_result(null);
                 $response = echo_result("old email ${row["email"]} - new email $new_user_id - old username ${row["username"]} - new username $new_username - old password $password - new password $new_password");
             } else {
                 $response = echo_error(403);

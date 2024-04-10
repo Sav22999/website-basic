@@ -15,7 +15,7 @@ if ($condition) {
         $c->set_charset("utf8mb4");
 
         $username = encryptTextWithPassword($post["username"], $post["password"]);
-        $email = encryptTextWithPassword($post["email"], $post["password"]);
+        $email = encryptHash($post["email"]); //hashing the email (not encrypting it, because it's used for login, not for display)
         $password = encryptHash($post["password"]);
         $ip_address = getIpAddress();
         $created = getTimestamp();
@@ -24,16 +24,16 @@ if ($condition) {
         global $users_table;
 
         //check if email doesn't already exist
-        $query_check = "SELECT * FROM $users_table WHERE `email` = ?";
+        $query_check = "SELECT * FROM $users_table WHERE `email` = ? AND `password` = ?";
         $stmt_check = $c->prepare($query_check);
-        $stmt_check->bind_param("s", $email);
+        $stmt_check->bind_param("ss", $email, $password);
         $stmt_check->execute();
         $result_check = $stmt_check->get_result();
         $stmt_check->close();
 
         if ($result_check->num_rows > 0) {
             //if email already exists
-            $response = echo_error(401);
+            $response = echo_error(402);
         } else {
             //if email doesn't exist
             $query = "INSERT INTO $users_table (`username`, `email`, `password`, `ip-address`, `created`, `verification-code`, `verified`, `status`) VALUES (?, ?, ?, ?, ?, ?, NULL, 0)";
@@ -48,13 +48,13 @@ if ($condition) {
 
                 $response = echo_result(null);
             } else {
-                $response = echo_error(402);
+                $response = echo_error(403);
             }
         }
 
         $c->close();
     } else {
-        $response = echo_error(403);
+        $response = echo_error(401);
     }
 
     echo json_encode($response);
@@ -77,13 +77,13 @@ function echo_error($code)
             $response["description"] = "Missing parameters";
             break;
         case 401:
-            $response["description"] = "Email already exists. Please use another one";
+            $response["description"] = "Database connection error";
             break;
         case 402:
-            $response["description"] = "Error while creating the account";
+            $response["description"] = "Email already exists";
             break;
         case 403:
-            $response["description"] = "Error while connecting to the database";
+            $response["description"] = "Database query error";
             break;
         default:
             $response["description"] = "Unknown error";

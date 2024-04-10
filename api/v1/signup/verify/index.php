@@ -20,11 +20,12 @@ if ($condition) {
         $password = encryptHash($post["password"]);
         $verification_code = $post["verification-code"];
         $now = getTimestamp();
+        $email_hash = encryptHash($post["email"]);
 
         //check if email exists, in case 401
-        $query_check = "SELECT * FROM $users_table WHERE `password` = ?";
+        $query_check = "SELECT * FROM $users_table WHERE `password` = ? AND `email` = ?";
         $stmt_check = $c->prepare($query_check);
-        $stmt_check->bind_param("s", $password);
+        $stmt_check->bind_param("ss", $password, $email_hash);
         $stmt_check->execute();
         $result_check = $stmt_check->get_result();
 
@@ -32,35 +33,27 @@ if ($condition) {
         //check there is at least one row
         if ($result_check->num_rows > 0) {
             $found = false;
-            while ($row = $result_check->fetch_assoc() && !$found) {
-                if (decryptTextWithPassword($row["email"], $post["password"]) === $post["email"]) {
-                    $found = true;
-                    if ($row["verified"] === null) {
-                        if (decryptTextWithPassword($row["verification-code"], $post["password"]) === $verification_code) {
-                            //update the status to 1 (verified), verified with the current datetime (getTimestamp()) and verification code to NULL
-                            //where email is the email passed and the verification code is the verification code passed
-                            $query_update = "UPDATE $users_table SET `status` = 1, `verification-code` = NULL, `verified` = ? WHERE `email` = ?";
-                            $stmt_update = $c->prepare($query_update);
-                            $stmt_update->bind_param("ss", $now, $row["email"]);
-                            $c->query("LOCK TABLES $users_table WRITE");
-                            $stmt_update->execute();
-                            $c->query("UNLOCK TABLES");
-                            $stmt_update->close();
+            if ($row["verified"] === null) {
+                if (decryptTextWithPassword($row["verification-code"], $post["password"]) === $verification_code) {
+                    //update the status to 1 (verified), verified with the current datetime (getTimestamp()) and verification code to NULL
+                    //where email is the email passed and the verification code is the verification code passed
+                    $query_update = "UPDATE $users_table SET `status` = 1, `verification-code` = NULL, `verified` = ? WHERE `email` = ?";
+                    $stmt_update = $c->prepare($query_update);
+                    $stmt_update->bind_param("ss", $now, $row["email"]);
+                    $c->query("LOCK TABLES $users_table WRITE");
+                    $stmt_update->execute();
+                    $c->query("UNLOCK TABLES");
+                    $stmt_update->close();
 
-                            $response = echo_result(null);
-                        } else {
-                            $response = echo_error(404);
-                        }
-                    } else {
-                        $response = echo_error(403);
-                    }
+                    $response = echo_result(null);
                 } else {
-                    $response = echo_error(402);
+                    $response = echo_error(404);
                 }
-                if($found) break;
+            } else {
+                $response = echo_error(403);
             }
         } else {
-            $response = echo_error(405);
+            $response = echo_error(402);
         }
 
         $stmt_check->close();
@@ -94,17 +87,16 @@ function echo_error($code)
             $response["description"] = "Database connection error";
             break;
         case 402:
-            $response["description"] = "Invalid password";
+            $response["description"] = "Email not found or wrong password";
             break;
         case 403:
             $response["description"] = "Email already verified";
             break;
         case 404:
-            $response["description"] = "Invalid verification code";
+            $response["description"] = "Wrong verification code";
             break;
         case 405:
-            $response["description"] = "Email not found";
-            break;
+
         default:
             $response["description"] = "Unknown error";
             break;

@@ -24,8 +24,9 @@ if ($condition) {
         global $logins_table, $data_table, $users_table, $tokens_table;
 
         $login_id = $post["login-id"];
+        $token = $post["token"];
 
-        $stmt = $c->prepare("SELECT * FROM $tokens_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL) ORDER BY `inserted-date` DESC");
+        $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)");
         $stmt->bind_param("s", $login_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -33,33 +34,46 @@ if ($condition) {
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            $password_encrypted = $row["password"];
-            $password = decryptTextWithPassword($password_encrypted, $post["token"]);
-            $password_hash = encryptHash($password);
+            $user_id = $row["user-id"];
 
-            $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)");
-            $stmt->bind_param("s", $login_id);
+            $stmt = $c->prepare("SELECT * FROM $users_table WHERE `email` = ?");
+            $stmt->bind_param("s", $user_id);
             $stmt->execute();
             $result = $stmt->get_result();
             $stmt->close();
 
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
-                $user_id = $row["user-id"];
+                $password_from_users_table = $row["password"];
 
-                $stmt = $c->prepare("SELECT * FROM $users_table WHERE `password` = ?");
-                $stmt->bind_param("s", $password_hash);
+                $stmt = $c->prepare("SELECT * FROM $tokens_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)");
+                $stmt->bind_param("s", $login_id);
                 $stmt->execute();
                 $result = $stmt->get_result();
                 $stmt->close();
 
+
                 if ($result->num_rows > 0) {
+                    $found = false;
+                    $password_decrypted = null;
+                    $password_encrypted = null;
+
+                    while ($row = $result->fetch_assoc() && !$found) {
+                        $password_temp_decrypted = decryptTextWithPassword($row["password"], $token);
+
+                        if (encryptHash($password_temp_decrypted) == $password_from_users_table) {
+                            $found = true;
+                            $password_decrypted = $password_temp_decrypted;
+                            $password_encrypted = $row["password"];
+                        }
+                    }
                     $row = $result->fetch_assoc();
-                    $email = $row["email"];
 
-                    if (decryptTextWithPassword($email, $password) == decryptTextWithPassword($user_id, $password)) {
+                    if ($found) {
+                        $password_hash = encryptHash($password_decrypted);
 
-                        //here the code after the checking of the password
+                        //now it's found the password using token, login-id
+                        // START of the code ====
 
                         $stmt = $c->prepare("SELECT * FROM $data_table WHERE `user-id` = ? ORDER BY `updated-locally-date` DESC LIMIT 1"); //get the latest data
                         $stmt->bind_param("s", $user_id);
@@ -69,13 +83,12 @@ if ($condition) {
 
                         if ($result->num_rows > 0) {
                             $row = $result->fetch_assoc();
-                            $response = echo_result(array("data" => decryptTextWithPassword($row["data"], $password), "updated-locally" => $row["updated-locally-date"], "updated-server" => $row["inserted-date"]));
+                            $response = echo_result(array("data" => decryptTextWithPassword($row["data"], $password_decrypted), "updated-locally" => $row["updated-locally-date"], "updated-server" => $row["inserted-date"]));
                         } else {
-                            $response = echo_error(406);
+                            $response = echo_error(405);
                         }
 
-                        //end of the code after the checking of the password
-
+                        //END of the code ====
                     } else {
                         $response = echo_error(405);
                     }
@@ -123,12 +136,9 @@ function echo_error($code)
             $response["description"] = "Login-id not found or inactive"; //in logins
             break;
         case 404:
-            $response["description"] = "User not found"; //or password is incorrect
+            $response["description"] = "Email or password incorrect";
             break;
         case 405:
-            $response["description"] = "User not found"; //or password is incorrect
-            break;
-        case 406:
             $response["description"] = "Data not found";
             break;
         default:

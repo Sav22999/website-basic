@@ -42,38 +42,38 @@ if ($condition) {
             $verification_code = decryptTextWithPassword($row["verification-code"], $post["password"]);
             if ($verification_code == $verification_code_passed) {
                 //get the username from users where password = $password and if the email is correct
-                $stmt = $c->prepare("SELECT * FROM $users_table WHERE `password` = ?");
-                $stmt->bind_param("s", $password);
+                $stmt = $c->prepare("SELECT * FROM $users_table WHERE `password` = ? AND `email` = ?");
+                $stmt->bind_param("ss", $password, $user_id);
                 $stmt->execute();
                 $result = $stmt->get_result();
                 $stmt->close();
 
                 if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
-                    $email = $row["email"];
-                    if (decryptTextWithPassword($email, $post["password"]) == $post["email"]) {
-                        $stmt = $c->prepare("UPDATE $logins_table SET `status` = 1, `verification-code` = NULL, `verified` = ? WHERE `login-id` = ? AND `status` = 0 AND `verified` IS NULL AND (`expiry` > NOW() OR `expiry` IS NULL)");
-                        $c->query("LOCK TABLES $logins_table WRITE");
-                        $stmt->bind_param("ss", $now, $login_id);
-                        $c->query("UNLOCK TABLES");
-                        $stmt->execute();
-                        $stmt->close();
 
-                        $token = encryptHash(getRandomString(10) . $now . $login_id . $ip_address);
-                        $password_token = encryptTextWithPassword($post["password"], $token);
-                        $expiry = null;
+                    //here the code after the checking of the password
 
-                        $stmt = $c->prepare("INSERT INTO $tokens_table (`id`, `password`, `login-id`, `expiry`, `ip-address`, `inserted-date`, `status`) VALUES (NULL, ?, ?, ?, ?, ?, 1)");
-                        $c->query("LOCK TABLES $tokens_table WRITE");
-                        $stmt->bind_param("sssss", $password_token, $login_id, $expiry, $ip_address, $now);
-                        $c->query("UNLOCK TABLES");
-                        $stmt->execute();
-                        $stmt->close();
+                    $stmt = $c->prepare("UPDATE $logins_table SET `status` = 1, `verification-code` = NULL, `verified` = ? WHERE `login-id` = ? AND `status` = 0 AND `verified` IS NULL AND (`expiry` > NOW() OR `expiry` IS NULL)");
+                    $c->query("LOCK TABLES $logins_table WRITE");
+                    $stmt->bind_param("ss", $now, $login_id);
+                    $c->query("UNLOCK TABLES");
+                    $stmt->execute();
+                    $stmt->close();
 
-                        $response = echo_result(array("token" => $token, "login-id" => $login_id, "expiry" => $expiry, "username" => decryptTextWithPassword($row["username"], $post["password"])));
-                    } else {
-                        $response = echo_error(405);
-                    }
+                    $token = encryptHash(getRandomString(10) . $now . $login_id . $ip_address);
+                    $password_token = encryptTextWithPassword($post["password"], $token);
+                    $expiry = null;
+
+                    $stmt = $c->prepare("INSERT INTO $tokens_table (`id`, `password`, `login-id`, `expiry`, `ip-address`, `inserted-date`, `status`) VALUES (NULL, ?, ?, ?, ?, ?, 1)");
+                    $c->query("LOCK TABLES $tokens_table WRITE");
+                    $stmt->bind_param("sssss", $password_token, $login_id, $expiry, $ip_address, $now);
+                    $c->query("UNLOCK TABLES");
+                    $stmt->execute();
+                    $stmt->close();
+
+                    $response = echo_result(array("token" => $token, "login-id" => $login_id, "expiry" => $expiry, "username" => decryptTextWithPassword($row["username"], $post["password"])));
+
+                    //end
                 } else {
                     $response = echo_error(404);
                 }

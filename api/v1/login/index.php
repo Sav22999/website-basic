@@ -17,48 +17,43 @@ if ($condition) {
         global $users_table, $logins_table, $tokens_table;
 
         $password = encryptHash($post["password"]);
+        $email_hash = encryptHash($post["email"]);
 
 
-        $query_check = "SELECT * FROM $users_table WHERE `password` = ?";
+        $query_check = "SELECT * FROM $users_table WHERE `password` = ? AND `email` = ?";
         $stmt_check = $c->prepare($query_check);
-        $stmt_check->bind_param("s", $password);
+        $stmt_check->bind_param("ss", $password, $email_hash);
         $stmt_check->execute();
         $result_check = $stmt_check->get_result();
         $stmt_check->close();
 
         if ($result_check->num_rows > 0) {
             $row = $result_check->fetch_assoc();
-            if (decryptTextWithPassword($row["email"], $post["password"]) === $post["email"] && $row["password"] === $password) {
-                //password is correct, check if user is active
-                if ($row["status"] == 1) {
-                    //user is active, generate login-id and insert it into logins table
-                    $user_id = $row["email"];
-                    $username = decryptTextWithPassword($row["username"], $post["password"]);
-                    $ip_address = getIpAddress();
-                    $verification_code = encryptTextWithPassword(getNewValidationCode(6), $post["password"]);
 
-                    $login_id = encryptHash($user_id . $ip_address . getTimestamp());
-                    $expiry = null;
+            //password is correct, check if user is active
+            if ($row["status"] == 1) {
+                //user is active, generate login-id and insert it into logins table
+                $user_id = $row["email"];
+                $username = decryptTextWithPassword($row["username"], $post["password"]);
+                $ip_address = getIpAddress();
+                $verification_code = encryptTextWithPassword(getNewValidationCode(6), $post["password"]);
 
-                    $query_insert = "INSERT INTO $logins_table (`login-id`, `user-id`, `expiry`, `status`, `ip-address`, `verified`, `verification-code`) VALUES (?, ?, ?, 0, ?, NULL, ?)";
-                    $stmt_insert = $c->prepare($query_insert);
-                    $c->query("LOCK TABLES $logins_table WRITE");
-                    $stmt_insert->bind_param("sssss", $login_id, $user_id, $expiry, $ip_address, $verification_code);
-                    $c->query("UNLOCK TABLES");
-                    $stmt_insert->execute();
-                    $stmt_insert->close();
+                $login_id = encryptHash($user_id . $ip_address . getTimestamp());
+                $expiry = null;
 
-                    sendEmailLogin(decryptTextWithPassword($username, $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), false);
+                $query_insert = "INSERT INTO $logins_table (`login-id`, `user-id`, `expiry`, `status`, `ip-address`, `verified`, `verification-code`) VALUES (?, ?, ?, 0, ?, NULL, ?)";
+                $stmt_insert = $c->prepare($query_insert);
+                $c->query("LOCK TABLES $logins_table WRITE");
+                $stmt_insert->bind_param("sssss", $login_id, $user_id, $expiry, $ip_address, $verification_code);
+                $c->query("UNLOCK TABLES");
+                $stmt_insert->execute();
+                $stmt_insert->close();
 
-                    $response = echo_result(array("login-id" => $login_id));
-                } else {
-                    $response = echo_error(404);
-                }
+                sendEmailLogin(decryptTextWithPassword($username, $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), false);
+
+                $response = echo_result(array("login-id" => $login_id));
             } else {
-                $email_decrypted = decryptTextWithPassword($row["email"], $post["password"]);
-                $password_decrypted = decryptTextWithPassword($row["password"], $post["password"]);
-                $username_decrypted = decryptTextWithPassword($row["username"], $post["password"]);
-                $response = echo_error("403 - emailRow ${row['email']} - emailDecrypted $email_decrypted - email ${post["email"]} - password ${$post["password"]} - passwordDecrypted $password_decrypted - status ${$row["status"]} - user-id ${$row["email"]} - username $username_decrypted");
+                $response = echo_error(404);
             }
         } else {
             $response = echo_error(402);

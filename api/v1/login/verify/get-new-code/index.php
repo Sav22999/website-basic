@@ -22,14 +22,15 @@ if ($condition) {
         //then, update the verification code with a new one and send it to the email ONLY IF the "status" field is 0
 
         $password = encryptHash($post["password"]);
+        $email_hash = encryptHash($post["email"]);
 
         //if email exists, check if password is correct
         //then, check if login-id is linked to the email (which is the user-id of logins)
         //if it's correct, update the verification code with a new one and send it to the email
 
-        $query_check = "SELECT * FROM $users_table WHERE `password` = ?";
+        $query_check = "SELECT * FROM $users_table WHERE `password` = ? AND `email` = ?";
         $stmt_check = $c->prepare($query_check);
-        $stmt_check->bind_param("s", $password);
+        $stmt_check->bind_param("ss", $password, $email_hash);
         $stmt_check->execute();
         $result_check = $stmt_check->get_result();
         $stmt_check->close();
@@ -39,32 +40,33 @@ if ($condition) {
 
             $user_id = $row["email"];
 
-            if (decryptTextWithPassword($row["email"], $post["password"]) === $post["email"] && $row["password"] === $password) {
-                $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `user-id` = ? AND `status` = 0");
-                $stmt->bind_param("ss", $post["login-id"], $user_id);
+            //here the code after the checking of the password
+
+            $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `user-id` = ? AND `status` = 0");
+            $stmt->bind_param("ss", $post["login-id"], $user_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $stmt->close();
+
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                $verification_code = encryptTextWithPassword(getNewValidationCode(6), $post["password"]);
+                $stmt = $c->prepare("UPDATE $logins_table SET `verification-code` = ? WHERE `login-id` = ? AND `user-id` = ? AND `status` = 0");
+                $c->query("LOCK TABLES $logins_table WRITE");
+                $stmt->bind_param("sss", $verification_code, $post["login-id"], $user_id);
+                $c->query("UNLOCK TABLES");
                 $stmt->execute();
-                $result = $stmt->get_result();
                 $stmt->close();
 
-                if ($result->num_rows > 0) {
-                    $row = $result->fetch_assoc();
-                    $verification_code = encryptTextWithPassword(getNewValidationCode(6), $post["password"]);
-                    $stmt = $c->prepare("UPDATE $logins_table SET `verification-code` = ? WHERE `login-id` = ? AND `user-id` = ? AND `status` = 0");
-                    $c->query("LOCK TABLES $logins_table WRITE");
-                    $stmt->bind_param("sss", $verification_code, $post["login-id"], $user_id);
-                    $c->query("UNLOCK TABLES");
-                    $stmt->execute();
-                    $stmt->close();
+                sendEmailLogin(decryptTextWithPassword($row["username"], $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), true);
 
-                    sendEmailLogin(decryptTextWithPassword($row["username"], $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), true);
-
-                    $response = echo_result(null);
-                } else {
-                    $response = echo_error(403);
-                }
+                $response = echo_result(null);
             } else {
-                $response = echo_error(402);
+                $response = echo_error(403);
             }
+
+            //end of the code after the checking of the password
+
         } else {
             $response = echo_error(404);
         }
