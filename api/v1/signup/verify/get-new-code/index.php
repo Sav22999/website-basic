@@ -6,8 +6,6 @@ header("Content-Type:application/json");
 $post = json_decode(file_get_contents('php://input'), true); //POST request
 $get = $_GET; //GET request
 
-$link_email_verify = "https://notefox.eu/verify-email?";
-
 $condition = isset($post["email"]) && isset($post["password"]);
 if ($condition) {
     $response = null;

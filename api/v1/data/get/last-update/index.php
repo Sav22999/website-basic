@@ -37,7 +37,7 @@ if ($condition) {
 
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
-                $response = echo_result(array("update-locally" => $row["updated-locally-date"], "update-server" => $row["inserted-date"]));
+                $response = echo_result(array("updated-locally" => $row["updated-locally-date"], "updated-server" => $row["inserted-date"]));
             } else {
                 $response = echo_error(403);
             }

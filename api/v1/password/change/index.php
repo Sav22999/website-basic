@@ -6,7 +6,7 @@ header("Content-Type:application/json");
 $post = json_decode(file_get_contents('php://input'), true); //POST request
 $get = $_GET; //GET request
 
-$condition = isset($post["password"]) && isset($post["new-password"]) && isset($post["login-id"]);
+$condition = isset($post["password"]) && isset($post["new-password"]) && isset($post["login-id"]) && isset($post["token"]);
 if ($condition) {
     $response = null;
 
@@ -37,9 +37,22 @@ if ($condition) {
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            $new_username = encryptTextWithPassword(decryptTextWithPassword($row["username"], $password), $new_password);
-
             $user_id = $row["user-id"];
+
+            //get the username from users, where email = $user_id and password = $password_hash
+
+            $stmt = $c->prepare("SELECT * FROM $users_table WHERE `email` = ? AND `password` = ?");
+            $stmt->bind_param("ss", $user_id, $password_hash);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $stmt->close();
+
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                $username = $row["username"];
+            }
+
+            $new_username = encryptTextWithPassword(decryptTextWithPassword($username, $password), $new_password);
 
             $stmt = $c->prepare("SELECT * FROM $users_table WHERE `email` = ? AND `password` = ?");
             $stmt->bind_param("ss", $user_id, $password_hash);
@@ -102,8 +115,7 @@ if ($condition) {
                 $stmt->execute();
                 $stmt->close();
 
-                //$response = echo_result(null);
-                $response = echo_result("old email ${row["email"]} - new email $new_user_id - old username ${row["username"]} - new username $new_username - old password $password - new password $new_password");
+                $response = echo_result(null);
             } else {
                 $response = echo_error(403);
             }
