@@ -1,2 +1,7 @@
 ErrorDocument 404 /errors/404/
 ErrorDocument 403 /errors/403/
+
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Headers "Content-Type"
+</IfModule>

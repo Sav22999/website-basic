@@ -24,9 +24,9 @@ if ($condition) {
         global $users_table;
 
         //check if email doesn't already exist
-        $query_check = "SELECT * FROM $users_table WHERE `email` = ? AND `password` = ?";
+        $query_check = "SELECT * FROM $users_table WHERE `email` = ?";
         $stmt_check = $c->prepare($query_check);
-        $stmt_check->bind_param("ss", $email, $password);
+        $stmt_check->bind_param("s", $email);
         $stmt_check->execute();
         $result_check = $stmt_check->get_result();
         $stmt_check->close();
@@ -55,7 +55,18 @@ if ($condition) {
 
     echo json_encode($response);
 } else {
+    $missing_parameters = array();
+    if (!isset($post["username"])) {
+        array_push($missing_parameters, "username");
+    }
+    if (!isset($post["password"])) {
+        array_push($missing_parameters, "password");
+    }
+    if (!isset($post["email"])) {
+        array_push($missing_parameters, "email");
+    }
     $response = echo_error(400);
+    //$response = echo_error(400 . " - Missing parameters: " . implode(", ", $missing_parameters));
     echo json_encode($response);
 }
 
