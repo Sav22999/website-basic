@@ -44,8 +44,18 @@ if ($condition) {
             sendEmailSignup(decryptTextWithPassword($username, $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), false);
 
             $response = echo_result(null);
-        } else {//if email already exists
-            $response = echo_error(416);
+        } else {
+            //if email already exists
+
+            //check if the email is already verified
+            $row = $result_check->fetch_assoc();
+            if ($row["verified"] === null) {
+                //if email is not verified
+                $response = echo_error(417);
+            } else {
+                //if email is verified
+                $response = echo_error(416);
+            }
         }
 
         $c->close();
@@ -88,6 +98,9 @@ function echo_error($code)
             break;
         case 416:
             $response["description"] = "Email already used for another account";
+            break;
+        case 419:
+            $response["description"] = "Email already used for another account but not verified yet";
             break;
         default:
             $response["description"] = "Unknown error";

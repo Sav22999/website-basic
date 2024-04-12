@@ -58,7 +58,9 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <br>
                 <code>401</code>: <?php echo getErrorDescription(401); ?>
                 <br>
-                <code>412</code>: <?php echo getErrorDescription(412); ?>
+                <code>416</code>: <?php echo getErrorDescription(416); ?>
+                <br>
+                <code>419</code>: <?php echo getErrorDescription(419); ?>
             </p>
         </div>
     </div>

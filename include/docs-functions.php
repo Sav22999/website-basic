@@ -34,6 +34,8 @@ function getErrorDescription($code)
             return "Invalid deleting code";
         case 418:
             return "Invalid credentials, account already deleted or deleting request expired";
+        case 419:
+            return "Email already used for another account but not verified yet";
         case 450:
             return "Data not found";
         case 451:
