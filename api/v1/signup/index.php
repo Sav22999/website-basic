@@ -51,7 +51,7 @@ if ($condition) {
             $row = $result_check->fetch_assoc();
             if ($row["verified"] === null) {
                 //if email is not verified
-                $response = echo_error(417);
+                $response = echo_error(419);
             } else {
                 //if email is verified
                 $response = echo_error(416);
@@ -111,7 +111,7 @@ function echo_error($code)
 
 function echo_result($data)
 {
-    $response["code"] = "200";
+    $response["code"] = 200;
     $response["status"] = "Successful";
     $response["data"] = $data;
     return $response;

@@ -130,7 +130,7 @@ function echo_error($code)
 
 function echo_result($data)
 {
-    $response["code"] = "200";
+    $response["code"] = 200;
     $response["status"] = "Successful";
     $response["data"] = $data;
     return $response;
