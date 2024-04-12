@@ -49,7 +49,7 @@ if ($condition) {
                 $stmt_insert->execute();
                 $stmt_insert->close();
 
-                sendEmailLogin(decryptTextWithPassword($username, $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), false);
+                sendEmailLogin($username, $post["email"], decryptTextWithPassword($verification_code, $post["password"]), false);
 
                 $response = echo_result(array("login-id" => $login_id));
             } else {

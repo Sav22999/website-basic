@@ -21,33 +21,37 @@ if ($condition) {
 
         $password = encryptHash($post["password"]);
         $email_hash = encryptHash($post["email"]);
+        $now = getTimestamp();
 
-        $query_check = "SELECT * FROM $users_table WHERE `password` = ? AND `email` = ? AND `status` = 0";
+        $query_check = "SELECT * FROM $users_table WHERE `password` = ? AND `email` = ? AND `deleting-code` IS NOT NULL AND `deleting-expiry` > ?";
         $stmt_check = $c->prepare($query_check);
-        $stmt_check->bind_param("ss", $password, $email_hash);
+        $stmt_check->bind_param("sss", $password, $email_hash, $now);
         $stmt_check->execute();
         $result_check = $stmt_check->get_result();
         $stmt_check->close();
 
         if ($result_check->num_rows > 0) {
             $row = $result_check->fetch_assoc();
-            $verification_code = encryptTextWithPassword(getNewValidationCode(6), $post["password"]);
+            $deleting_code = encryptTextWithPassword(getNewValidationCode(6), $post["password"]);
+            $deleting_expiry = date("Y-m-d H:i:s", strtotime("+10 minutes"));
 
-            $query_update = "UPDATE $users_table SET `verification-code` = ? WHERE `email` = ? AND `password` = ?";
+            $query_update = "UPDATE $users_table SET `deleting-code` = ?, `deleting-expiry` = ? WHERE `email` = ? AND `password` = ?";
             $stmt_update = $c->prepare($query_update);
             $c->query("LOCK TABLES $users_table WRITE");
-            $stmt_update->bind_param("sss", $verification_code, $row["email"], $password);
+            $stmt_update->bind_param("ssss", $deleting_code, $deleting_expiry, $email_hash, $password);
             $c->query("UNLOCK TABLES");
             $stmt_update->execute();
             $stmt_update->close();
 
             $username = decryptTextWithPassword($row["username"], $post["password"]);
-            $verification_code = decryptTextWithPassword($verification_code, $post["password"]);
-            sendEmailSignup($username, $post["email"], $verification_code, true);
+            $deleting_code = decryptTextWithPassword($deleting_code, $post["password"]);
+            $ip_address = getIpAddress();
+
+            sendEmailDeleting($username, $post["email"], $deleting_code, $ip_address, $deleting_expiry, true);
 
             $response = echo_result(null);
         } else {
-            $response = echo_error(412);
+            $response = echo_error(418);
         }
 
         $c->close();
@@ -77,8 +81,8 @@ function echo_error($code)
         case 401:
             $response["description"] = "Connection error";
             break;
-        case 412:
-            $response["description"] = "Invalid credentials or already verified";
+        case 418:
+            $response["description"] = "Invalid credentials, account already deleted or deleting request expired";
             break;
         default:
             $response["description"] = "Unknown error";

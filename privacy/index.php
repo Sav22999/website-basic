@@ -49,14 +49,15 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <br>
                 • When you log in: to confirm your login (<i>Two Factor Authenticator</i>)
                 <br>
-                Notefox will never save unencrypted your email, so you'll never reveive spam emails, marketing emails,
-                or
-                any
-                other type of emails.
+                • When you ask to delete your account: to confirm the deleting of your data
+                <br>
+                • When you deleted your account: to inform you that your account have been deleted
+                <br>
+                Notefox will never save unencrypted your email, so you'll never receive spam emails, marketing emails,
+                or any other type of emails.
                 <br>
                 <b>Pay attention</b>: Notefox will never ask you for your data, your password, or other sensitive data,
-                via
-                email or other communication channels.
+                via email or other communication channels.
             </p>
             <p>
                 If you see any suspicious activity, please change your password as soon as possible.
@@ -70,7 +71,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 The current Privacy Policy can be changed at any time, and it is your responsibility to check it
                 periodically.
                 <br>
-                Last update: 10 Apr 2024
+                Last update: 11 Apr 2024
             </p>
             
             <p class="font-very-small">

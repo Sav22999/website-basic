@@ -78,7 +78,7 @@ if ($condition) {
                     $response = echo_error(410);
                 }
             } else {
-                $response = echo_error(414);
+                $response = echo_error(413);
             }
         } else {
             $response = echo_error(402);
@@ -115,7 +115,7 @@ function echo_error($code)
         case 402:
             $response["description"] = "Login-id not found, disabled, expired or invalid";
             break;
-        case 414:
+        case 413:
             $response["description"] = "User already verified";
             break;
         case 410:

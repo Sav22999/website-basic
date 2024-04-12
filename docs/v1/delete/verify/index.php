@@ -1,7 +1,7 @@
 <html>
 <head>
     <?php
-    $docs_title = "/v1/login/verify/";
+    $docs_title = "/v1/delete/verify/";
 
     include_once($_SERVER['DOCUMENT_ROOT'] . "/include/docs-functions.php");
     global $docs_end_point;
@@ -21,7 +21,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         <div class="center-content justify">
             <h1 class="title-section center"><?php echo $docs_title; ?></h1>
             <h2 class="subtitle-section no-bold font-small">
-                This API permits to verify the log in of a user.
+                This API permits to verify the deleting code sent to the user's email. The deleting code is used to delete
+                permanently the account.
             </h2>
             <p>
                 <b>API Link</b>
@@ -39,25 +40,16 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <p>
                 <b>Request</b>
                 <br>
-                <code>login-id</code> (STRING): the login-id generated during the login
-                <br>
                 <code>email</code> (STRING): the email you used to sign up
                 <br>
-                <code>password</code> (STRING): the password you used to sign up
+                <code>password</code> (STRING): the password you use to log in
                 <br>
-                <code>verification-code</code> (STRING): the verification code you received by email
+                <code>deleting-code</code> (STRING): the deleting code sent to your email (expires after 10 minutes)
             </p>
             <p>
                 <b>Response (success: code 200)</b>
                 <br>
-                <code>token</code> (STRING): the token to use in the next requests
-                <br>
-                <code>login-id</code> (STRING): the login-id to use in the next requests (same as the one used in the
-                request)
-                <br>
-                <code>expiry</code> (DATETIME): the expiry date of the token (can be NULL: no expiry date)
-                <br>
-                <code>username</code> (STRING): the username of the user
+                <code>null</code>
             </p>
             <p>
                 <b>Response (error)</b>
@@ -66,11 +58,11 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <br>
                 <code>401</code>: <?php echo getErrorDescription(401); ?>
                 <br>
-                <code>402</code>: <?php echo getErrorDescription(402); ?>
+                <code>414</code>: <?php echo getErrorDescription(414); ?>
                 <br>
-                <code>410</code>: <?php echo getErrorDescription(410); ?>
+                <code>417</code>: <?php echo getErrorDescription(417); ?>
                 <br>
-                <code>413</code>: <?php echo getErrorDescription(413); ?>
+                <code>418</code>: <?php echo getErrorDescription(418); ?>
             </p>
         </div>
     </div>

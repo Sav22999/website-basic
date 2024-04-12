@@ -30,11 +30,16 @@ function getErrorDescription($code)
             return "Invalid login-id or already verified";
         case 416:
             return "Email already used for another account";
+        case 417:
+            return "Invalid deleting code";
+        case 418:
+            return "Invalid credentials, account already deleted or deleting request expired";
         case 450:
             return "Data not found";
         case 451:
             return "Login-id already disabled or expired";
-
+        case 452:
+            return "You already requested a deleting code. Please wait for the email or ask for a new code";
     }
 }
 

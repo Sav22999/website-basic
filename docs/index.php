@@ -25,6 +25,9 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <button type="button" class="help-faq-item" onclick="goto('./v1/data/get/')">/v1/data/get/</button>
             <button type="button" class="help-faq-item" onclick="goto('./v1/data/get/last-update/')">/v1/data/get/last-update/</button>
             <button type="button" class="help-faq-item" onclick="goto('./v1/data/insert/')">/v1/data/insert/</button>
+            <button type="button" class="help-faq-item" onclick="goto('./v1/delete/')">/v1/delete/</button>
+            <button type="button" class="help-faq-item" onclick="goto('./v1/delete/verify/')">/v1/delete/verify/</button>
+            <button type="button" class="help-faq-item" onclick="goto('./v1/delete/verify/get-new-code/')">/v1/delete/verify/get-new-code/</button>
             <button type="button" class="help-faq-item" onclick="goto('./v1/login/')">/v1/login/</button>
             <button type="button" class="help-faq-item" onclick="goto('./v1/login/check-in/')">/v1/login/check-in/</button>
             <button type="button" class="help-faq-item" onclick="goto('./v1/login/set-expiry/')">/v1/login/set-expiry/</button>
