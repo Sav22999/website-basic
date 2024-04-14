@@ -89,7 +89,6 @@ if ($condition) {
         $response = echo_error(401);
     }
 
-
     echo json_encode($response);
 } else {
     $response = echo_error(400);
