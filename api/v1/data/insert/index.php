@@ -50,7 +50,7 @@ if ($condition) {
                     $password_decrypted = null;
                     $password_encrypted = null;
 
-                    while ($row = $result->fetch_assoc() && !$found) {
+                    while (($row = $result->fetch_assoc()) && !$found) {
                         $password_temp_decrypted = decryptTextWithPassword($row["password"], $token);
 
                         if (encryptHash($password_temp_decrypted) == $password_from_users_table) {

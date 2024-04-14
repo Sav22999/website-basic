@@ -1,7 +1,7 @@
 <html>
 <head>
     <?php
-    $docs_title = "/v1/login/check-in/";
+    $docs_title = "/v1/login/check-id/";
 
     include_once($_SERVER['DOCUMENT_ROOT'] . "/include/docs-functions.php");
     global $docs_end_point;

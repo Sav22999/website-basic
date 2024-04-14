@@ -41,7 +41,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <br>
                 <code>login-id</code> (STRING): the login-id generated during the login
                 <br>
-                <code>tokend</code> (STRING): the token generated during the login
+                <code>token</code> (STRING): the token generated during the login
                 <br>
                 <code>data</code> (TEXT: JSON): the data to insert into the database
                 <br>

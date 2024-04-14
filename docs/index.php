@@ -29,7 +29,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <button type="button" class="help-faq-item" onclick="goto('./v1/delete/verify/')">/v1/delete/verify/</button>
             <button type="button" class="help-faq-item" onclick="goto('./v1/delete/verify/get-new-code/')">/v1/delete/verify/get-new-code/</button>
             <button type="button" class="help-faq-item" onclick="goto('./v1/login/')">/v1/login/</button>
-            <button type="button" class="help-faq-item" onclick="goto('./v1/login/check-in/')">/v1/login/check-in/</button>
+            <button type="button" class="help-faq-item" onclick="goto('./v1/login/check-id/')">/v1/login/check-id/</button>
             <button type="button" class="help-faq-item" onclick="goto('./v1/login/set-expiry/')">/v1/login/set-expiry/</button>
             <button type="button" class="help-faq-item" onclick="goto('./v1/login/verify/')">/v1/login/verify/</button>
             <button type="button" class="help-faq-item" onclick="goto('./v1/login/verify/get-new-code/')">/v1/login/verify/get-new-code/</button>
