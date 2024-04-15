@@ -14,7 +14,7 @@ if ($condition) {
     if ($c = new mysqli($localhost_db, $username_db, $password_db, $database_notefox)) {
         $c->set_charset("utf8mb4");
 
-        global $logins_table, $users_table;
+        global $logins_table, $users_table, $tokens_table;
 
         $login_id = $post["login-id"];
         $all_devices = isset($get["all-devices"]) && $get["all-devices"] == "true";
@@ -36,6 +36,30 @@ if ($condition) {
             $row = $result_check->fetch_assoc();
             $user_id = $row["user-id"];
 
+            //disable also all the tokens related to the login-id, and if all-devices is true,
+            //for each login-id related to the user-id, disable all the tokens related to the login-id
+            $query_update_tokens = "SELECT `login-id` FROM $logins_table WHERE `user-id` = ?";
+            if (!$all_devices) {
+                $query_update_tokens .= " AND `login-id` = ?";
+            }
+            $stmt_update_tokens = $c->prepare($query_update_tokens);
+            if (!$all_devices) {
+                $stmt_update_tokens->bind_param("ss", $user_id, $login_id);
+            } else {
+                $stmt_update_tokens->bind_param("s", $user_id);
+            }
+            $stmt_update_tokens->execute();
+            $result_update_tokens = $stmt_update_tokens->get_result();
+            while ($row_update_tokens = $result_update_tokens->fetch_assoc()) {
+                $login_id = $row_update_tokens["login-id"];
+                $stmt_update_tokens_2 = $c->prepare("UPDATE $tokens_table SET `status` = 0 WHERE `login-id` = ?");
+                $stmt_update_tokens_2->bind_param("s", $login_id);
+                $stmt_update_tokens_2->execute();
+                $stmt_update_tokens_2->close();
+            }
+            $stmt_update_tokens->close();
+
+
             $query_update = "UPDATE $logins_table SET `status` = 0 WHERE `user-id` = ?";
             if (!$all_devices) {
                 //NOT all devices, update only the login-id passed
@@ -44,10 +68,10 @@ if ($condition) {
 
             $stmt_update = $c->prepare($query_update);
             $c->query("LOCK TABLES $logins_table WRITE");
-            if ($all_devices) {
-                $stmt_update->bind_param("s", $user_id);
-            } else {
+            if (!$all_devices) {
                 $stmt_update->bind_param("ss", $user_id, $login_id);
+            } else {
+                $stmt_update->bind_param("s", $user_id);
             }
             $c->query("UNLOCK TABLES");
             $stmt_update->execute();
