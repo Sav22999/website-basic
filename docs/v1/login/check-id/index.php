@@ -40,6 +40,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <b>Request</b>
                 <br>
                 <code>login-id</code> (STRING): the login-id generated during the login
+                <br>
+                <code>token</code> (STRING): the token generated during the login
             </p>
             <p>
                 <b>Response (success: code 200)</b>
@@ -54,6 +56,12 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <code>401</code>: <?php echo getErrorDescription(401); ?>
                 <br>
                 <code>402</code>: <?php echo getErrorDescription(402); ?>
+                <br>
+                <code>403</code>: <?php echo getErrorDescription(403); ?>
+                <br>
+                <code>404</code>: <?php echo getErrorDescription(404); ?>
+                <br>
+                <code>405</code>: <?php echo getErrorDescription(405); ?>
             </p>
         </div>
     </div>

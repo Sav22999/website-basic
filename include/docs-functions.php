@@ -1,5 +1,5 @@
 <?php
-$docs_end_point = "https://www.notefox.eu";
+$docs_end_point = "https://www.notefox.eu/api";
 
 function getErrorDescription($code)
 {

@@ -6,7 +6,7 @@ header("Content-Type:application/json");
 $post = json_decode(file_get_contents('php://input'), true); //POST request
 $get = $_GET; //GET request
 
-$condition = isset($post["login-id"]);
+$condition = isset($post["login-id"]) && isset($post["token"]);
 if ($condition) {
     $response = null;
 
@@ -14,23 +14,71 @@ if ($condition) {
     if ($c = new mysqli($localhost_db, $username_db, $password_db, $database_notefox)) {
         $c->set_charset("utf8mb4");
 
-        global $logins_table;
-
+        global $logins_table, $users_table, $tokens_table;
         $login_id = $post["login-id"];
+        $token = $post["token"];
 
-        //check the login-id in logins table (status=1, expiry > NOW())
-        //if it's not true, return 402
-        //if it's true, return 200
-
-        //check login-id, status and expiry date
-        $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1  AND (`expiry` > NOW() OR `expiry` IS NULL)");
+        $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)");
         $stmt->bind_param("s", $login_id);
         $stmt->execute();
         $result = $stmt->get_result();
         $stmt->close();
 
         if ($result->num_rows > 0) {
-            $response = echo_result(null);
+            $row = $result->fetch_assoc();
+            $user_id = $row["user-id"];
+
+            $stmt = $c->prepare("SELECT * FROM $users_table WHERE `email` = ?");
+            $stmt->bind_param("s", $user_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $stmt->close();
+
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                $password_from_users_table = $row["password"];
+
+                $stmt = $c->prepare("SELECT * FROM $tokens_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)");
+                $stmt->bind_param("s", $login_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $stmt->close();
+
+
+                if ($result->num_rows > 0) {
+                    $found = false;
+                    $password_decrypted = null;
+                    $password_encrypted = null;
+
+                    while (($row = $result->fetch_assoc()) && !$found) {
+                        $password_temp_decrypted = decryptTextWithPassword($row["password"], $token);
+
+                        if (encryptHash($password_temp_decrypted) == $password_from_users_table) {
+                            $found = true;
+                            $password_decrypted = $password_temp_decrypted;
+                            $password_encrypted = $row["password"];
+                        }
+                    }
+                    $row = $result->fetch_assoc();
+
+                    if ($found) {
+                        $password_hash = encryptHash($password_decrypted);
+
+                        //now it's found the password using token, login-id
+                        // START of the code ====
+
+                        $response = echo_result(null);
+
+                        //END of the code ====
+                    } else {
+                        $response = echo_error(405);
+                    }
+                } else {
+                    $response = echo_error(404);
+                }
+            } else {
+                $response = echo_error(403);
+            }
         } else {
             $response = echo_error(402);
         }
@@ -64,6 +112,15 @@ function echo_error($code)
             break;
         case 402:
             $response["description"] = "Login-id not found, disabled, expired or invalid";
+            break;
+        case 403:
+            $response["description"] = "User-id not found";
+            break;
+        case 404:
+            $response["description"] = "Token not found, disabled, expired or invalid";
+            break;
+        case 405:
+            $response["description"] = "Token not valid";
             break;
         default:
             $response["description"] = "Unknown error";
