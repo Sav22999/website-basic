@@ -41,7 +41,7 @@ if ($condition) {
             $stmt->execute();
             $stmt->close();
 
-            sendEmailSignup(decryptTextWithPassword($username, $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), false);
+            sendEmailSignup(decryptTextWithPassword($username, $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), $ip_address, false);
 
             $response = echo_result(null);
         } else {

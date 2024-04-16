@@ -58,7 +58,8 @@ if ($condition) {
                 $stmt->execute();
                 $stmt->close();
 
-                sendEmailLogin(decryptTextWithPassword($row["username"], $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), true);
+                $ip_address = getIpAddress();
+                sendEmailLogin(decryptTextWithPassword($row["username"], $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), $ip_address, true);
 
                 $response = echo_result(null);
             } else {

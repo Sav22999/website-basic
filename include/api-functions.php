@@ -67,7 +67,7 @@ function getRandomString($length)
     return $randomString;
 }
 
-function sendEmailSignup($username, $to_email, $code, $new_code = false)
+function sendEmailSignup($username, $to_email, $code, $ip_address, $new_code = false)
 {
     //send email from no-reply@notefox.eu to the email with the verification code (unencrypted)
 
@@ -80,13 +80,31 @@ function sendEmailSignup($username, $to_email, $code, $new_code = false)
     $message .= "<br>To verify your email, please use the following code: <b><code>" . $code . "</code></b><br><br>";
     $message .= "<small>If you didn't sign up to Notefox, please ignore this email.</small><br><br>";
     $message .= "Best regards,<br>Sav, the developer of Notefox";
+    $message .= "<br><br><small>Request received from: " . $ip_address . "</small>";
 
     $headers = "From: no-reply@notefox.eu\r\n";
     $headers .= "Content-Type: text/html; charset=utf-8\r\n";
     mail($to, $subject, $message, $headers);
 }
 
-function sendEmailLogin($username, $to_email, $code, $new_code = false)
+function sendEmailSignedup($username, $to_email, $ip_address)
+{
+    //send email from no-reply@notefox.eu to the email with the verification code (unencrypted)
+
+    $to = $to_email;
+    $subject = "Notefox: account created";
+    $message = "Hello " . $username . ",<br>";
+    $message .= "<br>You just created a Notefox account with this email.<br><br>";
+    $message .= "<small>If you didn't sign up to Notefox, please ignore this email.</small><br><br>";
+    $message .= "Best regards,<br>Sav, the developer of Notefox";
+    $message .= "<br><br><small>Signed up from: " . $ip_address . "</small>";
+
+    $headers = "From: no-reply@notefox.eu\r\n";
+    $headers .= "Content-Type: text/html; charset=utf-8\r\n";
+    mail($to, $subject, $message, $headers);
+}
+
+function sendEmailLogin($username, $to_email, $code, $ip_address, $new_code = false)
 {
 //send email from no-reply@notefox.eu to the email with the verification code (unencrypted)
 
@@ -99,6 +117,24 @@ function sendEmailLogin($username, $to_email, $code, $new_code = false)
     $message .= "To confirm your login, please use the following code: <b><code>" . $code . "</code></b><br><br>";
     $message .= "<small>If you didn't log in to Notefox, you should definitely change your password.</small><br><br>";
     $message .= "Best regards,<br>Sav, the developer of Notefox";
+    $message .= "<br><br><small>Request received from: " . $ip_address . "</small>";
+
+    $headers = "From: no-reply@notefox.eu\r\n";
+    $headers .= "Content-Type: text/html; charset=utf-8\r\n";
+    mail($to, $subject, $message, $headers);
+}
+
+function sendEmailLoggedin($username, $to_email, $ip_address)
+{
+    //send email from no-reply@notefox.eu to the email with the verification code (unencrypted)
+
+    $to = $to_email;
+    $subject = "Notefox: just logged in";
+    $message = "Hello " . $username . ",<br>";
+    $message .= "<br>You just logged in to your Notefox account.<br><br>";
+    $message .= "<small>If you haven't logged in to Notefox, please change your password immediately</small><br><br>";
+    $message .= "Best regards,<br>Sav, the developer of Notefox";
+    $message .= "<br><br><small>Logged in from: " . $ip_address . "</small>";
 
     $headers = "From: no-reply@notefox.eu\r\n";
     $headers .= "Content-Type: text/html; charset=utf-8\r\n";

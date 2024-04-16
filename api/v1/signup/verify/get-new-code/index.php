@@ -43,7 +43,8 @@ if ($condition) {
 
             $username = decryptTextWithPassword($row["username"], $post["password"]);
             $verification_code = decryptTextWithPassword($verification_code, $post["password"]);
-            sendEmailSignup($username, $post["email"], $verification_code, true);
+            $ip_address = getIpAddress();
+            sendEmailSignup($username, $post["email"], $verification_code, $ip_address, true);
 
             $response = echo_result(null);
         } else {

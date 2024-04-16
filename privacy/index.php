@@ -47,7 +47,11 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <br>
                 • When you sign up: to confirm your account
                 <br>
+                • When you signed up: to inform you that your account have been created
+                <br>
                 • When you log in: to confirm your login (<i>Two Factor Authenticator</i>)
+                <br>
+                • When you logged in: to inform you that your account have been logged in
                 <br>
                 • When you ask to delete your account: to confirm the deleting of your data
                 <br>
@@ -71,7 +75,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 The current Privacy Policy can be changed at any time, and it is your responsibility to check it
                 periodically.
                 <br>
-                Last update: 11 Apr 2024
+                Last update: 16 Apr 2024
             </p>
             
             <p class="font-very-small">

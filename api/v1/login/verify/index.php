@@ -71,6 +71,8 @@ if ($condition) {
                     $stmt->execute();
                     $stmt->close();
 
+                    sendEmailLoggedin(decryptTextWithPassword($row["username"], $post["password"]), $post["email"], $ip_address);
+
                     $response = echo_result(array("token" => $token, "login-id" => $login_id, "expiry" => $expiry, "username" => decryptTextWithPassword($row["username"], $post["password"])));
 
                     //end

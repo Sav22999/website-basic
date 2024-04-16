@@ -45,6 +45,9 @@ if ($condition) {
                     $c->query("UNLOCK TABLES");
                     $stmt_update->close();
 
+                    $ip_address = getIpAddress();
+                    sendEmailSignedup(decryptTextWithPassword($row["username"], $post["password"]), $post["email"], $ip_address);
+
                     $response = echo_result(null);
                 } else {
                     $response = echo_error(413);
