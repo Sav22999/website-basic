@@ -1,6 +1,6 @@
 <h1 align="center">
     <br>
-    <img width="70" src="img/icon.svg" alt="Notefox icon" />
+    <img width="70" src="images/icon.png" alt="Notefox icon" />
     <br>
     Notefox
     <br>
@@ -20,4 +20,4 @@ To support me, you can buy me a coffee making a donation ❤️ with **LiberaPay
 ## Description
 
 Here you can find the source code of the website (notefox.eu) and APIs.
-To read the documentation in a better way, see here: a href="https://notefox.eu/docs/">Notefox Documentation</a>.
+To read the documentation in a better way, see here: <a href="https://notefox.eu/docs/">Notefox Documentation</a>.
