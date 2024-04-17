@@ -23,5 +23,8 @@ echo '<script>setAction("' . $selected_menu . '");</script>';
         <a href="/donate/" class="nav-button <?php if ($selected_menu == "donate") {
             echo "nav-button-selected";
         } ?>">Donate</a>
+        <a href="/docs/" class="nav-button <?php if ($selected_menu == "docs") {
+            echo "nav-button-selected";
+        } ?>">Docs</a>
     </div>
 </nav>
