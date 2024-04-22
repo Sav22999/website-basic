@@ -25,6 +25,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                        onclick="location.href='mailto:saverio.morelli@protonmail.com'">
             </div>
             <hr class="hr-big-space">
+            <button type="button" class="help-faq-item" onclick="goto('./notefox-4.0/')">Notefox 4.0 overview</button>
             <button type="button" class="help-faq-item" onclick="goto('./first-run/')">First run tutorial</button>
             <button type="button" class="help-faq-item" onclick="goto('./search/')">How the search feature works
             </button>
@@ -32,6 +33,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <button type="button" class="help-faq-item" onclick="goto('/sticky-notes/')">Simulate the sticky-notes
                 feature
             </button>
+            <button type="button" class="help-faq-item" onclick="goto('./notefox-account/')">How the Notefox account works</button>
             <button type="button" class="help-faq-item" onclick="goto('/privacy/')">Privacy policy</button>
             <button type="button" class="help-faq-item" onclick="goto('/terms/')">Terms of service</button>
         </div>

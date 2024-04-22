@@ -558,3 +558,18 @@ hr.hr-big-space {
 .shantell {
     font-family: 'Shantell Sans', sans-serif;
 }
+
+.notefox-4-0-page {
+    display: block;
+    text-align: center;
+    margin: 20px auto;
+}
+
+.notefox-4-0-page img {
+    border-radius: var(--border-radius);
+}
+
+.notefox-4-0-page small {
+    font-style: italic;
+    font-size: 0.8em;
+}

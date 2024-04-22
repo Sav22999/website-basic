@@ -17,6 +17,10 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <h1 class="title-section center">First run tutorial</h1>
             <img src="tutorial1.png" width="100%"/>
             <img src="tutorial2.png" width="100%"/>
+            <hr class="hr-big-space">
+            <p class="center">
+                You can also see how the sticky-notes feature works in Notefox, by clicking <a href="/sticky-notes/">here</a>.
+            </p>
         </div>
     </div>
 </main>
