@@ -17,7 +17,7 @@ if ($condition) {
         global $users_table, $logins_table, $tokens_table;
 
         $password = encryptHash($post["password"]);
-        $email_hash = encryptHash($post["email"]);
+        $email_hash = encryptHash(strtolower($post["email"]));
 
 
         $query_check = "SELECT * FROM $users_table WHERE `password` = ? AND `email` = ?";

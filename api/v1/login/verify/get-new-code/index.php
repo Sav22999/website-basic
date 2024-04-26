@@ -22,7 +22,7 @@ if ($condition) {
         //then, update the verification code with a new one and send it to the email ONLY IF the "status" field is 0
 
         $password = encryptHash($post["password"]);
-        $email_hash = encryptHash($post["email"]);
+        $email_hash = encryptHash(strtolower($post["email"]));
 
         //if email exists, check if password is correct
         //then, check if login-id is linked to the email (which is the user-id of logins)

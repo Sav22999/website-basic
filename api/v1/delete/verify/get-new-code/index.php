@@ -20,7 +20,7 @@ if ($condition) {
         //then, update the verification code with a new one and send it to the email ONLY IF the "status" field is 0
 
         $password = encryptHash($post["password"]);
-        $email_hash = encryptHash($post["email"]);
+        $email_hash = encryptHash(strtolower($post["email"]));
         $now = getTimestamp();
 
         $query_check = "SELECT * FROM $users_table WHERE `password` = ? AND `email` = ? AND `deleting-code` IS NOT NULL AND `deleting-expiry` > ?";

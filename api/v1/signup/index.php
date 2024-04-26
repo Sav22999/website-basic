@@ -15,7 +15,7 @@ if ($condition) {
         $c->set_charset("utf8mb4");
 
         $username = encryptTextWithPassword($post["username"], $post["password"]);
-        $email = encryptHash($post["email"]); //hashing the email (not encrypting it, because it's used for login, not for display)
+        $email = encryptHash(strtolower($post["email"])); //hashing the email (not encrypting it, because it's used for login, not for display)
         $password = encryptHash($post["password"]);
         $ip_address = getIpAddress();
         $created = getTimestamp();

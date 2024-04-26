@@ -555,7 +555,7 @@ hr.hr-big-space {
     border: 0px solid transparent;
 }
 
-.shantell {
+.shantell, .shantell * {
     font-family: 'Shantell Sans', sans-serif;
 }
 

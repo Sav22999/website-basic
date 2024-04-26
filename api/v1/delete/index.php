@@ -17,12 +17,12 @@ if ($condition) {
         global $users_table, $logins_table, $tokens_table;
 
         $password = encryptHash($post["password"]);
-        $email_hash = encryptHash($post["email"]);
+        $email_hash = encryptHash(strtolower($post["email"]));
 
 
-        $query_check = "SELECT * FROM $users_table WHERE `password` = ? AND `email` = ? AND (`deleting-code` IS NULL AND `deleting-expiry` IS NULL OR `deleting-expiry` < ?)";
+        $query_check = "SELECT * FROM $users_table WHERE `password` = ? AND `email` = ?";
         $stmt_check = $c->prepare($query_check);
-        $stmt_check->bind_param("sss", $password, $email_hash, $now);
+        $stmt_check->bind_param("ss", $password, $email_hash);
         $stmt_check->execute();
         $result_check = $stmt_check->get_result();
         $stmt_check->close();
@@ -30,28 +30,37 @@ if ($condition) {
         if ($result_check->num_rows > 0) {
             $row = $result_check->fetch_assoc();
 
-            //update user (in users) as "in deleting", so set a deleting-code, a deleting-expiry (10 minutes)
-
-            $deleting_code = encryptTextWithPassword(getNewValidationCode(6), $post["password"]);
-            $expiry = date("Y-m-d H:i:s", strtotime("+10 minutes"));
             $now = getTimestamp();
 
-            $query_update = "UPDATE $users_table SET `deleting-code` = ?, `deleting-expiry` = ? WHERE `email` = ? AND `password` = ? AND `status` = '1'";
-            $stmt_update = $c->prepare($query_update);
-            $c->query("LOCK TABLES $users_table WRITE");
-            $stmt_update->bind_param("ssss", $deleting_code, $expiry, $email_hash, $password);
-            $c->query("UNLOCK TABLES");
-            $stmt_update->execute();
-            $stmt_update->close();
+            if ($row["deleting-expiry"] < $now) {
+                //already expired ||OR|| not yet request a deleting code
 
-            $username = decryptTextWithPassword($row["username"], $post["password"]);
-            $ip_address = getIpAddress();
 
-            sendEmailDeleting($username, $post["email"], decryptTextWithPassword($deleting_code, $post["password"]), $ip_address, $expiry, false);
+                //update user (in users) as "in deleting", so set a deleting-code, a deleting-expiry (10 minutes)
 
-            $response = echo_result(null);
+                $deleting_code = encryptTextWithPassword(getNewValidationCode(6), $post["password"]);
+                $expiry = date("Y-m-d H:i:s", strtotime("+10 minutes"));
+
+                $query_update = "UPDATE $users_table SET `deleting-code` = ?, `deleting-expiry` = ? WHERE `email` = ? AND `password` = ? AND `status` = '1'";
+                $stmt_update = $c->prepare($query_update);
+                $c->query("LOCK TABLES $users_table WRITE");
+                $stmt_update->bind_param("ssss", $deleting_code, $expiry, $email_hash, $password);
+                $c->query("UNLOCK TABLES");
+                $stmt_update->execute();
+                $stmt_update->close();
+
+                $username = decryptTextWithPassword($row["username"], $post["password"]);
+                $ip_address = getIpAddress();
+
+                sendEmailDeleting($username, $post["email"], decryptTextWithPassword($deleting_code, $post["password"]), $ip_address, $expiry, false);
+
+                $response = echo_result(null);
+            } else {
+                //already requested a deleting code
+                $response = echo_error(452);
+            }
         } else {
-            $response = echo_error(452);
+            $response = echo_error(410);
         }
 
         $c->close();
@@ -88,7 +97,7 @@ function echo_error($code)
             $response["description"] = "User is not active";
             break;
         case 452:
-            $response["description"] = "You already requested a deleting code. Please wait for the email or ask for a new code";
+            $response["description"] = "You already requested a deleting code. Please wait for the email or try again later.";
             break;
         default:
             $response["description"] = "Unknown error";

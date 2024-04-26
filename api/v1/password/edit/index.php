@@ -21,6 +21,7 @@ if ($condition) {
         $password_hash = encryptHash($password);
         $new_password = $post["new-password"];
         $new_password_hash = encryptHash($new_password);
+        $token = $post["token"];
 
         //from logins, get the user-id in users
         //then, check the password is correct
@@ -82,40 +83,54 @@ if ($condition) {
 
                     $stmt = $c->prepare("UPDATE $data_table SET `data` = ? WHERE `user-id` = ? AND `data` = ? AND `id` = ?");
                     $c->query("LOCK TABLES $data_table WRITE");
-                    $stmt->bind_param("ssssi", $new_data, $new_user_id, $old_data, $id);
+                    $stmt->bind_param("sssi", $new_data, $user_id, $old_data, $id);
                     $c->query("UNLOCK TABLES");
                     $stmt->execute();
                     $stmt->close();
                 }
 
-                //all tokens with the old password (so linked to the userid) became invalid (status = 0)
-                //get all unique login-id from logins where user-id = $user_id
-                //then, update all tokens with the old password (so linked to the userid) to status = 0
-                $stmt = $c->prepare("SELECT DISTINCT `login-id` FROM $logins_table WHERE `user-id` = ?");
-                $stmt->bind_param("s", $user_id);
+                $new_password_token = encryptTextWithPassword($new_password, $token);
+                //get the token row from tokens where login-id = $login_id and then check the password
+                //then, update the token row linked to the login-id with status = 1 and the password is updated
+                $stmt = $c->prepare("SELECT * FROM $tokens_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)");
+                $stmt->bind_param("s", $login_id);
                 $stmt->execute();
                 $result = $stmt->get_result();
-                $stmt->close();
-
                 while ($result->num_rows > 0 && $row = $result->fetch_assoc()) {
-                    $login_id = $row["login-id"];
-                    $stmt = $c->prepare("UPDATE $tokens_table SET `status` = 0 WHERE `login-id` = ?");
-                    $c->query("LOCK TABLES $tokens_table WRITE");
-                    $stmt->bind_param("s", $login_id);
-                    $c->query("UNLOCK TABLES");
-                    $stmt->execute();
-                    $stmt->close();
+                    $password_token = $row["password"];
+                    $password_decrypted = decryptTextWithPassword($password_token, $token);
+
+                    if ($password_decrypted === $password) {
+                        $stmt = $c->prepare("UPDATE $tokens_table SET `password` = ? WHERE `login-id` = ? AND `password` = ?");
+                        $c->query("LOCK TABLES $tokens_table WRITE");
+                        $stmt->bind_param("sss", $new_password_token, $login_id, $password_token);
+                        $c->query("UNLOCK TABLES");
+                        $stmt->execute();
+                        $stmt->close();
+
+                        //get all unique login-id from logins where user-id = $user_id
+                        //then, update all tokens with the old password (so linked to the userid) to status = 0
+                        $stmt = $c->prepare("SELECT DISTINCT `login-id` FROM $logins_table WHERE `user-id` = ?");
+                        $stmt->bind_param("s", $user_id);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        $stmt->close();
+
+                        while ($result->num_rows > 0 && $row = $result->fetch_assoc()) {
+                            $login_id = $row["login-id"];
+                            $stmt = $c->prepare("UPDATE $tokens_table SET `status` = 0 WHERE `login-id` = ? AND NOT `password` = ?");
+                            $c->query("LOCK TABLES $tokens_table WRITE");
+                            $stmt->bind_param("ss", $login_id, $new_password_token);
+                            $c->query("UNLOCK TABLES");
+                            $stmt->execute();
+                            $stmt->close();
+                        }
+
+                        $response = echo_result(null);
+                    } else {
+                        $response = echo_error(405);
+                    }
                 }
-
-
-                $stmt = $c->prepare("UPDATE $logins_table SET `user-id` = ? WHERE `user-id` = ?");
-                $c->query("LOCK TABLES $logins_table WRITE");
-                $stmt->bind_param("ss", $new_user_id, $user_id);
-                $c->query("UNLOCK TABLES");
-                $stmt->execute();
-                $stmt->close();
-
-                $response = echo_result(null);
             } else {
                 $response = echo_error(410);
             }
@@ -131,6 +146,7 @@ if ($condition) {
     echo json_encode($response);
 } else {
     $response = echo_error(400);
+
     echo json_encode($response);
 }
 
@@ -152,6 +168,9 @@ function echo_error($code)
             break;
         case 402:
             $response["description"] = "Login-id not found, disabled, expired or invalid";
+            break;
+        case 405:
+            $response["description"] = "Token not valid";
             break;
         case 410:
             $response["description"] = "Invalid credentials";

@@ -20,7 +20,7 @@ if ($condition) {
         $password = encryptHash($post["password"]);
         $deleting_code = $post["deleting-code"];
         $now = getTimestamp();
-        $email_hash = encryptHash($post["email"]);
+        $email_hash = encryptHash(strtolower($post["email"]));
 
         //check if email exists, in case 401
         $query_check = "SELECT * FROM $users_table WHERE `password` = ? AND `email` = ? AND `deleting-code` IS NOT NULL AND `deleting-expiry` > ?";
