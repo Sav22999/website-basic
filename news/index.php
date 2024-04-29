@@ -29,6 +29,30 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
     </div>
     <br class="big-space">
     <div class="expanding-container">
+
+        <!--
+        <button type="button" class="expanding-item">Release 4.0 – 1 May 2024</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Totally redesigned UI and UX: Settings, All notes and Popup
+                <br>
+                • Notefox Account: you can now synchronize your data between your devices with the same Notefox Account
+                <br>
+                • New options in Settings to customise more your experience
+                <br>
+                • New text-formatting buttons: superscript, subscript, headers (h1, …, h6), small and big text
+                <br>
+                • New sticky notes themes: choose the theme you prefer
+                <br>
+                • Now you can edit the title of the note
+                <br>
+                • New inline-edit feature: edit notes and title directly on All notes page
+                <br>
+                • Many other new features, improvements and bug fixes
+            </p>
+        </div>
+        -->
+
         <button type="button" class="expanding-item">Release 3.11.2 – 21 Mar 2024</button>
         <div class="expanding-item--expanded-details hidden">
             <p>

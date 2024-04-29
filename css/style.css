@@ -567,9 +567,16 @@ hr.hr-big-space {
 
 .notefox-4-0-page img {
     border-radius: var(--border-radius);
+    transition: 0.5s;
 }
 
 .notefox-4-0-page small {
     font-style: italic;
     font-size: 0.8em;
+}
+
+@media screen and (max-width: 1200px) {
+    .notefox-4-0-page img {
+        width: 100%;
+    }
 }

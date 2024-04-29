@@ -90,7 +90,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 </span>
             </p>
             <p>
-                <small><sup>*</sup> See the <a href="/help/privacy/">Privacy Policy</a> and the <a href="/terms/">Terms
+                <small><sup>*</sup> See the <a href="/privacy/">Privacy Policy</a> and the <a href="/terms/">Terms
                         of Service</a> for more information.</small>
                 <br>
                 <small><sup>**</sup> The token and the login-id used for requests with Notefox Account are saved on the

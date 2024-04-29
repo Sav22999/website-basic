@@ -11,6 +11,9 @@ echo '<script>setAction("' . $selected_menu . '");</script>';
         <a href="/" class="nav-button <?php if ($selected_menu == "home") {
             echo "nav-button-selected";
         } ?>">Home</a>
+        <a href="/about/" class="nav-button <?php if ($selected_menu == "about") {
+            echo "nav-button-selected";
+        } ?>">About</a>
         <a href="/install/" class="nav-button <?php if ($selected_menu == "install") {
             echo "nav-button-selected";
         } ?>">Install</a>

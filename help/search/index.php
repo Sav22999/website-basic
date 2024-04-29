@@ -35,6 +35,13 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                     test</code>
                 will search for the words "example " and " test".
             </p>
+            <p>
+                <span class="notefox-4-0-page">
+                    <img src="search-feature.gif" width="80%" title="Popup with title textbox"/>
+                    <br>
+                    <small>Demonstration of the search feature</small>
+                </span>
+            </p>
         </div>
     </div>
 </main>
