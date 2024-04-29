@@ -39,6 +39,7 @@ if ($condition) {
             $row = $result_check->fetch_assoc();
 
             $user_id = $row["email"];
+            $username_encrypted = $row["username"];
 
             //here the code after the checking of the password
 
@@ -59,7 +60,7 @@ if ($condition) {
                 $stmt->close();
 
                 $ip_address = getIpAddress();
-                sendEmailLogin(decryptTextWithPassword($row["username"], $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), $ip_address, true);
+                sendEmailLogin(decryptTextWithPassword($username_encrypted, $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), $ip_address, true);
 
                 $response = echo_result(null);
             } else {

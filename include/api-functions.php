@@ -72,15 +72,24 @@ function sendEmailSignup($username, $to_email, $code, $ip_address, $new_code = f
     //send email from no-reply@notefox.eu to the email with the verification code (unencrypted)
 
     $message_code = $new_code ? "You required another verification code." : "Thank you for signing up to Notefox.";
+    $message_title = $new_code ? "New code to verify your email" : "Verify your email";
+
+    $section_1 = $message_title;
+    $section_2 = $message_code . "To confirm your login, please use the following code:";
+    $section_3 = "If you didn't log in to Notefox, you should definitely change your password.";
+
+    $message = getEmailTemplate();
+    $message = str_replace("{{username}}", $username, $message);
+    $message = str_replace("{{section-1}}", $section_1, $message);
+    $message = str_replace("{{section-2}}", $section_2, $message);
+    $message = str_replace("{{hidden-code}}", "", $message);
+    $message = str_replace("{{code}}", $code, $message);
+    $message = str_replace("{{section-3}}", $section_3, $message);
+    $message = str_replace("{{hidden-ip-address}}", "", $message);
+    $message = str_replace("{{ip-address}}", $ip_address, $message);
 
     $to = $to_email;
     $subject = "Notefox: verify your email";
-    $message = "Hello " . $username . ",<br>";
-    $message .= $message_code;
-    $message .= "<br>To verify your email, please use the following code: <b><code>" . $code . "</code></b><br><br>";
-    $message .= "<small>If you didn't sign up to Notefox, please ignore this email.</small><br><br>";
-    $message .= "Best regards,<br>Sav, the developer of Notefox";
-    $message .= "<br><br><small>Request received from: " . $ip_address . "</small>";
 
     $headers = "From: no-reply@notefox.eu\r\n";
     $headers .= "Content-Type: text/html; charset=utf-8\r\n";
@@ -91,13 +100,22 @@ function sendEmailSignedup($username, $to_email, $ip_address)
 {
     //send email from no-reply@notefox.eu to the email with the verification code (unencrypted)
 
+    $section_1 = "Account created";
+    $section_2 = "You just created a Notefox account with this email.";
+    $section_3 = "If you didn't sign up to Notefox, please ignore this email.";
+
+    $message = getEmailTemplate();
+    $message = str_replace("{{username}}", $username, $message);
+    $message = str_replace("{{section-1}}", $section_1, $message);
+    $message = str_replace("{{section-2}}", $section_2, $message);
+    $message = str_replace("{{hidden-code}}", "hidden", $message);
+    $message = str_replace("{{code}}", "", $message);
+    $message = str_replace("{{section-3}}", $section_3, $message);
+    $message = str_replace("{{hidden-ip-address}}", "", $message);
+    $message = str_replace("{{ip-address}}", $ip_address, $message);
+
     $to = $to_email;
     $subject = "Notefox: account created";
-    $message = "Hello " . $username . ",<br>";
-    $message .= "<br>You just created a Notefox account with this email.<br><br>";
-    $message .= "<small>If you didn't sign up to Notefox, please ignore this email.</small><br><br>";
-    $message .= "Best regards,<br>Sav, the developer of Notefox";
-    $message .= "<br><br><small>Signed up from: " . $ip_address . "</small>";
 
     $headers = "From: no-reply@notefox.eu\r\n";
     $headers .= "Content-Type: text/html; charset=utf-8\r\n";
@@ -109,18 +127,28 @@ function sendEmailLogin($username, $to_email, $code, $ip_address, $new_code = fa
 //send email from no-reply@notefox.eu to the email with the verification code (unencrypted)
 
     $message_code = $new_code ? "You required another otp to verify the login process.<br>" : "";
+    $message_title = $new_code ? "New code to log in" : "Confirm your log in";
+
+    $section_1 = $message_title;
+    $section_2 = $message_code . "To confirm your login, please use the following code:";
+    $section_3 = "If you didn't log in to Notefox, you should definitely change your password.";
+
+    $message = getEmailTemplate();
+    $message = str_replace("{{username}}", $username, $message);
+    $message = str_replace("{{section-1}}", $section_1, $message);
+    $message = str_replace("{{section-2}}", $section_2, $message);
+    $message = str_replace("{{hidden-code}}", "", $message);
+    $message = str_replace("{{code}}", $code, $message);
+    $message = str_replace("{{section-3}}", $section_3, $message);
+    $message = str_replace("{{hidden-ip-address}}", "", $message);
+    $message = str_replace("{{ip-address}}", $ip_address, $message);
 
     $to = $to_email;
     $subject = "Notefox: confirm your login";
-    $message = "Hello " . $username . ",<br>";
-    $message .= $message_code;
-    $message .= "To confirm your login, please use the following code: <b><code>" . $code . "</code></b><br><br>";
-    $message .= "<small>If you didn't log in to Notefox, you should definitely change your password.</small><br><br>";
-    $message .= "Best regards,<br>Sav, the developer of Notefox";
-    $message .= "<br><br><small>Request received from: " . $ip_address . "</small>";
 
     $headers = "From: no-reply@notefox.eu\r\n";
-    $headers .= "Content-Type: text/html; charset=utf-8\r\n";
+    $headers .= "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
     mail($to, $subject, $message, $headers);
 }
 
@@ -128,15 +156,25 @@ function sendEmailLoggedin($username, $to_email, $ip_address)
 {
     //send email from no-reply@notefox.eu to the email with the verification code (unencrypted)
 
+    $section_1 = "Just logged in";
+    $section_2 = "You just logged in to your Notefox account.";
+    $section_3 = "If you haven't logged in to Notefox, please change your password immediately.";
+
+    $message = getEmailTemplate();
+    $message = str_replace("{{username}}", $username, $message);
+    $message = str_replace("{{section-1}}", $section_1, $message);
+    $message = str_replace("{{section-2}}", $section_2, $message);
+    $message = str_replace("{{hidden-code}}", "hidden", $message);
+    $message = str_replace("{{code}}", "", $message);
+    $message = str_replace("{{section-3}}", $section_3, $message);
+    $message = str_replace("{{hidden-ip-address}}", "", $message);
+    $message = str_replace("{{ip-address}}", $ip_address, $message);
+
     $to = $to_email;
     $subject = "Notefox: just logged in";
-    $message = "Hello " . $username . ",<br>";
-    $message .= "<br>You just logged in to your Notefox account.<br><br>";
-    $message .= "<small>If you haven't logged in to Notefox, please change your password immediately</small><br><br>";
-    $message .= "Best regards,<br>Sav, the developer of Notefox";
-    $message .= "<br><br><small>Logged in from: " . $ip_address . "</small>";
 
     $headers = "From: no-reply@notefox.eu\r\n";
+    $headers .= "MIME-Version: 1.0" . "\r\n";
     $headers .= "Content-Type: text/html; charset=utf-8\r\n";
     mail($to, $subject, $message, $headers);
 }
@@ -146,19 +184,29 @@ function sendEmailDeleting($username, $to_email, $code, $ip_address, $expiry, $n
     //send email from no-reply@notefox.eu to the email with the verification code (unencrypted)
 
     $message_code = $new_code ? "You required another otp to confirm the deleting of your Notefox Account.<br>" : "";
+    $message_title = $new_code ? "New code to delete account" : "Confirm deleting account";
+
+    $section_1 = $message_title;
+    $section_2 = $message_code . "To confirm you want to delete permanently your account, please use the following deleting code:";
+    $section_3 = "If you didn't ask for deleting your Notefox account, please change your password immediately.<br>Once deleted the account, all data will be definitely deleted from database and you'll lose data forever.<br><br>If you asked for deleting your account, but you changed your mind, please ignore this email.";
+
+    $message = getEmailTemplate();
+    $message = str_replace("{{username}}", $username, $message);
+    $message = str_replace("{{section-1}}", $section_1, $message);
+    $message = str_replace("{{section-2}}", $section_2, $message);
+    $message = str_replace("{{hidden-code}}", "", $message);
+    $message = str_replace("{{code}}", $code, $message);
+    $message = str_replace("{{section-3}}", $section_3, $message);
+    $message = str_replace("{{hidden-ip-address}}", "", $message);
+    $message = str_replace("{{ip-address}}", $ip_address, $message);
 
     $to = $to_email;
     $subject = "Notefox: confirm deleting account";
-    $message = "Hello " . $username . ",<br>";
-    $message .= $message_code;
-    $message .= "To confirm you want to delete your account, please use the following deleting code: <b><code>" . $code . "</code></b><br><small>The code will expire in 10 minutes ($expiry).</small><br><br>";
-    $message .= "<small>If you didn't ask for deleting your Notefox account, please change your password immediately.<br>Once deleted the account, all data will be definitely deleted from database and you'll lose data forever.</small><br><br>";
-    $message .= "<small>If you asked for deleting your account, but you changed your mind, please ignore this email.</small><br><br>";
-    $message .= "Best regards,<br>Sav, the developer of Notefox";
-    $message .= "<br><br><small>Request received from: " . $ip_address . "</small>";
 
-    $headers = "From: no-reply@notefox.eu\r\n";
-    $headers .= "Content-Type: text/html; charset=utf-8\r\n";
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    $headers .= "From: no-reply@notefox.eu\r\n";
+
     mail($to, $subject, $message, $headers);
 }
 
@@ -166,16 +214,33 @@ function sendEmailDeleted($username, $to_email)
 {
     //send email from
 
+    $section_1 = "Account permanently deleted";
+    $section_2 = "Your Notefox account is now deleted permanently, together to all your data.<br>I'm really sorry about your decision to leave Notefox.";
+    $section_3 = "If you would like creating a new one, you can also reuse this email address.";
+
+    $message = getEmailTemplate();
+    $message = str_replace("{{username}}", $username, $message);
+    $message = str_replace("{{section-1}}", $section_1, $message);
+    $message = str_replace("{{section-2}}", $section_2, $message);
+    $message = str_replace("{{hidden-code}}", "hidden", $message);
+    $message = str_replace("{{code}}", "", $message);
+    $message = str_replace("{{section-3}}", $section_3, $message);
+    $message = str_replace("{{hidden-ip-address}}", "hidden", $message);
+    $message = str_replace("{{ip-address}}", "", $message);
+
     $to = $to_email;
     $subject = "Notefox: account deleted";
-    $message = "Hello " . $username . ",<br>";
-    $message .= "Your Notefox account is now deleted permanently, together to all your data.<br>I'm really sorry about your decision to leave Notefox.<br><br>";
-    $message .= "<small>If you would like creating a new one, you can reuse the same email.</small><br><br>";
-    $message .= "Best regards,<br>Sav, the developer of Notefox";
 
     $headers = "From: no-reply@notefox.eu\r\n";
+    $headers .= "MIME-Version: 1.0" . "\r\n";
     $headers .= "Content-Type: text/html; charset=utf-8\r\n";
     mail($to, $subject, $message, $headers);
+}
+
+function getEmailTemplate()
+{
+    $path = $_SERVER['DOCUMENT_ROOT'] . "";
+    return file_get_contents($path . "/include/email-template.php");
 }
 
 ?>
