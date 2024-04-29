@@ -41,7 +41,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             </p>
             <p>
                 If you want to contribute to the project, you can do it on GitHub. You can also translate Notefox in your
-                language (on Crowdin), or you can suggest new features or improvements.
+                language <a href="https://crowdin.com/project/notefox">on Crowdin</a>, or you can suggest new features or improvements.
                 You can also support the project by making a donation: LiberaPay and PayPal are available.
             </p>
         </div>
