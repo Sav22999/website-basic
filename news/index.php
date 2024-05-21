@@ -29,9 +29,45 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
     </div>
     <br class="big-space">
     <div class="expanding-container">
+        <button type="button" class="expanding-item">Release 4.0.1.3 – 21 May 2024</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Fixed a bug with the immersive sticky notes feature
+            </p>
+        </div>
 
-        <!--
-        <button type="button" class="expanding-item">Release 4.0 – 1 May 2024</button>
+        <button type="button" class="expanding-item">Release 4.0.1.2 – 21 May 2024</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Fixed a bug with focus of the cursor
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 4.0.1.1 – 16 May 2024</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Fixed a bug with the new feature (immersive sticky notes)
+                <br>
+                • Updated some languages
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 4.0.1 – 15 May 2024</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Improvements
+                <br>
+                • Some fixes
+                <br>
+                • Added new option (enabled by default): immersive sticky notes
+                <br>
+                • Added Interlingua
+                <br>
+                • Updated languages
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 4.0 – 3 May 2024</button>
         <div class="expanding-item--expanded-details hidden">
             <p>
                 • Totally redesigned UI and UX: Settings, All notes and Popup
@@ -51,7 +87,6 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 • Many other new features, improvements and bug fixes
             </p>
         </div>
-        -->
 
         <button type="button" class="expanding-item">Release 3.11.2 – 21 Mar 2024</button>
         <div class="expanding-item--expanded-details hidden">
