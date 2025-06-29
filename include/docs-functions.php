@@ -16,6 +16,8 @@ function getErrorDescription($code)
             return "Token not found, disabled, expired or invalid";
         case 405:
             return "Token not valid";
+        case 406:
+            return "Invalid parameters for the request";
         case 410:
             return "Invalid credentials";
         case 411:
@@ -36,7 +38,11 @@ function getErrorDescription($code)
             return "Invalid credentials, account already deleted or deleting request expired";
         case 419:
             return "Email already used for another account but not verified yet";
-        case 450:
+        case 420:
+            return "It's not an Array or it's empty";
+        case 499:
+            return "Unknown error";
+        case 201:
             return "Data not found";
         case 451:
             return "Login-id already disabled or expired";

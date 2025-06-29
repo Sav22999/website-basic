@@ -16,6 +16,7 @@ function expandContainer() {
             this.classList.toggle("expanding-item--expanded");
             let detailsElement = document.getElementsByClassName("expanding-item--expanded-details")[i];
             detailsElement.classList.toggle("hidden");
+            detailsElement.classList.toggle("expanding-item--expanded-details--hidden");
         }
     }
 }

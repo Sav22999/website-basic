@@ -29,6 +29,9 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <i>Notefox: websites notes</i> is an open-source project developed by Saverio Morelli.
             </p>
             <p>
+                <b>The following terms of service refeeres to Notefox Account. If you don't use it, the add-on won't collect any data at all – data is not sent to the server.</b>
+            </p>
+            <p>
                 The project is released under the <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU General Public
                     License v3.0</a>. This mean you are free to use and modify it, but it is not allowed to sell it or
                 use it for commercial purposes.

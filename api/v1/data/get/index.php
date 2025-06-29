@@ -85,7 +85,7 @@ if ($condition) {
                             $row = $result->fetch_assoc();
                             $response = echo_result(array("data" => decryptTextWithPassword($row["data"], $password_decrypted), "updated-locally" => $row["updated-locally-date"], "updated-server" => $row["inserted-date"]));
                         } else {
-                            $response = echo_error(450);
+                            $response = echo_error(201);
                         }
 
                         //END of the code ====
@@ -122,6 +122,9 @@ function echo_error($code)
 {
     $response["code"] = $code;
     $response["status"] = "Error";
+
+    //if ($code !== 200 && $code !== 201) http_response_code($code);
+
     switch ($code) {
         case 400:
             $response["description"] = "Missing parameters";
@@ -141,7 +144,7 @@ function echo_error($code)
         case 405:
             $response["description"] = "Token not valid";
             break;
-        case 450:
+        case 201:
             $response["description"] = "Data not found";
             break;
         default:

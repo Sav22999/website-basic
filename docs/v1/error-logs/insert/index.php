@@ -1,7 +1,7 @@
 <html>
 <head>
     <?php
-    $docs_title = "/v1/data/get/last-update/";
+    $docs_title = "/v1/error-logs/insert/";
 
     include_once($_SERVER['DOCUMENT_ROOT'] . "/include/docs-functions.php");
     global $docs_end_point;
@@ -21,7 +21,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         <div class="center-content justify">
             <h1 class="title-section center"><?php echo $docs_title; ?></h1>
             <h2 class="subtitle-section no-bold font-small">
-                This API permits to get the latest local update.
+                This API permits to insert error logs in the database. Data is sent in JSON format.
+                This saves error logs totally anonymously, without any user or note association.
             </h2>
             <p>
                 <b>API Link</b>
@@ -39,15 +40,14 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <p>
                 <b>Request</b>
                 <br>
-                <code>login-id</code> (STRING): the login-id generated during the login
+                <code>error-logs</code> (ARRAY): the error logs. Each item in the array should be an object with the
+                following keys: <code>datetime</code>, <code>context</code>, <code>error</code>, [optional]
+                <code>url</code>.
             </p>
             <p>
                 <b>Response (success: code 200)</b>
                 <br>
-                <code>updated-locally</code> (DATETIME): the last time the data was updated locally
-                <br>
-                <code>updated-server</code> (DATETIME): the last time the data was updated on the server (uploaded
-                datetime)
+                <code>null</code>
             </p>
             <p>
                 <b>Response (error)</b>
@@ -56,9 +56,9 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <br>
                 <code>401</code>: <?php echo getErrorDescription(401); ?>
                 <br>
-                <code>402</code>: <?php echo getErrorDescription(402); ?>
+                <code>406</code>: <?php echo getErrorDescription(406); ?>
                 <br>
-                <code>201</code>: <?php echo getErrorDescription(201); ?>
+                <code>420</code>: <?php echo getErrorDescription(420); ?>
             </p>
         </div>
     </div>

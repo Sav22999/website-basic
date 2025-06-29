@@ -116,6 +116,9 @@ function echo_error($code)
 {
     $response["code"] = $code;
     $response["status"] = "Error";
+
+    //http_response_code($code);
+
     switch ($code) {
         case 400:
             $response["description"] = "Missing parameters";

@@ -39,6 +39,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <button type="button" class="help-faq-item" onclick="goto('./v1/signup/verify/')">/v1/signup/verify/</button>
             <button type="button" class="help-faq-item" onclick="goto('./v1/signup/verify/get-new-code/')">/v1/signup/verify/get-new-code/</button>
             <button type="button" class="help-faq-item" onclick="goto('./v1/token/set-expiry/')">/v1/token/set-expiry/</button>
+            <button type="button" class="help-faq-item" onclick="goto('./v1/error-logs/insert/')">/v1/error-logs/insert/</button>
         </div>
     </div>
 </main>

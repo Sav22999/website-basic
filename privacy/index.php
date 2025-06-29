@@ -29,6 +29,9 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <i>Notefox: websites notes</i> is an open-source project developed by Saverio Morelli.
             </p>
             <p>
+                <b>The following privacy policy refeeres to Notefox Account. If you don't use it, the add-on won't collect any data at all – data is not sent to the server.</b>
+            </p>
+            <p>
                 It does not collect any personal data, except for your email, your public ip-address and the data that
                 you decide to save in the add-on, which are anyway <b>encrypted</b><sup>*</sup>.
                 <br>

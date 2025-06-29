@@ -12,14 +12,19 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
 ?>
 
 <main class="padding-top-menu">
-    <div class="horizontal-center">
-        <div class="center-content">
-            <h1 class="title-section center">First run tutorial</h1>
-            <img src="tutorial1.png" width="100%"/>
-            <img src="tutorial2.png" width="100%"/>
+    <div class="vertical-middle">
+        <div class="horizontal-center">
+            <img src="/images/icon.png" class="image-square-100px">
+            <h1 class="title-section">Notefox successfully installed!</h1>
+            <h2 class="subtitle-section">Now you can start using it.</h2>
             <hr class="hr-big-space">
+            <!--<p class="center">
+                If you'll use a Notefox Account, you'll need to accept the <a href="/terms/">terms of service</a> and the <a href="/privacy/">privacy policy</a>.
+                <br>
+                <b>You can also use Notefox without an account</b>
+            </p>-->
             <p class="center">
-                You can also see how the sticky-notes feature works in Notefox, by clicking <a href="/sticky-notes/">here</a>.
+                To learn more about Notefox and get support, visit the <a href="/help/">help page</a>.
             </p>
         </div>
     </div>

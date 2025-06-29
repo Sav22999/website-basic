@@ -25,11 +25,14 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                        onclick="location.href='mailto:saverio.morelli@protonmail.com'">
             </div>
             <hr class="hr-big-space">
+            <button type="button" class="help-faq-item" onclick="goto('./download-error-logs')">How to download the Error logs file</button>
+            <button type="button" class="help-faq-item" onclick="goto('./delete-error-logs')">How to delete the Error logs file</button>
+            <button type="button" class="help-faq-item" onclick="goto('./get-data-for-debugging')">How to get data for debugging</button>
+            <button type="button" class="help-faq-item" onclick="goto('./open-console')">How to open the Console panel</button>
             <button type="button" class="help-faq-item" onclick="goto('./notefox-4.0/')">Notefox 4.0 overview</button>
             <button type="button" class="help-faq-item" onclick="goto('./import-export-data/')">How to import and export data</button>
             <button type="button" class="help-faq-item" onclick="goto('./local-data-storage/')">Local data storage</button>
             <button type="button" class="help-faq-item" onclick="goto('./inline-edit/')">How to edit inline a note</button>
-            <button type="button" class="help-faq-item" onclick="goto('./first-run/')">First run tutorial</button>
             <button type="button" class="help-faq-item" onclick="goto('./search/')">How the search feature works
             </button>
             <button type="button" class="help-faq-item" onclick="goto('./translate/')">How to translate Notefox</button>
