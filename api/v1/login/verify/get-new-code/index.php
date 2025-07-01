@@ -52,15 +52,16 @@ if ($condition) {
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
                 $verification_code = encryptTextWithPassword(getNewValidationCode(6), $post["password"]);
-                $stmt = $c->prepare("UPDATE $logins_table SET `verification-code` = ? WHERE `login-id` = ? AND `user-id` = ? AND `status` = 0");
+                $verification_expiry = date("Y-m-d H:i:s", strtotime("+30 minutes"));
+                $stmt = $c->prepare("UPDATE $logins_table SET `verification-code` = ?, `verification-expiry` = ?  WHERE `login-id` = ? AND `user-id` = ? AND `status` = 0");
                 $c->query("LOCK TABLES $logins_table WRITE");
-                $stmt->bind_param("sss", $verification_code, $post["login-id"], $user_id);
+                $stmt->bind_param("ssss", $verification_code, $verification_expiry, $post["login-id"], $user_id);
                 $c->query("UNLOCK TABLES");
                 $stmt->execute();
                 $stmt->close();
 
                 $ip_address = getIpAddress();
-                sendEmailLogin(decryptTextWithPassword($username_encrypted, $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), $ip_address, true);
+                sendEmailLogin(decryptTextWithPassword($username_encrypted, $post["password"]), $post["email"], decryptTextWithPassword($verification_code, $post["password"]), $ip_address, $verification_expiry, true);
 
                 $response = echo_result(null);
             } else {

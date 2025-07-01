@@ -122,7 +122,7 @@ function sendEmailSignedup($username, $to_email, $ip_address)
     mail($to, $subject, $message, $headers);
 }
 
-function sendEmailLogin($username, $to_email, $code, $ip_address, $new_code = false)
+function sendEmailLogin($username, $to_email, $code, $ip_address, $verification_expiry, $new_code = false)
 {
 //send email from no-reply@notefox.eu to the email with the verification code (unencrypted)
 
@@ -131,7 +131,7 @@ function sendEmailLogin($username, $to_email, $code, $ip_address, $new_code = fa
 
     $section_1 = $message_title;
     $section_2 = $message_code . "To confirm your login, please use the following code:";
-    $section_3 = "If you didn't log in to Notefox, you should definitely change your password.";
+    $section_3 = "The code will be valid for 30 minutes (until " . $verification_expiry . ").<br>If you didn't log in to Notefox, you should definitely change your password.";
 
     $message = getEmailTemplate();
     $message = str_replace("{{username}}", $username, $message);
@@ -188,7 +188,7 @@ function sendEmailDeleting($username, $to_email, $code, $ip_address, $expiry, $n
 
     $section_1 = $message_title;
     $section_2 = $message_code . "To confirm you want to delete permanently your account, please use the following deleting code:";
-    $section_3 = "If you didn't ask for deleting your Notefox account, please change your password immediately.<br>Once deleted the account, all data will be definitely deleted from database and you'll lose data forever.<br><br>If you asked for deleting your account, but you changed your mind, please ignore this email.";
+    $section_3 = "The code will be valid for 10 minutes (until " . $expiry . ").<br>If you didn't ask for deleting your Notefox account, please change your password immediately.<br>Once deleted the account, all data will be definitely deleted from database and you'll lose data forever.<br><br>If you asked for deleting your account, but you changed your mind, please ignore this email.";
 
     $message = getEmailTemplate();
     $message = str_replace("{{username}}", $username, $message);

@@ -30,7 +30,7 @@ if ($condition) {
         //then update the status in logins table to "active" (1), the verification code to NULL and the verified field to $now
         //in addition, need to add to the tokens table a new token with the login-id, a token
 
-        $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 0 AND `verified` IS NULL AND (`expiry` > NOW() OR `expiry` IS NULL)");
+        $stmt = $c->prepare("SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 0 AND `verified` IS NULL AND (`expiry` > NOW() OR `expiry` IS NULL) AND (`verification-expiry` > NOW() OR `verification-expiry` IS NULL)");
         $stmt->bind_param("s", $login_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -53,7 +53,7 @@ if ($condition) {
 
                     //here the code after the checking of the password
 
-                    $stmt = $c->prepare("UPDATE $logins_table SET `status` = 1, `verification-code` = NULL, `verified` = ? WHERE `login-id` = ? AND `status` = 0 AND `verified` IS NULL AND (`expiry` > NOW() OR `expiry` IS NULL)");
+                    $stmt = $c->prepare("UPDATE $logins_table SET `status` = 1, `verification-code` = NULL, `verified` = ? WHERE `login-id` = ? AND `status` = 0 AND `verified` IS NULL AND (`expiry` > NOW() OR `expiry` IS NULL) AND (`verification-expiry` > NOW() OR `verification-expiry` IS NULL)");
                     $c->query("LOCK TABLES $logins_table WRITE");
                     $stmt->bind_param("ss", $now, $login_id);
                     $c->query("UNLOCK TABLES");

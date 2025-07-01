@@ -40,16 +40,17 @@ if ($condition) {
 
                 $login_id = encryptHash($user_id . $ip_address . getTimestamp());
                 $expiry = null;
+                $verification_expiry = date("Y-m-d H:i:s", strtotime("+30 minutes"));
 
-                $query_insert = "INSERT INTO $logins_table (`login-id`, `user-id`, `expiry`, `status`, `ip-address`, `verified`, `verification-code`) VALUES (?, ?, ?, 0, ?, NULL, ?)";
+                $query_insert = "INSERT INTO $logins_table (`login-id`, `user-id`, `expiry`, `status`, `ip-address`, `verified`, `verification-code`, `verification-expiry`) VALUES (?, ?, ?, 0, ?, NULL, ?, ?)";
                 $stmt_insert = $c->prepare($query_insert);
                 $c->query("LOCK TABLES $logins_table WRITE");
-                $stmt_insert->bind_param("sssss", $login_id, $user_id, $expiry, $ip_address, $verification_code);
+                $stmt_insert->bind_param("ssssss", $login_id, $user_id, $expiry, $ip_address, $verification_code, $verification_expiry);
                 $c->query("UNLOCK TABLES");
                 $stmt_insert->execute();
                 $stmt_insert->close();
 
-                sendEmailLogin($username, $post["email"], decryptTextWithPassword($verification_code, $post["password"]), $ip_address, false);
+                sendEmailLogin($username, $post["email"], decryptTextWithPassword($verification_code, $post["password"]), $ip_address, $verification_expiry,false);
 
                 $response = echo_result(array("login-id" => $login_id));
             } else {

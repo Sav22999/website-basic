@@ -21,7 +21,7 @@ if ($condition) {
 
         //check if login-id (already encrypted) from logins table exists, in case 401
 
-        $query_check = "SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)";
+        $query_check = "SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL) AND (`verification-expiry` > NOW() OR `verification-expiry` IS NULL)";
         $stmt_check = $c->prepare($query_check);
         $stmt_check->bind_param("s", $login_id);
         $stmt_check->execute();
