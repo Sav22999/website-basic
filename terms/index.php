@@ -29,7 +29,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <i>Notefox: websites notes</i> is an open-source project developed by Saverio Morelli.
             </p>
             <p>
-                <b>The following terms of service refeeres to Notefox Account. If you don't use it, the add-on won't collect any data at all – data is not sent to the server.</b>
+                <b>The following terms of service refeeres to Notefox Account. If you don't use it, the add-on won't
+                    collect any data at all – data is not sent to the server.</b>
             </p>
             <p>
                 The project is released under the <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU General Public
@@ -45,7 +46,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 Notefox add-on uses API services to store and retrieve data, hosted on the current domain. You can find
                 the documentation <a href="/docs/">here</a>.
                 <br>
-                On your web browser it will be stored your token access and your login-id, which are used to authenticate
+                On your web browser it will be stored your token access and your login-id, which are used to
+                authenticate
                 your requests, and data will be stored on your local storage decrypted.
                 <br>
                 All data on server side is encrypted and it is not possible to read it without the password.
@@ -62,13 +64,18 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 statistics. The data is not shared with third parties.
             </p>
             <p>
+                Notefox might collect <b>anonymous data</b> about the usage of the service. These data aren't linked to
+                identifiable users, and are used to improve the service, to fix bugs and to see how the service is
+                used. This will be also called as <b>telemetry</b>.
+            </p>
+            <p>
                 To get more details, please <a href="/help/">contact me</a>.
             </p>
             <p>
                 The current Terms of Service can be changed at any time, and it is your responsibility to check them
                 periodically.
                 <br>
-                Last update: 10 Apr 2024
+                Last update: 3 Jul 2025
             </p>
         </div>
     </div>

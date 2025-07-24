@@ -30,7 +30,7 @@ if ($condition) {
         //check it's an Array and it's not empty
         if (is_array($data) && count($data) > 0) {
             //create the SQL query for the batch insert (prepared statement)
-            $stmt = $c->prepare("INSERT INTO $error_logs_table (`id`, `local-date`, `inserted-date`, `context`, `error`, `url`) VALUES (NULL, ?, NULL, ?, ?, ?)");
+            $stmt = $c->prepare("INSERT INTO $error_logs_table (`id`, `local-date`, `inserted-date`, `context`, `error`, `url`, `notefox-version`, `anonymous-userid`) VALUES (NULL, ?, NULL, ?, ?, ?, ?, ?)");
             //$c->query("LOCK TABLES $error_logs_table WRITE");
 
             $any_error = false;
@@ -67,9 +67,17 @@ if ($condition) {
                     if (isset($item["url"])) {
                         $url = $item["url"];
                     }
+                    $notefox_version = null;
+                    if (isset($item["notefox-version"])) {
+                        $notefox_version = $item["notefox-version"];
+                    }
+                    $anonymous_userid = null;
+                    if (isset($item["anonymous-userid"])) {
+                        $anonymous_userid = $item["anonymous-userid"];
+                    }
 
                     //bind the parameters
-                    $stmt->bind_param("ssss", $client_datetime, $context, $error_message, $url);
+                    $stmt->bind_param("ssssss", $client_datetime, $context, $error_message, $url, $notefox_version, $anonymous_userid);
                     //execute the statement
                     $stmt->execute();
                 }

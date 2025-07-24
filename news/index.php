@@ -29,6 +29,41 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
     </div>
     <br class="big-space">
     <div class="expanding-container">
+        <button type="button" class="expanding-item">Release 4.5.0.3 – 24 Jul 2025</button>
+        <div class="expanding-item--expanded-details hidden expanding-item--expanded-details--hidden">
+            <p>
+                • [improved] small improvements
+                <br>
+                • [fixed] minor fixes
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 4.5, 4.5.0.1, 4.5.0.2 – 23 Jul 2025</button>
+        <div class="expanding-item--expanded-details hidden expanding-item--expanded-details--hidden">
+            <p>
+                • [new] option to enable the change of toolbar icon based on the tag colour
+                <br>
+                • [new] option to enable the change of colour of notes base on the tag colour
+                <br>
+                • [improved] some improvements to the sidebar (accessibility)
+                <br>
+                • [improved] some improvements in All notes
+                <br>
+                • [new] anonymous telemetry (disabled by default)
+                <br>
+                • [new] automatic error logs sending, to fix bugs (enabled by default)
+                <br>
+                • [improved] some improvements to the sticky notes
+                <br>
+                • [new] keyboard shortcut to paste "without formatting" (with formatting: Ctrl/Cmd + V, without
+                formatting: Ctrl/Cmd + Shift/Maiusc + V)
+                <br>
+                • [updated] languages
+                <br>
+                • [fixed] bug which caused firefox crash on Windows
+            </p>
+        </div>
+
         <button type="button" class="expanding-item">Release 4.4.5.5 – 25 May 2025</button>
         <div class="expanding-item--expanded-details hidden expanding-item--expanded-details--hidden">
             <p>
@@ -82,7 +117,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         <button type="button" class="expanding-item">Release 4.4.4 – 4 May 2025</button>
         <div class="expanding-item--expanded-details hidden expanding-item--expanded-details--hidden">
             <p>
-                • [new] Added a "Error logs" feature: in Settings > Advanced it's now possible to get the error logs file/details to attach
+                • [new] Added a "Error logs" feature: in Settings > Advanced it's now possible to get the error logs
+                file/details to attach
             </p>
         </div>
 
@@ -112,7 +148,9 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <p>
                 • [new] New features for debugging: https://www.notefox.eu/help/get-data-for-debugging/
                 <br>
-                • [new] Added a "Privacy policy" acceptance screen as requested by Mozilla: you can continue to use Notefox without any Notefox Account (and in that way the add-on doesn't send anything to my server, your data remains locally)
+                • [new] Added a "Privacy policy" acceptance screen as requested by Mozilla: you can continue to use
+                Notefox without any Notefox Account (and in that way the add-on doesn't send anything to my server, your
+                data remains locally)
                 <br>
                 • [improved] Minor improvements
 
@@ -143,11 +181,13 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         <button type="button" class="expanding-item">Release 4.3 – 11 Mar 2025</button>
         <div class="expanding-item--expanded-details hidden expanding-item--expanded-details--hidden">
             <p>
-                • [new] Extended the "•••" urls (now you can choose also from all the parameters, also if the [consider-parameters] is NOT enabled).
+                • [new] Extended the "•••" urls (now you can choose also from all the parameters, also if the
+                [consider-parameters] is NOT enabled).
                 <br>
                 • [improved] Check for sections' existence
                 <br>
-                • [fixed] Fixed a small bug with "subdomains" priority (before: Page > Domain > Global > Subdomains, now: Page > Domain > Subdomains > Global)
+                • [fixed] Fixed a small bug with "subdomains" priority (before: Page > Domain > Global > Subdomains,
+                now: Page > Domain > Subdomains > Global)
             </p>
         </div>
 
