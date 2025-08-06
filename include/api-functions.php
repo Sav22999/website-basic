@@ -108,7 +108,7 @@ function sendEmailSignedup($username, $to_email, $ip_address)
     $message = str_replace("{{username}}", $username, $message);
     $message = str_replace("{{section-1}}", $section_1, $message);
     $message = str_replace("{{section-2}}", $section_2, $message);
-    $message = str_replace("{{hidden-code}}", "hidden", $message);
+    $message = str_replace("{{hidden-code}}", "hidden-small", $message);
     $message = str_replace("{{code}}", "", $message);
     $message = str_replace("{{section-3}}", $section_3, $message);
     $message = str_replace("{{hidden-ip-address}}", "", $message);
@@ -164,7 +164,7 @@ function sendEmailLoggedin($username, $to_email, $ip_address)
     $message = str_replace("{{username}}", $username, $message);
     $message = str_replace("{{section-1}}", $section_1, $message);
     $message = str_replace("{{section-2}}", $section_2, $message);
-    $message = str_replace("{{hidden-code}}", "hidden", $message);
+    $message = str_replace("{{hidden-code}}", "hidden-small", $message);
     $message = str_replace("{{code}}", "", $message);
     $message = str_replace("{{section-3}}", $section_3, $message);
     $message = str_replace("{{hidden-ip-address}}", "", $message);
@@ -222,7 +222,7 @@ function sendEmailDeleted($username, $to_email)
     $message = str_replace("{{username}}", $username, $message);
     $message = str_replace("{{section-1}}", $section_1, $message);
     $message = str_replace("{{section-2}}", $section_2, $message);
-    $message = str_replace("{{hidden-code}}", "hidden", $message);
+    $message = str_replace("{{hidden-code}}", "hidden-small", $message);
     $message = str_replace("{{code}}", "", $message);
     $message = str_replace("{{section-3}}", $section_3, $message);
     $message = str_replace("{{hidden-ip-address}}", "hidden", $message);
