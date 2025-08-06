@@ -19,7 +19,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <br>
             <br>
             <input type="button" class="button button-with-icon button-telegram" value="Telegram"
-                   onclick="location.href='https://t.me/Sav22999'">
+                   onclick="location.href='https://t.me/sav_projects'">
             <input type="button" class="button button-with-icon button-email" value="Email"
                    onclick="location.href='mailto:saverio.morelli@protonmail.com'">
         </div>

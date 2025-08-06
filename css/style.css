@@ -19,6 +19,8 @@
     --tertiary-color-variant: #777777;
     --on-tertiary-color: #EEEEEE;
 
+    --black: #000000;
+
     --font-size-normal: 20px;
     --font-size-small: 18px;
     --font-size-very-small: 14px;
@@ -35,6 +37,9 @@
 
 body {
     background-color: var(--secondary-color);
+    background-image: url("/images/icon-monocolor.png");
+    background-size: 30px auto;
+    background-repeat: repeat;
     color: var(--on-primary-color);
 }
 
@@ -94,9 +99,9 @@ a:visited {
     height: 100%;
 }
 
-@media only screen and (max-width: 470px) {
+@media only screen and (max-width: 800px) {
     .nav-button, .nav-button:visited {
-        padding: 20px 15px;
+        padding: 20px 10px;
     }
 
     .menu {
@@ -104,13 +109,17 @@ a:visited {
     }
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 600px) {
     .nav-button, .nav-button:visited {
-        padding: 20px 10px;
+        padding: 20px 5px;
+        border-left: 1px solid rgba(238, 238, 238, 0.3);
+    }
+    .nav-button:first-child {
+        border-left: 0px;
     }
 
     .menu {
-        padding: 0px 0px;
+        padding: 0px 5px;
     }
 }
 
@@ -216,6 +225,24 @@ a:visited {
     background-image: url("/images/huaweiappgallery.svg");
 }
 
+.button-next, .button-prev {
+    background-image: url("/images/next.svg");
+    position: relative;
+    top: 38px;
+    right: -25%;
+    padding: 0px;
+    height: 35px;
+    width: 35px;
+    display: inline-block;
+}
+
+.button-prev {
+    background-image: url("/images/prev.svg");
+    left: -25%;
+    right: auto;
+    display: none;
+}
+
 .button-telegram {
     background-image: url("/images/telegram.svg");
 }
@@ -225,23 +252,27 @@ a:visited {
 }
 
 .button-cvproject {
-    background-image: url("/images/projects/cv-project.png");
+    background-image: url("https://saveriomorelli.com/images/projects/cv-project.png");
 }
 
 .button-accentedletters {
-    background-image: url("/images/projects/accented-letters.svg");
+    background-image: url("https://saveriomorelli.com/images/projects/accented-letters-light.svg");
 }
 
 .button-emoji {
-    background-image: url("/images/projects/emoji.png");
+    background-image: url("https://emojiaddon.com/images/icon.svg");
 }
 
 .button-limite {
-    background-image: url("/images/projects/limite.png");
+    background-image: url("https://saveriomorelli.com/images/projects/limite.png");
 }
 
 .button-notefox {
-    background-image: url("/images/projects/websites-notes.png");
+    background-image: url("https://saveriomorelli.com/images/projects/websites-notes.png");
+}
+
+.button-wordoftheday {
+    background-image: url("https://saveriomorelli.com/images/projects/word-of-the-day.png");
 }
 
 br {
@@ -249,6 +280,7 @@ br {
     display: block;
     width: 0px;
     height: 0px;
+    background-color: transparent;
 }
 
 br.big-space {
@@ -315,7 +347,13 @@ br.big-space {
     background-color: var(--primary-color-variant);
 }
 
-.expanding-container {
+.review-container {
+    border-radius: var(--border-radius);
+    background-color: var(--secondary-color-variant);
+    padding: 20px;
+}
+
+.center-container, .expanding-container {
     width: 50%;
     margin-left: auto;
     margin-right: auto;
@@ -324,14 +362,38 @@ br.big-space {
 }
 
 @media only screen and (max-width: 800px) {
-    .expanding-container {
+    .center-container, .expanding-container {
         width: 80%;
+        margin-top: 100px;
+    }
+
+    .button-next {
+        top: 138px;
+        right: -40%;
+    }
+    .button-prev {
+        top: 138px;
+        left: -40%;
     }
 }
 
 @media only screen and (max-width: 500px) {
+    .center-container {
+        width: 94%;
+        margin-top: 150px;
+    }
+
     .expanding-container {
         width: 100%;
+    }
+
+    .button-next {
+        top: 188px;
+        right: -47%;
+    }
+    .button-prev {
+        top: 188px;
+        left: -47%;
     }
 }
 
@@ -428,4 +490,26 @@ br.big-space {
 
 .hidden {
     display: none;
+}
+
+.justify {
+    text-align: justify;
+}
+
+.center {
+    text-align: center;
+}
+
+.stars-review {
+    color: var(--primary-color);
+    font-size: 2em;
+}
+
+blockquote:before {
+    color: var(--primary-color-variant);
+    content: open-quote;
+    font-size: 4em;
+    line-height: 0.1em;
+    margin-right: 0.25em;
+    vertical-align: -0.4em;
 }

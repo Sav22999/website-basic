@@ -3,6 +3,7 @@ global $selected_menu;
 if (!isset($selected_menu) || $selected_menu == "") {
     $selected_menu = "";
 }
+if (isset($_GET["test"])) $selected_menu = $selected_menu . " (test)";
 echo '<script>setAction("' . $selected_menu . '");</script>';
 ?>
 <nav class="topbar">
@@ -22,5 +23,8 @@ echo '<script>setAction("' . $selected_menu . '");</script>';
         <a href="/donate/" class="nav-button <?php if ($selected_menu == "donate") {
             echo "nav-button-selected";
         } ?>">Donate</a>
+        <a href="/reviews/" class="nav-button <?php if ($selected_menu == "reviews") {
+            echo "nav-button-selected";
+        } ?>">Reviews</a>
     </div>
 </nav>

@@ -20,8 +20,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <br>
             <input type="button" class="button button-with-icon button-googleplayappstore" value="Google Play"
                    onclick="location.href='https://play.google.com/store/apps/details?id=com.saverio.pdfviewer'">
-            <input type="button" class="button button-with-icon button-fdroid" value="F-Droid"
-                   onclick="location.href='https://f-droid.org/it/packages/com.saverio.pdfviewer/'">
+            <!--<input type="button" class="button button-with-icon button-fdroid" value="F-Droid"
+                   onclick="location.href='https://f-droid.org/it/packages/com.saverio.pdfviewer/'">-->
             <br>
             <h2 class="subtitle-section no-bold font-very-small">you can install the app also via GitHub</h2>
             <br>

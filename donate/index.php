@@ -16,6 +16,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         <div class="horizontal-center">
             <h1 class="title-section">Buy me a coffee</h1>
             <h2 class="subtitle-section no-bold font-small">If you like the app, consider to buy me a coffee</h2>
+            <h2 class="subtitle-section no-bold font-small">I advise you to use LiberaPay which is <b>safe</b> and <b>free
+                    of fees</b>, but PayPal is great as well</h2>
             <br>
             <br>
             <input type="button" class="button button-with-icon button-liberapay" value="LiberaPay"
@@ -28,15 +30,20 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <br>
             <br>
             <input type="button" class="button button-with-icon-secondary button-secondary button-emoji"
-                   value="Emoji" onclick="location.href='https://addons.mozilla.org/it/firefox/addon/emoji-sav/'">
+                   value="Emoji" onclick="location.href='https://emojiaddon.com'">
             <input type="button" class="button button-with-icon-secondary button-secondary button-cvproject"
                    value="CV Project" onclick="location.href='https://www.saveriomorelli.com/commonvoice/'">
             <input type="button" class="button button-with-icon-secondary button-secondary button-accentedletters"
-                   value="Accented Letters" onclick="location.href='https://addons.mozilla.org/it/firefox/addon/accented-letters/'">
+                   value="Accented Letters"
+                   onclick="location.href='https://addons.mozilla.org/it/firefox/addon/accented-letters/'">
+            <br>
             <input type="button" class="button button-with-icon-secondary button-secondary button-notefox"
-                   value="Notefox" onclick="location.href='https://addons.mozilla.org/it/firefox/addon/websites-notes/'">
+                   value="Notefox"
+                   onclick="location.href='https://notefox.eu'">
             <input type="button" class="button button-with-icon-secondary button-secondary button-limite"
                    value="Limite" onclick="location.href='https://addons.mozilla.org/it/firefox/addon/limite/'">
+            <input type="button" class="button button-with-icon-secondary button-secondary button-wordoftheday"
+                   value="Word of the Day" onclick="location.href='https://play.google.com/store/apps/details?id=com.saverio.wordoftheday_en'">
         </div>
     </div>
 </main>

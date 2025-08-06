@@ -6,7 +6,7 @@ if (isset($_GET["action"])) {
     $action = $_GET["action"];
 }
 
-$url = "https://saveriomorelli.com/api/savpdfviewer/v1/statistics/insert/index.php?action=" . $action;
+$url = "https://saveriomorelli.com/api/savpdfviewer/v1/statistics/insert/index.php?action=" . str_replace(" ", "%20", $action);
 // User data to send using HTTP POST method in curl
 
 $ch = curl_init();

@@ -29,7 +29,123 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
     </div>
     <br class="big-space">
     <div class="expanding-container">
-        <button type="button" class="expanding-item">Release 1.11α – •Not published yet•</button>
+        <button type="button" class="expanding-item">Release 1.16 – 6 Aug 2025</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Added the "lock rotation" feature (in the menu panel)
+                <br>
+                • Moved the "share" button in the topbar
+                <br>
+                • Fixed some bugs
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 1.15.1.1 – 10 Nov 2023</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Added the confirmation dialog before to open links
+                <br>
+                • Fixed some bugs
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 1.15.1 – 2 Nov 2023</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Fixed a bug with "Light-on/off filter"
+                <br>
+                • Fixed a bug with "Forced-dark filter"
+                <br>
+                • Added "onTap" event: now you can tap on the PDF to show the topbar
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 1.15 – 31 Oct 2023</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Minor improvements
+                <br>
+                • New icon: it now supports also the monochrome theme!
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 1.14.2 – 28 Oct 2023</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Fixed some bugs of the previous version
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 1.14.1 – 27 Oct 2023</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Fixed some bugs of the previous version
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 1.14 – 27 Oct 2023</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • New: support for links
+                <br>
+                • New: horizontal scrolling mode
+                <br>
+                • New: forced-dark filter
+                <br>
+                • New: single page scrolling mode
+                <br>
+                • Fixed some bugs
+                <br>
+                • Some improvements backend
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 1.13.2 – 12 Oct 2023</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Fixed the bug which caused the closure when PDFs were opened by external apps
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 1.13 – 1 Aug 2023</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Improved the "Share" feature: now you can share every opened file
+                <br>
+                • Some other fixes
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 1.12.0.2 – 9 Jun 2023</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Some fixes
+                <br>
+                • Fixed minSDK and targetSDK
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 1.12 – 6 Jun 2023</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Added "zoom control" feature
+                <br>
+                • Updated some icons
+                <br>
+                • Some fixes
+                <br>
+                • Updated the library
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 1.11.1 – 13 Apr 2023</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Fixed the zoom bug
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 1.11 – 12 Apr 2023</button>
         <div class="expanding-item--expanded-details hidden">
             <p>
                 • Added "onTap" when tap in a generic point of the page hide and show the topbar
@@ -224,7 +340,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             </p>
         </div>
 
-        <button type="button" class="expanding-item">Release 1.1.1 – 11 Jan 2021</button>
+        <button type="button" class="expanding-item">Release 1.1.1 – 11 Feb 2021</button>
         <div class="expanding-item--expanded-details hidden">
             <p>
                 • Added "Share" button
