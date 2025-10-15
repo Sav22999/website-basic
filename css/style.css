@@ -603,6 +603,10 @@ hr.hr-big-space {
     font-size: 0.8em;
 }
 
+.text-left {
+    text-align: left;
+}
+
 @media screen and (max-width: 1200px) {
     .notefox-4-0-page img {
         width: 100%;

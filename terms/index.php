@@ -25,57 +25,78 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
     <div class="horizontal-center ">
         <div class="center-content justify">
             <h1 class="title-section center">Terms of Service</h1>
+
+            <p><b>Last update:</b> 14 Oct 2025</p>
+
             <p>
-                <i>Notefox: websites notes</i> is an open-source project developed by Saverio Morelli.
+                Notefox: websites notes is an open-source project developed by <b>Saverio Morelli</b> (<a
+                        href="https://saveriomorelli.com/contact-me" target="_blank">saveriomorelli.com/contact-me</a>),
+                based in <b>Italy</b>.
+                The project is hosted on <b>Aruba.it</b> servers, located in Italy.
+            </p>
+
+            <h2 class="text-left">1. Scope</h2>
+            <p>
+                These Terms of Service apply to the use of the <b>Notefox Account</b>, as well as to the optional <b>Telemetry</b>
+                and <b>Error Logs</b> features.
+                If you do not use any of these features, the add-on does not send or collect any data.
+            </p>
+
+            <h2 class="text-left">2. License</h2>
+            <p>
+                Notefox is released under the <b>GNU General Public License v3.0</b>.
+                You are free to use and modify it, but commercial use or redistribution for profit is not allowed.
+            </p>
+
+            <h2 class="text-left">3. Notefox Account</h2>
+            <p>
+                Notefox Account allows users to <b>synchronize their notes across devices</b> and access them from
+                anywhere.
+                The account system uses encrypted storage and authentication tokens to protect user data.
             </p>
             <p>
-                <b>The following terms of service refeeres to Notefox Account. If you don't use it, the add-on won't
-                    collect any data at all – data is not sent to the server.</b>
+                All data stored server-side are encrypted and cannot be read without the user’s password.
+                The service is provided free of charge, but its availability and continuity are not guaranteed.
+            </p>
+
+            <h2 class="text-left">4. Data Collection</h2>
+            <p>
+                The service may collect certain data:
+            </p>
+            <ul class="text-left">
+                <li><b>IP addresses</b> (stored unencrypted, used for security and statistics)</li>
+                <li><b>Telemetry data</b> (anonymous usage statistics, optional and user-consented)</li>
+                <li><b>Error logs data</b> (anonymous debugging data, optional and user-consented)</li>
+            </ul>
+
+            <p>
+                Telemetry data are used only for anonymous internal statistics on usability and feature usage,
+                while Error logs are used exclusively to identify and fix technical issues.
+                All data are anonymized and never shared with third parties.
+            </p>
+
+            <h2 class="text-left">5. Responsibility and Disclaimer</h2>
+            <p>
+                <b>Saverio Morelli</b> does not guarantee that the service will be uninterrupted, error-free, or
+                permanently available.
+                He is not responsible for any data loss, corruption, or damage resulting from the use or inability to
+                use Notefox.
             </p>
             <p>
-                The project is released under the <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU General Public
-                    License v3.0</a>. This mean you are free to use and modify it, but it is not allowed to sell it or
-                use it for commercial purposes.
+                Users are solely responsible for how they use the service and for ensuring that their data are backed up
+                and handled securely.
             </p>
+
+            <h2 class="text-left">6. Changes to the Service</h2>
             <p>
-                The project is hosted on <a href="https://aruba.it">Aruba</a> servers, which is located in Italy and it
-                is put effort to eco-sustainability: <a
-                        href="https://www.aruba.it/en/certification/eco-friendly-go-certification.aspx">read more</a>.
+                The Notefox service may change, be suspended, or terminated at any time without prior notice.
+                Users are encouraged to periodically review these Terms of Service.
             </p>
+
+            <h2 class="text-left">7. Contact</h2>
             <p>
-                Notefox add-on uses API services to store and retrieve data, hosted on the current domain. You can find
-                the documentation <a href="/docs/">here</a>.
-                <br>
-                On your web browser it will be stored your token access and your login-id, which are used to
-                authenticate
-                your requests, and data will be stored on your local storage decrypted.
-                <br>
-                All data on server side is encrypted and it is not possible to read it without the password.
-            </p>
-            <p>
-                The service now is provided for free, but it is not guaranteed the service will be available in the
-                future, and it is not guaranteed the data will be stored forever.
-                <br>
-                <b>Notefox is not responsible for any data loss or data corruption, and it is not responsible for any
-                    damage caused by the use of the service.</b>
-            </p>
-            <p>
-                Notefox collects ip-addresses as unencrypted data, which are used for security purposes and for
-                statistics. The data is not shared with third parties.
-            </p>
-            <p>
-                Notefox might collect <b>anonymous data</b> about the usage of the service. These data aren't linked to
-                identifiable users, and are used to improve the service, to fix bugs and to see how the service is
-                used. This will be also called as <b>telemetry</b>.
-            </p>
-            <p>
-                To get more details, please <a href="/help/">contact me</a>.
-            </p>
-            <p>
-                The current Terms of Service can be changed at any time, and it is your responsibility to check them
-                periodically.
-                <br>
-                Last update: 3 Jul 2025
+                For questions or more details, please visit <a href="https://saveriomorelli.com/contact-me"
+                                                               target="_blank">saveriomorelli.com/contact-me</a>.
             </p>
         </div>
     </div>
