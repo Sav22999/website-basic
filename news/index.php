@@ -29,6 +29,37 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
     </div>
     <br class="big-space">
     <div class="expanding-container">
+        <button type="button" class="expanding-item">Release 4.6 – 27 Nov 2025</button>
+        <div class="expanding-item--expanded-details hidden expanding-item--expanded-details--hidden">
+            <p>
+                You can see an overview of this new version <a href="/help/notefox-4.6/">here</a>.
+                <br>
+                • [improvement] Minor improvements
+                <br>
+                • [new] Added new feature for icon behaviour
+                <br>
+                • [fix] Minor fixes
+                <br>
+                • [changed] Added splash screen (in this way loading process of the theme is not annoying)
+                <br>
+                • [new] Popup is now resizable
+                <br>
+                • [new] Customise the text-size in the notes (and in All notes)
+                <br>
+                • [fix] Fixed a bug with "sections" and "parameters"
+                <br>
+                • [new] Added "clear formatting" button
+                <br>
+                • [new] Added "fullscreen" in All notes
+                <br>
+                • [new] New section in settings: developer options
+                <br>
+                • [new] You can customise the API endpoint
+                <br>
+                • [fix] Minor fix with "notefox server error"
+            </p>
+        </div>
+
         <button type="button" class="expanding-item">Release 4.5.5.3 – 23 Oct 2025</button>
         <div class="expanding-item--expanded-details hidden expanding-item--expanded-details--hidden">
             <p>
@@ -54,7 +85,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <br>
                 • [improved] Improvements UI/UX: added spinner during loading
                 <br>
-                • [improved] Improvements of Notefox account: managed the "Notefox server unreachable": it permits to log out or continue "offline"
+                • [improved] Improvements of Notefox account: managed the "Notefox server unreachable": it permits to
+                log out or continue "offline"
                 <br>
                 • [fixed] Minor fixes
                 <br>
@@ -71,7 +103,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <p>
                 • [improved] improvements UI/UX: added spinner during loading
                 <br>
-                • [improved] improvements of Notefox account: managed the "Notefox server unreachable": it permits to log out or continue "offline"
+                • [improved] improvements of Notefox account: managed the "Notefox server unreachable": it permits to
+                log out or continue "offline"
                 <br>
                 • [updated] Updated languages
                 <br>
