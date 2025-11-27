@@ -29,6 +29,56 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
     </div>
     <br class="big-space">
     <div class="expanding-container">
+        <button type="button" class="expanding-item">Release 4.5.5.3 – 23 Oct 2025</button>
+        <div class="expanding-item--expanded-details hidden expanding-item--expanded-details--hidden">
+            <p>
+                • [fixed] Bugfix: Deleting a Notefox account works again
+                <br>
+                • [new] You can now disable deleting-confirmation dialog
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 4.5.5.2 – 23 Oct 2025</button>
+        <div class="expanding-item--expanded-details hidden expanding-item--expanded-details--hidden">
+            <p>
+                • [fixed] Fixed bug with Notefox account
+                <br>
+                • [improved] Minor general improvements
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 4.5.5.1 – 23 Oct 2025</button>
+        <div class="expanding-item--expanded-details hidden expanding-item--expanded-details--hidden">
+            <p>
+                • [improved] Improved UX/UI: incresed the border-radius
+                <br>
+                • [improved] Improvements UI/UX: added spinner during loading
+                <br>
+                • [improved] Improvements of Notefox account: managed the "Notefox server unreachable": it permits to log out or continue "offline"
+                <br>
+                • [fixed] Minor fixes
+                <br>
+                • [improved] Minor general improvements
+                <br>
+                • [updated] Updated "Consent Experience" (ex Privacy Policy)
+                <br>
+                • [updated] Updated languages
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 4.5.3 – 8 Sep 2025</button>
+        <div class="expanding-item--expanded-details hidden expanding-item--expanded-details--hidden">
+            <p>
+                • [improved] improvements UI/UX: added spinner during loading
+                <br>
+                • [improved] improvements of Notefox account: managed the "Notefox server unreachable": it permits to log out or continue "offline"
+                <br>
+                • [updated] Updated languages
+                <br>
+                • [improved] Minor general improvements
+            </p>
+        </div>
+
         <button type="button" class="expanding-item">Release 4.5.0.3 – 24 Jul 2025</button>
         <div class="expanding-item--expanded-details hidden expanding-item--expanded-details--hidden">
             <p>

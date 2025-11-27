@@ -26,7 +26,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         <div class="center-content justify">
             <h1 class="title-section center">Privacy Policy</h1>
 
-            <p><b>Last update:</b> 14 Oct 2025</p>
+            <p><b>Last update:</b> 2 Nov 2025</p>
 
             <p>
                 This Privacy Policy applies to Notefox Account, or if you have enabled the "Telemetry" or "Error logs
@@ -54,6 +54,10 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <p>
                 All your data are encrypted with your password*, so only you can access them.
                 If you lose or forget your password, you will not be able to recover your data in any way.
+            </p>
+            <p>
+                The service will maintain only your 200 most recent synchronized data entries to optimize storage.
+                Older entries will be automatically deleted from the server.
             </p>
 
             <p>
@@ -127,6 +131,9 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <p>
                 Error logs data are <b>used only for debugging and technical improvement</b>.
                 They are anonymous, not shared with third parties, and not used for statistical or marketing purposes.
+            </p>
+            <p>
+                Error logs older than 30 days are automatically deleted from the server.
             </p>
 
             <h2 class="text-left">4. Security Notice</h2>

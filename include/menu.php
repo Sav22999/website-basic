@@ -3,31 +3,50 @@ global $selected_menu;
 if (!isset($selected_menu) || $selected_menu == "") {
     $selected_menu = "";
 }
-if (isset($_GET["test"])) $selected_menu = $selected_menu . " (test)";
-echo '<script>setAction("' . $selected_menu . '");</script>';
 ?>
-<nav class="topbar">
-    <div class="menu">
-        <a href="/" class="nav-button <?php if ($selected_menu == "home") {
-            echo "nav-button-selected";
-        } ?>">Home</a>
-        <a href="/about/" class="nav-button <?php if ($selected_menu == "about") {
-            echo "nav-button-selected";
-        } ?>">About</a>
-        <a href="/install/" class="nav-button <?php if ($selected_menu == "install") {
-            echo "nav-button-selected";
-        } ?>">Install</a>
-        <a href="/help/" class="nav-button <?php if ($selected_menu == "help") {
-            echo "nav-button-selected";
-        } ?>">Help</a>
-        <a href="/news/" class="nav-button <?php if ($selected_menu == "news") {
-            echo "nav-button-selected";
-        } ?>">News</a>
-        <a href="/donate/" class="nav-button <?php if ($selected_menu == "donate") {
-            echo "nav-button-selected";
-        } ?>">Donate</a>
-        <a href="/docs/" class="nav-button <?php if ($selected_menu == "docs") {
-            echo "nav-button-selected";
-        } ?>">Docs</a>
-    </div>
-</nav>
+    <nav class="topbar">
+        <div class="menu">
+            <div onclick="<?php echo navigateTo('') ?>" class="nav-button <?php if ($selected_menu == "home") {
+                echo "sel";
+            } ?>">Home
+            </div>
+            <div onclick="<?php echo navigateTo('about') ?>" class="nav-button <?php if ($selected_menu == "about") {
+                echo "sel";
+            } ?>">About
+            </div>
+            <div onclick="<?php echo navigateTo('install') ?>"
+                 class="nav-button hide-on-mobile <?php if ($selected_menu == "install") {
+                     echo "sel";
+                 } ?>">Install
+            </div>
+            <div onclick="<?php echo navigateTo('help') ?>" class="nav-button <?php if ($selected_menu == "help") {
+                echo "sel";
+            } ?>">Help
+            </div>
+            <div onclick="<?php echo navigateTo('news') ?>" class="nav-button <?php if ($selected_menu == "news") {
+                echo "sel";
+            } ?>">News
+            </div>
+            <div onclick="<?php echo navigateTo('donate') ?>"
+                 class="nav-button <?php if ($selected_menu == "donate") {
+                     echo "sel";
+                 } ?>">Donate
+            </div>
+            <div onclick="<?php echo navigateTo('docs') ?>"
+                 class="nav-button hide-on-mobile <?php if ($selected_menu == "docs") {
+                     echo "sel";
+                 } ?>">Docs
+            </div>
+        </div>
+    </nav>
+
+<?php
+function navigateTo($tab)
+{
+    if ($tab === "") {
+        return "location.href='/'";
+    }
+    return "location.href='/" . $tab . "/'";
+}
+
+?>

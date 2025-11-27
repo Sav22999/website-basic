@@ -21,7 +21,7 @@ if ($condition) {
 
         //check if login-id (already encrypted) from logins table exists, in case 401
 
-        $query_check = "SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL) AND (`verification-expiry` > NOW() OR `verification-expiry` IS NULL)";
+        $query_check = "SELECT * FROM $logins_table WHERE `login-id` = ? AND `status` = 1 AND (`expiry` > NOW() OR `expiry` IS NULL)";
         $stmt_check = $c->prepare($query_check);
         $stmt_check->bind_param("s", $login_id);
         $stmt_check->execute();
@@ -60,7 +60,7 @@ if ($condition) {
             $stmt_update_tokens->close();
 
 
-            $query_update = "UPDATE $logins_table SET `status` = 0 WHERE `user-id` = ?";
+            $query_update = "UPDATE $logins_table SET `status` = 2 WHERE `user-id` = ?";
             if (!$all_devices) {
                 //NOT all devices, update only the login-id passed
                 $query_update .= " AND `login-id` = ?";
@@ -68,6 +68,7 @@ if ($condition) {
 
             $stmt_update = $c->prepare($query_update);
             $c->query("LOCK TABLES $logins_table WRITE");
+
             if (!$all_devices) {
                 $stmt_update->bind_param("ss", $user_id, $login_id);
             } else {
