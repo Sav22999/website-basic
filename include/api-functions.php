@@ -75,8 +75,8 @@ function sendEmailSignup($username, $to_email, $code, $ip_address, $new_code = f
     $message_title = $new_code ? "New code to verify your email" : "Verify your email";
 
     $section_1 = $message_title;
-    $section_2 = $message_code . "To confirm your login, please use the following code:";
-    $section_3 = "If you didn't log in to Notefox, you should definitely change your password.";
+    $section_2 = $message_code . "To confirm your account, please use the following code:";
+    $section_3 = "If you didn't sign up to Notefox, please ignore this email.";
 
     $message = getEmailTemplate();
     $message = str_replace("{{username}}", $username, $message);
@@ -102,7 +102,7 @@ function sendEmailSignedup($username, $to_email, $ip_address)
 
     $section_1 = "Account created";
     $section_2 = "You just created a Notefox account with this email.";
-    $section_3 = "If you didn't sign up to Notefox, please ignore this email.";
+    $section_3 = "If you didn't sign up to Notefox, please contact support.";
 
     $message = getEmailTemplate();
     $message = str_replace("{{username}}", $username, $message);

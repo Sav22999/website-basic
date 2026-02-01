@@ -29,6 +29,13 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
     </div>
     <br class="big-space">
     <div class="expanding-container">
+        <button type="button" class="expanding-item">Release 4.6.0.2 – 3 Jan 2026</button>
+        <div class="expanding-item--expanded-details hidden expanding-item--expanded-details--hidden">
+            <p>
+                • [fix] Fixed an error with links in the notes
+            </p>
+        </div>
+
         <button type="button" class="expanding-item">Release 4.6, 4.6.0.1 – 27 Nov 2025</button>
         <div class="expanding-item--expanded-details hidden expanding-item--expanded-details--hidden">
             <p>
