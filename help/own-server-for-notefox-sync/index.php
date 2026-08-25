@@ -44,15 +44,18 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
 
             <h2 class="subtitle-section">3. Configure the API</h2>
             <p>
-                Copy <code>include/credentials-sample.php</code> to <code>include/credentials.php</code> on your
-                server. Enter the database connection details and set the table variables to the table names created
-                by the import: <code>data</code>, <code>logins</code>, <code>users</code>, and <code>tokens</code>.
-                Do not publish <code>credentials.php</code> or commit it to a repository.
+                Copy <a href="https://github.com/Sav22999/website-basic/blob/notefox.eu/include/credentials-sample.php" target="_blank" rel="noopener"><code>include/credentials-sample.php</code></a>
+                to <code>include/credentials.php</code> on your server. Enter the database connection details and set
+                the table variables to the table names created by the import: <code>data</code>, <code>logins</code>,
+                <code>users</code>, and <code>tokens</code>. Do not publish <code>credentials.php</code> or commit it
+                to a repository.
             </p>
 
             <h2 class="subtitle-section">4. Upload and connect</h2>
             <p>
-                Upload the Notefox API files to your web server, keeping the <code>api/</code> and <code>include/</code>
+                Upload the Notefox API files to your web server, keeping the
+                <a href="https://github.com/Sav22999/website-basic/tree/notefox.eu/api" target="_blank" rel="noopener"><code>api/</code></a>
+                and <a href="https://github.com/Sav22999/website-basic/tree/notefox.eu/include" target="_blank" rel="noopener"><code>include/</code></a>
                 directories in the same document root. Make sure PHP can use the <code>mysqli</code> and
                 <code>OpenSSL</code> extensions. Then enter your server's API URL in the Notefox extension settings.
             </p>
