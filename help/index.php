@@ -36,6 +36,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <button type="button" class="help-faq-item" onclick="goto('./search/')">How the search feature works
             </button>
             <button type="button" class="help-faq-item" onclick="goto('./translate/')">How to translate Notefox</button>
+            <button type="button" class="help-faq-item" onclick="goto('./own-server-for-notefox-sync/')">How to run your own Notefox sync server</button>
             <button type="button" class="help-faq-item" onclick="goto('/sticky-notes/')">Simulate the sticky-notes
                 feature
             </button>

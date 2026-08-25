@@ -44,8 +44,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
 
             <h2 class="text-left">2. License</h2>
             <p>
-                Notefox is released under the <b>GNU General Public License v3.0</b>.
-                You are free to use and modify it, but commercial use or redistribution for profit is not allowed.
+                Notefox is released under the <b>Mozilla Public License v2.0 (MPL v2)</b>.
+                You are free to use, modify, and distribute it under the terms of the MPL v2.
             </p>
 
             <h2 class="text-left">3. Notefox Account</h2>

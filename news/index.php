@@ -29,6 +29,44 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
     </div>
     <br class="big-space">
     <div class="expanding-container">
+        <button type="button" class="expanding-item">Release 4.7.1 – 9 Apr 2026</button>
+        <div class="expanding-item--expanded-details hidden expanding-item--expanded-details--hidden">
+            <p>
+                • [new] Now you can set Notefox also in the sidebar view
+                <br>
+                • [changed] Updated translated
+                <br>
+                • [improvement] Minor improvements
+                <br>
+                • [fix] Fixed minor bugs
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 4.7 – 27 Mar 2026</button>
+        <div class="expanding-item--expanded-details hidden expanding-item--expanded-details--hidden">
+            <p>
+                • [fix] Improved the tag-colour selection
+                <br>
+                • [new] Added tags as text as well
+                <br>
+                • [new] Added folder #120
+                <br>
+                • [new] Added ordered and unordered list
+                <br>
+                • [new] Added option to set default properties of sticky-notes
+                <br>
+                • [improvement] Improved aside minimised sticky-notes (it's draggable and you can see the tag-color)
+                <br>
+                • [improvement] Improved the link feature
+                <br>
+                • [new] You can now edit also the page/domain link in All notes
+                <br>
+                • [changed] Updated translations
+                <br>
+                • [fix] Other improvements and bugfix
+            </p>
+        </div>
+
         <button type="button" class="expanding-item">Release 4.6.0.2 – 3 Jan 2026</button>
         <div class="expanding-item--expanded-details hidden expanding-item--expanded-details--hidden">
             <p>
