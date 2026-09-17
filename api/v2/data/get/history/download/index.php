@@ -38,7 +38,13 @@ if (sav_service_legacy_table($service) === null) {
 
 $entry = v2_sync_history_entry($c, $session["user-id"], $service, $id, $session["password"]);
 if ($entry === null) {
-    api_error(ERR_NO_DATA);
+    api_error(ERR_NO_DATA, null, "Row not found");
+}
+if (isset($entry["error"])) {
+    if ($entry["error"] === "unavailable") {
+        api_error(ERR_HISTORY_UNAVAILABLE);
+    }
+    api_error(ERR_HISTORY_DECRYPT_FAILED);
 }
 
 api_ok(array(

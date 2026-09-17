@@ -1,4 +1,4 @@
--- Notefox sync database schema
+-- Notefox sync database schema (Notefox Account v2)
 -- Import this file into a new MySQL or MariaDB database.
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for `data`
+-- Table structure for `data` (legacy v1 data storage)
 --
 
 CREATE TABLE IF NOT EXISTS `data` (
@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS `data` (
   `updated-locally-date` datetime NOT NULL,
   `ip-address` varchar(100) COLLATE utf8mb4_bin NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `FOREIGN KEY (email)` (`user-id`)
+  KEY `FOREIGN KEY (email)` (`user-id`),
+  KEY `idx_user_updated` (`user-id`(191),`updated-locally-date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='Notefox Data';
 
 -- --------------------------------------------------------
@@ -62,6 +63,7 @@ CREATE TABLE IF NOT EXISTS `logins` (
   `verification-code` varchar(512) COLLATE utf8mb4_bin DEFAULT NULL,
   `verification-expiry` datetime DEFAULT NULL,
   `verified` datetime DEFAULT NULL,
+  `verification-attempts` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`login-id`),
   KEY `FOREIGN KEY (email)` (`user-id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -93,6 +95,44 @@ CREATE TABLE IF NOT EXISTS `notefox_telemetry` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for `rate_limits`
+--
+
+CREATE TABLE IF NOT EXISTS `rate_limits` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `bucket` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'e.g. login, otp-verify, otp-resend',
+  `subject` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'hash of the email or of the IP',
+  `attempts` int(10) UNSIGNED NOT NULL DEFAULT '1',
+  `window-start` datetime NOT NULL,
+  `blocked-until` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_bucket_subject` (`bucket`,`subject`),
+  KEY `idx_window` (`window-start`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for `sav_data_current` (v2 multi-service data storage)
+--
+
+CREATE TABLE IF NOT EXISTS `sav_data_current` (
+  `user-id` varchar(128) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+  `service` varchar(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT 'notefox',
+  `revision` bigint(20) UNSIGNED NOT NULL DEFAULT '1',
+  `data` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'encrypted with the DEK of the account',
+  `key-version` int(10) UNSIGNED NOT NULL DEFAULT '1',
+  `updated-locally-date` datetime DEFAULT NULL COMMENT 'informational only (client clock)',
+  `updated-server-date` datetime NOT NULL,
+  `ip-address` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `legacy-data-id` bigint(20) UNSIGNED DEFAULT NULL COMMENT 'id of the single mirror row in `data` (service notefox only)',
+  PRIMARY KEY (`user-id`,`service`),
+  KEY `idx_service` (`service`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for `tokens`
 --
 
@@ -105,7 +145,8 @@ CREATE TABLE IF NOT EXISTS `tokens` (
   `inserted-date` datetime NOT NULL,
   `status` int(3) NOT NULL COMMENT '{0:invalid, 1:valid}',
   PRIMARY KEY (`id`),
-  KEY `FK (from logins)` (`login-id`)
+  KEY `FK (from logins)` (`login-id`),
+  KEY `idx_login_status` (`login-id`(191),`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
@@ -125,8 +166,41 @@ CREATE TABLE IF NOT EXISTS `users` (
   `deleting-code` varchar(512) COLLATE utf8mb4_bin DEFAULT NULL,
   `deleting-expiry` datetime DEFAULT NULL,
   `status` int(3) NOT NULL DEFAULT '0' COMMENT '0: unverified, 1: verified, 2: blocked',
+  `otp-enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `otp-change-code` varchar(512) COLLATE utf8mb4_bin DEFAULT NULL,
+  `otp-change-expiry` datetime DEFAULT NULL,
+  `otp-change-attempts` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `password-v2` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'password_hash() PASSWORD_DEFAULT, kept aligned with the SHA-512 column',
+  `verification-expiry` datetime DEFAULT NULL,
+  `verification-attempts` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `deleting-attempts` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `password-change-code` varchar(512) COLLATE utf8mb4_bin DEFAULT NULL,
+  `password-change-expiry` datetime DEFAULT NULL,
+  `password-change-attempts` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `history-enabled` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 = this account can read its sync history, 0 = denied (default)',
   PRIMARY KEY (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for `user_keys` (v2 encryption key storage)
+--
+
+CREATE TABLE IF NOT EXISTS `user_keys` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user-id` varchar(128) CHARACTER SET ascii COLLATE ascii_bin NOT NULL COMMENT 'users.email = SHA-512 hex of the email',
+  `key-version` int(10) UNSIGNED NOT NULL DEFAULT '1',
+  `wrapped-key` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'nfk1:base64(salt|iv|AES-256-CBC(DEK)) encrypted with the current password',
+  `key-check` varchar(128) CHARACTER SET ascii COLLATE ascii_bin NOT NULL COMMENT 'SHA-512 fingerprint of the DEK: verifies the unwrap',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 = active, 0 = retired',
+  `created-date` datetime NOT NULL,
+  `updated-date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_user_key_version` (`user-id`,`key-version`),
+  KEY `idx_user_status` (`user-id`,`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

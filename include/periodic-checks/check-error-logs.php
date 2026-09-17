@@ -1,80 +1,41 @@
 <?php
+/**
+ * Periodic cleanup: deletes error log entries older than 30 days.
+ * Intended to be called by a cron job.
+ */
+
 include_once($_SERVER['DOCUMENT_ROOT'] . "/include/credentials.php");
 global $error_logs_table, $localhost_db, $username_db, $password_db, $database_notefox;
-header("Content-Type:application/json");
-//$request = json_decode(file_get_contents('php://input'), true); //POST request
-$request = $_GET; //GET request
+header("Content-Type: application/json");
 
-$condition = true; //no conditions
-if ($condition) {
-    $found = false;
-    $invalid = false;
+$c = new mysqli($localhost_db, $username_db, $password_db, $database_notefox);
+if (!$c || $c->connect_errno) {
+    echo json_encode(array("code" => "500", "status" => "Error", "description" => "Database connection failed"));
+    exit;
+}
+$c->set_charset("utf8mb4");
 
-    $response = null;
+$stmt = $c->prepare("SELECT COUNT(*) AS `total` FROM `$error_logs_table` WHERE `inserted-date` < NOW() - INTERVAL 30 DAY");
+$stmt->execute();
+$total = (int)$stmt->get_result()->fetch_assoc()["total"];
+$stmt->close();
 
-    //Using prepared statements -> it's the safest way for MySQL queries
-    if ($c = new mysqli($localhost_db, $username_db, $password_db, $database_notefox)) {
-        $c->set_charset("utf8mb4");
+if ($total === 0) {
+    $c->close();
+    echo json_encode(array("code" => "200", "status" => "Successful", "data" => array("deleted" => 0)));
+    exit;
+}
 
-        // Snippet 1: Check if there are any rows with the ip_address in the last 30 days
-        $query_exists = "SELECT COUNT(*) AS `total_records` FROM `$error_logs_table` WHERE `inserted-date` < NOW() - INTERVAL 30 DAY";
-        $stmt_exists = $c->prepare($query_exists);
-        //$stmt_exists->bind_param();
-        if ($stmt_exists->execute()) {
-            //successful
-        } else {
-            $invalid = true;
-        }
-        $result_exists = $stmt_exists->get_result();
-        $stmt_exists->close();
-
-        if ($result_exists->num_rows === 1) {
-            $res = $result_exists->fetch_array();
-
-            if ($res["total_records"] > 0) {
-                // Delete all rows older than 60 days
-                //$query_delete = "UPDATE `$error_logs_table` SET `context` = 'deleted' WHERE `inserted-date` < NOW() - INTERVAL 30 DAY";
-                $query_delete = "DELETE FROM `$error_logs_table` WHERE `inserted-date` < NOW() - INTERVAL 30 DAY";
-                if ($c->query($query_delete)) {
-                    $found = true;
-                    $response = echo_result($res["total_records"]);
-                } else {
-                    $invalid = true;
-                }
-            }
-        }
-        $c->close();
-    }
-
-    if ($invalid) {
-        $response = echo_invalid();
-    }
-
-    echo json_encode($response);
+$stmt = $c->prepare("DELETE FROM `$error_logs_table` WHERE `inserted-date` < NOW() - INTERVAL 30 DAY");
+if ($stmt->execute()) {
+    $deleted = $stmt->affected_rows;
+    $stmt->close();
+    $c->close();
+    echo json_encode(array("code" => "200", "status" => "Successful", "data" => array("deleted" => $deleted)));
 } else {
-    echo_null();
+    $error = $stmt->error;
+    $stmt->close();
+    $c->close();
+    echo json_encode(array("code" => "500", "status" => "Error", "description" => "Delete failed - " . $error));
 }
-
-function echo_null()
-{
-    echo json_encode(null);
-}
-
-function echo_invalid()
-{
-    $response["code"] = "400";
-    $response["status"] = "Error";
-    $response["description"] = "No error data found or invalid request";
-    return $response;
-}
-
-function echo_result($count)
-{
-    $response["code"] = "200";
-    $response["status"] = "Successful";
-    $data["deleting_number"] = $count;
-    $response["data"] = $data;
-    return $response;
-}
-
 ?>

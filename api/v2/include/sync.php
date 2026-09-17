@@ -501,38 +501,18 @@ function v2_sync_effective_local_date($c, $user_id, $legacy_table, $updated_loca
 }
 
 /**
- * Keeps a SINGLE mirror row in the legacy table of a service, so that clients
- * still on v1 read up to date notes and a password change only has to
- * re-encrypt one row (v1 re-encrypts `LIMIT 50` rows and corrupts the rest).
- * Returns the id of the mirror row.
+ * Inserts a new row in the legacy table for each sync, building a full
+ * history of past saves. v1 clients read the newest row (ORDER BY
+ * inserted-date DESC LIMIT 1), so they always see the latest data.
+ * Returns the id of the new row.
  */
 function v2_sync_write_legacy_mirror($c, $user_id, $legacy_table, $password, $plaintext, $updated_locally, $now, $ip_address, $snapshot)
 {
-    // A missing (or incomplete) mirror table must not fail the snapshot write:
-    // the v2 data is saved, only the v1 clients stop seeing it.
     if (!v2_sync_legacy_available($c, $legacy_table)) {
         return null;
     }
 
     $encrypted = encryptTextWithPassword($plaintext, $password);
-
-    $mirror_id = null;
-    if ($snapshot !== null && v2_sync_has_legacy_id_column($c) && $snapshot["legacy-data-id"] !== null) {
-        $mirror_id = (int)$snapshot["legacy-data-id"];
-    }
-
-    if ($mirror_id !== null) {
-        $affected = db_execute(
-            $c,
-            "UPDATE `$legacy_table` SET `data` = ?, `updated-locally-date` = ?, `inserted-date` = ?, `ip-address` = ? WHERE `id` = ? AND `user-id` = ?",
-            "ssssis",
-            array($encrypted, $updated_locally, $now, $ip_address, $mirror_id, $user_id)
-        );
-        // 0 rows means the mirror row is gone: a new one is inserted below.
-        if ($affected > 0) {
-            return $mirror_id;
-        }
-    }
 
     $affected = db_execute(
         $c,
@@ -548,8 +528,9 @@ function v2_sync_write_legacy_mirror($c, $user_id, $legacy_table, $password, $pl
 }
 
 /**
- * Re-encrypts the single legacy mirror row of one service after a password
- * change. A service without a legacy table has nothing to do.
+ * Re-encrypts ALL legacy rows of one service after a password change.
+ * Rows encrypted with an even older password (from a previous change)
+ * are silently skipped — they remain undecryptable.
  */
 function v2_sync_rewrite_legacy_mirror($c, $user_id, $service, $old_password, $new_password)
 {
@@ -558,23 +539,36 @@ function v2_sync_rewrite_legacy_mirror($c, $user_id, $service, $old_password, $n
         return true;
     }
 
-    $legacy = v2_sync_legacy_row($c, $user_id, $legacy_table);
-    if ($legacy === null) {
+    $rows = db_select(
+        $c,
+        "SELECT `id`, `data` FROM `$legacy_table` WHERE `user-id` = ?",
+        "s",
+        array($user_id)
+    );
+    if (count($rows) === 0) {
         return true;
     }
 
-    $plain = decryptTextWithPassword($legacy["data"], $old_password);
-    if ($plain === false || $plain === null) {
-        return false;
+    foreach ($rows as $row) {
+        if ($row["data"] === null || $row["data"] === "") {
+            continue;
+        }
+        $plain = decryptTextWithPassword($row["data"], $old_password);
+        if ($plain === false || $plain === null) {
+            continue;
+        }
+        $encrypted = encryptTextWithPassword($plain, $new_password);
+        $ok = db_execute(
+            $c,
+            "UPDATE `$legacy_table` SET `data` = ? WHERE `id` = ?",
+            "si",
+            array($encrypted, (int)$row["id"])
+        );
+        if ($ok < 0) {
+            return false;
+        }
     }
-
-    $encrypted = encryptTextWithPassword($plain, $new_password);
-    return db_execute(
-        $c,
-        "UPDATE `$legacy_table` SET `data` = ? WHERE `id` = ?",
-        "si",
-        array($encrypted, (int)$legacy["id"])
-    ) >= 0;
+    return true;
 }
 
 /**
@@ -648,11 +642,8 @@ function v2_sync_history_list($c, $user_id, $service, $limit = 30)
 function v2_sync_history_entry($c, $user_id, $service, $id, $password)
 {
     $legacy_table = sav_service_legacy_table($service);
-    if ($legacy_table === null) {
-        return null;
-    }
-    if (!v2_sync_legacy_available($c, $legacy_table)) {
-        return null;
+    if ($legacy_table === null || !v2_sync_legacy_available($c, $legacy_table)) {
+        return array("error" => "unavailable");
     }
 
     $row = db_select_one(
@@ -665,9 +656,14 @@ function v2_sync_history_entry($c, $user_id, $service, $id, $password)
         return null;
     }
 
-    $plain = decryptTextWithPassword($row["data"], $password);
+    $raw = $row["data"];
+    if ($raw === null || $raw === "") {
+        return array("error" => "decrypt", "debug" => "data column is null or empty");
+    }
+
+    $plain = decryptTextWithPassword($raw, $password);
     if ($plain === false || $plain === null) {
-        return null;
+        return array("error" => "decrypt");
     }
 
     return array(

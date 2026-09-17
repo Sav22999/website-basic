@@ -37,7 +37,7 @@ The public paths do not change: everything stays under `/api/v2`.
 | --- | --- | --- |
 | Sync | one new row per save, read back with `ORDER BY updated-locally-date DESC`: **a device with a skewed clock wins forever** | one snapshot per account **and service**, with a server-side `revision`, conflicts reported with `409` |
 | Conflicts | none, the last write silently wins | `base-revision` + `409` with the current data so the client can merge |
-| Password change | decrypts and re-encrypts `LIMIT 50` rows: everything older becomes **unreadable forever** | only the data key is re-wrapped, the notes are never touched |
+| Password change | decrypts and re-encrypts `LIMIT 50` rows: everything older becomes **unreadable forever** | only the data key is re-wrapped, the notes are never touched; all legacy history rows are re-encrypted with the new password |
 | `logout`, `data/get/last-update` | authenticated with the `login-id` **alone** | `login-id` **and** `token` always required |
 | Confirmation email | sent to the address in the payload | sent only to an address whose hash matches the account |
 | `login-id` | `sha512(email + ip + timestamp)`, guessable | 32 random bytes |
@@ -112,8 +112,7 @@ answer `503`.
 > Blocks 6, 7, 9, 10 and the `legacy-data-id` column are **optional**: the API
 > still answers (the core detects the missing columns), but the two
 > `otp/disable` endpoints answer `503`, the codes lose their expiry/attempt
-> limit, the legacy mirror row is recreated instead of being updated and the
-> sync history stays denied to every account. `GET /status` and
+> limit and the sync history stays denied to every account. `GET /status` and
 > `php api/v2/tests/schema-check.php` report exactly which block is missing.
 
 Variables to add in `include/credentials.php` and `include/credentials-sample.php`
@@ -199,7 +198,8 @@ service │ other   : revision  7 →  8   data (DEK)   updated-server   (no mir
                                        │ mirror, only for services with a
                                        │ "legacy-table" (password, v1 format)
                                        ▼
-                    v1 data table (1 single row)  ◄── read by the v1 clients
+                    v1 data table (1 row per sync = history)
+                       newest row  ◄── read by the v1 clients
 ```
 
 The `revision` belongs to the pair **(account, service)**: writing on one
@@ -293,6 +293,7 @@ v1 behaviour), but it still receives the `revision` in the answer.
 | 431 | 409 | The OTP is already in the requested state |
 | 432 | 409 | Sync history is not available for this service |
 | 433 | 403 | Sync history is not enabled for this account (`users`.`history-enabled` = 0) |
+| 434 | 409 | This history entry was encrypted with a previous password and cannot be decrypted |
 | 452 | 429 | A deletion code has already been requested |
 | 500 | 500 | Internal error (details only in the server log) |
 | 503 | 503 | Service temporarily unavailable |
@@ -575,8 +576,9 @@ Conflict (HTTP 409):
 compared against the revision **of that service only**.
 `updated-locally` must be a real date, not in the future (`400` otherwise);
 `data` above 1.5 MB → `413` and nothing is written.
-Only a service that declares a `legacy-table` (today Notefox) also refreshes
-the v1 mirror row; any other service never touches a v1 table.
+Only a service that declares a `legacy-table` (today Notefox) also inserts a
+new row in the v1 data table, building the sync history; any other service
+never touches a v1 table.
 
 #### `POST /data/get`
 
@@ -650,8 +652,9 @@ It is read-only - no endpoint can change it.
 ```
 
 Dated list (newest first, up to 30 entries) of the past synced versions of a
-service, read from its v1 legacy mirror table - the only place a history of
-past saves is kept (the snapshot table only holds the current one). Only the
+service, read from its legacy data table. Every v2 sync inserts a new row, so
+the history grows with each save (the snapshot table only holds the current
+version). A periodic cleanup keeps at most 200 entries per account. Only the
 metadata is returned, never decrypted: cheap enough to be called on every page
 load. `432` **only** when the service declares no `legacy-table`: a service that
 declares one but has nothing stored yet - or whose table cannot be read at all
@@ -685,7 +688,10 @@ in `history-enabled`. Denying the history changes nothing else: the sync itself,
 decrypts before answering, exactly like `POST /data/get`. `433` when the account
 has no sync history permission (checked before any row is read or decrypted),
 `432` when the service declares no `legacy-table`, `201` when `id` does not
-exist (or does not belong to this account).
+exist (or does not belong to this account), `434` when the entry exists but was
+encrypted with a previous password and cannot be decrypted (a password change
+re-encrypts all legacy rows it can open, but entries encrypted with an even
+older password remain unreadable).
 
 ---
 
@@ -734,11 +740,12 @@ rate limited (3 per 15 minutes). `415` when no change has been requested.
 Second and last step: single-use code, expiry, max 5 attempts. Only the DEK is
 re-wrapped: **no note is re-encrypted**, and since the key is a single one for
 the whole account the data of **every service** stays readable.
-The username and the legacy mirror row of each service that has one are
-re-encrypted, every other session is invalidated
-and a new session is returned to the caller. Everything in one transaction: on
-an error nothing is left half-written (v1 could leave the account in a corrupt
-state and answer a literal `null`).
+The username and **all** legacy rows of each service that has a legacy table are
+re-encrypted with the new password (rows encrypted with an even older password
+are silently skipped), every other session is invalidated and a new session is
+returned to the caller. Everything in one transaction: on an error nothing is
+left half-written (v1 could leave the account in a corrupt state and answer a
+literal `null`).
 
 #### `POST /delete`
 
@@ -813,18 +820,19 @@ platform.
 
 - The same account can be used **at the same time** by a v1 client and a v2
   client.
-- Every v2 write **on the `notefox` service** refreshes a single mirror row in
-  the v1 data table (`$data_table`, `data` on notefox.eu), in the v1 format
-  (encrypted with the password), with a date that is never older than the
-  existing ones: the old extension keeps reading up to date notes. A service
-  without a `legacy-table` has no mirror at all.
+- Every v2 write **on the `notefox` service** inserts a new row in the v1 data
+  table (`$data_table`, `data` on notefox.eu), in the v1 format (encrypted with
+  the password), with a date that is never older than the existing ones: the old
+  extension reads the newest row and keeps seeing up to date notes. A service
+  without a `legacy-table` has no mirror at all. A periodic cleanup
+  (`include/periodic-checks/check-data.php`) keeps at most 200 rows per account.
 - Every v2 read of such a service checks whether a v1 client wrote more
   recently and, if so, promotes that row into the snapshot by increasing the
   revision.
 - A token issued by v2 works on the v1 endpoints, and vice versa: the account
   layer is the same for everybody.
-- The historical rows of the v1 data table are never deleted or modified, and
-  that table stays the exclusive property of Notefox.
+- The v1 data table stays the exclusive property of Notefox. Its rows are the
+  sync history: a periodic cleanup removes the oldest when a user exceeds 200.
 - A v2 client that never sends `service` behaves exactly as before the
   multi-service change.
 

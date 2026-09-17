@@ -356,4 +356,5 @@ function v1v2_legacy_data_inserted($c, $user_id, $data_table)
         $stmt->close();
     }
 }
+
 ?>

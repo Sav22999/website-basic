@@ -2,3 +2,4 @@
 include/credentials.php
 .idea/*
 .junie/*
+.claude/*

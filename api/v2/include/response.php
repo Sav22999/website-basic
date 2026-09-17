@@ -35,6 +35,7 @@ define("ERR_KEY_UNAVAILABLE", 430);
 define("ERR_OTP_ALREADY_SET", 431);
 define("ERR_HISTORY_UNAVAILABLE", 432);
 define("ERR_HISTORY_FORBIDDEN", 433);
+define("ERR_HISTORY_DECRYPT_FAILED", 434);
 define("ERR_DELETING_PENDING", 452);
 define("ERR_INTERNAL", 500);
 define("ERR_UNAVAILABLE", 503);
@@ -69,6 +70,7 @@ function api_catalogue()
         ERR_OTP_ALREADY_SET => array("The two-factor authentication is already in the requested state", 409),
         ERR_HISTORY_UNAVAILABLE => array("Sync history is not available for this service", 409),
         ERR_HISTORY_FORBIDDEN => array("Sync history is not enabled for this account", 403),
+        ERR_HISTORY_DECRYPT_FAILED => array("This history entry was encrypted with a previous password and cannot be decrypted", 409),
         ERR_DELETING_PENDING => array("You already requested a deleting code. Please wait for the email or try again later.", 429),
         ERR_INTERNAL => array("Internal error", 500),
         ERR_UNAVAILABLE => array("Service temporarily unavailable", 503),
