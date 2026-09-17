@@ -1,0 +1,20 @@
+# Every v2 endpoint lives at api/v2/<endpoint>/index.php (a real directory).
+# A request WITHOUT the trailing slash (e.g. POST /api/v2/login) would normally
+# be answered by mod_dir with a 301 redirect that adds it, and browsers turn a
+# POST into a GET when following a 301/302: the call would lose its body and
+# never reach the endpoint.
+#
+# Instead of disabling DirectorySlash (which makes those URLs 404, since
+# mod_dir then no longer applies DirectoryIndex), rewrite them internally to
+# the directory's index.php: no redirect, method and body preserved. Requests
+# that already have the trailing slash keep being served by DirectoryIndex.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteCond %{REQUEST_FILENAME}/index.php -f
+    RewriteRule ^(.+[^/])$ $1/index.php [L]
+</IfModule>
+
+# No directory listing under api/v2/ in any case.
+Options -Indexes

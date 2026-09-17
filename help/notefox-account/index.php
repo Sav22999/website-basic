@@ -16,6 +16,9 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         <div class="center-content justify">
             <h1 class="title-section center">Notefox Account</h1>
             <p>
+                <i>Looking for information about <b>Notefox Account v2 (Sav Account)</b>? Read the <a href="../notefox-account-v2/">Notefox Account v2 guide</a>.</i>
+            </p>
+            <p>
                 Notefox Account allows you to synchronize your notes between your devices. With a Notefox Account, you
                 can access your notes from any device, and they will always be up-to-date.
                 <br>

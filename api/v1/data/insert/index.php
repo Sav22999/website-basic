@@ -1,6 +1,7 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/include/credentials.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/include/api-functions.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/include/v1-v2-compat.php");
 global $redirect_table, $opened_table, $localhost_db, $username_db, $password_db, $database_notefox;
 header("Content-Type:application/json");
 $post = json_decode(file_get_contents('php://input'), true); //POST request
@@ -77,6 +78,10 @@ if ($condition) {
                         $c->query("UNLOCK TABLES");
                         $stmt->execute();
                         $stmt->close();
+
+                        //a newer row exists now: the v2 snapshot must not keep
+                        //using an older one as its v1 mirror (no-op without v2)
+                        v1v2_legacy_data_inserted($c, $user_id, $data_table);
 
                         $response = echo_result(null);
 

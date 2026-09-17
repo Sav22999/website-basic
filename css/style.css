@@ -185,6 +185,17 @@ a:visited {
     cursor: pointer;
     border: 0px solid transparent;
     transition: var(--transition);
+    font-family: var(--font-family);
+    line-height: normal;
+    text-align: center;
+    text-decoration: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.button:disabled, .button[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .button:hover, .button:active {
@@ -638,4 +649,178 @@ hr.hr-big-space {
     .notefox-4-0-page img, .notefox-new-version-page img {
         width: 100%;
     }
+}
+
+/* my/ account section: forms, inline messages and sync history list */
+
+.form-container {
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+.form-field {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: var(--font-size-small);
+}
+
+.form-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    border: 0px solid transparent;
+    background-color: var(--secondary-color-variant);
+    color: var(--on-secondary-color);
+    font-size: var(--font-size-normal);
+}
+
+.form-input:focus {
+    outline: 2px solid var(--primary-color);
+}
+
+.form-actions {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Every action of a form looks the same, whatever the element (`button` or
+   `a`) and the variant: only the colour tells the primary action apart. */
+.form-actions .button, .form-actions .button-secondary {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: var(--font-size-normal);
+    vertical-align: middle;
+}
+
+.form-message {
+    border-radius: var(--border-radius);
+    padding: 10px 15px;
+    margin: 10px 0px;
+    font-size: var(--font-size-small);
+    text-align: left;
+}
+
+/* Action shown inside a message (e.g. the link to a help page): it uses the
+   secondary button style, so it is clearly clickable, and it is aligned to the
+   right side of the message. */
+.form-message-action {
+    display: block;
+    width: fit-content;
+    margin: 10px 0px 0px auto;
+}
+
+.form-message--error {
+    background-color: rgba(220, 53, 69, 0.25);
+    color: #ffb3bb;
+}
+
+.form-message--success {
+    background-color: rgba(40, 167, 69, 0.25);
+    color: #b3f0c1;
+}
+
+.account-links {
+    text-align: left;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Same size for every entry of the list: `button` and `a`, primary and
+   secondary variant, are only told apart by their colour. */
+.account-links .button, .account-links .button-secondary {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0px 0px 10px 0px;
+    padding: 10px 20px;
+    font-size: var(--font-size-normal);
+    text-align: center;
+}
+
+.account-section {
+    max-width: 420px;
+    margin: 25px auto;
+    padding: 15px 20px;
+    box-sizing: border-box;
+    border-radius: var(--border-radius);
+    background-color: var(--tertiary-color);
+    color: var(--on-tertiary-color);
+    text-align: left;
+}
+
+.account-section h2 {
+    margin: 0px 0px 10px 0px;
+    font-size: var(--font-size-normal);
+    font-weight: 600;
+}
+
+.account-section p {
+    margin: 0px 0px 10px 0px;
+    font-size: var(--font-size-small);
+}
+
+.account-section .button, .account-section .button-secondary {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: var(--font-size-normal);
+}
+
+.account-status {
+    display: inline-block;
+    border-radius: var(--border-radius);
+    padding: 2px 10px;
+    margin-bottom: 10px;
+    font-size: var(--font-size-very-small);
+    background-color: rgba(40, 167, 69, 0.25);
+    color: #b3f0c1;
+}
+
+.account-status--off {
+    background-color: rgba(220, 53, 69, 0.25);
+    color: #ffb3bb;
+}
+
+.history-list {
+    list-style: none;
+    padding: 0px;
+    margin: 20px auto;
+    max-width: 600px;
+    text-align: left;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: var(--tertiary-color);
+    color: var(--on-tertiary-color);
+    border-radius: var(--border-radius);
+    padding: 10px 15px;
+    margin-bottom: 10px;
+}
+
+.history-item--current {
+    background-color: var(--primary-color-variant-transparence);
+}
+
+.history-item-date {
+    font-size: var(--font-size-small);
+}
+
+.history-item-badge {
+    font-size: var(--font-size-very-very-small);
+    background-color: var(--primary-color);
+    color: var(--on-primary-color);
+    border-radius: var(--border-radius);
+    padding: 2px 8px;
+    margin-left: 10px;
 }

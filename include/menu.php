@@ -32,6 +32,11 @@ if (!isset($selected_menu) || $selected_menu == "") {
                      echo "sel";
                  } ?>">Donate
             </div>
+            <div onclick="<?php echo navigateTo('my') ?>"
+                 class="nav-button <?php if ($selected_menu == "my") {
+                     echo "sel";
+                 } ?>">My Account
+            </div>
             <div onclick="<?php echo navigateTo('docs') ?>"
                  class="nav-button hide-on-mobile <?php if ($selected_menu == "docs") {
                      echo "sel";

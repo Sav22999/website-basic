@@ -1,6 +1,7 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/include/credentials.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/include/api-functions.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/include/v1-v2-compat.php");
 global $redirect_table, $opened_table, $localhost_db, $username_db, $password_db, $database_notefox;
 header("Content-Type:application/json");
 $post = json_decode(file_get_contents('php://input'), true); //POST request
@@ -69,7 +70,17 @@ if ($condition) {
                 $stmt->execute();
                 $stmt->close();
 
-                $stmt = $c->prepare("SELECT * FROM $data_table WHERE `user-id` = ? LIMIT 50"); //update only the latest 50 data
+                //re-wrap the v2 data key with the new password and realign
+                //`password-v2`: without this the key would stay encrypted with
+                //the old password (no-op without the v2 tables)
+                v1v2_password_changed($c, $user_id, $password, $new_password);
+
+                //the rows used as the v1 mirror of a v2 snapshot must be
+                //re-encrypted even when they fall outside of the LIMIT below
+                $mirror_ids = v1v2_mirror_data_ids($c, $user_id);
+                $updated_ids = array();
+
+                $stmt = $c->prepare("SELECT * FROM $data_table WHERE `user-id` = ? ORDER BY `id` DESC LIMIT 50"); //update only the latest 50 data
                 $stmt->bind_param("s", $user_id);
                 $stmt->execute();
                 $result = $stmt->get_result();
@@ -80,6 +91,7 @@ if ($condition) {
                     $new_data = encryptTextWithPassword(decryptTextWithPassword($row["data"], $password), $new_password);
                     $old_data = $row["data"];
                     $id = $row["id"];
+                    $updated_ids[] = (int)$id;
 
                     $stmt = $c->prepare("UPDATE $data_table SET `data` = ? WHERE `user-id` = ? AND `data` = ? AND `id` = ?");
                     $c->query("LOCK TABLES $data_table WRITE");
@@ -87,6 +99,13 @@ if ($condition) {
                     $c->query("UNLOCK TABLES");
                     $stmt->execute();
                     $stmt->close();
+                }
+
+                foreach ($mirror_ids as $mirror_id) {
+                    if (in_array($mirror_id, $updated_ids, true)) {
+                        continue;
+                    }
+                    v1v2_reencrypt_legacy_row($c, $data_table, $user_id, $mirror_id, $password, $new_password);
                 }
 
                 $new_password_token = encryptTextWithPassword($new_password, $token);

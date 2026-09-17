@@ -1,6 +1,7 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/include/credentials.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/include/api-functions.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/include/v1-v2-compat.php");
 global $redirect_table, $opened_table, $localhost_db, $username_db, $password_db, $database_notefox;
 header("Content-Type:application/json");
 $post = json_decode(file_get_contents('php://input'), true); //POST request
@@ -39,6 +40,7 @@ if ($condition) {
                 //get all login-id in logins with the user-id=$email_hash and delete the token in tokens with the login-id
                 //then, delete all login-id in logins with the user-id=$email_hash
                 //then, delete all data linked to the user-id=$email_hash
+                //then, delete the encryption key and the snapshots of the v2 tables, if any
                 //finally, delete the user in users with the email=$email_hash and password=$password
                 //if everything is ok, send an email (sendEmailDeleted)
 
@@ -65,6 +67,11 @@ if ($condition) {
                 $c->query("UNLOCK TABLES");
                 $stmt_delete_data->execute();
                 $stmt_delete_data->close();
+
+                //the user-id is the hash of the email, so it comes back with the
+                //address: without this the next signup with the same email would
+                //inherit the key and the snapshots (no-op without the v2 tables)
+                v1v2_account_deleted($c, $email_hash);
 
                 $query_delete_user = "DELETE FROM $users_table WHERE `email` = ? AND `password` = ?";
                 $stmt_delete_user = $c->prepare($query_delete_user);

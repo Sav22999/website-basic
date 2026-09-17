@@ -1,0 +1,15 @@
+{
+  "name": "notefox/api-v2",
+  "description": "Notefox Account API v2 - SMTP email sending",
+  "type": "project",
+  "license": "GPL-3.0-or-later",
+  "require": {
+    "php": ">=7.4",
+    "symfony/mailer": "^5.4"
+  },
+  "config": {
+    "platform": {
+      "php": "7.4.33"
+    }
+  }
+}

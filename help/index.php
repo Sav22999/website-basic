@@ -25,6 +25,9 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                        onclick="location.href='mailto:saverio.morelli@protonmail.com'">
             </div>
             <hr class="hr-big-space">
+            <button type="button" class="help-faq-item" onclick="goto('./status/')">Check services status &amp; health detection</button>
+            <button type="button" class="help-faq-item" onclick="goto('./notefox-account-v2/')">Notefox Account v2 (Sav Account) &amp; what's new</button>
+            <button type="button" class="help-faq-item" onclick="goto('./how-to-get-history-sync/')">How to get the Sync history</button>
             <button type="button" class="help-faq-item" onclick="goto('./download-error-logs')">How to download the Error logs file</button>
             <button type="button" class="help-faq-item" onclick="goto('./delete-error-logs')">How to delete the Error logs file</button>
             <button type="button" class="help-faq-item" onclick="goto('./get-data-for-debugging')">How to get data for debugging</button>

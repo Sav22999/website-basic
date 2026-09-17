@@ -1,0 +1,16 @@
+{
+    "name": "notefox/test-email",
+    "description": "Pagine di test per l'invio email di notefox.eu con librerie/servizi open-source differenti.",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "phpmailer/phpmailer": "^6.9",
+        "symfony/mailer": "^5.4"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "platform": {
+            "php": "7.4.33"
+        }
+    }
+}
