@@ -12,9 +12,8 @@
 
 include_once(__DIR__ . "/../_shared.php");
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 
 // L'autoload di Composer puo' fallire (es. dipendenze installate per una
 // versione di PHP diversa da quella del server): in quel caso la pagina resta

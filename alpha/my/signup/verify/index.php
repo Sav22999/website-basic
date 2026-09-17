@@ -10,7 +10,7 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/my/signup/" class="back-link">&larr; Back to signup</a>
+        <a href="/alpha/my/signup/" class="back-link">Back to signup</a>
         <h1 class="text-center">Verify your account</h1>
         <p>
             We sent you an email with a verification code. Enter it below together with your password to complete
@@ -41,7 +41,7 @@ include_once($root_path . "/alpha/include/header.php");
             </div>
         </form>
 
-        <p class="text-center">
+        <p class="text-center" style="margin-top: 24px;">
             Did not receive the code?
             <a href="#" id="resend-code">Send a new code</a>
         </p>

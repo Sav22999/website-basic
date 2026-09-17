@@ -10,7 +10,7 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/my/account/" class="back-link">&larr; Back to account</a>
+        <a href="/alpha/my/account/" class="back-link">Back to account</a>
         <h1 class="text-center">Two-step verification</h1>
         <p>
             When two-step verification is enabled, every login needs both your password and a code sent to your

@@ -16,7 +16,8 @@ include_once($root_path . "/alpha/include/header.php");
 
         <p>Notefox: websites notes is an open-source project developed by <strong>Saverio Morelli</strong>
             (<a href="https://saveriomorelli.com/contact-me" target="_blank" rel="noopener">saveriomorelli.com/contact-me</a>),
-            based in <strong>Italy</strong>. The project is hosted on <strong>Aruba.it</strong> servers, located in Italy.</p>
+            based in <strong>Italy</strong>. The project is hosted on <strong>Aruba.it</strong> servers, located in
+            Italy.</p>
 
         <h2>1. Scope</h2>
         <p>These Terms of Service apply to the use of the <strong>Notefox Account</strong>, as well as to the optional
@@ -57,7 +58,8 @@ include_once($root_path . "/alpha/include/header.php");
 
         <h2>7. Contact</h2>
         <p>For questions or more details, please visit
-            <a href="https://saveriomorelli.com/contact-me" target="_blank" rel="noopener">saveriomorelli.com/contact-me</a>.</p>
+            <a href="https://saveriomorelli.com/contact-me" target="_blank"
+               rel="noopener">saveriomorelli.com/contact-me</a>.</p>
     </div>
 </main>
 

@@ -13,10 +13,10 @@
 include_once(__DIR__ . "/_shared.php");
 
 $tests = array(
-    array("dir" => "new1", "label" => "Test 1"),
-    array("dir" => "new2", "label" => "Test 2"),
-    array("dir" => "new3", "label" => "Test 3"),
-    array("dir" => "new4", "label" => "Test 4"),
+        array("dir" => "new1", "label" => "Test 1"),
+        array("dir" => "new2", "label" => "Test 2"),
+        array("dir" => "new3", "label" => "Test 3"),
+        array("dir" => "new4", "label" => "Test 4"),
 );
 
 $root = testEmailRootPath();
@@ -30,13 +30,34 @@ $selected_menu = "";
     echo testEmailPageStyle();
     ?>
     <style>
-        .test-email-list { margin: 30px 0px; }
-        .test-email-item { display: block; text-decoration: none; text-align: left;
-            background-color: var(--primary-color-transparence-2); border-radius: var(--border-radius);
-            padding: 15px 25px; margin-bottom: 15px; transition: var(--transition); }
-        .test-email-item:hover { background-color: var(--primary-color-transparence); text-decoration: none; }
-        .test-email-item .name { font-size: var(--font-size-big); }
-        .test-email-item .hint { font-size: var(--font-size-very-small); color: var(--on-secondary-color); }
+        .test-email-list {
+            margin: 30px 0px;
+        }
+
+        .test-email-item {
+            display: block;
+            text-decoration: none;
+            text-align: left;
+            background-color: var(--primary-color-transparence-2);
+            border-radius: var(--border-radius);
+            padding: 15px 25px;
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+
+        .test-email-item:hover {
+            background-color: var(--primary-color-transparence);
+            text-decoration: none;
+        }
+
+        .test-email-item .name {
+            font-size: var(--font-size-big);
+        }
+
+        .test-email-item .hint {
+            font-size: var(--font-size-very-small);
+            color: var(--on-secondary-color);
+        }
     </style>
 </head>
 <body>

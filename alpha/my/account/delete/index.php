@@ -10,7 +10,7 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/my/account/" class="back-link">&larr; Back to account</a>
+        <a href="/alpha/my/account/" class="back-link">Back to account</a>
         <h1 class="text-center">Delete account</h1>
         <p>
             Deleting your account is permanent: every synced note and all the data of your account will be erased.

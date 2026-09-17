@@ -315,8 +315,8 @@ if (count($writers) > 0) {
 echo "\nerror catalogue\n";
 $catalogue = api_catalogue();
 check("every code has a description and an HTTP status", count(array_filter($catalogue, function ($entry) {
-    return is_array($entry) && count($entry) === 2 && is_string($entry[0]) && is_int($entry[1]);
-})) === count($catalogue));
+        return is_array($entry) && count($entry) === 2 && is_string($entry[0]) && is_int($entry[1]);
+    })) === count($catalogue));
 check("the conflict is a real 409", $catalogue[ERR_REVISION_CONFLICT][1] === 409);
 check("a payload that is too large is a real 413", $catalogue[ERR_PAYLOAD_TOO_LARGE][1] === 413);
 check("the rate limit is a real 429", $catalogue[ERR_RATE_LIMITED][1] === 429);

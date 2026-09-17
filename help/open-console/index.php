@@ -16,7 +16,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         <div class="center-content justify">
             <h1 class="title-section center">How to open the Console panel</h1>
             <p>
-                The Console panel is a tool included in your web browser that allows you to view and debug some developer
+                The Console panel is a tool included in your web browser that allows you to view and debug some
+                developer
                 data. This data is useful for developers to understand how the application works and to identify any
                 problems.
             </p>

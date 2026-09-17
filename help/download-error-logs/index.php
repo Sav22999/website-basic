@@ -53,7 +53,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <br>
                 • Errors details (datetime, context, error message and web page where the error occurred)
                 <br>
-                <b>All the information contained and sent, will be treated with the utmost confidentiality and will not be
+                <b>All the information contained and sent, will be treated with the utmost confidentiality and will not
+                    be
                     shared with third parties.</b>
             </p>
         </div>

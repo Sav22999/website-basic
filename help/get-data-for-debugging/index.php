@@ -16,7 +16,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         <div class="center-content justify">
             <h1 class="title-section center">How to get data for debugging</h1>
             <p>
-                In the release 4.4 it's been implemented shortcuts to get some data useful for debugging from the Settings page in the <a href="/help/open-console/">Console</a>.
+                In the release 4.4 it's been implemented shortcuts to get some data useful for debugging from the
+                Settings page in the <a href="/help/open-console/">Console</a>.
             </p>
             <p>
                 <b>Pay attention to share that data because they can contain important and personal data.</b>
@@ -91,7 +92,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <br>
                 2. Open the Console panel
                 <br>
-                3. Make eight clicks in maximum 5 seconds on the "Manage account" in the "Notefox Account" panel in the "Data & Sync" section
+                3. Make eight clicks in maximum 5 seconds on the "Manage account" in the "Notefox Account" panel in the
+                "Data & Sync" section
                 <br>
                 4. You will see in the Console panel a text which should start with <code>//∨∨∨∨∨∨∨∨∨∨∨∨=NOTEFOX-ACCOUNT-TOKEN=∨∨∨∨∨∨∨∨∨∨∨∨//</code>
                 <br class="big-space">

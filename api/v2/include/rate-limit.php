@@ -121,4 +121,5 @@ function v2_rate_limit_forget_subject($c, $subject)
     }
     db_execute($c, "DELETE FROM `$rate_limits_table` WHERE `subject` = ?", "s", array(v2_rate_limit_subject($subject)));
 }
+
 ?>

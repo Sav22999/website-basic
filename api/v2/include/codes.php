@@ -134,11 +134,11 @@ function v2_code_clear($c, $table, $key_column, $key_value, $columns, $extra_set
     }
 
     return db_execute(
-        $c,
-        "UPDATE `$table` SET " . implode(", ", $sets) . " WHERE `$key_column` = ?",
-        "s",
-        array($key_value)
-    ) >= 0;
+            $c,
+            "UPDATE `$table` SET " . implode(", ", $sets) . " WHERE `$key_column` = ?",
+            "s",
+            array($key_value)
+        ) >= 0;
 }
 
 /**
@@ -190,4 +190,5 @@ function v2_codes_password()
 {
     return v2_code_columns("password-change-code", "password-change-expiry", "password-change-attempts");
 }
+
 ?>

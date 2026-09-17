@@ -74,22 +74,49 @@
 --    Missing: every account is "encryption-ready: false", `GET /status`
 --    reports `keys: false`.
 -- ---------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `user_keys` (
-  `id`            INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user-id`       VARCHAR(128) CHARACTER SET ascii COLLATE ascii_bin NOT NULL
-                  COMMENT 'users.email = SHA-512 hex of the email',
-  `key-version`   INT UNSIGNED NOT NULL DEFAULT 1,
-  `wrapped-key`   TEXT NOT NULL
-                  COMMENT 'nfk1:base64(salt|iv|AES-256-CBC(DEK)) encrypted with the current password',
-  `key-check`     VARCHAR(128) CHARACTER SET ascii COLLATE ascii_bin NOT NULL
-                  COMMENT 'SHA-512 fingerprint of the DEK: verifies the unwrap',
-  `status`        TINYINT(1) NOT NULL DEFAULT 1 COMMENT '1 = active, 0 = retired',
-  `created-date`  DATETIME NOT NULL,
-  `updated-date`  DATETIME NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uq_user_key_version` (`user-id`, `key-version`),
-  KEY `idx_user_status` (`user-id`, `status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+CREATE TABLE IF NOT EXISTS `user_keys`
+(
+    `id`
+    INT
+    UNSIGNED
+    NOT
+    NULL
+    AUTO_INCREMENT,
+    `user-id`
+    VARCHAR
+(
+    128
+) CHARACTER SET ascii COLLATE ascii_bin NOT NULL
+    COMMENT 'users.email = SHA-512 hex of the email',
+    `key-version` INT UNSIGNED NOT NULL DEFAULT 1,
+    `wrapped-key` TEXT NOT NULL
+    COMMENT 'nfk1:base64(salt|iv|AES-256-CBC(DEK)) encrypted with the current password',
+    `key-check` VARCHAR
+(
+    128
+) CHARACTER SET ascii COLLATE ascii_bin NOT NULL
+    COMMENT 'SHA-512 fingerprint of the DEK: verifies the unwrap',
+    `status` TINYINT
+(
+    1
+) NOT NULL DEFAULT 1 COMMENT '1 = active, 0 = retired',
+    `created-date` DATETIME NOT NULL,
+    `updated-date` DATETIME NULL DEFAULT NULL,
+    PRIMARY KEY
+(
+    `id`
+),
+    UNIQUE KEY `uq_user_key_version`
+(
+    `user-id`,
+    `key-version`
+),
+    KEY `idx_user_status`
+(
+    `user-id`,
+    `status`
+)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE =utf8mb4_unicode_ci ROW_FORMAT= DYNAMIC;
 
 
 -- =====================================================================
@@ -106,20 +133,38 @@ CREATE TABLE IF NOT EXISTS `user_keys` (
 --     multi-service (the heart of the new sync).
 --     Comment this block out if you are on branch 2b.
 -- ---------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sav_data_current` (
-  `user-id`               VARCHAR(128) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-  `service`               VARCHAR(32)  CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT 'notefox',
-  `revision`              BIGINT UNSIGNED NOT NULL DEFAULT 1,
-  `data`                  LONGTEXT NOT NULL COMMENT 'encrypted with the DEK of the account',
-  `key-version`           INT UNSIGNED NOT NULL DEFAULT 1,
-  `updated-locally-date`  DATETIME NULL DEFAULT NULL COMMENT 'informational only (client clock)',
-  `updated-server-date`   DATETIME NOT NULL,
-  `ip-address`            VARCHAR(100) NULL DEFAULT NULL,
-  `legacy-data-id`        BIGINT UNSIGNED NULL DEFAULT NULL
-                          COMMENT 'id of the single mirror row in the v1 data table (service notefox only)',
-  PRIMARY KEY (`user-id`, `service`),
-  KEY `idx_service` (`service`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+CREATE TABLE IF NOT EXISTS `sav_data_current`
+(
+    `user-id`
+    VARCHAR
+(
+    128
+) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    `service` VARCHAR
+(
+    32
+) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT 'notefox',
+    `revision` BIGINT UNSIGNED NOT NULL DEFAULT 1,
+    `data` LONGTEXT NOT NULL COMMENT 'encrypted with the DEK of the account',
+    `key-version` INT UNSIGNED NOT NULL DEFAULT 1,
+    `updated-locally-date` DATETIME NULL DEFAULT NULL COMMENT 'informational only (client clock)',
+    `updated-server-date` DATETIME NOT NULL,
+    `ip-address` VARCHAR
+(
+    100
+) NULL DEFAULT NULL,
+    `legacy-data-id` BIGINT UNSIGNED NULL DEFAULT NULL
+    COMMENT 'id of the single mirror row in the v1 data table (service notefox only)',
+    PRIMARY KEY
+(
+    `user-id`,
+    `service`
+),
+    KEY `idx_service`
+(
+    `service`
+)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE =utf8mb4_unicode_ci ROW_FORMAT= DYNAMIC;
 
 -- ---------------------------------------------------------------------
 -- 2b) EXISTING INSTALL - the snapshot table already exists (it was called
@@ -158,17 +203,40 @@ CREATE TABLE IF NOT EXISTS `sav_data_current` (
 --    Missing: `GET /status` reports `rate-limits: false` and the sensitive
 --    endpoints lose their brute-force protection.
 -- ---------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `rate_limits` (
-  `id`            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `bucket`        VARCHAR(64)  NOT NULL COMMENT 'e.g. login, otp-verify, otp-resend',
-  `subject`       VARCHAR(128) NOT NULL COMMENT 'hash of the email or of the IP',
-  `attempts`      INT UNSIGNED NOT NULL DEFAULT 1,
-  `window-start`  DATETIME NOT NULL,
-  `blocked-until` DATETIME NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uq_bucket_subject` (`bucket`, `subject`),
-  KEY `idx_window` (`window-start`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+CREATE TABLE IF NOT EXISTS `rate_limits`
+(
+    `id`
+    BIGINT
+    UNSIGNED
+    NOT
+    NULL
+    AUTO_INCREMENT,
+    `bucket`
+    VARCHAR
+(
+    64
+) NOT NULL COMMENT 'e.g. login, otp-verify, otp-resend',
+    `subject` VARCHAR
+(
+    128
+) NOT NULL COMMENT 'hash of the email or of the IP',
+    `attempts` INT UNSIGNED NOT NULL DEFAULT 1,
+    `window-start` DATETIME NOT NULL,
+    `blocked-until` DATETIME NULL DEFAULT NULL,
+    PRIMARY KEY
+(
+    `id`
+),
+    UNIQUE KEY `uq_bucket_subject`
+(
+    `bucket`,
+    `subject`
+),
+    KEY `idx_window`
+(
+    `window-start`
+)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE =utf8mb4_unicode_ci ROW_FORMAT= DYNAMIC;
 
 
 -- =====================================================================
@@ -190,29 +258,45 @@ CREATE TABLE IF NOT EXISTS `rate_limits` (
 --   doesn't exist`), so a wrong name here silently costs you the columns of
 --   that table: run the SELECT below to see what was found.
 -- =====================================================================
-SET @v2_users_table  = 'users';
-SET @v2_logins_table = 'logins';
-SET @v2_tokens_table = 'tokens';
-SET @v2_data_table   = 'data';          -- v1 Notefox data table ($data_table)
+SET
+@v2_users_table  = 'users';
+SET
+@v2_logins_table = 'logins';
+SET
+@v2_tokens_table = 'tokens';
+SET
+@v2_data_table   = 'data';          -- v1 Notefox data table ($data_table)
 
-SELECT 'users'  AS `variable`, @v2_users_table  AS `table`,
-       IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
-           WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table) = 1,
+SELECT 'users'                                     AS `variable`,
+       @v2_users_table                             AS `table`,
+       IF((SELECT COUNT(*)
+           FROM `information_schema`.`TABLES`
+           WHERE `TABLE_SCHEMA` = DATABASE()
+             AND `TABLE_NAME` = @v2_users_table) = 1,
           'found', 'MISSING - fix the name above') AS `state`
 UNION ALL
-SELECT 'logins', @v2_logins_table,
-       IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
-           WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_logins_table) = 1,
+SELECT 'logins',
+       @v2_logins_table,
+       IF((SELECT COUNT(*)
+           FROM `information_schema`.`TABLES`
+           WHERE `TABLE_SCHEMA` = DATABASE()
+             AND `TABLE_NAME` = @v2_logins_table) = 1,
           'found', 'MISSING - fix the name above')
 UNION ALL
-SELECT 'tokens', @v2_tokens_table,
-       IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
-           WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_tokens_table) = 1,
+SELECT 'tokens',
+       @v2_tokens_table,
+       IF((SELECT COUNT(*)
+           FROM `information_schema`.`TABLES`
+           WHERE `TABLE_SCHEMA` = DATABASE()
+             AND `TABLE_NAME` = @v2_tokens_table) = 1,
           'found', 'MISSING - fix the name above')
 UNION ALL
-SELECT 'data',   @v2_data_table,
-       IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
-           WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_data_table) = 1,
+SELECT 'data',
+       @v2_data_table,
+       IF((SELECT COUNT(*)
+           FROM `information_schema`.`TABLES`
+           WHERE `TABLE_SCHEMA` = DATABASE()
+             AND `TABLE_NAME` = @v2_data_table) = 1,
           'found', 'MISSING - fix the name above');
 
 
@@ -221,28 +305,34 @@ SELECT 'data',   @v2_data_table,
 --    Missing: `GET /status` reports `otp: false` and the `otp/*` endpoints
 --    cannot read the setting.
 -- ---------------------------------------------------------------------
-SET @v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
+SET
+@v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
                   WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table) = 1
                  AND (SELECT COUNT(*) FROM `information_schema`.`COLUMNS`
                       WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table
                         AND `COLUMN_NAME` = 'otp-enabled') = 0,
   CONCAT('ALTER TABLE `', @v2_users_table, '` ADD COLUMN `otp-enabled` TINYINT(1) NOT NULL DEFAULT 1 COMMENT ''1 = OTP by email at login (default), 0 = disabled'''),
   'SELECT 1');
-PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
+PREPARE v2_stmt FROM @v2_sql;
+EXECUTE v2_stmt;
+DEALLOCATE PREPARE v2_stmt;
 
 
 -- ---------------------------------------------------------------------
 -- 5) MANDATORY - Modern password hash, only used by v2 (SHA-512 stays for
 --    v1). Missing: v2 cannot keep the modern hash aligned at login.
 -- ---------------------------------------------------------------------
-SET @v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
+SET
+@v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
                   WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table) = 1
                  AND (SELECT COUNT(*) FROM `information_schema`.`COLUMNS`
                       WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table
                         AND `COLUMN_NAME` = 'password-v2') = 0,
   CONCAT('ALTER TABLE `', @v2_users_table, '` ADD COLUMN `password-v2` VARCHAR(255) NULL DEFAULT NULL COMMENT ''password_hash() PASSWORD_DEFAULT, kept aligned with the SHA-512 column'''),
   'SELECT 1');
-PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
+PREPARE v2_stmt FROM @v2_sql;
+EXECUTE v2_stmt;
+DEALLOCATE PREPARE v2_stmt;
 
 
 -- ---------------------------------------------------------------------
@@ -251,32 +341,41 @@ PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
 --    (no code is emailed and the 2FA stays enabled). The rest of the API is
 --    unaffected. `GET /status` reports `otp-change-code: false`.
 -- ---------------------------------------------------------------------
-SET @v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
+SET
+@v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
                   WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table) = 1
                  AND (SELECT COUNT(*) FROM `information_schema`.`COLUMNS`
                       WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table
                         AND `COLUMN_NAME` = 'otp-change-code') = 0,
   CONCAT('ALTER TABLE `', @v2_users_table, '` ADD COLUMN `otp-change-code` VARCHAR(512) NULL DEFAULT NULL'),
   'SELECT 1');
-PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
+PREPARE v2_stmt FROM @v2_sql;
+EXECUTE v2_stmt;
+DEALLOCATE PREPARE v2_stmt;
 
-SET @v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
+SET
+@v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
                   WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table) = 1
                  AND (SELECT COUNT(*) FROM `information_schema`.`COLUMNS`
                       WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table
                         AND `COLUMN_NAME` = 'otp-change-expiry') = 0,
   CONCAT('ALTER TABLE `', @v2_users_table, '` ADD COLUMN `otp-change-expiry` DATETIME NULL DEFAULT NULL'),
   'SELECT 1');
-PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
+PREPARE v2_stmt FROM @v2_sql;
+EXECUTE v2_stmt;
+DEALLOCATE PREPARE v2_stmt;
 
-SET @v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
+SET
+@v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
                   WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table) = 1
                  AND (SELECT COUNT(*) FROM `information_schema`.`COLUMNS`
                       WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table
                         AND `COLUMN_NAME` = 'otp-change-attempts') = 0,
   CONCAT('ALTER TABLE `', @v2_users_table, '` ADD COLUMN `otp-change-attempts` TINYINT UNSIGNED NOT NULL DEFAULT 0'),
   'SELECT 1');
-PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
+PREPARE v2_stmt FROM @v2_sql;
+EXECUTE v2_stmt;
+DEALLOCATE PREPARE v2_stmt;
 
 
 -- ---------------------------------------------------------------------
@@ -285,41 +384,53 @@ PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
 --    Missing: the signup/login/deletion codes keep working but lose their
 --    expiry and their attempt limit.
 -- ---------------------------------------------------------------------
-SET @v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
+SET
+@v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
                   WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table) = 1
                  AND (SELECT COUNT(*) FROM `information_schema`.`COLUMNS`
                       WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table
                         AND `COLUMN_NAME` = 'verification-expiry') = 0,
   CONCAT('ALTER TABLE `', @v2_users_table, '` ADD COLUMN `verification-expiry` DATETIME NULL DEFAULT NULL'),
   'SELECT 1');
-PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
+PREPARE v2_stmt FROM @v2_sql;
+EXECUTE v2_stmt;
+DEALLOCATE PREPARE v2_stmt;
 
-SET @v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
+SET
+@v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
                   WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table) = 1
                  AND (SELECT COUNT(*) FROM `information_schema`.`COLUMNS`
                       WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table
                         AND `COLUMN_NAME` = 'verification-attempts') = 0,
   CONCAT('ALTER TABLE `', @v2_users_table, '` ADD COLUMN `verification-attempts` TINYINT UNSIGNED NOT NULL DEFAULT 0'),
   'SELECT 1');
-PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
+PREPARE v2_stmt FROM @v2_sql;
+EXECUTE v2_stmt;
+DEALLOCATE PREPARE v2_stmt;
 
-SET @v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
+SET
+@v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
                   WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table) = 1
                  AND (SELECT COUNT(*) FROM `information_schema`.`COLUMNS`
                       WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table
                         AND `COLUMN_NAME` = 'deleting-attempts') = 0,
   CONCAT('ALTER TABLE `', @v2_users_table, '` ADD COLUMN `deleting-attempts` TINYINT UNSIGNED NOT NULL DEFAULT 0'),
   'SELECT 1');
-PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
+PREPARE v2_stmt FROM @v2_sql;
+EXECUTE v2_stmt;
+DEALLOCATE PREPARE v2_stmt;
 
-SET @v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
+SET
+@v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
                   WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_logins_table) = 1
                  AND (SELECT COUNT(*) FROM `information_schema`.`COLUMNS`
                       WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_logins_table
                         AND `COLUMN_NAME` = 'verification-attempts') = 0,
   CONCAT('ALTER TABLE `', @v2_logins_table, '` ADD COLUMN `verification-attempts` TINYINT UNSIGNED NOT NULL DEFAULT 0'),
   'SELECT 1');
-PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
+PREPARE v2_stmt FROM @v2_sql;
+EXECUTE v2_stmt;
+DEALLOCATE PREPARE v2_stmt;
 
 
 -- ---------------------------------------------------------------------
@@ -329,32 +440,41 @@ PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
 --    cannot be stored, and the password is never changed without its second
 --    factor. `GET /status` reports `password-change-code: false`.
 -- ---------------------------------------------------------------------
-SET @v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
+SET
+@v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
                   WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table) = 1
                  AND (SELECT COUNT(*) FROM `information_schema`.`COLUMNS`
                       WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table
                         AND `COLUMN_NAME` = 'password-change-code') = 0,
   CONCAT('ALTER TABLE `', @v2_users_table, '` ADD COLUMN `password-change-code` VARCHAR(512) NULL DEFAULT NULL'),
   'SELECT 1');
-PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
+PREPARE v2_stmt FROM @v2_sql;
+EXECUTE v2_stmt;
+DEALLOCATE PREPARE v2_stmt;
 
-SET @v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
+SET
+@v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
                   WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table) = 1
                  AND (SELECT COUNT(*) FROM `information_schema`.`COLUMNS`
                       WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table
                         AND `COLUMN_NAME` = 'password-change-expiry') = 0,
   CONCAT('ALTER TABLE `', @v2_users_table, '` ADD COLUMN `password-change-expiry` DATETIME NULL DEFAULT NULL'),
   'SELECT 1');
-PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
+PREPARE v2_stmt FROM @v2_sql;
+EXECUTE v2_stmt;
+DEALLOCATE PREPARE v2_stmt;
 
-SET @v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
+SET
+@v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
                   WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table) = 1
                  AND (SELECT COUNT(*) FROM `information_schema`.`COLUMNS`
                       WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table
                         AND `COLUMN_NAME` = 'password-change-attempts') = 0,
   CONCAT('ALTER TABLE `', @v2_users_table, '` ADD COLUMN `password-change-attempts` TINYINT UNSIGNED NOT NULL DEFAULT 0'),
   'SELECT 1');
-PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
+PREPARE v2_stmt FROM @v2_sql;
+EXECUTE v2_stmt;
+DEALLOCATE PREPARE v2_stmt;
 
 
 -- ---------------------------------------------------------------------
@@ -363,23 +483,29 @@ PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
 --    left alone, and so is a table that does not exist under the name set at
 --    the top of the v1 section.
 -- ---------------------------------------------------------------------
-SET @v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
+SET
+@v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
                   WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_data_table) = 1
                  AND (SELECT COUNT(*) FROM `information_schema`.`STATISTICS`
                       WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_data_table
                         AND `INDEX_NAME` = 'idx_user_updated') = 0,
   CONCAT('ALTER TABLE `', @v2_data_table, '` ADD INDEX `idx_user_updated` (`user-id`(191), `updated-locally-date`)'),
   'SELECT 1');
-PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
+PREPARE v2_stmt FROM @v2_sql;
+EXECUTE v2_stmt;
+DEALLOCATE PREPARE v2_stmt;
 
-SET @v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
+SET
+@v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
                   WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_tokens_table) = 1
                  AND (SELECT COUNT(*) FROM `information_schema`.`STATISTICS`
                       WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_tokens_table
                         AND `INDEX_NAME` = 'idx_login_status') = 0,
   CONCAT('ALTER TABLE `', @v2_tokens_table, '` ADD INDEX `idx_login_status` (`login-id`(191), `status`)'),
   'SELECT 1');
-PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
+PREPARE v2_stmt FROM @v2_sql;
+EXECUTE v2_stmt;
+DEALLOCATE PREPARE v2_stmt;
 
 
 -- ---------------------------------------------------------------------
@@ -408,11 +534,14 @@ PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
 --     `GET /status` reports `history-permission: false` while the column is
 --     missing, and `php api/v2/tests/schema-check.php` prints a warning.
 -- ---------------------------------------------------------------------
-SET @v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
+SET
+@v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
                   WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table) = 1
                  AND (SELECT COUNT(*) FROM `information_schema`.`COLUMNS`
                       WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table
                         AND `COLUMN_NAME` = 'history-enabled') = 0,
   CONCAT('ALTER TABLE `', @v2_users_table, '` ADD COLUMN `history-enabled` TINYINT(1) NOT NULL DEFAULT 0 COMMENT ''1 = this account can read its sync history, 0 = denied (default)'''),
   'SELECT 1');
-PREPARE v2_stmt FROM @v2_sql; EXECUTE v2_stmt; DEALLOCATE PREPARE v2_stmt;
+PREPARE v2_stmt FROM @v2_sql;
+EXECUTE v2_stmt;
+DEALLOCATE PREPARE v2_stmt;

@@ -21,7 +21,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         <div class="center-content justify">
             <h1 class="title-section center"><?php echo $docs_title; ?></h1>
             <h2 class="subtitle-section no-bold font-small">
-                This API permits to get a new deleting code (expires after 10 minutes) to delete the account. The deleting
+                This API permits to get a new deleting code (expires after 10 minutes) to delete the account. The
+                deleting
                 code is sent to the user's email.
             </h2>
             <p>

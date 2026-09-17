@@ -10,14 +10,25 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/help/faq/" class="back-link">&larr; Back to FAQ</a>
+        <a href="/alpha/help/faq/" class="back-link">Back to FAQ</a>
         <h1>How to get data for debugging</h1>
         <div class="article-meta">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Published: 2023-06-01</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg> Notefox 4.4+</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                       stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16"
+                                                                                                             y1="2"
+                                                                                                             x2="16"
+                                                                                                             y2="6"/><line
+                            x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Published: 2023-06-01</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                       stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16"
+                                                                                                                y1="8"
+                                                                                                                x2="2"
+                                                                                                                y2="22"/><line
+                            x1="17.5" y1="15" x2="9" y2="15"/></svg> Notefox 4.4+</span>
         </div>
         <p>
-            In the release 4.4 it's been implemented shortcuts to get some data useful for debugging from the Settings page in the <a href="/alpha/help/open-console/">Console</a>.
+            In the release 4.4 it's been implemented shortcuts to get some data useful for debugging from the Settings
+            page in the <a href="/alpha/help/open-console/">Console</a>.
         </p>
         <p>
             <strong>Pay attention to share that data because they can contain important and personal data.</strong>
@@ -36,7 +47,8 @@ include_once($root_path . "/alpha/include/header.php");
             <li>Go the Settings page of Notefox</li>
             <li>Open the Console panel</li>
             <li>Make five clicks in maximum 5 seconds on the "Notefox" icon (at the bottom right on Desktop)</li>
-            <li>You will see in the Console panel a text which should start with <code>//∨∨∨∨∨∨∨∨∨∨∨∨=GENERAL=∨∨∨∨∨∨∨∨∨∨∨∨//</code></li>
+            <li>You will see in the Console panel a text which should start with <code>//∨∨∨∨∨∨∨∨∨∨∨∨=GENERAL=∨∨∨∨∨∨∨∨∨∨∨∨//</code>
+            </li>
         </ol>
         <p>
             <strong>Data contained</strong>
@@ -65,7 +77,8 @@ include_once($root_path . "/alpha/include/header.php");
             <li>Go the Settings page of Notefox</li>
             <li>Open the Console panel</li>
             <li>Make five clicks in maximum 5 seconds on the "Notefox Account" label in the "Data & Sync" section</li>
-            <li>You will see in the Console panel a text which should start with <code>//∨∨∨∨∨∨∨∨∨∨∨∨=NOTEFOX-ACCOUNT=∨∨∨∨∨∨∨∨∨∨∨∨//</code></li>
+            <li>You will see in the Console panel a text which should start with <code>//∨∨∨∨∨∨∨∨∨∨∨∨=NOTEFOX-ACCOUNT=∨∨∨∨∨∨∨∨∨∨∨∨//</code>
+            </li>
         </ol>
         <p>
             <strong>Data contained</strong>
@@ -94,8 +107,11 @@ include_once($root_path . "/alpha/include/header.php");
         <ol>
             <li>Go the Settings page of Notefox</li>
             <li>Open the Console panel</li>
-            <li>Make eight clicks in maximum 5 seconds on the "Manage account" in the "Notefox Account" panel in the "Data & Sync" section</li>
-            <li>You will see in the Console panel a text which should start with <code>//∨∨∨∨∨∨∨∨∨∨∨∨=NOTEFOX-ACCOUNT-TOKEN=∨∨∨∨∨∨∨∨∨∨∨∨//</code></li>
+            <li>Make eight clicks in maximum 5 seconds on the "Manage account" in the "Notefox Account" panel in the
+                "Data & Sync" section
+            </li>
+            <li>You will see in the Console panel a text which should start with <code>//∨∨∨∨∨∨∨∨∨∨∨∨=NOTEFOX-ACCOUNT-TOKEN=∨∨∨∨∨∨∨∨∨∨∨∨//</code>
+            </li>
         </ol>
         <p>
             <strong>Data contained</strong>

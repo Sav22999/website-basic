@@ -9,18 +9,17 @@ dal provider di destinazione o dalla configurazione del server.
 Apri `https://notefox.eu/test-email/` per l'elenco dei test.
 
 Le pagine (e le email) sono **tutte in inglese** e mostrano **solo l'etichetta
-generica** del test (`Test 1`, `Test 2`, ...): il metodo/libreria realmente usato
-**non va mai indicato pubblicamente**. La grafica riprende quella del portale
-(`include/header.php`, `include/menu.php`, `/css/style.css`).
+generica** del test (`Test 1`, `Test 2`, ...): il metodo/libreria realmente usato **non va mai indicato pubblicamente**.
+La grafica riprende quella del portale (`include/header.php`, `include/menu.php`, `/css/style.css`).
 
 ## Test disponibili (mappatura interna, da non pubblicare)
 
-| Cartella | Etichetta pubblica | Metodo | Libreria / tecnica |
-|----------|--------------------|--------|--------------------|
-| `new1`   | `Test 1` | `mail()` nativa di PHP | Nessuna (metodo attuale di Notefox) |
-| `new2`   | `Test 2` | PHPMailer via SMTP | [`phpmailer/phpmailer`](https://github.com/PHPMailer/PHPMailer) |
-| `new3`   | `Test 3` | Symfony Mailer via SMTP | [`symfony/mailer`](https://github.com/symfony/mailer) |
-| `new4`   | `Test 4` | SMTP nativo via `fsockopen` | Nessuna libreria (transcript SMTP nel log PHP) |
+| Cartella | Etichetta pubblica | Metodo                      | Libreria / tecnica                                              |
+|----------|--------------------|-----------------------------|-----------------------------------------------------------------|
+| `new1`   | `Test 1`           | `mail()` nativa di PHP      | Nessuna (metodo attuale di Notefox)                             |
+| `new2`   | `Test 2`           | PHPMailer via SMTP          | [`phpmailer/phpmailer`](https://github.com/PHPMailer/PHPMailer) |
+| `new3`   | `Test 3`           | Symfony Mailer via SMTP     | [`symfony/mailer`](https://github.com/symfony/mailer)           |
+| `new4`   | `Test 4`           | SMTP nativo via `fsockopen` | Nessuna libreria (transcript SMTP nel log PHP)                  |
 
 Ogni pagina ha una casella di testo: inserisci un indirizzo email e premi
 "Send test email".

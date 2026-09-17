@@ -140,4 +140,5 @@ function v2_code_equals($expected, $provided)
     }
     return hash_equals(strtoupper(trim($expected)), strtoupper(trim($provided)));
 }
+
 ?>

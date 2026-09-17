@@ -10,11 +10,21 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/help/faq/" class="back-link">&larr; Back to FAQ</a>
+        <a href="/alpha/help/faq/" class="back-link">Back to FAQ</a>
         <h1>Run your own Notefox sync server</h1>
         <div class="article-meta">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Updated: 2024-06-01</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg> Notefox 5.0+</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                       stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16"
+                                                                                                             y1="2"
+                                                                                                             x2="16"
+                                                                                                             y2="6"/><line
+                            x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Updated: 2024-06-01</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                       stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16"
+                                                                                                                y1="8"
+                                                                                                                x2="2"
+                                                                                                                y2="22"/><line
+                            x1="17.5" y1="15" x2="9" y2="15"/></svg> Notefox 5.0+</span>
         </div>
         <p>
             You can host the Notefox sync service on your own server. This requires a PHP-enabled web server,
@@ -36,7 +46,8 @@ include_once($root_path . "/alpha/include/header.php");
             and <code>rate_limits</code>. It also includes the optional error-log and telemetry tables.
         </p>
         <p class="text-center">
-            <a class="btn" href="/help/own-server-for-notefox-sync/notefox-tables.sql" download>Download the Notefox database tables</a>
+            <a class="btn" href="/help/own-server-for-notefox-sync/notefox-tables.sql" download>Download the Notefox
+                database tables</a>
         </p>
         <p>
             If you use a command-line client instead, import the same file with
@@ -45,7 +56,8 @@ include_once($root_path . "/alpha/include/header.php");
 
         <h2>3. Configure the API</h2>
         <p>
-            Copy <a href="https://github.com/Sav22999/website-basic/blob/notefox.eu/include/credentials-sample.php" target="_blank" rel="noopener"><code>include/credentials-sample.php</code></a>
+            Copy <a href="https://github.com/Sav22999/website-basic/blob/notefox.eu/include/credentials-sample.php"
+                    target="_blank" rel="noopener"><code>include/credentials-sample.php</code></a>
             to <code>include/credentials.php</code> on your server. Enter the database connection details and set
             the table variables to the table names created by the import: <code>data</code>, <code>logins</code>,
             <code>users</code>, and <code>tokens</code>. Do not publish <code>credentials.php</code> or commit it
@@ -55,8 +67,10 @@ include_once($root_path . "/alpha/include/header.php");
         <h2>4. Upload and connect</h2>
         <p>
             Upload the Notefox API files to your web server, keeping the
-            <a href="https://github.com/Sav22999/website-basic/tree/notefox.eu/api" target="_blank" rel="noopener"><code>api/</code></a>
-            and <a href="https://github.com/Sav22999/website-basic/tree/notefox.eu/include" target="_blank" rel="noopener"><code>include/</code></a>
+            <a href="https://github.com/Sav22999/website-basic/tree/notefox.eu/api" target="_blank"
+               rel="noopener"><code>api/</code></a>
+            and <a href="https://github.com/Sav22999/website-basic/tree/notefox.eu/include" target="_blank"
+                   rel="noopener"><code>include/</code></a>
             directories in the same document root. Make sure PHP can use the <code>mysqli</code> and
             <code>OpenSSL</code> extensions. Then enter your server's API URL in the Notefox extension settings.
         </p>

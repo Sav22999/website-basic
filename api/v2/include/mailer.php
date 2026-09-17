@@ -127,4 +127,5 @@ function v2_send_email($to, $subject, $html, $text = null)
         return false;
     }
 }
+
 ?>

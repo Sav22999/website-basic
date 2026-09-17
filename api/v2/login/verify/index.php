@@ -51,6 +51,8 @@ $email = v2_require_recipient($login["user-id"], "email");
 
 $result = v2_code_verify($c, $logins_table, "login-id", $login_id, $login, $password, v2_codes_login(), $code);
 if ($result !== CODE_RESULT_OK) {
+    $username = decryptTextWithPassword($user["username"], $password);
+    v2_email_login_verification_failed($email, $username === false ? "" : $username, $ip_address);
     api_error(v2_code_error($result));
 }
 

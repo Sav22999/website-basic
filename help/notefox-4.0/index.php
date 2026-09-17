@@ -42,7 +42,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 You can now synchronize your notes between your devices with a Notefox Account. It is optional and
                 totally free<small><sup>*</sup></small>.
                 <br>
-                If you are also logged in with a Firefox Account, so Notefox Account will be automatically sync with all your
+                If you are also logged in with a Firefox Account, so Notefox Account will be automatically sync with all
+                your
                 devices the first time you log in with a Notefox Account<small><sup>**</sup></small>.
                 <br>
                 <span class="notefox-4-0-page">
@@ -94,7 +95,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                         of Service</a> for more information.</small>
                 <br>
                 <small><sup>**</sup> The token and the login-id used for requests with Notefox Account are saved on the
-                    sync storage of Firefox, so you don't need to log in with a Notefox Account on all your devices.</small>
+                    sync storage of Firefox, so you don't need to log in with a Notefox Account on all your
+                    devices.</small>
 
             </p>
         </div>

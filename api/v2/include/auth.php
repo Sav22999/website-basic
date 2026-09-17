@@ -359,4 +359,5 @@ function v2_invalidate_sessions($c, $user_id, $keep_login_id = null)
         array($user_id, $keep_login_id)
     );
 }
+
 ?>

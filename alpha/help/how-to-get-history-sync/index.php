@@ -10,7 +10,7 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/help/faq/" class="back-link">&larr; Back to FAQ</a>
+        <a href="/alpha/help/faq/" class="back-link">Back to FAQ</a>
         <h1>How to get the sync history</h1>
         <div class="article-meta">
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

@@ -10,7 +10,7 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/my/account/" class="back-link">&larr; Back to account</a>
+        <a href="/alpha/my/account/" class="back-link">Back to account</a>
         <h1 class="text-center">Sync history</h1>
         <p>
             Here you can find the list of the synced versions of your notes, sorted from the most recent one. You

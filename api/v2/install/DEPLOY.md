@@ -21,15 +21,14 @@ Two facts to keep in mind while reading:
 ## 0. Before starting
 
 - [ ] **Full backup of the database** (phpMyAdmin → Export, or `mysqldump`).
-      This is the only real rollback for block 2b.
-- [ ] Row count of the snapshot table, if it already exists
-      (`SELECT COUNT(*)` on `notefox_data_current`).
-      Block 2b rebuilds the primary key, which rewrites and locks the whole
-      table: on a large table, plan a short maintenance window.
+  This is the only real rollback for block 2b.
+- [ ] Row count of the snapshot table, if it already exists (`SELECT COUNT(*)` on `notefox_data_current`).
+  Block 2b rebuilds the primary key, which rewrites and locks the whole
+  table: on a large table, plan a short maintenance window.
 - [ ] PHP ≥ 7.4 with `mysqli`, `openssl`, `json` and `mbstring`.
 - [ ] `mod_rewrite` active: `api/v2/.htaccess` rewrites the URLs without a
-      trailing slash internally, **without a redirect**, because a 301 would
-      turn a POST into a GET and lose the body.
+  trailing slash internally, **without a redirect**, because a 301 would
+  turn a POST into a GET and lose the body.
 
 ---
 
@@ -41,12 +40,12 @@ Outside `api/v2/`, four more files change - they are what keeps v1 from
 leaving the new tables inconsistent (see
 [the v1 side](#the-v1-side-changes-done-from-the-old-api)):
 
-| File | Why |
-| --- | --- |
-| `include/v1-v2-compat.php` | **new**, the bridge itself |
+| File                             | Why                                         |
+|----------------------------------|---------------------------------------------|
+| `include/v1-v2-compat.php`       | **new**, the bridge itself                  |
 | `api/v1/password/edit/index.php` | re-wraps the data key with the new password |
-| `api/v1/delete/verify/index.php` | deletes the key and the snapshots too |
-| `api/v1/data/insert/index.php` | invalidates the stale mirror pointer |
+| `api/v1/delete/verify/index.php` | deletes the key and the snapshots too       |
+| `api/v1/data/insert/index.php`   | invalidates the stale mirror pointer        |
 
 Plus `include/credentials.php` (step 3). Uploading the three v1 files without
 `include/v1-v2-compat.php` makes them fail with a fatal error: upload the
@@ -107,9 +106,9 @@ Execute [`migration.sql`](migration.sql) in phpMyAdmin (or
 
 **Choose one single branch of block 2:**
 
-| Situation | Branch |
-| --- | --- |
-| No snapshot table yet | **2a** - `CREATE TABLE sav_data_current` (already multi-service) |
+| Situation                             | Branch                                                                     |
+|---------------------------------------|----------------------------------------------------------------------------|
+| No snapshot table yet                 | **2a** - `CREATE TABLE sav_data_current` (already multi-service)           |
 | `notefox_data_current` already exists | **2b** - `RENAME`, then `ADD COLUMN service`, then rebuild the primary key |
 
 The file ships with 2a active and 2b commented out: on an existing
@@ -186,16 +185,16 @@ authentication - `api/v2/login/index.php`, `api/v2/login/verify/index.php`,
 
 1. generates the DEK and stores it wrapped in `user_keys`;
 2. calls `v2_sync_bootstrap_from_legacy()` (`api/v2/include/sync.php`) for every
-   service that declares a `legacy-table`: the latest row of the legacy table
-   (today the v1 `data` table) is promoted to the snapshot in `sav_data_current`,
+   service that declares a `legacy-table`: the latest row of the legacy table (today the v1 `data` table) is promoted to
+   the snapshot in `sav_data_current`,
    `revision = 1`, `service = 'notefox'`, re-encrypted with the DEK;
 3. fills in `password-v2` (the modern hash, kept aligned with the SHA-512 one
    that v1 needs in its `WHERE` clauses).
 
 Consequences, all of them intended:
 
-- An account that never logs in through v2 has **no row** in `user_keys` and
-  **no row** in `sav_data_current`. It is not broken: it keeps working on v1
+- An account that never logs in through v2 has **no row** in `user_keys` and **no row** in `sav_data_current`. It is not
+  broken: it keeps working on v1
   exactly as before, and it will be migrated the day it logs in.
 - The historical rows of the v1 data table are **never** deleted or modified by
   the bootstrap: v1 keeps reading them.
@@ -208,8 +207,8 @@ Consequences, all of them intended:
 ### The v1 side: changes done from the old API
 
 The lazy migration covers the accounts that *arrive* at v2. The opposite
-direction - an account that has already been migrated and then does something
-**from v1** - needs the three side effects v1 cannot know about, because the
+direction - an account that has already been migrated and then does something **from v1** - needs the three side effects
+v1 cannot know about, because the
 tables they live in did not exist when it was written. They are implemented in
 `include/v1-v2-compat.php` and called from three v1 endpoints.
 
@@ -219,11 +218,11 @@ functions is a **no-op when the v2 table (or column) does not exist**, so an
 installation that has not run `migration.sql` behaves exactly as before. The
 regression checks of `php api/v2/tests/smoke.php` enforce all of this.
 
-| From v1 | What was left behind | What the bridge does |
-| --- | --- | --- |
+| From v1               | What was left behind                                                                                                                                                                                 | What the bridge does                                                                                                                                                                                     |
+|-----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `POST /password/edit` | `user_keys`.`wrapped-key` still encrypted with the **old** password (`encryption-ready: false`, snapshot undecryptable), a stale `password-v2`, and the mirror row possibly missed by the `LIMIT 50` | unwraps the DEK with the old password and re-wraps it with the new one (no note is re-encrypted), realigns `password-v2`, re-encrypts the newest 50 rows **and** the rows pointed at by `legacy-data-id` |
-| `POST /delete/verify` | `user_keys` and `sav_data_current` rows survived; since the user-id is the SHA-512 of the email, a new signup with the same address **inherited** them | deletes both, in the same request |
-| `POST /data/insert` | the snapshot kept pointing at an older row as its v1 mirror | clears `legacy-data-id`, so the next v2 write creates a fresh mirror row instead of overwriting the one v1 just wrote |
+| `POST /delete/verify` | `user_keys` and `sav_data_current` rows survived; since the user-id is the SHA-512 of the email, a new signup with the same address **inherited** them                                               | deletes both, in the same request                                                                                                                                                                        |
+| `POST /data/insert`   | the snapshot kept pointing at an older row as its v1 mirror                                                                                                                                          | clears `legacy-data-id`, so the next v2 write creates a fresh mirror row instead of overwriting the one v1 just wrote                                                                                    |
 
 > The password change is the important one. Without the bridge, changing the
 > password from an old extension makes the v2 data key unopenable: the account
@@ -275,20 +274,20 @@ Then, on a test account: `POST /login` → `POST /login/verify` →
 Always start from `schema-details` of `GET /status` (or from the preflight,
 which prints the same information with the name of the affected endpoint).
 
-| Symptom | Flag | Cause |
-| --- | --- | --- |
-| every `data/*` answers `503` | `snapshots` / `snapshots-multi-service` false | block 2 not applied, or `$data_current_table` still pointing at `notefox_data_current` after the `RENAME` |
-| `POST /password/edit` answers `500` | `password-change-code` false | block 8 not applied |
-| `POST /otp/disable` answers `503` | `otp-change-code` false | block 6 not applied |
-| `POST /data/get/history` answers `433`, the "Sync history" link is hidden | `history-permission` false | block 10 not applied - or, with the block applied, that account still has `history-enabled` = 0 (the default): see [Granting the sync history](#7bis-granting-the-sync-history) |
-| the v1 extension no longer sees the new notes, the history is empty | `legacy-mirror` false | the table in `$services[...]["legacy-table"]` does not exist (wrong name - it is `data` on notefox.eu, not `notefox_data` - renamed, moved, never imported) or lost one of the columns the API reads (`id`, `user-id`, `data`, `inserted-date`, `updated-locally-date`, `ip-address`) |
-| no code is ever received | `mailer` false | Composer not installed or SMTP credentials missing |
-| every answer is `401`/HTTP `503` | `database` false | credentials, or the DBMS is down (details only in the server log) |
-| POST bodies arrive empty | - | `mod_rewrite` off: the URL without the trailing slash is being 301-redirected |
-| the accounts have `encryption-ready: false` | `keys` false | block 1 not applied |
-| one single account has `encryption-ready: false` after a password change | - | its password was changed from v1 without `include/v1-v2-compat.php` on the server: upload the four files of step 1. The account recovers at the next v2 login (a new key is created from the legacy data) |
-| a brand new account already sees somebody else's notes | - | the previous account with the same email was deleted from v1 without the bridge: delete its leftover rows in `user_keys` and `sav_data_current` by `user-id` |
-| `Call to undefined function v1v2_...()` in the v1 log | - | `include/v1-v2-compat.php` was not uploaded |
+| Symptom                                                                   | Flag                                          | Cause                                                                                                                                                                                                                                                                                 |
+|---------------------------------------------------------------------------|-----------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| every `data/*` answers `503`                                              | `snapshots` / `snapshots-multi-service` false | block 2 not applied, or `$data_current_table` still pointing at `notefox_data_current` after the `RENAME`                                                                                                                                                                             |
+| `POST /password/edit` answers `500`                                       | `password-change-code` false                  | block 8 not applied                                                                                                                                                                                                                                                                   |
+| `POST /otp/disable` answers `503`                                         | `otp-change-code` false                       | block 6 not applied                                                                                                                                                                                                                                                                   |
+| `POST /data/get/history` answers `433`, the "Sync history" link is hidden | `history-permission` false                    | block 10 not applied - or, with the block applied, that account still has `history-enabled` = 0 (the default): see [Granting the sync history](#7bis-granting-the-sync-history)                                                                                                       |
+| the v1 extension no longer sees the new notes, the history is empty       | `legacy-mirror` false                         | the table in `$services[...]["legacy-table"]` does not exist (wrong name - it is `data` on notefox.eu, not `notefox_data` - renamed, moved, never imported) or lost one of the columns the API reads (`id`, `user-id`, `data`, `inserted-date`, `updated-locally-date`, `ip-address`) |
+| no code is ever received                                                  | `mailer` false                                | Composer not installed or SMTP credentials missing                                                                                                                                                                                                                                    |
+| every answer is `401`/HTTP `503`                                          | `database` false                              | credentials, or the DBMS is down (details only in the server log)                                                                                                                                                                                                                     |
+| POST bodies arrive empty                                                  | -                                             | `mod_rewrite` off: the URL without the trailing slash is being 301-redirected                                                                                                                                                                                                         |
+| the accounts have `encryption-ready: false`                               | `keys` false                                  | block 1 not applied                                                                                                                                                                                                                                                                   |
+| one single account has `encryption-ready: false` after a password change  | -                                             | its password was changed from v1 without `include/v1-v2-compat.php` on the server: upload the four files of step 1. The account recovers at the next v2 login (a new key is created from the legacy data)                                                                             |
+| a brand new account already sees somebody else's notes                    | -                                             | the previous account with the same email was deleted from v1 without the bridge: delete its leftover rows in `user_keys` and `sav_data_current` by `user-id`                                                                                                                          |
+| `Call to undefined function v1v2_...()` in the v1 log                     | -                                             | `include/v1-v2-compat.php` was not uploaded                                                                                                                                                                                                                                           |
 
 ---
 

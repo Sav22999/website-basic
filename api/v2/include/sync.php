@@ -512,6 +512,19 @@ function v2_sync_write_legacy_mirror($c, $user_id, $legacy_table, $password, $pl
         return null;
     }
 
+    $last = db_select_one(
+        $c,
+        "SELECT `id`, `data` FROM `$legacy_table` WHERE `user-id` = ? ORDER BY `id` DESC LIMIT 1",
+        "s",
+        array($user_id)
+    );
+    if ($last !== null && $last["data"] !== null && $last["data"] !== "") {
+        $last_plain = decryptTextWithPassword($last["data"], $password);
+        if ($last_plain !== false && $last_plain !== null && $last_plain === $plaintext) {
+            return (int)$last["id"];
+        }
+    }
+
     $encrypted = encryptTextWithPassword($plaintext, $password);
 
     $affected = db_execute(
@@ -685,4 +698,5 @@ function v2_sync_delete_user($c, $user_id)
     }
     db_execute($c, "DELETE FROM `$data_current_table` WHERE `user-id` = ?", "s", array($user_id));
 }
+
 ?>

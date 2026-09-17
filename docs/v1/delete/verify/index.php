@@ -21,7 +21,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         <div class="center-content justify">
             <h1 class="title-section center"><?php echo $docs_title; ?></h1>
             <h2 class="subtitle-section no-bold font-small">
-                This API permits to verify the deleting code sent to the user's email. The deleting code is used to delete
+                This API permits to verify the deleting code sent to the user's email. The deleting code is used to
+                delete
                 permanently the account.
             </h2>
             <p>

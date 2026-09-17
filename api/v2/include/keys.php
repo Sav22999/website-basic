@@ -169,4 +169,5 @@ function v2_delete_user_keys($c, $user_id)
     }
     db_execute($c, "DELETE FROM `$user_keys_table` WHERE `user-id` = ?", "s", array($user_id));
 }
+
 ?>

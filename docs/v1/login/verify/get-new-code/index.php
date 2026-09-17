@@ -21,7 +21,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         <div class="center-content justify">
             <h1 class="title-section center"><?php echo $docs_title; ?></h1>
             <h2 class="subtitle-section no-bold font-small">
-                This API permits to get a new verification code for the login-id. The code is sent to the email associated
+                This API permits to get a new verification code for the login-id. The code is sent to the email
+                associated
                 with the login-id.
             </h2>
             <p>

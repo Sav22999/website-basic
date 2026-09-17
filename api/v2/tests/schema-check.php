@@ -139,9 +139,9 @@ report(
 report(
     "8) columns `password-change-*` of `" . $users_name . "`",
     $users_name !== null
-        && db_has_column($c, $users_name, "password-change-code")
-        && db_has_column($c, $users_name, "password-change-expiry")
-        && db_has_column($c, $users_name, "password-change-attempts"),
+    && db_has_column($c, $users_name, "password-change-code")
+    && db_has_column($c, $users_name, "password-change-expiry")
+    && db_has_column($c, $users_name, "password-change-attempts"),
     true,
     "POST /password/edit answers 500"
 );
@@ -150,18 +150,18 @@ echo "\nschema - optional blocks\n";
 report(
     "6) columns `otp-change-*` of `" . $users_name . "`",
     $users_name !== null
-        && db_has_column($c, $users_name, "otp-change-code")
-        && db_has_column($c, $users_name, "otp-change-expiry")
-        && db_has_column($c, $users_name, "otp-change-attempts"),
+    && db_has_column($c, $users_name, "otp-change-code")
+    && db_has_column($c, $users_name, "otp-change-expiry")
+    && db_has_column($c, $users_name, "otp-change-attempts"),
     false,
     "POST /otp/disable and its verify step answer 503, the 2FA stays enabled"
 );
 report(
     "7) columns `verification-expiry` / `verification-attempts` / `deleting-attempts` of `" . $users_name . "`",
     $users_name !== null
-        && db_has_column($c, $users_name, "verification-expiry")
-        && db_has_column($c, $users_name, "verification-attempts")
-        && db_has_column($c, $users_name, "deleting-attempts"),
+    && db_has_column($c, $users_name, "verification-expiry")
+    && db_has_column($c, $users_name, "verification-attempts")
+    && db_has_column($c, $users_name, "deleting-attempts"),
     false,
     "the codes lose their expiry and their attempt limit"
 );

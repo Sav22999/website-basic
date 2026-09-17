@@ -10,14 +10,25 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/help/faq/" class="back-link">&larr; Back to FAQ</a>
+        <a href="/alpha/help/faq/" class="back-link">Back to FAQ</a>
         <h1>Notefox Account</h1>
         <div class="article-meta">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Published: 2022-11-01</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg> Notefox 4.0+</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                       stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16"
+                                                                                                             y1="2"
+                                                                                                             x2="16"
+                                                                                                             y2="6"/><line
+                            x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Published: 2022-11-01</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                       stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16"
+                                                                                                                y1="8"
+                                                                                                                x2="2"
+                                                                                                                y2="22"/><line
+                            x1="17.5" y1="15" x2="9" y2="15"/></svg> Notefox 4.0+</span>
         </div>
         <p>
-            <em>Looking for information about <strong>Notefox Account v2 (Sav Account)</strong>? Read the <a href="/alpha/help/notefox-account-v2/">Notefox Account v2 guide</a>.</em>
+            <em>Looking for information about <strong>Notefox Account v2 (Sav Account)</strong>? Read the <a
+                        href="/alpha/help/notefox-account-v2/">Notefox Account v2 guide</a>.</em>
         </p>
         <p>
             Notefox Account allows you to synchronize your notes between your devices. With a Notefox Account, you
@@ -47,11 +58,14 @@ include_once($root_path . "/alpha/include/header.php");
             </span>
         </p>
         <p>
-            <strong>Your data are saved totally encrypted</strong>, in particular your password and your email using the <strong>SHA-512</strong>
-            algorithm. Instead, your other data are encrypted using the <strong>AES-256</strong> algorithm with your password
+            <strong>Your data are saved totally encrypted</strong>, in particular your password and your email using the
+            <strong>SHA-512</strong>
+            algorithm. Instead, your other data are encrypted using the <strong>AES-256</strong> algorithm with your
+            password
             as the
             key to encrypt and decrypt them.
-            This means that, <strong>if you lose your password, you will lose your data</strong>, because it is impossible to
+            This means that, <strong>if you lose your password, you will lose your data</strong>, because it is
+            impossible to
             recover it.
         </p>
         <p>
@@ -60,7 +74,8 @@ include_once($root_path . "/alpha/include/header.php");
         </p>
         <p>
             <span class="notefox-4-0-page">
-                <img src="/help/notefox-account/change-password.gif" width="80%" alt="Notefox Account - Change password">
+                <img src="/help/notefox-account/change-password.gif" width="80%"
+                     alt="Notefox Account - Change password">
                 <small>Change password process</small>
             </span>
         </p>
@@ -76,7 +91,8 @@ include_once($root_path . "/alpha/include/header.php");
         </p>
         <p>
             <span class="notefox-4-0-page">
-                <img src="/help/notefox-account/force-the-syncing.gif" width="80%" alt="Notefox Account - Force the syncing">
+                <img src="/help/notefox-account/force-the-syncing.gif" width="80%"
+                     alt="Notefox Account - Force the syncing">
                 <small>Force sync process</small>
             </span>
         </p>

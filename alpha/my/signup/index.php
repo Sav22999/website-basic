@@ -10,7 +10,7 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/my/" class="back-link">&larr; Back</a>
+        <a href="/alpha/my/" class="back-link">Back</a>
 
         <div class="auth-card">
             <div class="auth-header">
@@ -39,7 +39,8 @@ include_once($root_path . "/alpha/include/header.php");
 
                 <div class="form-field">
                     <label class="form-label" for="signup-password-confirm">Confirm password</label>
-                    <input class="form-input" type="password" id="signup-password-confirm" name="password-confirm" required>
+                    <input class="form-input" type="password" id="signup-password-confirm" name="password-confirm"
+                           required>
                 </div>
 
                 <div class="form-actions">

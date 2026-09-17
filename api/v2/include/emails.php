@@ -162,6 +162,19 @@ function v2_email_delete_code($to, $username, $code, $ip_address, $expiry, $new_
     return v2_send_email($to, "Notefox: confirm deleting account", $html);
 }
 
+function v2_email_login_verification_failed($to, $username, $ip_address)
+{
+    $html = v2_email_render(
+        $username,
+        "Failed login attempt",
+        "Someone tried to log in to your Notefox account with the correct password, but entered the wrong verification code.",
+        "If this wasn't you, please change your password immediately: your current password may be compromised.",
+        null,
+        $ip_address
+    );
+    return v2_send_email($to, "Notefox: failed login attempt", $html);
+}
+
 function v2_email_deleted($to, $username)
 {
     $html = v2_email_render(
@@ -174,4 +187,5 @@ function v2_email_deleted($to, $username)
     );
     return v2_send_email($to, "Notefox: account deleted", $html);
 }
+
 ?>

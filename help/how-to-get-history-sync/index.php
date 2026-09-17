@@ -37,8 +37,10 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <h2 class="subtitle-section">1. Make a donation on LiberaPay</h2>
             <p>
                 The donation has to be made on <strong>LiberaPay</strong>, choosing <strong>Stripe</strong> as the
-                payment method (credit card or SEPA direct debit). Stripe applies much lower processing fees than PayPal,
-                ensuring that almost the entire amount of your donation directly reaches the project (with only a minimal fee deducted, much lower than what PayPal charges).
+                payment method (credit card or SEPA direct debit). Stripe applies much lower processing fees than
+                PayPal,
+                ensuring that almost the entire amount of your donation directly reaches the project (with only a
+                minimal fee deducted, much lower than what PayPal charges).
                 For this reason, donations made with <strong>PayPal are not eligible</strong> for this feature.
             </p>
             <p>
@@ -56,7 +58,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <p>
                 After the donation you have to <strong>contact the developer</strong>, who will give you further
                 information about it and will enable the Sync history on your account. Please write from (or mention)
-                the e-mail address of your Notefox Account or your Login ID, and tell the date and the amount of the donation, so that
+                the e-mail address of your Notefox Account or your Login ID, and tell the date and the amount of the
+                donation, so that
                 the right account and the right payment can be found.
             </p>
             <p class="center">

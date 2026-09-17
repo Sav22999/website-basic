@@ -31,7 +31,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <br>
                 • Write your notes: click on the text area and write your notes
                 <br>
-                • Format your notes using the keyboard shortcuts: Ctrl+B for bold, Ctrl+I for italic, Ctrl+U for underline, Ctrl+S for strikethrough, Ctrl+L for link
+                • Format your notes using the keyboard shortcuts: Ctrl+B for bold, Ctrl+I for italic, Ctrl+U for
+                underline, Ctrl+S for strikethrough, Ctrl+L for link
                 <br>
                 • Paste images: copy an image and paste it in the text area
             </p>

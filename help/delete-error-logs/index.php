@@ -21,7 +21,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 If you are looking for the article on how to download the error logs file, please go to the
                 <a href="./download-error-logs">Download the error logs file</a> page.
                 <br>
-                Sometimes, the error logs file can become very large, especially if you have been using Notefox for a long time
+                Sometimes, the error logs file can become very large, especially if you have been using Notefox for a
+                long time
                 and you have encountered many errors. In this case, it may be useful to delete the error logs file to
                 free up space on your computer.
             </p>

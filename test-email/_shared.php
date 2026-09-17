@@ -224,12 +224,12 @@ function testEmailPageStyle()
  * Stampa l'intera pagina HTML del test: form con casella email + eventuale esito.
  * La grafica segue quella del resto del portale (header.php, menu.php, style.css).
  *
- * @param string      $label        Etichetta generica del test (es. "Test 1").
- * @param string      $description  Descrizione (generica, in inglese) del test.
- * @param bool|null   $sent         true se inviata, false se errore, null se nessun invio.
- * @param string      $resultMsg    Messaggio di esito da mostrare.
- * @param string      $recipient    Indirizzo usato (per ripopolare il campo).
- * @param string      $extra        HTML aggiuntivo (gia' pronto) da mostrare sotto il form.
+ * @param string $label Etichetta generica del test (es. "Test 1").
+ * @param string $description Descrizione (generica, in inglese) del test.
+ * @param bool|null $sent true se inviata, false se errore, null se nessun invio.
+ * @param string $resultMsg Messaggio di esito da mostrare.
+ * @param string $recipient Indirizzo usato (per ripopolare il campo).
+ * @param string $extra HTML aggiuntivo (gia' pronto) da mostrare sotto il form.
  */
 function renderTestEmailPage($label, $description, $sent, $resultMsg, $recipient, $extra = "")
 {

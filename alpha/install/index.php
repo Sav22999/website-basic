@@ -14,15 +14,18 @@ include_once($root_path . "/alpha/include/header.php");
         <p class="page-subtitle">Select your browser to get started</p>
 
         <div class="install-grid">
-            <a href="https://addons.mozilla.org/firefox/addon/websites-notes/" class="install-card" target="_blank" rel="noopener">
+            <a href="https://addons.mozilla.org/firefox/addon/websites-notes/" class="install-card" target="_blank"
+               rel="noopener">
                 <span class="install-card-icon icon-mask icon-mask--firefox" aria-hidden="true"></span>
                 <span>Mozilla Firefox</span>
             </a>
-            <a href="https://chromewebstore.google.com/detail/agcdffobijddcccbfnhfjmaohnljefpm" class="install-card" target="_blank" rel="noopener">
+            <a href="https://chromewebstore.google.com/detail/agcdffobijddcccbfnhfjmaohnljefpm" class="install-card"
+               target="_blank" rel="noopener">
                 <span class="install-card-icon icon-mask icon-mask--chrome" aria-hidden="true"></span>
                 <span>Google Chrome</span>
             </a>
-            <a href="https://microsoftedge.microsoft.com/addons/detail/lkahmkadpaibphpoiofpdinacjffddda" class="install-card" target="_blank" rel="noopener">
+            <a href="https://microsoftedge.microsoft.com/addons/detail/lkahmkadpaibphpoiofpdinacjffddda"
+               class="install-card" target="_blank" rel="noopener">
                 <span class="install-card-icon icon-mask icon-mask--edge" aria-hidden="true"></span>
                 <span>Microsoft Edge</span>
             </a>
@@ -30,8 +33,10 @@ include_once($root_path . "/alpha/include/header.php");
 
         <hr>
 
-        <p style="color: var(--color-text-muted); font-size: 0.875rem; margin-bottom: 12px;">You can also get the source code from GitHub</p>
-        <a href="https://github.com/Sav22999/websites-notes" class="btn btn--secondary" target="_blank" rel="noopener">View on GitHub</a>
+        <p style="color: var(--color-text-muted); font-size: 0.875rem; margin-bottom: 12px;">You can also get the source
+            code from GitHub</p>
+        <a href="https://github.com/Sav22999/websites-notes" class="btn btn--secondary" target="_blank" rel="noopener">View
+            on GitHub</a>
     </div>
 </main>
 

@@ -40,8 +40,10 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 features, or by reporting bugs. I want to thank all the users that contributed to the project.
             </p>
             <p>
-                If you want to contribute to the project, you can do it on GitHub. You can also translate Notefox in your
-                language <a href="https://crowdin.com/project/notefox">on Crowdin</a>, or you can suggest new features or improvements.
+                If you want to contribute to the project, you can do it on GitHub. You can also translate Notefox in
+                your
+                language <a href="https://crowdin.com/project/notefox">on Crowdin</a>, or you can suggest new features
+                or improvements.
                 You can also support the project by making a donation: LiberaPay and PayPal are available.
             </p>
         </div>

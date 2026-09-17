@@ -298,4 +298,5 @@ function db_has_table($c, $table)
     $cache[$table] = $exists;
     return $exists;
 }
+
 ?>

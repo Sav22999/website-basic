@@ -10,7 +10,7 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/my/account/delete/" class="back-link">&larr; Back</a>
+        <a href="/alpha/my/account/delete/" class="back-link">Back</a>
         <h1 class="text-center">Confirm the deletion of your account</h1>
         <p>
             We sent you an email with a confirmation code. Enter it below, together with your password, to delete
@@ -43,7 +43,7 @@ include_once($root_path . "/alpha/include/header.php");
             </div>
         </form>
 
-        <p class="text-center">
+        <p class="text-center" style="margin-top: 24px;">
             Didn't get the code?
             <a href="#" id="delete-resend-code">Send a new code</a>
         </p>

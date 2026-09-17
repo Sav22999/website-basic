@@ -18,9 +18,11 @@ include_once($root_path . "/alpha/include/header.php");
             automatically sent" features.
             If you do not use any of these, the Notefox add-on does not collect or send any data to the server.</p>
 
-        <p><strong>Notefox: websites notes</strong> is an open-source project developed by <strong>Saverio Morelli</strong>
+        <p><strong>Notefox: websites notes</strong> is an open-source project developed by <strong>Saverio
+                Morelli</strong>
             (<a href="https://saveriomorelli.com/contact-me" target="_blank" rel="noopener">saveriomorelli.com/contact-me</a>),
-            based in <strong>Italy</strong>. The service is hosted on <strong>Aruba.it</strong> servers, located in Italy.</p>
+            based in <strong>Italy</strong>. The service is hosted on <strong>Aruba.it</strong> servers, located in
+            Italy.</p>
 
         <h2>1. Notefox Account</h2>
         <p>Notefox Account allows you to <strong>synchronize your notes across multiple devices</strong> and access them
@@ -28,7 +30,9 @@ include_once($root_path . "/alpha/include/header.php");
         <ul>
             <li>Your <strong>email</strong> (encrypted with SHA-512)</li>
             <li>Your <strong>public IP address</strong> (stored unencrypted)</li>
-            <li>Your <strong>username</strong> and <strong>data</strong> (such as notes, settings, etc.), encrypted with AES-256</li>
+            <li>Your <strong>username</strong> and <strong>data</strong> (such as notes, settings, etc.), encrypted with
+                AES-256
+            </li>
         </ul>
         <p>All your data are encrypted with your password*, so only you can access them.
             If you lose or forget your password, you will not be able to recover your data in any way.</p>
@@ -52,7 +56,8 @@ include_once($root_path . "/alpha/include/header.php");
             password, or any sensitive information.</p>
 
         <h2>2. Telemetry</h2>
-        <p>If enabled, Notefox collects <strong>anonymous telemetry data</strong> about the usage of the add-on, to improve
+        <p>If enabled, Notefox collects <strong>anonymous telemetry data</strong> about the usage of the add-on, to
+            improve
             the product and fix bugs more effectively. Telemetry can be enabled with or without a Notefox Account.</p>
         <p>Collected data may include:</p>
         <ul>
@@ -67,11 +72,13 @@ include_once($root_path . "/alpha/include/header.php");
             <li>Notefox version</li>
             <li>Operating system (if detectable)</li>
         </ul>
-        <p>Telemetry data are <strong>used exclusively for anonymous internal statistics</strong> to analyze usability and
+        <p>Telemetry data are <strong>used exclusively for anonymous internal statistics</strong> to analyze usability
+            and
             the most used features. They are not shared with third parties and cannot identify you.</p>
 
         <h2>3. Error Logs</h2>
-        <p>If enabled, Notefox may collect <strong>anonymous error logs</strong> to detect and fix bugs more effectively.
+        <p>If enabled, Notefox may collect <strong>anonymous error logs</strong> to detect and fix bugs more
+            effectively.
             This can also be enabled without a Notefox Account.</p>
         <p>Collected data may include:</p>
         <ul>
@@ -91,12 +98,14 @@ include_once($root_path . "/alpha/include/header.php");
             Notefox will never ask for your password or sensitive information.</p>
 
         <h2>5. Liability</h2>
-        <p><strong>Saverio Morelli</strong> is not responsible for any loss, corruption, or misuse of data, nor for damages
+        <p><strong>Saverio Morelli</strong> is not responsible for any loss, corruption, or misuse of data, nor for
+            damages
             caused by the use or inability to use the service.
             Users are fully responsible for how they use the Notefox add-on and their stored data.</p>
 
         <h2>6. Changes</h2>
-        <p>The current Privacy Policy can be updated at any time. It is your responsibility to check it periodically.</p>
+        <p>The current Privacy Policy can be updated at any time. It is your responsibility to check it
+            periodically.</p>
 
         <p><em>* Passwords and emails are encrypted using SHA-512; user data (notes, settings, etc.) are encrypted
                 with AES-256. IP addresses are stored unencrypted.</em></p>

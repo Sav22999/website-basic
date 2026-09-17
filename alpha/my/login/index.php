@@ -10,7 +10,7 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/my/" class="back-link">&larr; Back</a>
+        <a href="/alpha/my/" class="back-link">Back</a>
 
         <div class="auth-card">
             <div class="auth-header">

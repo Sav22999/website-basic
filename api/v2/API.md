@@ -33,24 +33,24 @@ The public paths do not change: everything stays under `/api/v2`.
 
 ## 1. What changes compared to v1
 
-| Area | v1 | v2 |
-| --- | --- | --- |
-| Sync | one new row per save, read back with `ORDER BY updated-locally-date DESC`: **a device with a skewed clock wins forever** | one snapshot per account **and service**, with a server-side `revision`, conflicts reported with `409` |
-| Conflicts | none, the last write silently wins | `base-revision` + `409` with the current data so the client can merge |
-| Password change | decrypts and re-encrypts `LIMIT 50` rows: everything older becomes **unreadable forever** | only the data key is re-wrapped, the notes are never touched; all legacy history rows are re-encrypted with the new password |
-| `logout`, `data/get/last-update` | authenticated with the `login-id` **alone** | `login-id` **and** `token` always required |
-| Confirmation email | sent to the address in the payload | sent only to an address whose hash matches the account |
-| `login-id` | `sha512(email + ip + timestamp)`, guessable | 32 random bytes |
-| OTP codes | `rand()`, no expiry, no attempt limit, not always consumed | `random_int()`, expiry, max 5 attempts, single use, constant-time compare |
-| Brute force / mail bombing | nothing | rate limiting on every sensitive endpoint |
-| Signup | answers 416 or 419 → accounts can be enumerated | one single answer |
-| 2FA at login | always on, not configurable | on by default, can be turned off (`otp/*`) |
-| Email verification at signup | required | **always required, and never affected by the 2FA setting** |
-| Multi-service | none, the data belongs to Notefox | one shared account, one independent snapshot per service |
-| Health check | none | `GET /status` |
-| Emails | `mail()` | Symfony Mailer over authenticated SMTP |
-| Atomicity | `LOCK TABLES` placed around `bind_param()`, so ineffective | real transactions, `SELECT ... FOR UPDATE` on the snapshot |
-| Errors | `echo_error()` duplicated in 19 files, inconsistent codes, sometimes a literal `null` | one single catalogue, real HTTP statuses, never `null` |
+| Area                             | v1                                                                                                                       | v2                                                                                                                           |
+|----------------------------------|--------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| Sync                             | one new row per save, read back with `ORDER BY updated-locally-date DESC`: **a device with a skewed clock wins forever** | one snapshot per account **and service**, with a server-side `revision`, conflicts reported with `409`                       |
+| Conflicts                        | none, the last write silently wins                                                                                       | `base-revision` + `409` with the current data so the client can merge                                                        |
+| Password change                  | decrypts and re-encrypts `LIMIT 50` rows: everything older becomes **unreadable forever**                                | only the data key is re-wrapped, the notes are never touched; all legacy history rows are re-encrypted with the new password |
+| `logout`, `data/get/last-update` | authenticated with the `login-id` **alone**                                                                              | `login-id` **and** `token` always required                                                                                   |
+| Confirmation email               | sent to the address in the payload                                                                                       | sent only to an address whose hash matches the account                                                                       |
+| `login-id`                       | `sha512(email + ip + timestamp)`, guessable                                                                              | 32 random bytes                                                                                                              |
+| OTP codes                        | `rand()`, no expiry, no attempt limit, not always consumed                                                               | `random_int()`, expiry, max 5 attempts, single use, constant-time compare                                                    |
+| Brute force / mail bombing       | nothing                                                                                                                  | rate limiting on every sensitive endpoint                                                                                    |
+| Signup                           | answers 416 or 419 → accounts can be enumerated                                                                          | one single answer                                                                                                            |
+| 2FA at login                     | always on, not configurable                                                                                              | on by default, can be turned off (`otp/*`)                                                                                   |
+| Email verification at signup     | required                                                                                                                 | **always required, and never affected by the 2FA setting**                                                                   |
+| Multi-service                    | none, the data belongs to Notefox                                                                                        | one shared account, one independent snapshot per service                                                                     |
+| Health check                     | none                                                                                                                     | `GET /status`                                                                                                                |
+| Emails                           | `mail()`                                                                                                                 | Symfony Mailer over authenticated SMTP                                                                                       |
+| Atomicity                        | `LOCK TABLES` placed around `bind_param()`, so ineffective                                                               | real transactions, `SELECT ... FOR UPDATE` on the snapshot                                                                   |
+| Errors                           | `echo_error()` duplicated in 19 files, inconsistent codes, sometimes a literal `null`                                    | one single catalogue, real HTTP statuses, never `null`                                                                       |
 
 ---
 
@@ -85,22 +85,22 @@ the file prints a `found` / `MISSING` line per table before touching anything.
 Block 2b (`RENAME` + `DROP PRIMARY KEY`) is the only one that must be run
 exactly once.
 
-| Block | What | Mandatory | Without it |
-| --- | --- | --- | --- |
-| 1 | `CREATE TABLE user_keys` | yes | no account gets a data key (`keys: false`) |
-| **2a** *or* **2b** | snapshot table: `CREATE TABLE sav_data_current` (fresh install) **or** `RENAME` of `notefox_data_current` + column `service` + primary key `(user-id, service)` (existing install) | yes | every `data/*` endpoint answers `503` |
-| 3 | `CREATE TABLE rate_limits` | yes | no brute force protection |
-| 4 | `users`.`otp-enabled` | yes | the `otp/*` endpoints cannot read the setting |
-| 5 | `users`.`password-v2` | yes | the modern hash is never kept aligned |
-| 6 | `users`.`otp-change-*` | no | `POST /otp/disable` and its verify step answer `503` |
-| 7 | `verification-expiry`, `verification-attempts`, `deleting-attempts`, `logins`.`verification-attempts` | no | the codes lose their expiry and their attempt limit |
-| 8 | `users`.`password-change-*` | yes | `POST /password/edit` answers `500` |
-| 9 | indexes on the v1 data table (`data`) and on `tokens` | no | performance only |
-| 10 | `users`.`history-enabled` | no | the two `data/get/history*` endpoints answer `433` to **every** account |
+| Block              | What                                                                                                                                                                               | Mandatory | Without it                                                              |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|-------------------------------------------------------------------------|
+| 1                  | `CREATE TABLE user_keys`                                                                                                                                                           | yes       | no account gets a data key (`keys: false`)                              |
+| **2a** *or* **2b** | snapshot table: `CREATE TABLE sav_data_current` (fresh install) **or** `RENAME` of `notefox_data_current` + column `service` + primary key `(user-id, service)` (existing install) | yes       | every `data/*` endpoint answers `503`                                   |
+| 3                  | `CREATE TABLE rate_limits`                                                                                                                                                         | yes       | no brute force protection                                               |
+| 4                  | `users`.`otp-enabled`                                                                                                                                                              | yes       | the `otp/*` endpoints cannot read the setting                           |
+| 5                  | `users`.`password-v2`                                                                                                                                                              | yes       | the modern hash is never kept aligned                                   |
+| 6                  | `users`.`otp-change-*`                                                                                                                                                             | no        | `POST /otp/disable` and its verify step answer `503`                    |
+| 7                  | `verification-expiry`, `verification-attempts`, `deleting-attempts`, `logins`.`verification-attempts`                                                                              | no        | the codes lose their expiry and their attempt limit                     |
+| 8                  | `users`.`password-change-*`                                                                                                                                                        | yes       | `POST /password/edit` answers `500`                                     |
+| 9                  | indexes on the v1 data table (`data`) and on `tokens`                                                                                                                              | no        | performance only                                                        |
+| 10                 | `users`.`history-enabled`                                                                                                                                                          | no        | the two `data/get/history*` endpoints answer `433` to **every** account |
 
 Run **exactly one** branch of block 2. Inside block 2b the order is not
-negotiable: the `service` column, with its `DEFAULT 'notefox'`, must exist
-**before** the primary key is rebuilt, otherwise the existing rows would have no
+negotiable: the `service` column, with its `DEFAULT 'notefox'`, must exist **before** the primary key is rebuilt,
+otherwise the existing rows would have no
 key. `DROP PRIMARY KEY` rewrites and locks the whole table, so estimate its size
 first. After the `RENAME`, `$data_current_table` must be updated: leaving it on
 the old name is the most common deploy mistake and makes every `data/*` endpoint
@@ -146,8 +146,8 @@ No batch script. At the first successful v2 login (the only moment where the
 plaintext password is available) the API:
 
 1. generates the DEK and stores the wrapped key in `user_keys`;
-2. promotes the latest row of the legacy table of every service that has one
-   (today the v1 `data` table) to the snapshot in `sav_data_current`, with
+2. promotes the latest row of the legacy table of every service that has one (today the v1 `data` table) to the snapshot
+   in `sav_data_current`, with
    `revision = 1` and `service = 'notefox'`, re-encrypted with the DEK;
 3. fills in `password-v2`.
 
@@ -267,36 +267,36 @@ v1 behaviour), but it still receives the `revision` in the answer.
 
 ## 6. Error codes
 
-| `code` | HTTP | Meaning |
-| --- | --- | --- |
-| 200 | 200 | OK |
-| 201 | 200 | No data for this account |
-| 400 | 400 | Missing or invalid parameters |
-| 401 | 503 | Database unreachable |
-| 402 | 401 | `login-id` missing, disabled, expired or invalid |
-| 403 | 401 | Account not found |
-| 404 | 401 | Token missing, disabled or expired |
-| 405 | 401 | Invalid token |
-| 406 | 405 | HTTP method not allowed |
-| 407 | 413 | Payload too large |
-| 409 | 409 | Revision conflict (the answer carries the current data) |
-| 410 | 401 | Invalid credentials |
-| 411 | 403 | Account not active / not verified |
-| 412 | 400 | Code expired |
-| 413 | 400 | Invalid code |
-| 414 | 409 | Account already verified |
-| 415 | 400 | No code has been requested |
-| 419 | 409 | Signup not completed |
-| 420 | 429 | Too many wrong attempts, request a new code |
-| 429 | 429 | Rate limit reached |
-| 430 | 409 | Encryption key unavailable for this account |
-| 431 | 409 | The OTP is already in the requested state |
-| 432 | 409 | Sync history is not available for this service |
-| 433 | 403 | Sync history is not enabled for this account (`users`.`history-enabled` = 0) |
-| 434 | 409 | This history entry was encrypted with a previous password and cannot be decrypted |
-| 452 | 429 | A deletion code has already been requested |
-| 500 | 500 | Internal error (details only in the server log) |
-| 503 | 503 | Service temporarily unavailable |
+| `code` | HTTP | Meaning                                                                           |
+|--------|------|-----------------------------------------------------------------------------------|
+| 200    | 200  | OK                                                                                |
+| 201    | 200  | No data for this account                                                          |
+| 400    | 400  | Missing or invalid parameters                                                     |
+| 401    | 503  | Database unreachable                                                              |
+| 402    | 401  | `login-id` missing, disabled, expired or invalid                                  |
+| 403    | 401  | Account not found                                                                 |
+| 404    | 401  | Token missing, disabled or expired                                                |
+| 405    | 401  | Invalid token                                                                     |
+| 406    | 405  | HTTP method not allowed                                                           |
+| 407    | 413  | Payload too large                                                                 |
+| 409    | 409  | Revision conflict (the answer carries the current data)                           |
+| 410    | 401  | Invalid credentials                                                               |
+| 411    | 403  | Account not active / not verified                                                 |
+| 412    | 400  | Code expired                                                                      |
+| 413    | 400  | Invalid code                                                                      |
+| 414    | 409  | Account already verified                                                          |
+| 415    | 400  | No code has been requested                                                        |
+| 419    | 409  | Signup not completed                                                              |
+| 420    | 429  | Too many wrong attempts, request a new code                                       |
+| 429    | 429  | Rate limit reached                                                                |
+| 430    | 409  | Encryption key unavailable for this account                                       |
+| 431    | 409  | The OTP is already in the requested state                                         |
+| 432    | 409  | Sync history is not available for this service                                    |
+| 433    | 403  | Sync history is not enabled for this account (`users`.`history-enabled` = 0)      |
+| 434    | 409  | This history entry was encrypted with a previous password and cannot be decrypted |
+| 452    | 429  | A deletion code has already been requested                                        |
+| 500    | 500  | Internal error (details only in the server log)                                   |
+| 503    | 503  | Service temporarily unavailable                                                   |
 
 ---
 
@@ -346,8 +346,8 @@ degrades without it.
 `legacy-mirror` is **not** part of the additive DDL: it is the v1 mirror table
 configured in `include/credentials.php` (`$services[...]["legacy-table"]`).
 `false` means that table does not exist in this database (renamed, moved to
-another database, never imported) or lost one of the columns the API reads
-(`id`, `user-id`, `data`, `inserted-date`, `updated-locally-date`,
+another database, never imported) or lost one of the columns the API reads (`id`, `user-id`, `data`, `inserted-date`,
+`updated-locally-date`,
 `ip-address`). The sync then works on the snapshot only: the history is empty
 and the v1 clients stop seeing the notes written through v2. It used to make
 `POST /data/get` answer `401`/HTTP `503` ("Database connection error") while
@@ -471,8 +471,8 @@ limited to 5.
 
 #### `POST /token/set-expiry`
 
-Same body. It only updates the token of the session, matched by its primary key
-(v1 matches by ciphertext and always returns a wrong `old_expiry` because of a
+Same body. It only updates the token of the session, matched by its primary key (v1 matches by ciphertext and always
+returns a wrong `old_expiry` because of a
 spurious `fetch_assoc()`).
 → `{ "expiry": "...", "old-expiry": null }`
 
@@ -657,12 +657,12 @@ the history grows with each save (the snapshot table only holds the current
 version). A periodic cleanup keeps at most 200 entries per account. Only the
 metadata is returned, never decrypted: cheap enough to be called on every page
 load. `432` **only** when the service declares no `legacy-table`: a service that
-declares one but has nothing stored yet - or whose table cannot be read at all
-(`legacy-mirror: false`) - answers `entries: []`, never a conflict and never a
+declares one but has nothing stored yet - or whose table cannot be read at all (`legacy-mirror: false`) - answers
+`entries: []`, never a conflict and never a
 database error.
 
-`433` when the account has no sync history permission
-(`users`.`history-enabled` = `0`, the default, or block 10 never applied). The
+`433` when the account has no sync history permission (`users`.`history-enabled` = `0`, the default, or block 10 never
+applied). The
 check happens **before** anything is read, so a denied account cannot even tell
 whether it has any stored version; `POST /data/services` reports the permission
 in `history-enabled`. Denying the history changes nothing else: the sync itself,
@@ -699,8 +699,8 @@ older password remain unreadable).
 
 Changing the password and deleting the account are the two **critical**
 operations of an account: both of them **always** require the code emailed to
-the address of the account, whatever the value of `otp-enabled` (which is a
-**login** setting only). A stolen token, or a session left open on a borrowed
+the address of the account, whatever the value of `otp-enabled` (which is a **login** setting only). A stolen token, or
+a session left open on a borrowed
 device, is therefore never enough to take an account over.
 
 #### `POST /password/edit`
@@ -763,8 +763,8 @@ deletion code. `452` if one has already been requested and is still valid.
 ```
 
 → `{ "deleted": true }` — deletes, in one transaction, the tokens, the logins,
-the legacy data of every service that has a mirror table, the snapshots of
-**every service**, the encryption keys and the user row.
+the legacy data of every service that has a mirror table, the snapshots of **every service**, the encryption keys and
+the user row.
 
 #### `POST /delete/verify/get-new-code`
 
@@ -792,22 +792,22 @@ Same parameters as v1, with length limits and a rate limit per IP.
 
 ## 8. Rate limits
 
-| Bucket | Subject | Limit |
-| --- | --- | --- |
-| `login` | email | 10 / 15 min |
-| `login-ip` | IP | 30 / 15 min |
-| `otp-verify` | login-id | 5 / 15 min |
-| `otp-resend` | email or login-id | 3 / 15 min |
-| `signup-ip` / `signup-email` | IP / email | 10 and 5 per hour |
-| `signup-verify` | email | 10 / 15 min |
-| `otp-change` / `otp-change-verify` | user | 5–10 / 15 min |
-| `password-edit` / `password-edit-verify` | user | 5 / 15 min |
-| `delete-request` / `delete-verify` | email | 3 per hour / 5 per 15 min |
-| `data-insert` | user | 120 / min |
-| `data-services` | user | 60 / min |
-| `data-history` | user | 60 / min |
-| `data-history-download` | user | 30 / min |
-| `error-logs` / `telemetry` | IP | 30 / 10 min |
+| Bucket                                   | Subject           | Limit                     |
+|------------------------------------------|-------------------|---------------------------|
+| `login`                                  | email             | 10 / 15 min               |
+| `login-ip`                               | IP                | 30 / 15 min               |
+| `otp-verify`                             | login-id          | 5 / 15 min                |
+| `otp-resend`                             | email or login-id | 3 / 15 min                |
+| `signup-ip` / `signup-email`             | IP / email        | 10 and 5 per hour         |
+| `signup-verify`                          | email             | 10 / 15 min               |
+| `otp-change` / `otp-change-verify`       | user              | 5–10 / 15 min             |
+| `password-edit` / `password-edit-verify` | user              | 5 / 15 min                |
+| `delete-request` / `delete-verify`       | email             | 3 per hour / 5 per 15 min |
+| `data-insert`                            | user              | 120 / min                 |
+| `data-services`                          | user              | 60 / min                  |
+| `data-history`                           | user              | 60 / min                  |
+| `data-history-download`                  | user              | 30 / min                  |
+| `error-logs` / `telemetry`               | IP                | 30 / 10 min               |
 
 Beyond the limit: `429`, with a temporary block. The counters live in
 `rate_limits` (`$rate_limits_table`) and the subject is always stored hashed.
@@ -824,8 +824,8 @@ platform.
   table (`$data_table`, `data` on notefox.eu), in the v1 format (encrypted with
   the password), with a date that is never older than the existing ones: the old
   extension reads the newest row and keeps seeing up to date notes. A service
-  without a `legacy-table` has no mirror at all. A periodic cleanup
-  (`include/periodic-checks/check-data.php`) keeps at most 200 rows per account.
+  without a `legacy-table` has no mirror at all. A periodic cleanup (`include/periodic-checks/check-data.php`) keeps at
+  most 200 rows per account.
 - Every v2 read of such a service checks whether a v1 client wrote more
   recently and, if so, promotes that row into the snapshot by increasing the
   revision.
@@ -846,11 +846,11 @@ never prints, never throws, never stops the script and is a **no-op whenever
 the v2 table or column does not exist**, so an installation that has not run
 `install/migration.sql` behaves exactly as before.
 
-| v1 endpoint | Side effect added |
-| --- | --- |
+| v1 endpoint           | Side effect added                                                                                                                                                                                                                                                                                                                             |
+|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `POST /password/edit` | the DEK is unwrapped with the old password and re-wrapped with the new one (no note is re-encrypted), `password-v2` is realigned, and the rows used as the v1 mirror of a snapshot are re-encrypted even when the `LIMIT 50` would miss them - without this the account would become `encryption-ready: false` and its snapshot undecryptable |
-| `POST /delete/verify` | the key and the snapshots of every service are deleted too: the user-id is the SHA-512 of the email, so a new signup with the same address used to **inherit** them |
-| `POST /data/insert` | the stale `legacy-data-id` of the snapshot is cleared, so the next v2 write creates a fresh mirror row instead of overwriting the one v1 has just written. The promotion of that row into the snapshot (`revision` + 1) keeps happening on the v2 side, at the first read |
+| `POST /delete/verify` | the key and the snapshots of every service are deleted too: the user-id is the SHA-512 of the email, so a new signup with the same address used to **inherit** them                                                                                                                                                                           |
+| `POST /data/insert`   | the stale `legacy-data-id` of the snapshot is cleared, so the next v2 write creates a fresh mirror row instead of overwriting the one v1 has just written. The promotion of that row into the snapshot (`revision` + 1) keeps happening on the v2 side, at the first read                                                                     |
 
 The operational consequences (which files to upload, what breaks if they are
 not) are in [`install/DEPLOY.md`](install/DEPLOY.md).
@@ -882,10 +882,10 @@ php api/v2/tests/schema-check.php
 
 The deploy preflight. Unlike `smoke.php`, it **needs a configured database**:
 it connects with the credentials of `include/credentials.php` and prints, block
-by block, the same verdict as `GET /status` - it reuses the very same helpers
-(`db_has_table()`, `db_has_column()`, `v2_sync_legacy_mirrors_ready()`), so the
-two diagnoses cannot diverge. It also checks the configuration itself
-(`$user_keys_table`, `$data_current_table`, `$rate_limits_table`, the
+by block, the same verdict as `GET /status` - it reuses the very same helpers (`db_has_table()`, `db_has_column()`,
+`v2_sync_legacy_mirrors_ready()`), so the
+two diagnoses cannot diverge. It also checks the configuration itself (`$user_keys_table`, `$data_current_table`,
+`$rate_limits_table`, the
 `$services` registry, the mailer). It writes nothing and sends no email. Exit
 code `1` when a mandatory block is missing, `0` with warnings when only the
 optional blocks or the legacy mirror are.

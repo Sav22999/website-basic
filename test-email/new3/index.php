@@ -14,8 +14,8 @@ include_once(__DIR__ . "/../_shared.php");
 
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 
 // L'autoload di Composer puo' fallire (es. dipendenze installate per una
 // versione di PHP diversa da quella del server): in quel caso la pagina resta

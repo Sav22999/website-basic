@@ -10,7 +10,7 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/my/account/" class="back-link">&larr; Back to account</a>
+        <a href="/alpha/my/account/" class="back-link">Back to account</a>
         <h1 class="text-center">Change password</h1>
         <p>
             Your notes are never re-encrypted: only the encryption key of your account is updated, so the change is
@@ -56,7 +56,7 @@ include_once($root_path . "/alpha/include/header.php");
             </div>
         </form>
 
-        <p class="text-center hidden2" id="password-resend-row">
+        <p class="text-center hidden2" id="password-resend-row" style="margin-top: 24px;">
             Didn't get the code?
             <a href="#" id="password-resend-code">Send a new code</a>
         </p>
