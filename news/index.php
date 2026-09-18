@@ -29,6 +29,97 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
     </div>
     <br class="big-space">
     <div class="expanding-container">
+        <button type="button" class="expanding-item">Release 2.4 – 20 Aug 2026</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • New: toggle toolbar on tap
+                <br>
+                • Other minor improvements
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 2.3 – 13 Aug 2026</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Improvements to search feature (multi-words not only single-word)
+                <br>
+                • Improvements to navbar
+                <br>
+                • Other minor improvements
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 2.2.2 – 14 Jul 2026</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Fixed the panel was "behind" the system navigation bar in the latest Android APIs (API35, API36, …)
+                <br>
+                • Fixed bug causing all pages to be loaded on startup (slow loading)
+                <br>
+                • Fixed bug with double-byte characters not showing correctly in file names
+                <br>
+                • Optimized reverse (RTL) swiping to reuse the stored page count
+                <br>
+                • Added `total_pages` column with DB migration to version 5 (no data loss on upgrade)
+                <br>
+                • Other minor improvements
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 2.2 – 8 Jul 2026</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Added support for AES-256 protection
+                <br>
+                • Separated per-ABI #66
+                <br>
+                • Updated languages
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 2.1 – 6 Jul 2026</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Button print in the topbar
+                <br>
+                • Fixed swiping bottom-up and right-left
+                <br>
+                • Changed the main library (it's FOSS now!) and removed not useful permissions
+                <br>
+                • Fixed many bugs
+                <br>
+                • Many improvements
+                <br>
+                • Updated languages
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 2.0 – 25 Mar 2026</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Text selection+Copy (and filters)
+                <br>
+                • Search feature (and filters)
+                <br>
+                • Settings page
+                <br>
+                • Fixed many bugs
+                <br>
+                • Many improvements
+                <br>
+                • Updated languages
+            </p>
+        </div>
+
+        <button type="button" class="expanding-item">Release 1.17 – 12 Mar 2026</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Added "search" feature (in the menu panel)
+                <br>
+                • Fixed some bugs
+            </p>
+        </div>
+
         <button type="button" class="expanding-item">Release 1.16 – 6 Aug 2025</button>
         <div class="expanding-item--expanded-details hidden">
             <p>
@@ -217,7 +308,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 • Added "Bookmarks": now you can add, remove and manage bookmarks
                 <br>
                 • Created the <a href="https://www.instagram.com/savpdfviewer/">Intagram account</a> of the app <a
-                    href="https://www.instagram.com/savpdfviewer/">@savpdfviewer</a>!
+                        href="https://www.instagram.com/savpdfviewer/">@savpdfviewer</a>!
                 <br>
                 • Improved the backend code and the frontend UI
             </p>

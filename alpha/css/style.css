@@ -1,14 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Source+Code+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@font-face {
+    font-family: "Singo Regular";
+    src: url("./singo-regular.ttf");
+}
 
 :root {
-    --font-family: 'Open Sans', sans-serif;
-    --font-family-mono: 'Source Code Pro', monospace;
+    --font-family: "Singo Regular";
     --border-radius: 10px;
     --transition: 0.5s;
-    --primary-color: #d32f2f;
-    --primary-color-transparence: rgba(211, 47, 47, 0.33);
-    --primary-color-variant: #FF7272;
-    --primary-color-variant-transparence: rgba(255, 114, 114, 0.33);
+    --primary-color: #B41E00;
+    --primary-color-transparent: rgb(180 30 0 / 0.33);
+    --primary-color-variant: #FF4444;
+    --primary-color-variant-transparent: rgb(255 68 68 / 0.33);
     --on-primary-color: #FFFFFF;
     --secondary-color: #333333;
     --secondary-color-transparence: rgba(51, 51, 51, 0.33);
@@ -31,16 +33,47 @@
 }
 
 * {
-    font-family: var(--font-family);
+    font-family: var(--font-family), sans-serif;
     font-size: var(--font-size-normal);
+}
+
+html {
+    font-size: 18px;
 }
 
 body {
     background-color: var(--secondary-color);
-    background-image: url("/images/icon-monocolor.png");
     background-size: 30px auto;
     background-repeat: repeat;
     color: var(--on-primary-color);
+}
+
+header {
+    background-color: var(--primary-color-transparent);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: auto;
+    padding: 20px;
+
+    font-size: 1.5em;
+}
+
+header .main-menu > * {
+    color: var(--on-primary-color);
+    padding: 15px 10px;
+    background-color: transparent;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+}
+
+header .main-menu > *:hover, .header .main-menu > *:focus, .header .main-menu > *:active {
+    background-color: var(--primary-color-variant);
+}
+
+header .main-menu > .selected {
+    background-color: var(--on-primary-color);
 }
 
 footer {
