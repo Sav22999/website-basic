@@ -38,6 +38,8 @@ if ($database_ok) {
         // column does not exist and the history is denied to EVERY account
         // (the default of the flag is 0, so a missing column means "nobody").
         "history-permission" => db_has_column($c, $users_table, "history-enabled"),
+        // Per-account flag for future premium features (same pattern).
+        "pro-features" => db_has_column($c, $users_table, "pro-features"),
         // The v1 mirror table of every service that declares one: when it is
         // false the table configured in include/credentials.php does not exist
         // (or lost a column), the sync history is empty and the v1 clients stop

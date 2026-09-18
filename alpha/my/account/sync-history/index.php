@@ -1,7 +1,8 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
-$title = "Sync history – Notefox";
+include_once($root_path . "/alpha/include/i18n.php");
+$title = t('account.history_title');
 $selected_menu = "my";
 include_once($root_path . "/alpha/include/header.php");
 ?>
@@ -10,11 +11,10 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/my/account/" class="back-link">Back to account</a>
-        <h1 class="text-center">Sync history</h1>
+        <a href="/alpha/my/account/" class="back-link"><?php echo te('account.back_to_account'); ?></a>
+        <h1 class="text-center"><?php echo te('account.history_heading'); ?></h1>
         <p>
-            Here you can find the list of the synced versions of your notes, sorted from the most recent one. You
-            can download the current version or any previous version in JSON format.
+            <?php echo t('account.history_desc'); ?>
         </p>
 
         <div id="history-message" class="form-message hidden2"></div>
@@ -24,7 +24,7 @@ include_once($root_path . "/alpha/include/header.php");
         </div>
 
         <div class="text-center">
-            <button type="button" id="download-current-button" class="btn hidden2">Download the current version</button>
+            <button type="button" id="download-current-button" class="btn hidden2"><?php echo te('account.history_download_current'); ?></button>
         </div>
 
         <ul id="history-list" class="history-list"></ul>
@@ -128,9 +128,9 @@ include_once($root_path . "/alpha/include/header.php");
                 // writes plain text, so the link is appended afterwards.
                 var messageElement = document.getElementById("history-message");
                 var helpLink = document.createElement("a");
-                helpLink.href = "/help/how-to-get-history-sync/";
-                helpLink.className = "btn btn--secondary form-message-action";
-                helpLink.textContent = "How to get the Sync history";
+                helpLink.href = "/alpha/help/how-to-get-history-sync/";
+                helpLink.className = "form-message-link";
+                helpLink.textContent = "How to get the Sync history →";
                 messageElement.appendChild(helpLink);
 
                 var loginIdBlock = document.createElement("div");

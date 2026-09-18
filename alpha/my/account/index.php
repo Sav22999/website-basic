@@ -1,7 +1,8 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
-$title = "My account – Notefox";
+include_once($root_path . "/alpha/include/i18n.php");
+$title = t('account.dashboard_title');
 $selected_menu = "my";
 include_once($root_path . "/alpha/include/header.php");
 ?>
@@ -10,28 +11,27 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <h1 class="text-center">My account</h1>
+        <h1 class="text-center"><?php echo te('account.dashboard_heading'); ?></h1>
         <p class="text-center">
-            Signed in as <strong id="account-username">...</strong>
+            <?php echo te('account.signed_in_as'); ?> <strong id="account-username">...</strong>
         </p>
 
         <div id="account-message" class="form-message hidden2"></div>
 
         <div class="account-section">
-            <h2>Two-step verification</h2>
-            <div id="otp-status" class="account-status">Checking...</div>
+            <h2><?php echo te('account.otp_title'); ?></h2>
+            <div id="otp-status" class="account-status"><?php echo te('js.checking'); ?></div>
             <p>
-                When it is enabled, every login also needs a code sent to your email address.
-                Changing your password and deleting your account always need a code, whatever this setting.
+                <?php echo t('account.otp_when_enabled'); ?>
             </p>
-            <a href="/alpha/my/account/two-factor/" class="btn">Manage two-step verification</a>
+            <a href="/alpha/my/account/two-factor/" class="btn"><?php echo te('account.otp_manage'); ?></a>
         </div>
 
         <div class="account-links">
-            <a href="/alpha/my/account/sync-history/" class="btn btn--secondary">Sync history</a>
-            <a href="/alpha/my/account/password/" class="btn btn--secondary">Change password</a>
-            <a href="/alpha/my/account/delete/" class="btn btn--secondary">Delete account</a>
-            <button type="button" id="logout-button" class="btn btn--secondary">Log out</button>
+            <a href="/alpha/my/account/sync-history/" class="btn btn--secondary"><?php echo te('account.sync_history'); ?></a>
+            <a href="/alpha/my/account/password/" class="btn btn--secondary"><?php echo te('account.change_password'); ?></a>
+            <a href="/alpha/my/account/delete/" class="btn btn--secondary"><?php echo te('account.delete_account'); ?></a>
+            <button type="button" id="logout-button" class="btn btn--secondary"><?php echo te('account.log_out'); ?></button>
         </div>
     </div>
 </main>

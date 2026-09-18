@@ -1,5 +1,7 @@
 <?php
 global $title, $url_opengraph;
+include_once($root_path . "/alpha/include/i18n.php");
+global $i18n_lang;
 if (!isset($title) || $title === "") {
     $title = "Notefox: websites notes";
 }
@@ -8,7 +10,8 @@ if (!isset($url_opengraph) || $url_opengraph === "") {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?php echo $i18n_lang; ?>">
+<script>(function(){try{var t=localStorage.getItem("nf_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})()</script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,7 +24,7 @@ if (!isset($url_opengraph) || $url_opengraph === "") {
     <link rel="stylesheet" href="/alpha/css/style.css">
     <link rel="icon" href="/images/icon.svg">
 
-    <meta property="og:locale" content="it_IT">
+    <meta property="og:locale" content="<?php echo $i18n_lang === 'it' ? 'it_IT' : 'en_US'; ?>">
     <meta property="og:type" content="website">
     <meta property="og:title" content="<?php echo htmlspecialchars($title); ?>">
     <meta property="og:description" content="Notefox: Take notes on every website in a smart and simple way!">

@@ -10,6 +10,7 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
+        <?php i18n_english_only_notice(); ?>
         <a href="/alpha/help/" class="back-link">Back to Help</a>
         <h1>Guides &amp; FAQ</h1>
         <p>Find answers to common questions and step-by-step guides for using Notefox.</p>
@@ -32,6 +33,9 @@ include_once($root_path . "/alpha/include/header.php");
             <li class="link-list-item" data-search="notefox account v2 sav account what's new"><a
                         href="/alpha/help/notefox-account-v2/" class="link-list-link">Notefox Account v2 (Sav
                     Account)</a></li>
+            <li class="link-list-item" data-search="account verification email code confirm signup"><a
+                        href="/alpha/help/account-verification/" class="link-list-link">Account verification procedure</a>
+            </li>
             <li class="link-list-item" data-search="import export data backup"><a href="/alpha/help/import-export-data/"
                                                                                   class="link-list-link">How to import
                     and export data</a></li>

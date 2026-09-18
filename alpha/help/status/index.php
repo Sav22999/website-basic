@@ -1,6 +1,7 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
+include_once($root_path . "/alpha/include/i18n.php");
 $title = "Services Status & Health Detection – Notefox";
 $selected_menu = "help";
 include_once($root_path . "/alpha/include/header.php");
@@ -11,6 +12,7 @@ include_once($root_path . "/alpha/include/header.php");
 <main id="main" class="page">
     <div class="container">
         <a href="/alpha/help/" class="back-link">Back to Help</a>
+        <?php i18n_english_only_notice(); ?>
         <h1 class="text-center">Services Status &amp; Health Detection</h1>
         <p class="text-center">
             Real-time automatic diagnostic detection for Notefox sync servers, database, security, and messaging

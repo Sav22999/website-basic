@@ -1,7 +1,8 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
-$title = "Change password – Notefox";
+include_once($root_path . "/alpha/include/i18n.php");
+$title = t('account.password_title');
 $selected_menu = "my";
 include_once($root_path . "/alpha/include/header.php");
 ?>
@@ -10,56 +11,56 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/my/account/" class="back-link">Back to account</a>
-        <h1 class="text-center">Change password</h1>
-        <p>
-            Your notes are never re-encrypted: only the encryption key of your account is updated, so the change is
-            quick and safe. After it you will have to log in again on every other device.
-        </p>
-        <p>
-            Changing your password always needs a code sent to your email address, even when two-step verification
-            is disabled: nothing is changed until you confirm that code.
-        </p>
+        <a href="/alpha/my/account/" class="back-link"><?php echo te('account.back_to_account'); ?></a>
 
-        <form id="password-form" class="form-container">
-            <div id="password-message" class="form-message hidden2"></div>
-
-            <div class="form-field" id="password-email-field">
-                <label class="form-label" for="password-email">Email</label>
-                <input class="form-input" type="email" id="password-email" name="email" maxlength="320" required>
+        <div class="auth-card">
+            <div class="auth-header">
+                <img src="/images/icon.svg" alt="" width="48" height="48">
+                <h1><?php echo te('account.password_heading'); ?></h1>
+                <p><?php echo t('account.password_desc'); ?></p>
             </div>
 
-            <div class="form-field" id="password-current-field">
-                <label class="form-label" for="password-current">Current password</label>
-                <input class="form-input" type="password" id="password-current" name="password" required>
-            </div>
+            <form id="password-form" class="form-container">
+                <div id="password-message" class="form-message hidden2"></div>
 
-            <div class="form-field" id="password-new-field">
-                <label class="form-label" for="password-new">New password</label>
-                <input class="form-input" type="password" id="password-new" name="new-password" required>
-            </div>
+                <div class="form-field" id="password-email-field">
+                    <label class="form-label" for="password-email"><?php echo te('common.email'); ?></label>
+                    <input class="form-input" type="email" id="password-email" name="email" maxlength="320" required>
+                </div>
 
-            <div class="form-field" id="password-new-confirm-field">
-                <label class="form-label" for="password-new-confirm">Confirm new password</label>
-                <input class="form-input" type="password" id="password-new-confirm" name="new-password-confirm"
-                       required>
-            </div>
+                <div class="form-field" id="password-current-field">
+                    <label class="form-label" for="password-current"><?php echo te('account.password_current'); ?></label>
+                    <input class="form-input" type="password" id="password-current" name="password" required>
+                </div>
 
-            <div class="form-field hidden2" id="password-code-field">
-                <label class="form-label" for="password-code">Verification code</label>
-                <input class="form-input" type="text" id="password-code" name="verification-code" maxlength="64">
-            </div>
+                <div class="form-field" id="password-new-field">
+                    <label class="form-label" for="password-new"><?php echo te('account.password_new'); ?></label>
+                    <input class="form-input" type="password" id="password-new" name="new-password" required>
+                </div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn" id="password-submit">Send the verification code</button>
-                <a href="/alpha/my/account/" class="btn btn--secondary">Cancel</a>
-            </div>
-        </form>
+                <div class="form-field" id="password-new-confirm-field">
+                    <label class="form-label" for="password-new-confirm"><?php echo te('account.password_new_confirm'); ?></label>
+                    <input class="form-input" type="password" id="password-new-confirm" name="new-password-confirm"
+                           required>
+                </div>
 
-        <p class="text-center hidden2" id="password-resend-row" style="margin-top: 24px;">
-            Didn't get the code?
-            <a href="#" id="password-resend-code">Send a new code</a>
-        </p>
+                <div class="form-field hidden2" id="password-code-field">
+                    <label class="form-label" for="password-code"><?php echo te('account.signup_verify_code'); ?></label>
+                    <input class="form-input" type="text" id="password-code" name="verification-code" maxlength="64">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--block" id="password-submit"><?php echo te('account.password_send_code'); ?></button>
+                </div>
+            </form>
+
+            <p class="auth-footer" id="password-cancel-row">
+                <a href="/alpha/my/account/"><?php echo te('common.cancel'); ?></a>
+            </p>
+            <p class="auth-footer hidden2" id="password-resend-row">
+                <?php echo t('account.didnt_get_code'); ?> <a href="#" id="password-resend-code"><?php echo te('account.send_new_code'); ?></a>
+            </p>
+        </div>
     </div>
 </main>
 
@@ -78,9 +79,8 @@ include_once($root_path . "/alpha/include/header.php");
         var codeField = document.getElementById("password-code-field");
         var codeInput = document.getElementById("password-code");
         var resendRow = document.getElementById("password-resend-row");
+        var cancelRow = document.getElementById("password-cancel-row");
 
-        // The passwords are never stored anywhere: both steps read them from
-        // the form, which stays on the page until the change is confirmed.
         var codeRequested = false;
 
         function readFields() {
@@ -130,6 +130,7 @@ include_once($root_path . "/alpha/include/header.php");
                     codeField.classList.remove("hidden2");
                     codeInput.required = true;
                     resendRow.classList.remove("hidden2");
+                    cancelRow.classList.add("hidden2");
                     submitButton.textContent = "Update password";
 
                     var emailInput = document.getElementById("password-email");

@@ -1,7 +1,8 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
-$title = "Page not found – Notefox";
+include_once($root_path . "/alpha/include/i18n.php");
+$title = t('errors.404_title');
 $selected_menu = "";
 include_once($root_path . "/alpha/include/header.php");
 ?>
@@ -55,12 +56,12 @@ include_once($root_path . "/alpha/include/header.php");
                     <line x1="15" y1="9" x2="15.01" y2="9"/>
                 </svg>
             </div>
-            <div class="error-code">404</div>
-            <h1>Page not found</h1>
-            <p class="error-message">The page you are looking for doesn't exist or has been moved.</p>
+            <div class="error-code"><?php echo t('errors.404_code'); ?></div>
+            <h1><?php echo t('errors.404_heading'); ?></h1>
+            <p class="error-message"><?php echo t('errors.404_message'); ?></p>
             <div class="error-actions">
-                <a href="/alpha/" class="btn">Go to homepage</a>
-                <button onclick="history.back()" class="btn btn--secondary">Go back</button>
+                <a href="/alpha/" class="btn"><?php echo t('errors.go_to_homepage'); ?></a>
+                <button onclick="history.back()" class="btn btn--secondary"><?php echo t('common.go_back'); ?></button>
             </div>
         </div>
     </div>

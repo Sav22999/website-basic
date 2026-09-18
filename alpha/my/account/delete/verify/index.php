@@ -1,7 +1,8 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
-$title = "Confirm the deletion of your account – Notefox";
+include_once($root_path . "/alpha/include/i18n.php");
+$title = t('account.delete_verify_title');
 $selected_menu = "my";
 include_once($root_path . "/alpha/include/header.php");
 ?>
@@ -10,43 +11,43 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/my/account/delete/" class="back-link">Back</a>
-        <h1 class="text-center">Confirm the deletion of your account</h1>
-        <p>
-            We sent you an email with a confirmation code. Enter it below, together with your password, to delete
-            your account permanently.
-        </p>
+        <a href="/alpha/my/account/delete/" class="back-link"><?php echo te('common.back'); ?></a>
 
-        <form id="delete-verify-form" class="form-container">
-            <div id="delete-verify-message" class="form-message hidden2"></div>
-
-            <div class="form-field" id="delete-verify-email-field">
-                <label class="form-label" for="delete-verify-email">Email</label>
-                <input class="form-input" type="email" id="delete-verify-email" name="email" maxlength="320"
-                       required>
+        <div class="auth-card">
+            <div class="auth-header">
+                <img src="/images/icon.svg" alt="" width="48" height="48">
+                <h1><?php echo te('account.delete_verify_heading'); ?></h1>
+                <p><?php echo t('account.delete_verify_desc'); ?></p>
             </div>
 
-            <div class="form-field" id="delete-verify-password-field">
-                <label class="form-label" for="delete-verify-password">Password</label>
-                <input class="form-input" type="password" id="delete-verify-password" name="password" required>
-            </div>
+            <form id="delete-verify-form" class="form-container">
+                <div id="delete-verify-message" class="form-message hidden2"></div>
 
-            <div class="form-field" id="delete-verify-code-field">
-                <label class="form-label" for="delete-verify-code">Confirmation code</label>
-                <input class="form-input" type="text" id="delete-verify-code" name="deleting-code" maxlength="64"
-                       required>
-            </div>
+                <div class="form-field hidden2" id="delete-verify-email-field">
+                    <label class="form-label" for="delete-verify-email"><?php echo te('common.email'); ?></label>
+                    <input class="form-input" type="email" id="delete-verify-email" name="email" maxlength="320">
+                </div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn btn--danger" id="delete-verify-submit">Delete permanently</button>
-                <a href="/alpha/my/account/" class="btn btn--secondary">Cancel</a>
-            </div>
-        </form>
+                <div class="form-field hidden2" id="delete-verify-password-field">
+                    <label class="form-label" for="delete-verify-password"><?php echo te('common.password'); ?></label>
+                    <input class="form-input" type="password" id="delete-verify-password" name="password">
+                </div>
 
-        <p class="text-center" style="margin-top: 24px;">
-            Didn't get the code?
-            <a href="#" id="delete-resend-code">Send a new code</a>
-        </p>
+                <div class="form-field" id="delete-verify-code-field">
+                    <label class="form-label" for="delete-verify-code"><?php echo te('account.delete_verify_code'); ?></label>
+                    <input class="form-input" type="text" id="delete-verify-code" name="deleting-code" maxlength="64"
+                           required autofocus>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--block btn--danger" id="delete-verify-submit"><?php echo te('account.delete_verify_submit'); ?></button>
+                </div>
+            </form>
+
+            <p class="auth-footer">
+                <?php echo t('account.didnt_get_code'); ?> <a href="#" id="delete-resend-code"><?php echo te('account.send_new_code'); ?></a>
+            </p>
+        </div>
     </div>
 </main>
 
@@ -87,14 +88,11 @@ include_once($root_path . "/alpha/include/header.php");
             passwordInput.value = pending["password"];
         }
 
-        if (emailInput.value && passwordInput.value) {
-            emailField.classList.add("hidden2");
-            passwordField.classList.add("hidden2");
-            emailInput.readOnly = true;
-            passwordInput.readOnly = true;
-            emailInput.required = false;
-            passwordInput.required = false;
-            codeInput.focus();
+        if (!emailInput.value || !passwordInput.value) {
+            emailField.classList.remove("hidden2");
+            passwordField.classList.remove("hidden2");
+            emailInput.required = true;
+            passwordInput.required = true;
         }
 
         var form = document.getElementById("delete-verify-form");

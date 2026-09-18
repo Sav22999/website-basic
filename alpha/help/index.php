@@ -1,7 +1,8 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
-$title = "Help – Notefox";
+include_once($root_path . "/alpha/include/i18n.php");
+$title = t('help.title');
 $selected_menu = "help";
 include_once($root_path . "/alpha/include/header.php");
 ?>
@@ -10,8 +11,8 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <h1>Help</h1>
-        <p>Need help with Notefox? Find guides, check service status, or get in touch.</p>
+        <h1><?php echo t('help.heading'); ?></h1>
+        <p><?php echo t('help.subtitle'); ?></p>
 
         <style>
             .help-cards {
@@ -74,8 +75,8 @@ include_once($root_path . "/alpha/include/header.php");
                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
                 </svg>
-                <span class="help-card-title">Service status</span>
-                <p class="help-card-desc">Check if Notefox Account services are running correctly.</p>
+                <span class="help-card-title"><?php echo t('help.card_status_title'); ?></span>
+                <p class="help-card-desc"><?php echo t('help.card_status_desc'); ?></p>
             </a>
             <a href="/alpha/help/faq/" class="help-card">
                 <svg class="help-card-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -84,8 +85,8 @@ include_once($root_path . "/alpha/include/header.php");
                     <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
                     <line x1="12" y1="17" x2="12.01" y2="17"/>
                 </svg>
-                <span class="help-card-title">Guides &amp; FAQ</span>
-                <p class="help-card-desc">Step-by-step guides, tips, and answers to common questions.</p>
+                <span class="help-card-title"><?php echo te('help.card_faq_title'); ?></span>
+                <p class="help-card-desc"><?php echo t('help.card_faq_desc'); ?></p>
             </a>
             <a href="/alpha/docs/" class="help-card">
                 <svg class="help-card-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -93,8 +94,8 @@ include_once($root_path . "/alpha/include/header.php");
                     <polyline points="16 18 22 12 16 6"/>
                     <polyline points="8 6 2 12 8 18"/>
                 </svg>
-                <span class="help-card-title">API documentation</span>
-                <p class="help-card-desc">Full reference for the Sav Account API v2.</p>
+                <span class="help-card-title"><?php echo t('help.card_api_title'); ?></span>
+                <p class="help-card-desc"><?php echo t('help.card_api_desc'); ?></p>
             </a>
             <a href="https://github.com/Sav22999/websites-notes/issues" class="help-card" target="_blank"
                rel="noopener">
@@ -102,15 +103,15 @@ include_once($root_path . "/alpha/include/header.php");
                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
                 </svg>
-                <span class="help-card-title">Report an issue</span>
-                <p class="help-card-desc">Found a bug? Open an issue on GitHub.</p>
+                <span class="help-card-title"><?php echo t('help.card_issue_title'); ?></span>
+                <p class="help-card-desc"><?php echo t('help.card_issue_desc'); ?></p>
             </a>
         </div>
 
         <hr>
 
-        <h2>Contact</h2>
-        <p>Can't find what you need? Reach out directly:</p>
+        <h2><?php echo t('help.contact_title'); ?></h2>
+        <p><?php echo t('help.contact_text'); ?></p>
 
         <div class="btn-group" style="margin-bottom: 32px;">
             <a href="https://t.me/sav_projects/7" class="btn" target="_blank" rel="noopener">Telegram</a>
@@ -119,18 +120,14 @@ include_once($root_path . "/alpha/include/header.php");
 
         <hr>
 
-        <h2>Quick links</h2>
+        <h2><?php echo t('help.quick_links'); ?></h2>
         <ul class="link-list">
-            <li class="link-list-item"><a href="/alpha/help/notefox-account-v2/" class="link-list-link">Notefox Account
-                    v2 (Sav Account)</a></li>
-            <li class="link-list-item"><a href="/alpha/help/import-export-data/" class="link-list-link">How to import
-                    and export data</a></li>
-            <li class="link-list-item"><a href="/alpha/help/search/" class="link-list-link">How the search feature
-                    works</a></li>
-            <li class="link-list-item"><a href="/alpha/help/own-server-for-notefox-sync/" class="link-list-link">How to
-                    run your own sync server</a></li>
-            <li class="link-list-item"><a href="/alpha/privacy/" class="link-list-link">Privacy policy</a></li>
-            <li class="link-list-item"><a href="/alpha/terms/" class="link-list-link">Terms of service</a></li>
+            <li class="link-list-item"><a href="/alpha/help/notefox-account-v2/" class="link-list-link"><span class="lang-badge">EN</span> Notefox Account v2 (Sav Account)</a></li>
+            <li class="link-list-item"><a href="/alpha/help/import-export-data/" class="link-list-link"><span class="lang-badge">EN</span> How to import and export data</a></li>
+            <li class="link-list-item"><a href="/alpha/help/search/" class="link-list-link"><span class="lang-badge">EN</span> How the search feature works</a></li>
+            <li class="link-list-item"><a href="/alpha/help/own-server-for-notefox-sync/" class="link-list-link"><span class="lang-badge">EN</span> How to run your own sync server</a></li>
+            <li class="link-list-item"><a href="/alpha/privacy/" class="link-list-link"><?php echo t('help.link_privacy'); ?></a></li>
+            <li class="link-list-item"><a href="/alpha/terms/" class="link-list-link"><?php echo t('help.link_terms'); ?></a></li>
         </ul>
     </div>
 </main>

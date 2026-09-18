@@ -10,6 +10,7 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
+        <?php i18n_english_only_notice(); ?>
         <a href="/alpha/help/faq/" class="back-link">Back to FAQ</a>
         <h1>How to get the sync history</h1>
         <div class="article-meta">
@@ -47,17 +48,20 @@ include_once($root_path . "/alpha/include/header.php");
 
         <h2>1. Make a donation on LiberaPay</h2>
         <p>
-            The donation has to be made on <strong>LiberaPay</strong>, choosing <strong>Stripe</strong> as the
-            payment method (credit card or SEPA direct debit). Stripe applies much lower processing fees than PayPal,
-            ensuring that almost the entire amount of your donation directly reaches the project (with only a minimal
-            fee deducted, much lower than what PayPal charges).
-            For this reason, donations made with <strong>PayPal are not eligible</strong> for this feature.
+            <a href="https://liberapay.com" target="_blank" rel="noopener">LiberaPay</a> is a free and
+            open-source platform for recurring donations, and for this reason it is the preferred way to
+            support the project. The donation has to be made on <strong>LiberaPay</strong>, choosing
+            <strong>Stripe</strong> as the payment method (credit card or SEPA direct debit). Stripe applies
+            much lower processing fees than PayPal, ensuring that almost the entire amount of your donation
+            directly reaches the project (with only a minimal fee deducted, much lower than what PayPal
+            charges). For this reason, donations made with <strong>PayPal are not eligible</strong> for this
+            feature.
         </p>
         <p>
-            Both a <strong>one-time donation</strong> and a <strong>yearly subscription</strong> (a donation
-            renewed once a year) are accepted. On LiberaPay you can pick the amount you prefer and the renewal
-            period; if you choose the yearly subscription, the permission stays active as long as the
-            subscription is active.
+            Both a <strong>one-time donation</strong> and a <strong>yearly subscription</strong> are accepted.
+            Regardless of the type you choose, the Sync history permission is <strong>granted for
+            lifetime</strong> — it will stay active on your account permanently, even if a subscription
+            ends or is cancelled.
         </p>
         <p class="text-center">
             <a href="https://liberapay.com/Sav22999/donate" class="btn" target="_blank" rel="noopener">LiberaPay</a>
@@ -66,15 +70,22 @@ include_once($root_path . "/alpha/include/header.php");
         <h2>2. Contact the developer</h2>
         <p>
             After the donation you have to <strong>contact the developer</strong>, who will give you further
-            information about it and will enable the Sync history on your account. Please write from (or mention)
-            the e-mail address of your Notefox Account or your Login ID, and tell the date and the amount of the
-            donation, so that
+            information about it and will enable the Sync history on your account. Please mention your
+            <strong>Login ID</strong> and tell the date and the amount of the donation, so that
             the right account and the right payment can be found.
         </p>
         <div class="btn-group text-center">
             <a href="https://t.me/sav_projects/7" class="btn" target="_blank" rel="noopener">Telegram</a>
             <a href="mailto:saverio.morelli@protonmail.com" class="btn btn--secondary">Email</a>
         </div>
+
+        <h2>Already donated in the past?</h2>
+        <p>
+            If you have already made a donation on LiberaPay in the past and would like to get the Sync
+            history enabled on your account, simply contact the developer through one of the channels above.
+            Provide your <strong>Login ID</strong> and the approximate date and amount of your donation so
+            it can be verified.
+        </p>
 
         <h2>After it is enabled</h2>
         <p>

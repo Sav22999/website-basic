@@ -1,7 +1,8 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
-$title = "Log in – Notefox";
+include_once($root_path . "/alpha/include/i18n.php");
+$title = t('account.login_title');
 $selected_menu = "my";
 include_once($root_path . "/alpha/include/header.php");
 ?>
@@ -10,35 +11,35 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/my/" class="back-link">Back</a>
+        <a href="/alpha/my/" class="back-link"><?php echo te('common.back'); ?></a>
 
         <div class="auth-card">
             <div class="auth-header">
                 <img src="/images/icon.svg" alt="" width="48" height="48">
-                <h1>Log in</h1>
-                <p>Access your Notefox Account to manage it or download your notes.</p>
+                <h1><?php echo te('account.login_heading'); ?></h1>
+                <p><?php echo t('account.login_desc'); ?></p>
             </div>
 
             <form id="login-form" class="form-container">
                 <div id="login-message" class="form-message hidden2"></div>
 
                 <div class="form-field">
-                    <label class="form-label" for="login-email">Email</label>
+                    <label class="form-label" for="login-email"><?php echo te('common.email'); ?></label>
                     <input class="form-input" type="email" id="login-email" name="email" maxlength="320" required>
                 </div>
 
                 <div class="form-field">
-                    <label class="form-label" for="login-password">Password</label>
+                    <label class="form-label" for="login-password"><?php echo te('common.password'); ?></label>
                     <input class="form-input" type="password" id="login-password" name="password" required>
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn--block" id="login-submit">Log in</button>
+                    <button type="submit" class="btn btn--block" id="login-submit"><?php echo te('account.log_in'); ?></button>
                 </div>
             </form>
 
             <p class="auth-footer">
-                Do not have an account yet? <a href="/alpha/my/signup/">Create one</a>
+                <?php echo t('account.login_no_account'); ?> <a href="/alpha/my/signup/"><?php echo te('account.login_create_one'); ?></a>
             </p>
         </div>
     </div>

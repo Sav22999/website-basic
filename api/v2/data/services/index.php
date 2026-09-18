@@ -17,6 +17,9 @@
  * `data/get/history*` endpoints (`users`.`history-enabled`, denied by
  * default): it is reported here so a client can hide the sync history instead
  * of discovering the 433 only once the user asks for it.
+ *
+ * `pro-features` is the per-account flag for access to future premium
+ * features (`users`.`pro-features`, denied by default).
  */
 
 include_once(__DIR__ . "/../../include/bootstrap.php");
@@ -35,5 +38,6 @@ api_ok(array(
     "services" => $services,
     "supported" => sav_service_names(),
     "history-enabled" => $session["history-enabled"],
+    "pro-features" => $session["pro-features"],
 ));
 ?>

@@ -1,7 +1,8 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
-$title = "Forbidden – Notefox";
+include_once($root_path . "/alpha/include/i18n.php");
+$title = t('errors.403_title');
 $selected_menu = "";
 include_once($root_path . "/alpha/include/header.php");
 ?>
@@ -53,12 +54,12 @@ include_once($root_path . "/alpha/include/header.php");
                     <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                 </svg>
             </div>
-            <div class="error-code">403</div>
-            <h1>Forbidden</h1>
-            <p class="error-message">You don't have permission to access this page.</p>
+            <div class="error-code"><?php echo t('errors.403_code'); ?></div>
+            <h1><?php echo t('errors.403_heading'); ?></h1>
+            <p class="error-message"><?php echo t('errors.403_message'); ?></p>
             <div class="error-actions">
-                <a href="/alpha/" class="btn">Go to homepage</a>
-                <button onclick="history.back()" class="btn btn--secondary">Go back</button>
+                <a href="/alpha/" class="btn"><?php echo t('errors.go_to_homepage'); ?></a>
+                <button onclick="history.back()" class="btn btn--secondary"><?php echo t('common.go_back'); ?></button>
             </div>
         </div>
     </div>

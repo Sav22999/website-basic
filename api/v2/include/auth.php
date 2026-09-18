@@ -118,6 +118,24 @@ function v2_history_enabled($c, $user_row)
 }
 
 /**
+ * Pro-features flag: grants access to future premium features (same pattern as
+ * history-enabled — denied by default, set per account with an UPDATE).
+ */
+function v2_pro_features($c, $user_row)
+{
+    if (!is_array($user_row)) {
+        return false;
+    }
+    if (!array_key_exists("pro-features", $user_row)) {
+        return false;
+    }
+    if ($user_row["pro-features"] === null) {
+        return false;
+    }
+    return ((int)$user_row["pro-features"]) === 1;
+}
+
+/**
  * The sync history permission of an authenticated session, or a clean error.
  * The two `data/get/history*` endpoints call this right after the rate limit.
  */
@@ -173,7 +191,7 @@ function v2_create_session($c, $user_id, $password, $ip_address, $expiry = null)
  *
  * Returned keys:
  *   user-id, user (row), password (plaintext), username (plaintext or null),
- *   dek (or null), otp-enabled (bool), history-enabled (bool), token-id,
+ *   dek (or null), otp-enabled (bool), history-enabled (bool), pro-features (bool), token-id,
  *   login (row)
  */
 function v2_authenticate($c, $login_id, $token)
@@ -234,6 +252,7 @@ function v2_authenticate($c, $login_id, $token)
         "token-id" => $token_id,
         "otp-enabled" => v2_otp_enabled($c, $user),
         "history-enabled" => v2_history_enabled($c, $user),
+        "pro-features" => v2_pro_features($c, $user),
         "dek" => v2_get_or_create_dek($c, $login["user-id"], $password),
     );
 }

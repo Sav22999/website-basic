@@ -411,6 +411,10 @@ CREATE TABLE IF NOT EXISTS `users`
 (
     1
 ) NOT NULL DEFAULT '0' COMMENT '1 = this account can read its sync history, 0 = denied (default)',
+    `pro-features` tinyint
+(
+    1
+) NOT NULL DEFAULT '0' COMMENT '1 = this account has access to premium features, 0 = denied (default)',
     PRIMARY KEY
 (
     `email`

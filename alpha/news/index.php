@@ -1,7 +1,8 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
-$title = "News – Notefox";
+include_once($root_path . "/alpha/include/i18n.php");
+$title = t('news.title');
 $selected_menu = "news";
 include_once($root_path . "/alpha/include/header.php");
 
@@ -455,8 +456,9 @@ $releases = array(
 
 <main id="main" class="page">
     <div class="container">
-        <h1>News</h1>
-        <p>All changes to the add-on, grouped by release.</p>
+        <?php i18n_english_only_notice(); ?>
+        <h1><?php echo te('news.heading'); ?></h1>
+        <p><?php echo te('news.subtitle'); ?></p>
 
         <div class="stack-sm" style="margin-top: 24px;">
             <?php foreach ($releases as $release): ?>

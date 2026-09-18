@@ -45,6 +45,8 @@
 --  10  users.`history-enabled` ................... optional - without it the
 --        two `POST /data/get/history*` endpoints answer 433 to EVERY account
 --        (the sync history is a per-account permission, denied by default)
+--  11  users.`pro-features` ..................... optional - without it the
+--        pro-features flag is denied to every account
 --
 -- RE-RUNNABLE (idempotent)
 --   Every statement of blocks 4 to 10 is guarded: the column (or the index) is
@@ -541,6 +543,30 @@ SET
                       WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table
                         AND `COLUMN_NAME` = 'history-enabled') = 0,
   CONCAT('ALTER TABLE `', @v2_users_table, '` ADD COLUMN `history-enabled` TINYINT(1) NOT NULL DEFAULT 0 COMMENT ''1 = this account can read its sync history, 0 = denied (default)'''),
+  'SELECT 1');
+PREPARE v2_stmt FROM @v2_sql;
+EXECUTE v2_stmt;
+DEALLOCATE PREPARE v2_stmt;
+
+
+-- ---------------------------------------------------------------------
+-- 11) OPTIONAL - Pro-features flag, DISABLED by default. Same pattern as
+--     history-enabled: denied when the column is missing, set per account
+--     with a manual UPDATE, no endpoint to change it.
+--
+--       UPDATE `users` SET `pro-features` = 1
+--        WHERE `email` = SHA2(LOWER('someone@example.com'), 512);
+--
+--     `GET /status` reports `pro-features: false` while the column is
+--     missing.
+-- ---------------------------------------------------------------------
+SET
+@v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
+                  WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table) = 1
+                 AND (SELECT COUNT(*) FROM `information_schema`.`COLUMNS`
+                      WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table
+                        AND `COLUMN_NAME` = 'pro-features') = 0,
+  CONCAT('ALTER TABLE `', @v2_users_table, '` ADD COLUMN `pro-features` TINYINT(1) NOT NULL DEFAULT 0 COMMENT ''1 = this account has access to premium features, 0 = denied (default)'''),
   'SELECT 1');
 PREPARE v2_stmt FROM @v2_sql;
 EXECUTE v2_stmt;

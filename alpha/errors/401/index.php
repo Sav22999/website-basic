@@ -1,7 +1,8 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
-$title = "Unauthorized – Notefox";
+include_once($root_path . "/alpha/include/i18n.php");
+$title = t('errors.401_title');
 $selected_menu = "";
 include_once($root_path . "/alpha/include/header.php");
 ?>
@@ -54,12 +55,12 @@ include_once($root_path . "/alpha/include/header.php");
                     <line x1="15" y1="12" x2="3" y2="12"/>
                 </svg>
             </div>
-            <div class="error-code">401</div>
-            <h1>Unauthorized</h1>
-            <p class="error-message">You need to sign in to access this page.</p>
+            <div class="error-code"><?php echo t('errors.401_code'); ?></div>
+            <h1><?php echo t('errors.401_heading'); ?></h1>
+            <p class="error-message"><?php echo t('errors.401_message'); ?></p>
             <div class="error-actions">
-                <a href="/alpha/" class="btn">Go to homepage</a>
-                <button onclick="history.back()" class="btn btn--secondary">Go back</button>
+                <a href="/alpha/" class="btn"><?php echo t('errors.go_to_homepage'); ?></a>
+                <button onclick="history.back()" class="btn btn--secondary"><?php echo t('common.go_back'); ?></button>
             </div>
         </div>
     </div>

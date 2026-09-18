@@ -1,6 +1,8 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
+include_once($root_path . "/alpha/include/i18n.php");
+$title = t('home.title');
 $selected_menu = "home";
 include_once($root_path . "/alpha/include/header.php");
 ?>
@@ -13,8 +15,7 @@ include_once($root_path . "/alpha/include/header.php");
         <div class="container text-center" style="position: relative;">
             <img src="/images/icon.svg" alt="Notefox" width="88" height="88" class="hero-icon home-hero-icon">
             <h1 class="page-title">Notefox</h1>
-            <p class="page-subtitle"><strong>Take notes</strong> on every website in a <strong>smart</strong> and
-                <strong>simple</strong> way!</p>
+            <p class="page-subtitle"><?php echo t('home.subtitle'); ?></p>
 
             <a href="/alpha/install/" class="btn hero-cta">
                 <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -23,7 +24,7 @@ include_once($root_path . "/alpha/include/header.php");
                     <polyline points="7 10 12 15 17 10"/>
                     <line x1="12" y1="15" x2="12" y2="3"/>
                 </svg>
-                Install Notefox
+                <?php echo t('home.install_notefox'); ?>
             </a>
 
             <div class="btn-group hero-secondary-links">
@@ -42,22 +43,22 @@ include_once($root_path . "/alpha/include/header.php");
 
     <section class="home-section">
         <div class="container">
-            <h2 class="home-section-title text-center">How it works</h2>
+            <h2 class="home-section-title text-center"><?php echo t('home.how_it_works'); ?></h2>
             <div class="home-steps">
                 <div class="home-step">
                     <div class="home-step-number">1</div>
-                    <h3>Install the extension</h3>
-                    <p>Add Notefox to Firefox, Chrome, or Edge with a single click.</p>
+                    <h3><?php echo t('home.step1_title'); ?></h3>
+                    <p><?php echo t('home.step1_desc'); ?></p>
                 </div>
                 <div class="home-step">
                     <div class="home-step-number">2</div>
-                    <h3>Write your notes</h3>
-                    <p>Click the Notefox icon on any page and start typing. Notes are saved automatically.</p>
+                    <h3><?php echo t('home.step2_title'); ?></h3>
+                    <p><?php echo t('home.step2_desc'); ?></p>
                 </div>
                 <div class="home-step">
                     <div class="home-step-number">3</div>
-                    <h3>Find them again</h3>
-                    <p>Visit the page again and your notes are right there, or search across all your notes.</p>
+                    <h3><?php echo t('home.step3_title'); ?></h3>
+                    <p><?php echo t('home.step3_desc'); ?></p>
                 </div>
             </div>
         </div>
@@ -65,7 +66,7 @@ include_once($root_path . "/alpha/include/header.php");
 
     <section class="home-section home-section--alt">
         <div class="container">
-            <h2 class="home-section-title text-center">Why Notefox?</h2>
+            <h2 class="home-section-title text-center"><?php echo t('home.why_notefox'); ?></h2>
             <div class="home-features">
                 <div class="home-feature">
                     <div class="home-feature-icon">
@@ -74,9 +75,8 @@ include_once($root_path . "/alpha/include/header.php");
                             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                         </svg>
                     </div>
-                    <h3>Private by design</h3>
-                    <p>No ads, no tracking, no analytics. Your data stays on your device or encrypted on our
-                        servers.</p>
+                    <h3><?php echo t('home.feature_private_title'); ?></h3>
+                    <p><?php echo t('home.feature_private_desc'); ?></p>
                 </div>
                 <div class="home-feature">
                     <div class="home-feature-icon">
@@ -87,8 +87,8 @@ include_once($root_path . "/alpha/include/header.php");
                             <line x1="12" y1="2" x2="12" y2="15"/>
                         </svg>
                     </div>
-                    <h3>Sync across devices</h3>
-                    <p>Create a free Notefox Account to keep your notes in sync on every browser and every device.</p>
+                    <h3><?php echo t('home.feature_sync_title'); ?></h3>
+                    <p><?php echo t('home.feature_sync_desc'); ?></p>
                 </div>
                 <div class="home-feature">
                     <div class="home-feature-icon">
@@ -99,8 +99,8 @@ include_once($root_path . "/alpha/include/header.php");
                             <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
                         </svg>
                     </div>
-                    <h3>Multi-browser</h3>
-                    <p>Available for Firefox, Chrome, and Edge. Same great experience everywhere you browse.</p>
+                    <h3><?php echo t('home.feature_multi_title'); ?></h3>
+                    <p><?php echo t('home.feature_multi_desc'); ?></p>
                 </div>
                 <div class="home-feature">
                     <div class="home-feature-icon">
@@ -113,8 +113,8 @@ include_once($root_path . "/alpha/include/header.php");
                             <polyline points="10 9 9 9 8 9"/>
                         </svg>
                     </div>
-                    <h3>Rich text editing</h3>
-                    <p>Bold, italic, headings, lists, and more. Format your notes however you like.</p>
+                    <h3><?php echo t('home.feature_rich_title'); ?></h3>
+                    <p><?php echo t('home.feature_rich_desc'); ?></p>
                 </div>
                 <div class="home-feature">
                     <div class="home-feature-icon">
@@ -124,8 +124,8 @@ include_once($root_path . "/alpha/include/header.php");
                             <polyline points="8 6 2 12 8 18"/>
                         </svg>
                     </div>
-                    <h3>Free &amp; open source</h3>
-                    <p>100% open source on GitHub. Review the code, contribute, or run your own sync server.</p>
+                    <h3><?php echo t('home.feature_oss_title'); ?></h3>
+                    <p><?php echo t('home.feature_oss_desc'); ?></p>
                 </div>
                 <div class="home-feature">
                     <div class="home-feature-icon">
@@ -135,8 +135,8 @@ include_once($root_path . "/alpha/include/header.php");
                             <line x1="21" y1="21" x2="16.65" y2="16.65"/>
                         </svg>
                     </div>
-                    <h3>Powerful search</h3>
-                    <p>Find any note instantly by title, content, or URL. Multi-term search with real-time results.</p>
+                    <h3><?php echo t('home.feature_search_title'); ?></h3>
+                    <p><?php echo t('home.feature_search_desc'); ?></p>
                 </div>
             </div>
         </div>
@@ -144,8 +144,8 @@ include_once($root_path . "/alpha/include/header.php");
 
     <section class="home-section">
         <div class="container text-center">
-            <h2 class="home-section-title">Ready to get started?</h2>
-            <p class="page-subtitle">Install Notefox for free and start taking notes on any website.</p>
+            <h2 class="home-section-title"><?php echo t('home.cta_title'); ?></h2>
+            <p class="page-subtitle"><?php echo t('home.cta_desc'); ?></p>
             <a href="/alpha/install/" class="btn hero-cta">
                 <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                      stroke-linecap="round" stroke-linejoin="round">
@@ -153,7 +153,7 @@ include_once($root_path . "/alpha/include/header.php");
                     <polyline points="7 10 12 15 17 10"/>
                     <line x1="12" y1="15" x2="12" y2="3"/>
                 </svg>
-                Install Notefox
+                <?php echo t('home.install_notefox'); ?>
             </a>
         </div>
     </section>

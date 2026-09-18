@@ -1,7 +1,8 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
-$title = "Verify your login – Notefox";
+include_once($root_path . "/alpha/include/i18n.php");
+$title = t('account.login_verify_title');
 $selected_menu = "my";
 include_once($root_path . "/alpha/include/header.php");
 ?>
@@ -10,42 +11,43 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/my/login/" class="back-link">Back to login</a>
-        <h1 class="text-center">Verify your login</h1>
-        <p>
-            Your account has two-step verification enabled. We sent you an email with a verification code: enter it
-            below together with your password to complete the login.
-        </p>
+        <a href="/alpha/my/login/" class="back-link"><?php echo te('account.back_to_login'); ?></a>
 
-        <form id="login-verify-form" class="form-container">
-            <div id="login-verify-message" class="form-message hidden2"></div>
-
-            <div class="form-field" id="login-verify-email-field">
-                <label class="form-label" for="login-verify-email">Email</label>
-                <input class="form-input" type="email" id="login-verify-email" name="email" maxlength="320"
-                       required>
+        <div class="auth-card">
+            <div class="auth-header">
+                <img src="/images/icon.svg" alt="" width="48" height="48">
+                <h1><?php echo te('account.login_verify_heading'); ?></h1>
+                <p><?php echo t('account.login_verify_desc'); ?></p>
             </div>
 
-            <div class="form-field" id="login-verify-password-field">
-                <label class="form-label" for="login-verify-password">Password</label>
-                <input class="form-input" type="password" id="login-verify-password" name="password" required>
-            </div>
+            <form id="login-verify-form" class="form-container">
+                <div id="login-verify-message" class="form-message hidden2"></div>
 
-            <div class="form-field" id="login-verify-code-field">
-                <label class="form-label" for="login-verify-code">Verification code</label>
-                <input class="form-input" type="text" id="login-verify-code" name="verification-code" maxlength="64"
-                       required>
-            </div>
+                <div class="form-field hidden2" id="login-verify-email-field">
+                    <label class="form-label" for="login-verify-email"><?php echo te('common.email'); ?></label>
+                    <input class="form-input" type="email" id="login-verify-email" name="email" maxlength="320">
+                </div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn" id="login-verify-submit">Verify</button>
-            </div>
-        </form>
+                <div class="form-field hidden2" id="login-verify-password-field">
+                    <label class="form-label" for="login-verify-password"><?php echo te('common.password'); ?></label>
+                    <input class="form-input" type="password" id="login-verify-password" name="password">
+                </div>
 
-        <p class="text-center" style="margin-top: 24px;">
-            Did not receive the code?
-            <a href="#" id="login-resend-code">Send a new code</a>
-        </p>
+                <div class="form-field" id="login-verify-code-field">
+                    <label class="form-label" for="login-verify-code"><?php echo te('account.signup_verify_code'); ?></label>
+                    <input class="form-input" type="text" id="login-verify-code" name="verification-code" maxlength="64"
+                           required autofocus>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--block" id="login-verify-submit"><?php echo te('account.login_verify_submit'); ?></button>
+                </div>
+            </form>
+
+            <p class="auth-footer">
+                <?php echo t('account.did_not_receive_code'); ?> <a href="#" id="login-resend-code"><?php echo te('account.send_new_code'); ?></a>
+            </p>
+        </div>
     </div>
 </main>
 
@@ -85,14 +87,11 @@ include_once($root_path . "/alpha/include/header.php");
             passwordInput.value = pending["password"];
         }
 
-        if (emailInput.value && passwordInput.value) {
-            emailField.classList.add("hidden2");
-            passwordField.classList.add("hidden2");
-            emailInput.readOnly = true;
-            passwordInput.readOnly = true;
-            emailInput.required = false;
-            passwordInput.required = false;
-            codeInput.focus();
+        if (!emailInput.value || !passwordInput.value) {
+            emailField.classList.remove("hidden2");
+            passwordField.classList.remove("hidden2");
+            emailInput.required = true;
+            passwordInput.required = true;
         }
 
         var form = document.getElementById("login-verify-form");
@@ -102,9 +101,9 @@ include_once($root_path . "/alpha/include/header.php");
             event.preventDefault();
             hideFormMessage("login-verify-message");
 
-            var email = document.getElementById("login-verify-email").value.trim();
-            var password = document.getElementById("login-verify-password").value;
-            var code = document.getElementById("login-verify-code").value.trim();
+            var email = emailInput.value.trim();
+            var password = passwordInput.value;
+            var code = codeInput.value.trim();
 
             if (email === "" || password === "" || code === "") {
                 showFormMessage("login-verify-message", "Please fill in all the fields.", true);
@@ -136,8 +135,8 @@ include_once($root_path . "/alpha/include/header.php");
             event.preventDefault();
             hideFormMessage("login-verify-message");
 
-            var email = document.getElementById("login-verify-email").value.trim();
-            var password = document.getElementById("login-verify-password").value;
+            var email = emailInput.value.trim();
+            var password = passwordInput.value;
 
             if (email === "" || password === "") {
                 showFormMessage("login-verify-message", "Enter your email and password to receive a new code.", true);

@@ -1,6 +1,7 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
+include_once($root_path . "/alpha/include/i18n.php");
 $title = "API Documentation – Notefox";
 $selected_menu = "help";
 include_once($root_path . "/alpha/include/header.php");
@@ -11,6 +12,7 @@ include_once($root_path . "/alpha/include/header.php");
 <main id="main" class="page">
     <div class="container">
         <a href="/alpha/help/" class="back-link">Back to Help</a>
+        <?php i18n_english_only_notice(); ?>
 
         <style>
             .docs-header {
@@ -532,6 +534,7 @@ include_once($root_path . "/alpha/include/header.php");
       "otp-change-code": true,
       "password-change-code": true,
       "history-permission": true,
+      "pro-features": true,
       "legacy-mirror": true
     },
     "mailer": true,
@@ -1090,7 +1093,8 @@ include_once($root_path . "/alpha/include/header.php");
     }
   ],
   "supported": ["notefox"],
-  "history-enabled": false
+  "history-enabled": false,
+  "pro-features": false
 }</code></pre>
                 <ul class="docs-field-list">
                     <li><span class="docs-field-name">services</span> <span class="docs-field-type">array</span> &mdash;
@@ -1102,6 +1106,10 @@ include_once($root_path . "/alpha/include/header.php");
                     <li><span class="docs-field-name">history-enabled</span> <span
                                 class="docs-field-type">boolean</span> &mdash; Whether sync history is enabled for this
                         account.
+                    </li>
+                    <li><span class="docs-field-name">pro-features</span> <span
+                                class="docs-field-type">boolean</span> &mdash; Whether premium features are enabled for
+                        this account.
                     </li>
                 </ul>
             </div>

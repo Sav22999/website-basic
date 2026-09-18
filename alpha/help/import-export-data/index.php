@@ -10,6 +10,7 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
+        <?php i18n_english_only_notice(); ?>
         <a href="/alpha/help/faq/" class="back-link">Back to FAQ</a>
         <h1>How to import and export data</h1>
         <div class="article-meta">

@@ -1,6 +1,7 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
+include_once($root_path . "/alpha/include/i18n.php");
 $title = "Welcome to Notefox";
 $selected_menu = "";
 include_once($root_path . "/alpha/include/header.php");
@@ -10,6 +11,7 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
+        <?php i18n_english_only_notice(); ?>
         <style>
             .welcome-hero {
                 text-align: center;

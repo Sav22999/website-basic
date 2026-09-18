@@ -1,7 +1,8 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
-$title = "My Account – Notefox";
+include_once($root_path . "/alpha/include/i18n.php");
+$title = t('account.landing_title');
 $selected_menu = "my";
 include_once($root_path . "/alpha/include/header.php");
 ?>
@@ -19,13 +20,13 @@ include_once($root_path . "/alpha/include/header.php");
             <div class="auth-card">
                 <div class="auth-header">
                     <img src="/images/icon.svg" alt="" width="48" height="48">
-                    <h1>Notefox Account</h1>
-                    <p>Sync your notes across devices, keep them safe, and access them anywhere.</p>
+                    <h1><?php echo t('account.landing_heading'); ?></h1>
+                    <p><?php echo t('account.landing_desc'); ?></p>
                 </div>
 
                 <div class="form-actions" style="gap: 10px;">
-                    <a href="/alpha/my/login/" class="btn btn--block">Log in</a>
-                    <a href="/alpha/my/signup/" class="btn btn--secondary btn--block">Create an account</a>
+                    <a href="/alpha/my/login/" class="btn btn--block"><?php echo te('account.log_in'); ?></a>
+                    <a href="/alpha/my/signup/" class="btn btn--secondary btn--block"><?php echo te('account.create_account'); ?></a>
                 </div>
             </div>
 
@@ -82,17 +83,16 @@ include_once($root_path . "/alpha/include/header.php");
                         <line x1="6" y1="6" x2="6.01" y2="6"/>
                         <line x1="6" y1="18" x2="6.01" y2="18"/>
                     </svg>
-                    <div class="account-benefit-title">Sync across devices</div>
-                    <p class="account-benefit-desc">Your notes are automatically synced between all your browsers.</p>
+                    <div class="account-benefit-title"><?php echo te('account.benefit_sync_title'); ?></div>
+                    <p class="account-benefit-desc"><?php echo te('account.benefit_sync_desc'); ?></p>
                 </div>
                 <div class="account-benefit">
                     <svg class="account-benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                          stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                     </svg>
-                    <div class="account-benefit-title">Private &amp; secure</div>
-                    <p class="account-benefit-desc">Your notes are encrypted server-side with your password. Only you
-                        can read them.</p>
+                    <div class="account-benefit-title"><?php echo te('account.benefit_private_title'); ?></div>
+                    <p class="account-benefit-desc"><?php echo te('account.benefit_private_desc'); ?></p>
                 </div>
                 <div class="account-benefit">
                     <svg class="account-benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -100,8 +100,8 @@ include_once($root_path . "/alpha/include/header.php");
                         <line x1="12" y1="1" x2="12" y2="23"/>
                         <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
                     </svg>
-                    <div class="account-benefit-title">Free</div>
-                    <p class="account-benefit-desc">Creating an account and syncing your notes is completely free.</p>
+                    <div class="account-benefit-title"><?php echo te('account.benefit_free_title'); ?></div>
+                    <p class="account-benefit-desc"><?php echo te('account.benefit_free_desc'); ?></p>
                 </div>
             </div>
         </div>

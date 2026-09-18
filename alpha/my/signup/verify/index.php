@@ -1,7 +1,8 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
-$title = "Verify your account – Notefox";
+include_once($root_path . "/alpha/include/i18n.php");
+$title = t('account.signup_verify_title');
 $selected_menu = "my";
 include_once($root_path . "/alpha/include/header.php");
 ?>
@@ -10,41 +11,33 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/my/signup/" class="back-link">Back to signup</a>
-        <h1 class="text-center">Verify your account</h1>
-        <p>
-            We sent you an email with a verification code. Enter it below together with your password to complete
-            the sign up.
-        </p>
+        <a href="/alpha/my/signup/" class="back-link"><?php echo te('account.back_to_signup'); ?></a>
 
-        <form id="verify-form" class="form-container">
-            <div id="verify-message" class="form-message hidden2"></div>
-
-            <div class="form-field">
-                <label class="form-label" for="verify-email">Email</label>
-                <input class="form-input" type="email" id="verify-email" name="email" maxlength="320" required>
+        <div class="auth-card">
+            <div class="auth-header">
+                <img src="/images/icon.svg" alt="" width="48" height="48">
+                <h1><?php echo te('account.signup_verify_heading'); ?></h1>
+                <p><?php echo t('account.signup_verify_desc'); ?></p>
             </div>
 
-            <div class="form-field">
-                <label class="form-label" for="verify-password">Password</label>
-                <input class="form-input" type="password" id="verify-password" name="password" required>
-            </div>
+            <form id="verify-form" class="form-container">
+                <div id="verify-message" class="form-message hidden2"></div>
 
-            <div class="form-field">
-                <label class="form-label" for="verify-code">Verification code</label>
-                <input class="form-input" type="text" id="verify-code" name="verification-code" maxlength="64"
-                       required>
-            </div>
+                <div class="form-field">
+                    <label class="form-label" for="verify-code"><?php echo te('account.signup_verify_code'); ?></label>
+                    <input class="form-input" type="text" id="verify-code" name="verification-code" maxlength="64"
+                           required autofocus>
+                </div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn" id="verify-submit">Verify account</button>
-            </div>
-        </form>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--block" id="verify-submit"><?php echo te('account.signup_verify_submit'); ?></button>
+                </div>
+            </form>
 
-        <p class="text-center" style="margin-top: 24px;">
-            Did not receive the code?
-            <a href="#" id="resend-code">Send a new code</a>
-        </p>
+            <p class="auth-footer">
+                <?php echo t('account.did_not_receive_code'); ?> <a href="#" id="resend-code"><?php echo te('account.send_new_code'); ?></a>
+            </p>
+        </div>
     </div>
 </main>
 
@@ -58,9 +51,22 @@ include_once($root_path . "/alpha/include/header.php");
             return;
         }
 
-        var pendingEmail = sessionStorage.getItem("notefox-pending-signup-email");
-        if (pendingEmail) {
-            document.getElementById("verify-email").value = pendingEmail;
+        var pendingRaw = sessionStorage.getItem("notefox-pending-signup");
+        var pending = null;
+        try {
+            pending = pendingRaw ? JSON.parse(pendingRaw) : null;
+        } catch (e) {
+            pending = null;
+        }
+        if (!pending) {
+            var oldEmail = sessionStorage.getItem("notefox-pending-signup-email");
+            if (oldEmail) {
+                pending = {"email": oldEmail};
+            }
+        }
+        if (!pending || !pending["email"]) {
+            location.href = "/alpha/my/signup/";
+            return;
         }
 
         var form = document.getElementById("verify-form");
@@ -70,22 +76,25 @@ include_once($root_path . "/alpha/include/header.php");
             event.preventDefault();
             hideFormMessage("verify-message");
 
-            var email = document.getElementById("verify-email").value.trim();
-            var password = document.getElementById("verify-password").value;
             var code = document.getElementById("verify-code").value.trim();
 
-            if (email === "" || password === "" || code === "") {
-                showFormMessage("verify-message", "Please fill in all the fields.", true);
+            if (code === "") {
+                showFormMessage("verify-message", "Please enter the verification code.", true);
+                return;
+            }
+            if (!pending["password"]) {
+                showFormMessage("verify-message", "Session expired. Please go back and sign up again.", true);
                 return;
             }
 
             submitButton.disabled = true;
 
             notefoxApi("/signup/verify", {
-                "email": email,
-                "password": password,
+                "email": pending["email"],
+                "password": pending["password"],
                 "verification-code": code
             }).then(function () {
+                sessionStorage.removeItem("notefox-pending-signup");
                 sessionStorage.removeItem("notefox-pending-signup-email");
                 showFormMessage("verify-message", "Account verified successfully! You can now log in.", false);
                 setTimeout(function () {
@@ -101,17 +110,14 @@ include_once($root_path . "/alpha/include/header.php");
             event.preventDefault();
             hideFormMessage("verify-message");
 
-            var email = document.getElementById("verify-email").value.trim();
-            var password = document.getElementById("verify-password").value;
-
-            if (email === "" || password === "") {
-                showFormMessage("verify-message", "Enter your email and password to receive a new code.", true);
+            if (!pending["email"] || !pending["password"]) {
+                showFormMessage("verify-message", "Session expired. Please go back and sign up again.", true);
                 return;
             }
 
             notefoxApi("/signup/verify/get-new-code", {
-                "email": email,
-                "password": password
+                "email": pending["email"],
+                "password": pending["password"]
             }).then(function () {
                 showFormMessage("verify-message", "If the account exists, a new code has been sent.", false);
             }).catch(function (error) {

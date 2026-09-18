@@ -1,7 +1,8 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
-$title = "Delete account – Notefox";
+include_once($root_path . "/alpha/include/i18n.php");
+$title = t('account.delete_title');
 $selected_menu = "my";
 include_once($root_path . "/alpha/include/header.php");
 ?>
@@ -10,34 +11,37 @@ include_once($root_path . "/alpha/include/header.php");
 
 <main id="main" class="page">
     <div class="container">
-        <a href="/alpha/my/account/" class="back-link">Back to account</a>
-        <h1 class="text-center">Delete account</h1>
-        <p>
-            Deleting your account is permanent: every synced note and all the data of your account will be erased.
-            We will email you a confirmation code before anything is deleted.
-        </p>
-        <p>
-            Deleting your account always needs that code, even when two-step verification is disabled.
-        </p>
+        <a href="/alpha/my/account/" class="back-link"><?php echo te('account.back_to_account'); ?></a>
 
-        <form id="delete-form" class="form-container">
-            <div id="delete-message" class="form-message hidden2"></div>
-
-            <div class="form-field">
-                <label class="form-label" for="delete-email">Email</label>
-                <input class="form-input" type="email" id="delete-email" name="email" maxlength="320" required>
+        <div class="auth-card">
+            <div class="auth-header">
+                <img src="/images/icon.svg" alt="" width="48" height="48">
+                <h1><?php echo te('account.delete_heading'); ?></h1>
+                <p><?php echo t('account.delete_desc'); ?></p>
             </div>
 
-            <div class="form-field">
-                <label class="form-label" for="delete-password">Password</label>
-                <input class="form-input" type="password" id="delete-password" name="password" required>
-            </div>
+            <form id="delete-form" class="form-container">
+                <div id="delete-message" class="form-message hidden2"></div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn btn--danger" id="delete-submit">Request the deletion</button>
-                <a href="/alpha/my/account/" class="btn btn--secondary">Cancel</a>
-            </div>
-        </form>
+                <div class="form-field">
+                    <label class="form-label" for="delete-email"><?php echo te('common.email'); ?></label>
+                    <input class="form-input" type="email" id="delete-email" name="email" maxlength="320" required>
+                </div>
+
+                <div class="form-field">
+                    <label class="form-label" for="delete-password"><?php echo te('common.password'); ?></label>
+                    <input class="form-input" type="password" id="delete-password" name="password" required>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--block btn--danger" id="delete-submit"><?php echo te('account.delete_request'); ?></button>
+                </div>
+            </form>
+
+            <p class="auth-footer">
+                <a href="/alpha/my/account/"><?php echo te('common.cancel'); ?></a>
+            </p>
+        </div>
     </div>
 </main>
 

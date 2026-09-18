@@ -1,7 +1,8 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
-$title = "Server error – Notefox";
+include_once($root_path . "/alpha/include/i18n.php");
+$title = t('errors.500_title');
 $selected_menu = "";
 include_once($root_path . "/alpha/include/header.php");
 ?>
@@ -54,12 +55,12 @@ include_once($root_path . "/alpha/include/header.php");
                     <line x1="12" y1="17" x2="12.01" y2="17"/>
                 </svg>
             </div>
-            <div class="error-code">500</div>
-            <h1>Server error</h1>
-            <p class="error-message">Something went wrong on our end. Please try again later.</p>
+            <div class="error-code"><?php echo t('errors.500_code'); ?></div>
+            <h1><?php echo t('errors.500_heading'); ?></h1>
+            <p class="error-message"><?php echo t('errors.500_message'); ?></p>
             <div class="error-actions">
-                <a href="/alpha/" class="btn">Go to homepage</a>
-                <button onclick="history.back()" class="btn btn--secondary">Go back</button>
+                <a href="/alpha/" class="btn"><?php echo t('errors.go_to_homepage'); ?></a>
+                <button onclick="history.back()" class="btn btn--secondary"><?php echo t('common.go_back'); ?></button>
             </div>
         </div>
     </div>

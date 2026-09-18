@@ -1,7 +1,8 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
-$title = "Maintenance – Notefox";
+include_once($root_path . "/alpha/include/i18n.php");
+$title = t('errors.503_title');
 $selected_menu = "";
 include_once($root_path . "/alpha/include/header.php");
 ?>
@@ -53,13 +54,12 @@ include_once($root_path . "/alpha/include/header.php");
                     <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
                 </svg>
             </div>
-            <div class="error-code">503</div>
-            <h1>Under maintenance</h1>
-            <p class="error-message">We're working on some improvements. Please check back in a few minutes.</p>
+            <div class="error-code"><?php echo t('errors.503_code'); ?></div>
+            <h1><?php echo t('errors.503_heading'); ?></h1>
+            <p class="error-message"><?php echo t('errors.503_message'); ?></p>
             <div class="error-actions">
-                <button onclick="location.reload()" class="btn">Refresh</button>
-                <a href="https://t.me/sav_projects/7" class="btn btn--secondary" target="_blank" rel="noopener">Service
-                    status</a>
+                <button onclick="location.reload()" class="btn"><?php echo t('errors.refresh'); ?></button>
+                <a href="https://t.me/sav_projects/7" class="btn btn--secondary" target="_blank" rel="noopener"><?php echo t('errors.service_status'); ?></a>
             </div>
         </div>
     </div>

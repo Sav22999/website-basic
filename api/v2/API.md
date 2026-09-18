@@ -97,6 +97,7 @@ exactly once.
 | 8                  | `users`.`password-change-*`                                                                                                                                                        | yes       | `POST /password/edit` answers `500`                                     |
 | 9                  | indexes on the v1 data table (`data`) and on `tokens`                                                                                                                              | no        | performance only                                                        |
 | 10                 | `users`.`history-enabled`                                                                                                                                                          | no        | the two `data/get/history*` endpoints answer `433` to **every** account |
+| 11                 | `users`.`pro-features`                                                                                                                                                             | no        | the pro-features flag is denied to every account                        |
 
 Run **exactly one** branch of block 2. Inside block 2b the order is not
 negotiable: the `service` column, with its `DEFAULT 'notefox'`, must exist **before** the primary key is rebuilt,
@@ -109,7 +110,7 @@ answer `503`.
 > No data migration script is needed: the `DEFAULT 'notefox'` assigns every
 > existing snapshot to the Notefox service, and nothing is re-encrypted.
 
-> Blocks 6, 7, 9, 10 and the `legacy-data-id` column are **optional**: the API
+> Blocks 6, 7, 9, 10, 11 and the `legacy-data-id` column are **optional**: the API
 > still answers (the core detects the missing columns), but the two
 > `otp/disable` endpoints answer `503`, the codes lose their expiry/attempt
 > limit and the sync history stays denied to every account. `GET /status` and
@@ -315,6 +316,7 @@ Health check, no authentication.
                                 "otp-change-code": true,
                                 "password-change-code": true,
                                 "history-permission": true,
+                                "pro-features": true,
                                 "legacy-mirror": true },
             "mailer": true, "services": ["notefox"],
             "api-version": "2.0",
@@ -335,13 +337,18 @@ only, no table name and no DBMS message): `keys` is the `user_keys` table,
 column, `rate-limits` the counters table, `otp` the `otp-enabled` column,
 `otp-change-code` the columns the OTP disable flow needs,
 `password-change-code` the column the password change needs and
-`history-permission` the `history-enabled` column of block 10. It is the first
-thing to check when an endpoint degrades.
+`history-permission` the `history-enabled` column of block 10 and
+`pro-features` the column of block 11. It is the first thing to check when an
+endpoint degrades.
 
 `history-permission: false` means the column does not exist yet: the sync
 history is then denied to **every** account (`433`), because the core reads a
 missing flag as "not granted". It is not part of `schema`, since nothing else
 degrades without it.
+
+`pro-features: false` means the column does not exist yet: the pro-features
+flag is then denied to every account. Same pattern as `history-permission` -
+not part of `schema`.
 
 `legacy-mirror` is **not** part of the additive DDL: it is the v1 mirror table
 configured in `include/credentials.php` (`$services[...]["legacy-table"]`).
@@ -622,7 +629,8 @@ is decrypted here, so the answer never depends on the data key either.
                             "updated-server": "...",
                             "updated-locally": "..." } ],
             "supported": ["notefox"],
-            "history-enabled": false } }
+            "history-enabled": false,
+            "pro-features": false } }
 ```
 
 Inventory of the services that hold data for the authenticated account.
@@ -633,6 +641,11 @@ decrypted here, so the answer is cheap and exposes no note.
 (`users`.`history-enabled`, `false` by default): a client reads it here to hide
 the history instead of discovering the `433` only after the user asked for it.
 It is read-only - no endpoint can change it.
+
+`pro-features` is the premium features flag of **this account**
+(`users`.`pro-features`, `false` by default): a client reads it here to
+show or hide features reserved to accounts that have this flag enabled.
+It is read-only - no endpoint can change it, same pattern as `history-enabled`.
 
 #### `POST /data/get/history`
 
