@@ -7,6 +7,7 @@
     --font-display: 'Merienda', cursive;
 
     --color-primary: #ffa56f;
+    --color-primary-rgb: 255, 165, 111;
     --color-primary-hover: #ff8d4b;
     --color-primary-subtle: rgba(255, 165, 111, 0.15);
     --color-primary-muted: rgba(255, 165, 111, 0.08);
@@ -200,6 +201,35 @@ img {
     display: none;
 }
 
+.nav-scroll-glow {
+    position: absolute;
+    width: 36px;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.nav-scroll-glow--start {
+    border-radius: var(--radius-pill) 0 0 var(--radius-pill);
+    background: linear-gradient(to right, rgba(var(--color-primary-rgb), 0.75), rgba(var(--color-primary-rgb), 0.35) 40%, transparent);
+}
+
+.nav-scroll-glow--end {
+    border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
+    background: linear-gradient(to left, rgba(var(--color-primary-rgb), 0.75), rgba(var(--color-primary-rgb), 0.35) 40%, transparent);
+}
+
+[dir="rtl"] .nav-scroll-glow--start {
+    border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
+    background: linear-gradient(to left, rgba(var(--color-primary-rgb), 0.75), rgba(var(--color-primary-rgb), 0.35) 40%, transparent);
+}
+
+[dir="rtl"] .nav-scroll-glow--end {
+    border-radius: var(--radius-pill) 0 0 var(--radius-pill);
+    background: linear-gradient(to right, rgba(var(--color-primary-rgb), 0.75), rgba(var(--color-primary-rgb), 0.35) 40%, transparent);
+}
+
 .nav-link {
     display: inline-flex;
     align-items: center;
@@ -282,7 +312,7 @@ img {
     display: none;
     position: absolute;
     top: calc(100% + 6px);
-    left: 0;
+    inset-inline-start: 0;
     min-width: 160px;
     padding: 4px;
     background: var(--color-surface);
@@ -370,7 +400,7 @@ img {
     display: none;
     position: absolute;
     top: calc(100% + 6px);
-    left: 0;
+    inset-inline-start: 0;
     min-width: 140px;
     padding: 4px;
     background: var(--color-surface);
@@ -2326,6 +2356,21 @@ blockquote {
 /* ── Tablet range ── */
 
 @media (min-width: 641px) and (max-width: 900px) {
+    .nav-link {
+        padding: 8px 10px;
+        font-size: 0.75rem;
+    }
+
+    .theme-toggle-trigger,
+    .lang-dropdown-trigger {
+        padding: 8px 10px;
+        font-size: 0.75rem;
+    }
+
+    .nav-separator {
+        margin: 0 2px;
+    }
+
     .status-grid {
         grid-template-columns: 1fr 1fr;
     }
@@ -2339,17 +2384,40 @@ blockquote {
     }
 }
 
-@media (min-width: 641px) {
+@media (min-width: 641px) and (max-width: 900px) {
     .site-nav {
-        overflow: visible;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
     }
 
+    .theme-toggle-menu.open,
+    .lang-dropdown-menu.open {
+        position: fixed;
+        top: auto;
+        inset-inline-start: auto;
+    }
+}
+
+@media (min-width: 641px) {
     .nav-links {
         display: contents;
     }
 
     .nav-brand {
         display: none;
+    }
+
+    .lang-dropdown-menu,
+    .theme-toggle-menu {
+        max-height: 156px;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+}
+
+@media (min-width: 901px) {
+    .site-nav {
+        overflow: visible;
     }
 }
 

@@ -1,4 +1,5 @@
 {
+  "dir": "ltr",
   "common": {
     "skip_to_content": "Skip to content",
     "notefox": "Notefox",
@@ -280,9 +281,9 @@
     "history_heading": "Sync history",
     "history_desc": "Here you can find the list of the synced versions of your notes, sorted from the most recent one. You can download the current version or any previous version in JSON format.",
     "history_download_current": "Download the current version",
-    "back_to_account": "Back to account",
-    "back_to_login": "Back to login",
-    "back_to_signup": "Back to signup"
+    "back_to_account": "Back to Account",
+    "back_to_login": "Back to Login",
+    "back_to_signup": "Back to Signup"
   },
   "errors": {
     "401_title": "Unauthorized – Notefox",
@@ -337,7 +338,7 @@
     "history_not_available": "The sync history is not available for this service.",
     "how_to_get_history": "How to get the Sync history",
     "login_id_info": "Your account identifier (login-id) to communicate after donating:",
-    "login_id_safe": "The Login ID is not sensitive data and can be safely communicated to the developer.",
+    "login_id_safe": "The login-id is not sensitive data and can be safely communicated to the developer.",
     "enter_code": "Please enter the verification code.",
     "session_expired": "Session expired. Please go back and sign up again.",
     "current": "current",

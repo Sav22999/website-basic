@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     initMobileNav();
+    initNavScroll();
     initLangDropdown();
     initThemeDropdown();
     initAccordions();
@@ -61,6 +62,67 @@ function initMobileNav() {
     });
 }
 
+function initNavScroll() {
+    const nav = document.querySelector(".site-nav");
+    const header = nav && nav.closest(".site-header");
+    if (!nav || !header) return;
+
+    var startGlow = document.createElement("div");
+    var endGlow = document.createElement("div");
+    startGlow.className = "nav-scroll-glow nav-scroll-glow--start";
+    endGlow.className = "nav-scroll-glow nav-scroll-glow--end";
+    startGlow.setAttribute("aria-hidden", "true");
+    endGlow.setAttribute("aria-hidden", "true");
+    header.appendChild(startGlow);
+    header.appendChild(endGlow);
+
+    function position() {
+        var hr = header.getBoundingClientRect();
+        var nr = nav.getBoundingClientRect();
+        var top = nr.top - hr.top;
+        startGlow.style.top = top + "px";
+        startGlow.style.height = nr.height + "px";
+        startGlow.style.left = (nr.left - hr.left) + "px";
+        endGlow.style.top = top + "px";
+        endGlow.style.height = nr.height + "px";
+        endGlow.style.right = (hr.right - nr.right) + "px";
+    }
+
+    function update() {
+        var overflow = getComputedStyle(nav).overflowX;
+        var maxScroll = nav.scrollWidth - nav.clientWidth;
+        if (overflow === "visible" || maxScroll <= 0) {
+            startGlow.style.opacity = "0";
+            endGlow.style.opacity = "0";
+            return;
+        }
+        startGlow.style.opacity = nav.scrollLeft > 1 ? "1" : "0";
+        endGlow.style.opacity = nav.scrollLeft < maxScroll - 1 ? "1" : "0";
+    }
+
+    nav.addEventListener("scroll", update, { passive: true });
+    new ResizeObserver(function() { position(); update(); }).observe(nav);
+    position();
+    update();
+}
+
+function positionDropdownFixed(trigger, menu) {
+    if (getComputedStyle(menu).position !== "fixed") {
+        menu.style.top = "";
+        menu.style.left = "";
+        return;
+    }
+    const rect = trigger.getBoundingClientRect();
+    menu.style.top = (rect.bottom + 4) + "px";
+    let left = rect.left;
+    const menuWidth = menu.offsetWidth || 160;
+    if (left + menuWidth > window.innerWidth - 8) {
+        left = window.innerWidth - menuWidth - 8;
+    }
+    if (left < 8) left = 8;
+    menu.style.left = left + "px";
+}
+
 function initLangDropdown() {
     const dropdown = document.querySelector(".lang-dropdown");
     if (!dropdown) return;
@@ -76,6 +138,11 @@ function initLangDropdown() {
         if (themeTrigger) { themeTrigger.setAttribute("aria-expanded", "false"); }
         const open = menu.classList.toggle("open");
         trigger.setAttribute("aria-expanded", String(open));
+        if (open) {
+            positionDropdownFixed(trigger, menu);
+            const active = menu.querySelector(".lang-dropdown-item--active");
+            if (active) active.scrollIntoView({ block: "nearest" });
+        }
     });
 
     document.addEventListener("click", (e) => {
@@ -83,6 +150,10 @@ function initLangDropdown() {
             menu.classList.remove("open");
             trigger.setAttribute("aria-expanded", "false");
         }
+    });
+
+    window.addEventListener("resize", () => {
+        if (menu.classList.contains("open")) positionDropdownFixed(trigger, menu);
     });
 }
 
@@ -119,6 +190,7 @@ function initThemeDropdown() {
         if (langTrigger) { langTrigger.setAttribute("aria-expanded", "false"); }
         const open = menu.classList.toggle("open");
         trigger.setAttribute("aria-expanded", String(open));
+        if (open) positionDropdownFixed(trigger, menu);
     });
 
     menu.querySelectorAll(".theme-toggle-item").forEach((btn) => {
@@ -135,6 +207,10 @@ function initThemeDropdown() {
             menu.classList.remove("open");
             trigger.setAttribute("aria-expanded", "false");
         }
+    });
+
+    window.addEventListener("resize", () => {
+        if (menu.classList.contains("open")) positionDropdownFixed(trigger, menu);
     });
 }
 

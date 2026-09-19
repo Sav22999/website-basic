@@ -6,7 +6,8 @@ $GLOBALS['__i18n_loaded'] = true;
 
 $i18n = array();
 $i18n_lang = "en";
-$i18n_supported = array("en", "it");
+$i18n_dir = "ltr";
+$i18n_supported = array("en", "it", "fr", "de", "es");
 
 function i18n_detect()
 {
@@ -32,7 +33,7 @@ function i18n_detect()
 
 function i18n_load($lang)
 {
-    global $root_path, $i18n, $i18n_lang;
+    global $root_path, $i18n, $i18n_lang, $i18n_dir;
     $file = $root_path . "/alpha/lang/" . $lang . ".json";
     if (!file_exists($file)) {
         $file = $root_path . "/alpha/lang/en.json";
@@ -44,6 +45,7 @@ function i18n_load($lang)
     if ($i18n === null) {
         $i18n = array();
     }
+    $i18n_dir = isset($i18n["dir"]) && $i18n["dir"] === "rtl" ? "rtl" : "ltr";
 }
 
 function t($key)

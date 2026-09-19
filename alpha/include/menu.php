@@ -12,8 +12,8 @@ function alpha_nav_link($slug, $label, $selected_menu)
     return '<a href="' . $href . '" class="nav-link"' . $aria . '>' . $label . '</a>';
 }
 
-$lang_labels = array("en" => "English", "it" => "Italiano");
-$lang_short = array("en" => "EN", "it" => "IT");
+$lang_labels = array("en" => "English", "it" => "Italiano", "fr" => "Français", "de" => "Deutsch", "es" => "Español");
+$lang_short = array("en" => "EN", "it" => "IT", "fr" => "FR", "de" => "DE", "es" => "ES");
 ?>
 <a href="#main" class="skip-link"><?php echo t('common.skip_to_content'); ?></a>
 

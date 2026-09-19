@@ -1,7 +1,7 @@
 <?php
 global $title, $url_opengraph;
 include_once($root_path . "/alpha/include/i18n.php");
-global $i18n_lang;
+global $i18n_lang, $i18n_dir;
 if (!isset($title) || $title === "") {
     $title = "Notefox: websites notes";
 }
@@ -10,7 +10,7 @@ if (!isset($url_opengraph) || $url_opengraph === "") {
 }
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo $i18n_lang; ?>">
+<html lang="<?php echo $i18n_lang; ?>"<?php if ($i18n_dir === "rtl") echo ' dir="rtl"'; ?>>
 <script>(function(){try{var t=localStorage.getItem("nf_theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})()</script>
 <head>
     <meta charset="UTF-8">
