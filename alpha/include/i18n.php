@@ -7,25 +7,61 @@ $GLOBALS['__i18n_loaded'] = true;
 $i18n = array();
 $i18n_lang = "en";
 $i18n_dir = "ltr";
-$i18n_supported = array("en", "it", "fr", "de", "es");
+$i18n_supported = array("en", "it", "fr", "de", "es", "ru", "pt-BR", "pt-PT", "pl", "zh-CN", "ja", "ar", "nl");
+
+function i18n_match_tag($tag, $supported)
+{
+    $lower = strtolower($tag);
+    foreach ($supported as $s) {
+        if (strtolower($s) === $lower) {
+            return $s;
+        }
+    }
+    $prefix = substr($lower, 0, 2);
+    foreach ($supported as $s) {
+        if (strtolower(substr($s, 0, 2)) === $prefix) {
+            return $s;
+        }
+    }
+    return null;
+}
 
 function i18n_detect()
 {
     global $i18n_supported;
     if (isset($_GET["lang"])) {
-        $lang = strtolower(substr($_GET["lang"], 0, 2));
-        if (in_array($lang, $i18n_supported)) {
-            setcookie("nf_lang", $lang, time() + 365 * 86400, "/");
-            return $lang;
+        $match = i18n_match_tag(trim($_GET["lang"]), $i18n_supported);
+        if ($match !== null) {
+            setcookie("nf_lang", $match, time() + 365 * 86400, "/");
+            return $match;
         }
     }
-    if (isset($_COOKIE["nf_lang"]) && in_array($_COOKIE["nf_lang"], $i18n_supported)) {
-        return $_COOKIE["nf_lang"];
+    if (isset($_COOKIE["nf_lang"])) {
+        $match = i18n_match_tag($_COOKIE["nf_lang"], $i18n_supported);
+        if ($match !== null) {
+            return $match;
+        }
     }
     if (isset($_SERVER["HTTP_ACCEPT_LANGUAGE"])) {
-        $browser = strtolower(substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2));
-        if (in_array($browser, $i18n_supported)) {
-            return $browser;
+        $langs = array();
+        foreach (explode(",", $_SERVER["HTTP_ACCEPT_LANGUAGE"]) as $part) {
+            $part = trim($part);
+            $q = 1.0;
+            if (preg_match('/;q=([0-9.]+)/', $part, $m)) {
+                $q = (float)$m[1];
+                $part = preg_replace('/;q=.*/', '', $part);
+            }
+            $tag = trim($part);
+            if ($tag !== '' && !isset($langs[$tag])) {
+                $langs[$tag] = $q;
+            }
+        }
+        arsort($langs);
+        foreach ($langs as $tag => $q) {
+            $match = i18n_match_tag($tag, $i18n_supported);
+            if ($match !== null) {
+                return $match;
+            }
         }
     }
     return "en";

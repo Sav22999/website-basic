@@ -12,8 +12,16 @@ function alpha_nav_link($slug, $label, $selected_menu)
     return '<a href="' . $href . '" class="nav-link"' . $aria . '>' . $label . '</a>';
 }
 
-$lang_labels = array("en" => "English", "it" => "Italiano", "fr" => "Français", "de" => "Deutsch", "es" => "Español");
-$lang_short = array("en" => "EN", "it" => "IT", "fr" => "FR", "de" => "DE", "es" => "ES");
+$lang_labels = array(
+    "en" => "English", "it" => "Italiano", "fr" => "Français", "de" => "Deutsch", "es" => "Español",
+    "ru" => "Русский", "pt-BR" => "Português (BR)", "pt-PT" => "Português (PT)",
+    "pl" => "Polski", "zh-CN" => "中文(简体)", "ja" => "日本語", "ar" => "العربية", "nl" => "Nederlands"
+);
+$lang_short = array(
+    "en" => "EN", "it" => "IT", "fr" => "FR", "de" => "DE", "es" => "ES",
+    "ru" => "RU", "pt-BR" => "BR", "pt-PT" => "PT",
+    "pl" => "PL", "zh-CN" => "ZH", "ja" => "JA", "ar" => "AR", "nl" => "NL"
+);
 ?>
 <a href="#main" class="skip-link"><?php echo t('common.skip_to_content'); ?></a>
 

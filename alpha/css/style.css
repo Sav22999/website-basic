@@ -2407,7 +2407,12 @@ blockquote {
         display: none;
     }
 
-    .lang-dropdown-menu,
+    .lang-dropdown-menu {
+        max-height: 171px;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+
     .theme-toggle-menu {
         max-height: 156px;
         overflow-y: auto;
