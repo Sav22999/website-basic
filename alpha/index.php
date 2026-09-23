@@ -3,6 +3,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
 include_once($root_path . "/alpha/include/i18n.php");
 $title = t('home.title');
+$description = t('meta.home');
+$canonical_path = "/alpha/";
 $selected_menu = "home";
 include_once($root_path . "/alpha/include/header.php");
 ?>
@@ -38,6 +40,12 @@ include_once($root_path . "/alpha/include/header.php");
                    rel="noopener"><span class="btn-icon icon-mask icon-mask--github" aria-hidden="true"></span>
                     GitHub</a>
             </div>
+        </div>
+        <div class="scroll-hint" aria-hidden="true">
+            <div class="scroll-hint-mouse">
+                <div class="scroll-hint-wheel"></div>
+            </div>
+            <span class="scroll-hint-label"><?php echo t('home.scroll_down'); ?></span>
         </div>
     </section>
 

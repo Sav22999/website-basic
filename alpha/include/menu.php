@@ -13,14 +13,14 @@ function alpha_nav_link($slug, $label, $selected_menu)
 }
 
 $lang_labels = array(
-    "en" => "English", "it" => "Italiano", "fr" => "Français", "de" => "Deutsch", "es" => "Español",
-    "ru" => "Русский", "pt-BR" => "Português (BR)", "pt-PT" => "Português (PT)",
-    "pl" => "Polski", "zh-CN" => "中文(简体)", "ja" => "日本語", "ar" => "العربية", "nl" => "Nederlands"
+        "en" => "English", "it" => "Italiano", "fr" => "Français", "de" => "Deutsch", "es" => "Español",
+        "ru" => "Русский", "pt-BR" => "Português (BR)", "pt-PT" => "Português (PT)",
+        "pl" => "Polski", "zh-CN" => "中文(简体)", "ja" => "日本語", "ar" => "العربية", "nl" => "Nederlands"
 );
 $lang_short = array(
-    "en" => "EN", "it" => "IT", "fr" => "FR", "de" => "DE", "es" => "ES",
-    "ru" => "RU", "pt-BR" => "BR", "pt-PT" => "PT",
-    "pl" => "PL", "zh-CN" => "ZH", "ja" => "JA", "ar" => "AR", "nl" => "NL"
+        "en" => "EN", "it" => "IT", "fr" => "FR", "de" => "DE", "es" => "ES",
+        "ru" => "RU", "pt-BR" => "BR", "pt-PT" => "PT",
+        "pl" => "PL", "zh-CN" => "ZH", "ja" => "JA", "ar" => "AR", "nl" => "NL"
 );
 ?>
 <a href="#main" class="skip-link"><?php echo t('common.skip_to_content'); ?></a>
@@ -54,38 +54,64 @@ $lang_short = array(
             <?php echo alpha_nav_link("my", t('nav.account'), $selected_menu); ?>
             <div class="nav-separator" aria-hidden="true"></div>
             <div class="theme-toggle">
-                <button class="theme-toggle-trigger" aria-expanded="false" aria-haspopup="true" aria-label="<?php echo te('nav.theme'); ?>">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <defs><clipPath id="theme-clip"><rect x="12" y="0" width="12" height="24"/></clipPath></defs>
-                        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <button class="theme-toggle-trigger" aria-expanded="false" aria-haspopup="true"
+                        aria-label="<?php echo te('nav.theme'); ?>">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <defs>
+                            <clipPath id="theme-clip">
+                                <rect x="12" y="0" width="12" height="24"/>
+                            </clipPath>
+                        </defs>
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/>
+                        <line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/>
+                        <line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
                         <circle cx="12" cy="12" r="5" fill="currentColor" clip-path="url(#theme-clip)"/>
                     </svg>
                     <span class="theme-toggle-label"><?php echo te('nav.theme'); ?></span>
-                    <svg class="theme-toggle-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="theme-toggle-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="6 9 12 15 18 9"/>
                     </svg>
                 </button>
                 <div class="theme-toggle-menu">
-                    <button class="theme-toggle-item" data-theme-value="auto"><?php echo te('nav.theme_auto'); ?></button>
-                    <button class="theme-toggle-item" data-theme-value="light"><?php echo te('nav.theme_light'); ?></button>
-                    <button class="theme-toggle-item" data-theme-value="dark"><?php echo te('nav.theme_dark'); ?></button>
+                    <button class="theme-toggle-item"
+                            data-theme-value="auto"><?php echo te('nav.theme_auto'); ?></button>
+                    <button class="theme-toggle-item"
+                            data-theme-value="light"><?php echo te('nav.theme_light'); ?></button>
+                    <button class="theme-toggle-item"
+                            data-theme-value="dark"><?php echo te('nav.theme_dark'); ?></button>
                 </div>
             </div>
             <div class="lang-dropdown">
                 <button class="lang-dropdown-trigger" aria-expanded="false" aria-haspopup="true">
-                    <svg class="lang-dropdown-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="lang-dropdown-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"/>
                         <path d="M2 12h20"/>
                         <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
                     </svg>
                     <span><?php echo $lang_short[$i18n_lang]; ?></span>
-                    <svg class="lang-dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="lang-dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="6 9 12 15 18 9"/>
                     </svg>
                 </button>
                 <div class="lang-dropdown-menu">
-                    <?php foreach ($i18n_supported as $code): ?>
-                        <a href="?lang=<?php echo $code; ?>" class="lang-dropdown-item<?php echo $code === $i18n_lang ? ' lang-dropdown-item--active' : ''; ?>">
+                    <?php
+                    $sorted_langs = $i18n_supported;
+                    usort($sorted_langs, function ($a, $b) use ($lang_labels) {
+                        return strcasecmp($lang_labels[$a], $lang_labels[$b]);
+                    });
+                    foreach ($sorted_langs as $code): ?>
+                        <a href="?lang=<?php echo $code; ?>"
+                           class="lang-dropdown-item<?php echo $code === $i18n_lang ? ' lang-dropdown-item--active' : ''; ?>">
                             <span class="lang-dropdown-item-label"><?php echo $lang_labels[$code]; ?></span>
                             <span class="lang-dropdown-item-code"><?php echo $lang_short[$code]; ?></span>
                         </a>

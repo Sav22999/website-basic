@@ -76,7 +76,7 @@ include_once($root_path . "/alpha/include/header.php");
         </p>
         <div class="btn-group text-center">
             <a href="https://t.me/sav_projects/7" class="btn" target="_blank" rel="noopener">Telegram</a>
-            <a href="mailto:saverio.morelli@protonmail.com" class="btn btn--secondary">Email</a>
+            <a href="/alpha/contact/" class="btn btn--secondary">Email</a>
         </div>
 
         <h2>Already donated in the past?</h2>

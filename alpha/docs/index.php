@@ -3,6 +3,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
 include_once($root_path . "/alpha/include/i18n.php");
 $title = "API Documentation – Notefox";
+$description = t('meta.docs');
+$canonical_path = "/alpha/docs/";
 $selected_menu = "help";
 include_once($root_path . "/alpha/include/header.php");
 ?>

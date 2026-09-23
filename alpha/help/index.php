@@ -3,6 +3,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
 include_once($root_path . "/alpha/include/i18n.php");
 $title = t('help.title');
+$description = t('meta.help');
+$canonical_path = "/alpha/help/";
 $selected_menu = "help";
 include_once($root_path . "/alpha/include/header.php");
 ?>
@@ -115,7 +117,7 @@ include_once($root_path . "/alpha/include/header.php");
 
         <div class="btn-group" style="margin-bottom: 32px;">
             <a href="https://t.me/sav_projects/7" class="btn" target="_blank" rel="noopener">Telegram</a>
-            <a href="mailto:saverio.morelli@protonmail.com" class="btn btn--secondary">Email</a>
+            <a href="/alpha/contact/" class="btn btn--secondary">Email</a>
         </div>
 
         <hr>

@@ -3,6 +3,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
 include_once($root_path . "/alpha/include/i18n.php");
 $title = t('install.title');
+$description = t('meta.install');
+$canonical_path = "/alpha/install/";
 $selected_menu = "install";
 include_once($root_path . "/alpha/include/header.php");
 ?>

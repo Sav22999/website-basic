@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initThemeDropdown();
     initAccordions();
     initHelpSearch();
+    initScrollHint();
 });
 
 function initMobileNav() {
@@ -100,8 +101,11 @@ function initNavScroll() {
         endGlow.style.opacity = nav.scrollLeft < maxScroll - 1 ? "1" : "0";
     }
 
-    nav.addEventListener("scroll", update, { passive: true });
-    new ResizeObserver(function() { position(); update(); }).observe(nav);
+    nav.addEventListener("scroll", update, {passive: true});
+    new ResizeObserver(function () {
+        position();
+        update();
+    }).observe(nav);
     position();
     update();
 }
@@ -134,14 +138,18 @@ function initLangDropdown() {
         e.stopPropagation();
         const themeMenu = document.querySelector(".theme-toggle-menu");
         const themeTrigger = document.querySelector(".theme-toggle-trigger");
-        if (themeMenu) { themeMenu.classList.remove("open"); }
-        if (themeTrigger) { themeTrigger.setAttribute("aria-expanded", "false"); }
+        if (themeMenu) {
+            themeMenu.classList.remove("open");
+        }
+        if (themeTrigger) {
+            themeTrigger.setAttribute("aria-expanded", "false");
+        }
         const open = menu.classList.toggle("open");
         trigger.setAttribute("aria-expanded", String(open));
         if (open) {
             positionDropdownFixed(trigger, menu);
             const active = menu.querySelector(".lang-dropdown-item--active");
-            if (active) active.scrollIntoView({ block: "nearest" });
+            if (active) active.scrollIntoView({block: "nearest"});
         }
     });
 
@@ -165,7 +173,11 @@ function initThemeDropdown() {
     if (!trigger || !menu) return;
 
     function current() {
-        try { return localStorage.getItem("nf_theme") || "auto"; } catch (e) { return "auto"; }
+        try {
+            return localStorage.getItem("nf_theme") || "auto";
+        } catch (e) {
+            return "auto";
+        }
     }
 
     function apply(value) {
@@ -174,7 +186,10 @@ function initThemeDropdown() {
         } else {
             document.documentElement.removeAttribute("data-theme");
         }
-        try { if (value === "auto") localStorage.removeItem("nf_theme"); else localStorage.setItem("nf_theme", value); } catch (e) {}
+        try {
+            if (value === "auto") localStorage.removeItem("nf_theme"); else localStorage.setItem("nf_theme", value);
+        } catch (e) {
+        }
         menu.querySelectorAll(".theme-toggle-item").forEach((btn) => {
             btn.classList.toggle("theme-toggle-item--active", btn.getAttribute("data-theme-value") === value);
         });
@@ -186,8 +201,12 @@ function initThemeDropdown() {
         e.stopPropagation();
         const langMenu = document.querySelector(".lang-dropdown-menu");
         const langTrigger = document.querySelector(".lang-dropdown-trigger");
-        if (langMenu) { langMenu.classList.remove("open"); }
-        if (langTrigger) { langTrigger.setAttribute("aria-expanded", "false"); }
+        if (langMenu) {
+            langMenu.classList.remove("open");
+        }
+        if (langTrigger) {
+            langTrigger.setAttribute("aria-expanded", "false");
+        }
         const open = menu.classList.toggle("open");
         trigger.setAttribute("aria-expanded", String(open));
         if (open) positionDropdownFixed(trigger, menu);
@@ -228,25 +247,47 @@ function initAccordions() {
 }
 
 function initHelpSearch() {
-    const input = document.getElementById("help-search");
-    const list = document.getElementById("help-list");
-    const empty = document.getElementById("help-empty");
-    if (!input || !list) return;
+    var input = document.getElementById("help-search");
+    var container = document.getElementById("faq-sections");
+    var empty = document.getElementById("help-empty");
+    if (!input || !container) return;
 
-    input.addEventListener("input", () => {
-        const q = input.value.trim().toLowerCase();
-        const items = list.querySelectorAll(".link-list-item");
-        let visible = 0;
+    var sections = container.querySelectorAll(".faq-section");
 
-        items.forEach((item) => {
-            const text = (item.getAttribute("data-search") || "") + " " + item.textContent.toLowerCase();
-            const match = !q || q.split(/\s+/).every((w) => text.includes(w));
-            item.style.display = match ? "" : "none";
-            if (match) visible++;
+    input.addEventListener("input", function () {
+        var q = input.value.trim().toLowerCase();
+        var totalVisible = 0;
+
+        sections.forEach(function (section) {
+            var items = section.querySelectorAll(".link-list-item");
+            var sectionVisible = 0;
+
+            items.forEach(function (item) {
+                var text = (item.getAttribute("data-search") || "") + " " + item.textContent.toLowerCase();
+                var match = !q || q.split(/\s+/).every(function (w) {
+                    return text.includes(w);
+                });
+                item.style.display = match ? "" : "none";
+                if (match) sectionVisible++;
+            });
+
+            section.style.display = sectionVisible > 0 || !q ? "" : "none";
+            totalVisible += sectionVisible;
         });
 
         if (empty) {
-            empty.classList.toggle("hidden2", visible > 0);
+            empty.classList.toggle("hidden2", totalVisible > 0 || !q);
         }
     });
+}
+
+function initScrollHint() {
+    var hint = document.querySelector(".scroll-hint");
+    if (!hint) return;
+    var fadeDistance = 150;
+    window.addEventListener("scroll", function () {
+        var opacity = Math.max(0, 1 - window.scrollY / fadeDistance);
+        hint.style.opacity = opacity;
+        hint.style.pointerEvents = opacity < 0.1 ? "none" : "";
+    }, {passive: true});
 }
