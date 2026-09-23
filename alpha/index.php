@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php include_once($_SERVER['DOCUMENT_ROOT'] . "/alpha/include/header.php"); ?>
+    <?php
+    $description = "Sav PDF Viewer — a fast, private, open-source PDF reader for Android. No ads, no tracking, no permissions. Read your PDFs, nothing more.";
+    $canonical_path = "/alpha/";
+    include_once($_SERVER['DOCUMENT_ROOT'] . "/alpha/include/header.php");
+    ?>
 </head>
 <body>
 <?php
@@ -40,7 +44,26 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/alpha/include/menu.php");
 
             <p class="hero-social-proof" data-i18n="home.social_proof">100,000+ people already use it</p>
         </div>
+
+        <div class="scroll-hint" id="scroll-hint">
+            <div class="scroll-hint__mouse">
+                <div class="scroll-hint__wheel"></div>
+            </div>
+            <span class="scroll-hint__text" data-i18n="home.scroll_down">Scroll down</span>
+        </div>
     </section>
+
+    <script>
+        (function () {
+            var hint = document.getElementById('scroll-hint');
+            if (!hint) return;
+            var fadeEnd = 200;
+            window.addEventListener('scroll', function () {
+                var y = window.scrollY || window.pageYOffset;
+                hint.style.opacity = Math.max(0, 0.5 - (y / fadeEnd) * 0.5);
+            }, {passive: true});
+        })();
+    </script>
 
     <!-- Feature: Fast & flexible -->
     <section class="feature-section">
@@ -148,7 +171,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/alpha/include/menu.php");
                     work. The entire source code is on GitHub — full transparency, no hidden surprises.</p>
                 <div class="button-group button-group--tight">
                     <a href="https://github.com/Sav22999/sav-pdf-viewer-pro"
-                       class="button button-secondary button-with-icon-secondary">
+                       class="button button-secondary button-with-icon-secondary" target="_blank"
+                       rel="noopener noreferrer">
                         <span class="button__icon button-icon-github"></span><span data-i18n="home.privacy_github">View on GitHub</span>
                     </a>
                     <a href="/alpha/privacy/" class="button button-secondary" data-i18n="home.privacy_policy">Privacy
@@ -318,8 +342,49 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/alpha/include/menu.php");
 <footer>
     <span data-i18n="footer.developed">Developed with</span>
     <span class="image-heart image-background-primary image-square-20px"></span>
-    <span data-i18n="footer.by">by</span> <a href="https://saveriomorelli.com" class="author-name">Saverio Morelli</a>
+    <span data-i18n="footer.by">by</span> <a href="https://saveriomorelli.com" class="author-name" target="_blank"
+                                             rel="noopener noreferrer">Saverio Morelli</a>
+    <div class="footer-links">
+        <a href="/alpha/privacy/" data-i18n="footer.privacy_policy">Privacy policy</a>
+        <span class="footer-sep">·</span>
+        <a href="/alpha/terms/" data-i18n="footer.terms">Terms of service</a>
+        <span class="footer-sep">·</span>
+        <a href="https://github.com/Sav22999/sav-pdf-viewer-pro" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
 </footer>
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Sav PDF Viewer",
+        "operatingSystem": "Android",
+        "applicationCategory": "UtilitiesApplication",
+        "description": "A fast, private, open-source PDF reader for Android. No ads, no tracking, no permissions required.",
+        "url": "https://www.savpdfviewer.com",
+        "author": {
+            "@type": "Person",
+            "name": "Saverio Morelli",
+            "url": "https://saveriomorelli.com"
+        },
+        "license": "https://opensource.org/licenses/GPL-3.0",
+        "offers": {
+            "@type": "Offer",
+            "price": "2.49",
+            "priceCurrency": "EUR",
+            "url": "https://play.google.com/store/apps/details?id=com.saverio.pdfviewer"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.5",
+            "ratingCount": "1000"
+        },
+        "installUrl": "https://play.google.com/store/apps/details?id=com.saverio.pdfviewer",
+        "screenshot": "https://www.savpdfviewer.com/alpha/images/opengraph.png",
+        "softwareVersion": "2.4",
+        "permissions": "none"
+    }
+</script>
 
 </body>
 </html>

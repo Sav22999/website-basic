@@ -5,7 +5,10 @@
 
     function detectLang() {
         var stored = null;
-        try { stored = localStorage.getItem('lang'); } catch (e) {}
+        try {
+            stored = localStorage.getItem('lang');
+        } catch (e) {
+        }
         if (stored && SUPPORTED_LANGS.indexOf(stored) !== -1) return stored;
 
         var navLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
@@ -67,7 +70,17 @@
 
     function toggleLangDropdown() {
         var dd = document.getElementById('lang-dropdown');
-        if (dd) dd.classList.toggle('open');
+        if (!dd) return;
+        dd.classList.toggle('open');
+        if (dd.classList.contains('open')) {
+            var active = dd.querySelector('.lang-item--active');
+            var panel = dd.querySelector('.lang-panel');
+            if (active && panel) {
+                setTimeout(function () {
+                    panel.scrollTop = active.offsetTop - panel.offsetHeight / 2 + active.offsetHeight / 2;
+                }, 10);
+            }
+        }
     }
 
     function closeLangDropdown() {
@@ -77,7 +90,10 @@
 
     function setLang(lang) {
         if (SUPPORTED_LANGS.indexOf(lang) === -1) lang = DEFAULT_LANG;
-        try { localStorage.setItem('lang', lang); } catch (e) {}
+        try {
+            localStorage.setItem('lang', lang);
+        } catch (e) {
+        }
         document.documentElement.setAttribute('lang', lang);
         loadLang(lang);
     }
@@ -92,7 +108,11 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState !== 4) return;
             if (xhr.status === 200) {
-                try { strings = JSON.parse(xhr.responseText); } catch (e) { strings = {}; }
+                try {
+                    strings = JSON.parse(xhr.responseText);
+                } catch (e) {
+                    strings = {};
+                }
             } else {
                 strings = {};
             }

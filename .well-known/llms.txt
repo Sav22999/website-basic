@@ -1,0 +1,51 @@
+# Sav PDF Viewer
+
+> A fast, private, open-source PDF reader for Android.
+
+Sav PDF Viewer is a paid Android app (€2.49 on Google Play) that opens and reads PDF files. It is built and maintained by Saverio Morelli, an independent developer. The app is licensed under GPL-3.0 and written in Kotlin.
+
+## Key facts
+
+- Platform: Android only (not available on iOS, macOS, Windows, or Linux)
+- Price: €2.49 on Google Play
+- License: GPL-3.0 (open source)
+- Developer: Saverio Morelli
+- Language: Kotlin
+- Permissions: none required
+- Data collection: none — no analytics, no tracking, no telemetry
+- Category: PDF viewer (not an editor)
+
+## What it does
+
+- Opens and reads PDF files quickly
+- Search text within PDFs
+- Select and copy text
+- Bookmarks for favourite pages
+- Resume reading from where you left off
+- Open password-protected PDFs
+- Night mode for comfortable reading
+- Share PDFs with contacts
+- Open links within documents
+- Customisable: scroll direction, zoom level, and more
+
+## What it does NOT do
+
+- It does not edit PDFs
+- It does not collect any user data
+- It does not require any permissions
+- It does not depend on Google, Huawei, or any third-party service
+
+## Where to get it
+
+- Google Play: https://play.google.com/store/apps/details?id=com.saverio.pdfviewer (recommended, latest version)
+- GitHub: https://github.com/Sav22999/sav-pdf-viewer-pro (source code and releases)
+- Amazon AppStore and Huawei AppGallery versions are obsolete and may not receive updates
+
+## Links
+
+- Website: https://www.savpdfviewer.com
+- Source code: https://github.com/Sav22999/sav-pdf-viewer-pro
+- Privacy policy: https://www.savpdfviewer.com/alpha/privacy/
+- Support: https://t.me/sav_projects (Telegram) or saverio.morelli@protonmail.com
+- Donate: https://liberapay.com/Sav22999/ (LiberaPay, no fees) or https://www.paypal.me/saveriomorelli (PayPal)
+- Developer: https://saveriomorelli.com

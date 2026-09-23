@@ -21,7 +21,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/alpha/include/menu.php");
             </svg>
             <div class="error-page__code">403</div>
             <h1 class="error-page__title">Access denied</h1>
-            <p class="error-page__desc">You don't have permission to view this page. This area is off limits — but the homepage is always open.</p>
+            <p class="error-page__desc">You don't have permission to view this page. This area is off limits — but the
+                homepage is always open.</p>
             <div class="button-group">
                 <a href="/alpha/" class="button">Go to homepage</a>
             </div>
