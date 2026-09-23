@@ -984,37 +984,6 @@ select.form-input {
     margin-top: -4px;
 }
 
-.form-field--checkbox {
-    margin-bottom: 0;
-}
-
-.form-checkbox-label {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
-    cursor: pointer;
-    line-height: 1.5;
-}
-
-.form-checkbox-label a {
-    color: var(--color-primary);
-}
-
-.form-checkbox-label a:hover {
-    text-decoration: underline;
-}
-
-.form-checkbox {
-    flex-shrink: 0;
-    width: 18px;
-    height: 18px;
-    margin-top: 1px;
-    accent-color: var(--color-primary);
-    cursor: pointer;
-}
-
 .form-textarea {
     resize: vertical;
     min-height: 120px;

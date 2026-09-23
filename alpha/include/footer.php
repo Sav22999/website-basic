@@ -1,6 +1,8 @@
 <footer class="site-footer">
-    <p><?php echo t('footer.developed_with'); ?> <span class="footer-heart" aria-label="<?php echo te('footer.love'); ?>"></span> <?php echo t('footer.by'); ?> <a href="https://saveriomorelli.com"
-                                                                                 class="footer-author" target="_blank" rel="noopener">Saverio
+    <p><?php echo t('footer.developed_with'); ?> <span class="footer-heart"
+                                                       aria-label="<?php echo te('footer.love'); ?>"></span> <?php echo t('footer.by'); ?>
+        <a href="https://saveriomorelli.com"
+           class="footer-author" target="_blank" rel="noopener">Saverio
             Morelli</a></p>
     <div class="footer-links">
         <a href="/alpha/privacy/"><?php echo t('footer.privacy'); ?></a>

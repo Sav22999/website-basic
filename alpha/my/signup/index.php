@@ -44,22 +44,10 @@ include_once($root_path . "/alpha/include/header.php");
                            required>
                 </div>
 
-                <div class="form-field form-field--checkbox">
-                    <label class="form-checkbox-label">
-                        <input type="checkbox" id="signup-accept-privacy" class="form-checkbox" required>
-                        <span><?php echo t('account.signup_accept_privacy'); ?></span>
-                    </label>
-                </div>
-
-                <div class="form-field form-field--checkbox">
-                    <label class="form-checkbox-label">
-                        <input type="checkbox" id="signup-accept-terms" class="form-checkbox" required>
-                        <span><?php echo t('account.signup_accept_terms'); ?></span>
-                    </label>
-                </div>
+                <p class="contact-consent"><?php echo t('account.signup_consent'); ?></p>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn--block" id="signup-submit" disabled><?php echo te('account.signup_submit'); ?></button>
+                    <button type="submit" class="btn btn--block" id="signup-submit"><?php echo te('account.signup_submit'); ?></button>
                 </div>
             </form>
 
@@ -82,14 +70,6 @@ include_once($root_path . "/alpha/include/header.php");
 
         var form = document.getElementById("signup-form");
         var submitButton = document.getElementById("signup-submit");
-        var checkPrivacy = document.getElementById("signup-accept-privacy");
-        var checkTerms = document.getElementById("signup-accept-terms");
-
-        function updateSubmitState() {
-            submitButton.disabled = !(checkPrivacy.checked && checkTerms.checked);
-        }
-        checkPrivacy.addEventListener("change", updateSubmitState);
-        checkTerms.addEventListener("change", updateSubmitState);
 
         form.addEventListener("submit", function (event) {
             event.preventDefault();

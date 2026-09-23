@@ -219,8 +219,7 @@
     "back_to_account": "العودة إلى الحساب",
     "back_to_login": "العودة إلى تسجيل الدخول",
     "back_to_signup": "العودة إلى التسجيل",
-    "signup_accept_privacy": "لقد قرأت وأوافق على <a href=\"/alpha/privacy/\" target=\"_blank\" rel=\"noopener\">سياسة الخصوصية</a> الخاصة بـ Notefox",
-    "signup_accept_terms": "لقد قرأت وأوافق على <a href=\"/alpha/terms/\" target=\"_blank\" rel=\"noopener\">شروط الخدمة</a> الخاصة بـ Notefox"
+    "signup_consent": "بالمتابعة، تُقرّ بأنك قد قرأت وقبلت <a href=\"/alpha/privacy/\" target=\"_blank\" rel=\"noopener\">سياسة الخصوصية</a> و<a href=\"/alpha/terms/\" target=\"_blank\" rel=\"noopener\">شروط الخدمة</a> الخاصة بـ Notefox."
   },
   "errors": {
     "401_title": "غير مصرّح – Notefox",

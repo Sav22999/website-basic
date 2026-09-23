@@ -219,8 +219,7 @@
     "back_to_account": "Terug naar account",
     "back_to_login": "Terug naar inloggen",
     "back_to_signup": "Terug naar registratie",
-    "signup_accept_privacy": "Ik heb het <a href=\"/alpha/privacy/\" target=\"_blank\" rel=\"noopener\">Privacybeleid</a> van Notefox gelezen en ga ermee akkoord",
-    "signup_accept_terms": "Ik heb de <a href=\"/alpha/terms/\" target=\"_blank\" rel=\"noopener\">Servicevoorwaarden</a> van Notefox gelezen en ga ermee akkoord"
+    "signup_consent": "Door verder te gaan, verklaar je dat je het <a href=\"/alpha/privacy/\" target=\"_blank\" rel=\"noopener\">Privacybeleid</a> en de <a href=\"/alpha/terms/\" target=\"_blank\" rel=\"noopener\">Gebruiksvoorwaarden</a> van Notefox hebt gelezen en accepteert."
   },
   "errors": {
     "401_title": "Niet geautoriseerd – Notefox",

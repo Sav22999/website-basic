@@ -219,8 +219,7 @@
     "back_to_account": "Вернуться к аккаунту",
     "back_to_login": "Вернуться к входу",
     "back_to_signup": "Вернуться к регистрации",
-    "signup_accept_privacy": "Я прочитал(а) и принимаю <a href=\"/alpha/privacy/\" target=\"_blank\" rel=\"noopener\">Политику конфиденциальности</a> Notefox",
-    "signup_accept_terms": "Я прочитал(а) и принимаю <a href=\"/alpha/terms/\" target=\"_blank\" rel=\"noopener\">Условия использования</a> Notefox"
+    "signup_consent": "Продолжая, вы подтверждаете, что прочитали и принимаете <a href=\"/alpha/privacy/\" target=\"_blank\" rel=\"noopener\">Политику конфиденциальности</a> и <a href=\"/alpha/terms/\" target=\"_blank\" rel=\"noopener\">Условия использования</a> Notefox."
   },
   "errors": {
     "401_title": "Не авторизован – Notefox",

@@ -324,8 +324,7 @@
     "back_to_account": "Back to Account",
     "back_to_login": "Back to Login",
     "back_to_signup": "Back to Signup",
-    "signup_accept_privacy": "I have read and accept the <a href=\"/alpha/privacy/\" target=\"_blank\" rel=\"noopener\">Privacy Policy</a> of Notefox",
-    "signup_accept_terms": "I have read and accept the <a href=\"/alpha/terms/\" target=\"_blank\" rel=\"noopener\">Terms of Service</a> of Notefox"
+    "signup_consent": "By proceeding, you declare that you have read and accept the <a href=\"/alpha/privacy/\" target=\"_blank\" rel=\"noopener\">Privacy Policy</a> and the <a href=\"/alpha/terms/\" target=\"_blank\" rel=\"noopener\">Terms of Service</a> of Notefox."
   },
   "errors": {
     "401_title": "Unauthorized – Notefox",

@@ -219,8 +219,7 @@
     "back_to_account": "返回账户",
     "back_to_login": "返回登录",
     "back_to_signup": "返回注册",
-    "signup_accept_privacy": "我已阅读并接受 Notefox 的<a href=\"/alpha/privacy/\" target=\"_blank\" rel=\"noopener\">隐私政策</a>",
-    "signup_accept_terms": "我已阅读并接受 Notefox 的<a href=\"/alpha/terms/\" target=\"_blank\" rel=\"noopener\">服务条款</a>"
+    "signup_consent": "继续操作即表示您已阅读并接受 Notefox 的<a href=\"/alpha/privacy/\" target=\"_blank\" rel=\"noopener\">隐私政策</a>和<a href=\"/alpha/terms/\" target=\"_blank\" rel=\"noopener\">服务条款</a>。"
   },
   "errors": {
     "401_title": "未授权 – Notefox",

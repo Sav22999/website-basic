@@ -219,8 +219,7 @@
     "back_to_account": "アカウントに戻る",
     "back_to_login": "ログインに戻る",
     "back_to_signup": "サインアップに戻る",
-    "signup_accept_privacy": "Notefox の<a href=\"/alpha/privacy/\" target=\"_blank\" rel=\"noopener\">プライバシーポリシー</a>を読み、同意します",
-    "signup_accept_terms": "Notefox の<a href=\"/alpha/terms/\" target=\"_blank\" rel=\"noopener\">利用規約</a>を読み、同意します"
+    "signup_consent": "続行することで、Notefox の<a href=\"/alpha/privacy/\" target=\"_blank\" rel=\"noopener\">プライバシーポリシー</a>および<a href=\"/alpha/terms/\" target=\"_blank\" rel=\"noopener\">利用規約</a>を読み、同意したものとみなされます。"
   },
   "errors": {
     "401_title": "未認証 – Notefox",

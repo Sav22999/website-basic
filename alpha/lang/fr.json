@@ -219,8 +219,7 @@
     "back_to_account": "Retour au compte",
     "back_to_login": "Retour à la connexion",
     "back_to_signup": "Retour à l'inscription",
-    "signup_accept_privacy": "J'ai lu et j'accepte la <a href=\"/alpha/privacy/\" target=\"_blank\" rel=\"noopener\">Politique de Confidentialité</a> de Notefox",
-    "signup_accept_terms": "J'ai lu et j'accepte les <a href=\"/alpha/terms/\" target=\"_blank\" rel=\"noopener\">Conditions d'Utilisation</a> de Notefox"
+    "signup_consent": "En poursuivant, vous déclarez avoir lu et accepté la <a href=\"/alpha/privacy/\" target=\"_blank\" rel=\"noopener\">Politique de Confidentialité</a> et les <a href=\"/alpha/terms/\" target=\"_blank\" rel=\"noopener\">Conditions d'Utilisation</a> de Notefox."
   },
   "errors": {
     "401_title": "Non autorisé – Notefox",
