@@ -14,6 +14,28 @@
       <phpcs_by_interpreter asDefaultInterpreter="true" interpreter_id="61ad1d15-8fc8-484e-a9af-b3a1ef040fbd" timeout="30000" />
     </phpcs_settings>
   </component>
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/alpha/vendor/symfony/service-contracts" />
+      <path value="$PROJECT_DIR$/alpha/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/alpha/vendor/doctrine/deprecations" />
+      <path value="$PROJECT_DIR$/alpha/vendor/doctrine/lexer" />
+      <path value="$PROJECT_DIR$/alpha/vendor/composer" />
+      <path value="$PROJECT_DIR$/alpha/vendor/psr/event-dispatcher" />
+      <path value="$PROJECT_DIR$/alpha/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/alpha/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/alpha/vendor/egulias/email-validator" />
+      <path value="$PROJECT_DIR$/alpha/vendor/symfony/polyfill-php80" />
+      <path value="$PROJECT_DIR$/alpha/vendor/symfony/event-dispatcher" />
+      <path value="$PROJECT_DIR$/alpha/vendor/symfony/mailer" />
+      <path value="$PROJECT_DIR$/alpha/vendor/symfony/polyfill-intl-idn" />
+      <path value="$PROJECT_DIR$/alpha/vendor/symfony/polyfill-intl-normalizer" />
+      <path value="$PROJECT_DIR$/alpha/vendor/symfony/event-dispatcher-contracts" />
+      <path value="$PROJECT_DIR$/alpha/vendor/symfony/mime" />
+      <path value="$PROJECT_DIR$/alpha/vendor/symfony/deprecation-contracts" />
+    </include_path>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.0" />
   <component name="PhpStan">
     <PhpStan_settings>
       <phpstan_by_interpreter asDefaultInterpreter="true" interpreter_id="61ad1d15-8fc8-484e-a9af-b3a1ef040fbd" timeout="60000" />

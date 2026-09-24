@@ -128,6 +128,43 @@ img {
 
 /* ===== Header ===== */
 
+.maintenance-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    height: 28px;
+    overflow: hidden;
+    opacity: 0.7;
+    pointer-events: none;
+}
+.maintenance-banner__tape {
+    flex: 1;
+    height: 100%;
+    background: repeating-linear-gradient(
+        -45deg,
+        #fdd835,
+        #fdd835 10px,
+        #212121 10px,
+        #212121 20px
+    );
+}
+.maintenance-banner__text {
+    flex-shrink: 0;
+    padding: 0 16px;
+    background: #212121;
+    color: #fdd835;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    line-height: 28px;
+    white-space: nowrap;
+}
 .site-header {
     position: fixed;
     top: 0;
@@ -2362,6 +2399,39 @@ altcha-widget .altcha-footer {
     color: var(--tertiary-color-variant);
     line-height: 1.6;
     margin-bottom: 36px;
+}
+
+.error-page__code { opacity: 0; animation: fadeInUp 0.6s ease 0.3s both; }
+.error-page__title { opacity: 0; animation: fadeInUp 0.6s ease 0.45s both; }
+.error-page__desc { opacity: 0; animation: fadeInUp 0.6s ease 0.6s both; }
+.error-page .button-group { opacity: 0; animation: fadeInUp 0.6s ease 0.75s both; }
+
+.illustration__ring { animation: ringPulse 3s ease-in-out infinite; transform-origin: 90px 90px; }
+.illustration__wrench { animation: wrenchSwing 4s ease-in-out infinite; transform-origin: 72px 70px; }
+.illustration__minute { animation: minuteHand 8s linear infinite; transform-origin: 112px 100px; }
+.illustration__hour { animation: hourHand 24s linear infinite; transform-origin: 112px 100px; }
+.illustration__center-dot { animation: dotPulse 2s ease-in-out infinite; }
+
+@keyframes ringPulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.03); }
+}
+@keyframes wrenchSwing {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-6deg); }
+    75% { transform: rotate(4deg); }
+}
+@keyframes minuteHand {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+@keyframes hourHand {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+@keyframes dotPulse {
+    0%, 100% { r: 2; }
+    50% { r: 3; }
 }
 
 @media (max-width: 860px) {

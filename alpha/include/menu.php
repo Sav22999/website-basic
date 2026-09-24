@@ -108,3 +108,10 @@ function menu_class($name, $selected_menu)
     </div>
 </header>
 <label for="nav-toggle" class="nav-overlay" aria-hidden="true"></label>
+<?php if (!empty($GLOBALS['_maintenance_bypass'])): ?>
+<div class="maintenance-banner">
+    <div class="maintenance-banner__tape"></div>
+    <span class="maintenance-banner__text">Maintenance mode active</span>
+    <div class="maintenance-banner__tape"></div>
+</div>
+<?php endif; ?>

@@ -1,4 +1,5 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/alpha/include/maintenance.php';
 global $title, $description, $url_opengraph, $canonical_path;
 
 $site_name = "Sav PDF Viewer";

@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/alpha/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/alpha/vendor/doctrine/deprecations" />
+      <excludeFolder url="file://$MODULE_DIR$/alpha/vendor/doctrine/lexer" />
+      <excludeFolder url="file://$MODULE_DIR$/alpha/vendor/egulias/email-validator" />
+      <excludeFolder url="file://$MODULE_DIR$/alpha/vendor/psr/container" />
+      <excludeFolder url="file://$MODULE_DIR$/alpha/vendor/psr/event-dispatcher" />
+      <excludeFolder url="file://$MODULE_DIR$/alpha/vendor/psr/log" />
+      <excludeFolder url="file://$MODULE_DIR$/alpha/vendor/symfony/deprecation-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/alpha/vendor/symfony/event-dispatcher" />
+      <excludeFolder url="file://$MODULE_DIR$/alpha/vendor/symfony/event-dispatcher-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/alpha/vendor/symfony/mailer" />
+      <excludeFolder url="file://$MODULE_DIR$/alpha/vendor/symfony/mime" />
+      <excludeFolder url="file://$MODULE_DIR$/alpha/vendor/symfony/polyfill-intl-idn" />
+      <excludeFolder url="file://$MODULE_DIR$/alpha/vendor/symfony/polyfill-intl-normalizer" />
+      <excludeFolder url="file://$MODULE_DIR$/alpha/vendor/symfony/polyfill-mbstring" />
+      <excludeFolder url="file://$MODULE_DIR$/alpha/vendor/symfony/polyfill-php80" />
+      <excludeFolder url="file://$MODULE_DIR$/alpha/vendor/symfony/service-contracts" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jquery" level="application" />
