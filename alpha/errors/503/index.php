@@ -45,6 +45,16 @@ include_once($root_path . "/alpha/include/header.php");
                 justify-content: center;
                 flex-wrap: wrap;
             }
+
+            .error-icon svg {
+                animation: gearSpin 60s linear infinite;
+            }
+
+            @keyframes gearSpin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
         </style>
 
         <div class="error-page">

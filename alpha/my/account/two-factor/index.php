@@ -45,7 +45,8 @@ include_once($root_path . "/alpha/include/header.php");
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn--block" id="otp-submit"><?php echo te('account.otp_continue'); ?></button>
+                    <button type="submit" class="btn btn--block"
+                            id="otp-submit"><?php echo te('account.otp_continue'); ?></button>
                 </div>
             </form>
 

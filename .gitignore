@@ -1,6 +1,7 @@
 
 include/credentials.php
 alpha/include/mail-config.php
+.maintenance
 .idea/*
 .junie/*
 .claude/*

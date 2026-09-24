@@ -19,7 +19,10 @@ i18n_load("en");
 
 <main id="main" class="page">
     <div class="container">
-        <?php $i18n = $_saved_i18n; $i18n_lang = $_saved_lang; i18n_english_only_notice(); i18n_load("en"); ?>
+        <?php $i18n = $_saved_i18n;
+        $i18n_lang = $_saved_lang;
+        i18n_english_only_notice();
+        i18n_load("en"); ?>
         <h1><?php echo t('privacy.heading'); ?></h1>
 
         <p><strong><?php echo t('privacy.last_update'); ?></strong> <?php echo t('privacy.last_update_date'); ?></p>

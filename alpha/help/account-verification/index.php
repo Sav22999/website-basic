@@ -36,7 +36,9 @@ include_once($root_path . "/alpha/include/header.php");
 
         <h2>How Verification Works</h2>
         <ol>
-            <li><strong>Sign up</strong> with your email address, a username, and a password on the <a href="/alpha/my/signup/">signup page</a>.</li>
+            <li><strong>Sign up</strong> with your email address, a username, and a password on the <a
+                        href="/alpha/my/signup/">signup page</a>.
+            </li>
             <li>A <strong>one-time verification code</strong> is sent to the email address you provided.</li>
             <li>Enter the code on the verification screen that appears after signup.</li>
             <li>Once verified, your account is active and you can log in and start syncing your notes.</li>

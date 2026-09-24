@@ -34,18 +34,21 @@ include_once($root_path . "/alpha/include/header.php");
                 </div>
 
                 <div class="form-field" id="login-verify-code-field">
-                    <label class="form-label" for="login-verify-code"><?php echo te('account.signup_verify_code'); ?></label>
+                    <label class="form-label"
+                           for="login-verify-code"><?php echo te('account.signup_verify_code'); ?></label>
                     <input class="form-input" type="text" id="login-verify-code" name="verification-code" maxlength="64"
                            required autofocus>
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn--block" id="login-verify-submit"><?php echo te('account.login_verify_submit'); ?></button>
+                    <button type="submit" class="btn btn--block"
+                            id="login-verify-submit"><?php echo te('account.login_verify_submit'); ?></button>
                 </div>
             </form>
 
             <p class="auth-footer">
-                <?php echo t('account.did_not_receive_code'); ?> <a href="#" id="login-resend-code"><?php echo te('account.send_new_code'); ?></a>
+                <?php echo t('account.did_not_receive_code'); ?> <a href="#"
+                                                                    id="login-resend-code"><?php echo te('account.send_new_code'); ?></a>
             </p>
         </div>
     </div>

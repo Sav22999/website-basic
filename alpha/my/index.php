@@ -29,7 +29,8 @@ include_once($root_path . "/alpha/include/header.php");
 
                 <div class="form-actions" style="gap: 10px;">
                     <a href="/alpha/my/login/" class="btn btn--block"><?php echo te('account.log_in'); ?></a>
-                    <a href="/alpha/my/signup/" class="btn btn--secondary btn--block"><?php echo te('account.create_account'); ?></a>
+                    <a href="/alpha/my/signup/"
+                       class="btn btn--secondary btn--block"><?php echo te('account.create_account'); ?></a>
                 </div>
             </div>
 

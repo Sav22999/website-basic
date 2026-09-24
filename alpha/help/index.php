@@ -124,12 +124,18 @@ include_once($root_path . "/alpha/include/header.php");
 
         <h2><?php echo t('help.quick_links'); ?></h2>
         <ul class="link-list">
-            <li class="link-list-item"><a href="/alpha/help/notefox-account-v2/" class="link-list-link"><span class="lang-badge">EN</span> Notefox Account v2 (Sav Account)</a></li>
-            <li class="link-list-item"><a href="/alpha/help/import-export-data/" class="link-list-link"><span class="lang-badge">EN</span> How to import and export data</a></li>
-            <li class="link-list-item"><a href="/alpha/help/search/" class="link-list-link"><span class="lang-badge">EN</span> How the search feature works</a></li>
-            <li class="link-list-item"><a href="/alpha/help/own-server-for-notefox-sync/" class="link-list-link"><span class="lang-badge">EN</span> How to run your own sync server</a></li>
-            <li class="link-list-item"><a href="/alpha/privacy/" class="link-list-link"><?php echo t('help.link_privacy'); ?></a></li>
-            <li class="link-list-item"><a href="/alpha/terms/" class="link-list-link"><?php echo t('help.link_terms'); ?></a></li>
+            <li class="link-list-item"><a href="/alpha/help/notefox-account-v2/" class="link-list-link"><span
+                            class="lang-badge">EN</span> Notefox Account v2 (Sav Account)</a></li>
+            <li class="link-list-item"><a href="/alpha/help/import-export-data/" class="link-list-link"><span
+                            class="lang-badge">EN</span> How to import and export data</a></li>
+            <li class="link-list-item"><a href="/alpha/help/search/" class="link-list-link"><span
+                            class="lang-badge">EN</span> How the search feature works</a></li>
+            <li class="link-list-item"><a href="/alpha/help/own-server-for-notefox-sync/" class="link-list-link"><span
+                            class="lang-badge">EN</span> How to run your own sync server</a></li>
+            <li class="link-list-item"><a href="/alpha/privacy/"
+                                          class="link-list-link"><?php echo t('help.link_privacy'); ?></a></li>
+            <li class="link-list-item"><a href="/alpha/terms/"
+                                          class="link-list-link"><?php echo t('help.link_terms'); ?></a></li>
         </ul>
     </div>
 </main>

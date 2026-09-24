@@ -121,3 +121,13 @@ $lang_short = array(
         </div>
     </nav>
 </header>
+<?php
+global $maintenance_bypass_active;
+if (!empty($maintenance_bypass_active)):
+    ?>
+    <div class="maintenance-banner" aria-label="Maintenance mode active">
+        <div class="maintenance-banner-tape"></div>
+        <span class="maintenance-banner-label">MAINTENANCE MODE ACTIVE</span>
+        <div class="maintenance-banner-tape"></div>
+    </div>
+<?php endif; ?>

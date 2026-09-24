@@ -34,12 +34,14 @@ include_once($root_path . "/alpha/include/header.php");
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn--block" id="login-submit"><?php echo te('account.log_in'); ?></button>
+                    <button type="submit" class="btn btn--block"
+                            id="login-submit"><?php echo te('account.log_in'); ?></button>
                 </div>
             </form>
 
             <p class="auth-footer">
-                <?php echo t('account.login_no_account'); ?> <a href="/alpha/my/signup/"><?php echo te('account.login_create_one'); ?></a>
+                <?php echo t('account.login_no_account'); ?> <a
+                        href="/alpha/my/signup/"><?php echo te('account.login_create_one'); ?></a>
             </p>
         </div>
     </div>

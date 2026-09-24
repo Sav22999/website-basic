@@ -39,7 +39,8 @@ include_once($root_path . "/alpha/include/header.php");
                 </div>
 
                 <div class="form-field">
-                    <label class="form-label" for="signup-password-confirm"><?php echo te('account.signup_confirm_password'); ?></label>
+                    <label class="form-label"
+                           for="signup-password-confirm"><?php echo te('account.signup_confirm_password'); ?></label>
                     <input class="form-input" type="password" id="signup-password-confirm" name="password-confirm"
                            required>
                 </div>
@@ -47,12 +48,14 @@ include_once($root_path . "/alpha/include/header.php");
                 <p class="contact-consent"><?php echo t('account.signup_consent'); ?></p>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn--block" id="signup-submit"><?php echo te('account.signup_submit'); ?></button>
+                    <button type="submit" class="btn btn--block"
+                            id="signup-submit"><?php echo te('account.signup_submit'); ?></button>
                 </div>
             </form>
 
             <p class="auth-footer">
-                <?php echo t('account.signup_has_account'); ?> <a href="/alpha/my/login/"><?php echo te('account.signup_login'); ?></a>
+                <?php echo t('account.signup_has_account'); ?> <a
+                        href="/alpha/my/login/"><?php echo te('account.signup_login'); ?></a>
             </p>
         </div>
     </div>

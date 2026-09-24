@@ -29,7 +29,8 @@ include_once($root_path . "/alpha/include/header.php");
                 </div>
 
                 <div class="form-field" id="password-current-field">
-                    <label class="form-label" for="password-current"><?php echo te('account.password_current'); ?></label>
+                    <label class="form-label"
+                           for="password-current"><?php echo te('account.password_current'); ?></label>
                     <input class="form-input" type="password" id="password-current" name="password" required>
                 </div>
 
@@ -39,18 +40,21 @@ include_once($root_path . "/alpha/include/header.php");
                 </div>
 
                 <div class="form-field" id="password-new-confirm-field">
-                    <label class="form-label" for="password-new-confirm"><?php echo te('account.password_new_confirm'); ?></label>
+                    <label class="form-label"
+                           for="password-new-confirm"><?php echo te('account.password_new_confirm'); ?></label>
                     <input class="form-input" type="password" id="password-new-confirm" name="new-password-confirm"
                            required>
                 </div>
 
                 <div class="form-field hidden2" id="password-code-field">
-                    <label class="form-label" for="password-code"><?php echo te('account.signup_verify_code'); ?></label>
+                    <label class="form-label"
+                           for="password-code"><?php echo te('account.signup_verify_code'); ?></label>
                     <input class="form-input" type="text" id="password-code" name="verification-code" maxlength="64">
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn--block" id="password-submit"><?php echo te('account.password_send_code'); ?></button>
+                    <button type="submit" class="btn btn--block"
+                            id="password-submit"><?php echo te('account.password_send_code'); ?></button>
                 </div>
             </form>
 
@@ -58,7 +62,8 @@ include_once($root_path . "/alpha/include/header.php");
                 <a href="/alpha/my/account/"><?php echo te('common.cancel'); ?></a>
             </p>
             <p class="auth-footer hidden2" id="password-resend-row">
-                <?php echo t('account.didnt_get_code'); ?> <a href="#" id="password-resend-code"><?php echo te('account.send_new_code'); ?></a>
+                <?php echo t('account.didnt_get_code'); ?> <a href="#"
+                                                              id="password-resend-code"><?php echo te('account.send_new_code'); ?></a>
             </p>
         </div>
     </div>

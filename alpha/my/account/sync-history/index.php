@@ -24,7 +24,8 @@ include_once($root_path . "/alpha/include/header.php");
         </div>
 
         <div class="text-center">
-            <button type="button" id="download-current-button" class="btn hidden2"><?php echo te('account.history_download_current'); ?></button>
+            <button type="button" id="download-current-button"
+                    class="btn hidden2"><?php echo te('account.history_download_current'); ?></button>
         </div>
 
         <ul id="history-list" class="history-list"></ul>

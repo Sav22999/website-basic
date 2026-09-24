@@ -60,7 +60,7 @@ include_once($root_path . "/alpha/include/header.php");
         <p>
             Both a <strong>one-time donation</strong> and a <strong>yearly subscription</strong> are accepted.
             Regardless of the type you choose, the Sync history permission is <strong>granted for
-            lifetime</strong> — it will stay active on your account permanently, even if a subscription
+                lifetime</strong> — it will stay active on your account permanently, even if a subscription
             ends or is cancelled.
         </p>
         <p class="text-center">

@@ -618,9 +618,15 @@ include_once($root_path . "/alpha/include/header.php");
   "verification-code": "A1B2C3"
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash; The email used at signup.</li>
-                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span> &mdash; The account password.</li>
-                    <li><span class="docs-field-name">verification-code</span> <span class="docs-field-type">string</span> &mdash; The 6-character code received by email.</li>
+                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash;
+                        The email used at signup.
+                    </li>
+                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span>
+                        &mdash; The account password.
+                    </li>
+                    <li><span class="docs-field-name">verification-code</span> <span
+                                class="docs-field-type">string</span> &mdash; The 6-character code received by email.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>
@@ -646,8 +652,12 @@ include_once($root_path . "/alpha/include/header.php");
   "password": "..."
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash; The email used at signup.</li>
-                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span> &mdash; The account password.</li>
+                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash;
+                        The email used at signup.
+                    </li>
+                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span>
+                        &mdash; The account password.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>
@@ -675,8 +685,12 @@ include_once($root_path . "/alpha/include/header.php");
   "password": "..."
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash; Account email address.</li>
-                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span> &mdash; Account password.</li>
+                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash;
+                        Account email address.
+                    </li>
+                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span>
+                        &mdash; Account password.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response (OTP enabled)</p>
@@ -714,10 +728,18 @@ include_once($root_path . "/alpha/include/header.php");
   "verification-code": "A1B2C3"
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">login-id</span> <span class="docs-field-type">string</span> &mdash; The <code>login-id</code> returned by <code>/login</code>.</li>
-                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash; Account email address.</li>
-                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span> &mdash; Account password.</li>
-                    <li><span class="docs-field-name">verification-code</span> <span class="docs-field-type">string</span> &mdash; The 6-character code received by email.</li>
+                    <li><span class="docs-field-name">login-id</span> <span class="docs-field-type">string</span>
+                        &mdash; The <code>login-id</code> returned by <code>/login</code>.
+                    </li>
+                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash;
+                        Account email address.
+                    </li>
+                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span>
+                        &mdash; Account password.
+                    </li>
+                    <li><span class="docs-field-name">verification-code</span> <span
+                                class="docs-field-type">string</span> &mdash; The 6-character code received by email.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>
@@ -745,9 +767,15 @@ include_once($root_path . "/alpha/include/header.php");
   "password": "..."
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">login-id</span> <span class="docs-field-type">string</span> &mdash; The <code>login-id</code> returned by <code>/login</code>.</li>
-                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash; Account email address.</li>
-                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span> &mdash; Account password.</li>
+                    <li><span class="docs-field-name">login-id</span> <span class="docs-field-type">string</span>
+                        &mdash; The <code>login-id</code> returned by <code>/login</code>.
+                    </li>
+                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash;
+                        Account email address.
+                    </li>
+                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span>
+                        &mdash; Account password.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>
@@ -769,8 +797,12 @@ include_once($root_path . "/alpha/include/header.php");
   "token": "..."
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">login-id</span> <span class="docs-field-type">string</span> &mdash; Session identifier (64 hex chars).</li>
-                    <li><span class="docs-field-name">token</span> <span class="docs-field-type">string</span> &mdash; Session token (64 hex chars).</li>
+                    <li><span class="docs-field-name">login-id</span> <span class="docs-field-type">string</span>
+                        &mdash; Session identifier (64 hex chars).
+                    </li>
+                    <li><span class="docs-field-name">token</span> <span class="docs-field-type">string</span> &mdash;
+                        Session token (64 hex chars).
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>
@@ -822,7 +854,9 @@ include_once($root_path . "/alpha/include/header.php");
   "expiry": "2025-01-01 00:00:00"
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">expiry</span> <span class="docs-field-type">string|null</span> &mdash; Date string or <code>null</code> to remove the expiry.</li>
+                    <li><span class="docs-field-name">expiry</span> <span class="docs-field-type">string|null</span>
+                        &mdash; Date string or <code>null</code> to remove the expiry.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>
@@ -893,8 +927,13 @@ include_once($root_path . "/alpha/include/header.php");
   "email": "..."
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span> &mdash; Account password.</li>
-                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">optional</span> &mdash; Used only to send the notification email; validated against the account hash.</li>
+                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span>
+                        &mdash; Account password.
+                    </li>
+                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> <span
+                                class="docs-field-opt">optional</span> &mdash; Used only to send the notification email;
+                        validated against the account hash.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>
@@ -918,8 +957,12 @@ include_once($root_path . "/alpha/include/header.php");
   "email": "..."
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span> &mdash; Account password.</li>
-                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash; Used to send the confirmation code; validated against the account hash.</li>
+                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span>
+                        &mdash; Account password.
+                    </li>
+                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash;
+                        Used to send the confirmation code; validated against the account hash.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>
@@ -946,9 +989,16 @@ include_once($root_path . "/alpha/include/header.php");
   "email": "..."
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span> &mdash; Account password.</li>
-                    <li><span class="docs-field-name">verification-code</span> <span class="docs-field-type">string</span> &mdash; The 6-character code received by email.</li>
-                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">optional</span> &mdash; Used to send the confirmation notification.</li>
+                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span>
+                        &mdash; Account password.
+                    </li>
+                    <li><span class="docs-field-name">verification-code</span> <span
+                                class="docs-field-type">string</span> &mdash; The 6-character code received by email.
+                    </li>
+                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> <span
+                                class="docs-field-opt">optional</span> &mdash; Used to send the confirmation
+                        notification.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>
@@ -1033,7 +1083,9 @@ include_once($root_path . "/alpha/include/header.php");
   "service": "notefox"
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">service</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">optional, default "notefox"</span> &mdash; Target service.</li>
+                    <li><span class="docs-field-name">service</span> <span class="docs-field-type">string</span> <span
+                                class="docs-field-opt">optional, default "notefox"</span> &mdash; Target service.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>
@@ -1061,7 +1113,9 @@ include_once($root_path . "/alpha/include/header.php");
   "service": "notefox"
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">service</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">optional, default "notefox"</span> &mdash; Target service.</li>
+                    <li><span class="docs-field-name">service</span> <span class="docs-field-type">string</span> <span
+                                class="docs-field-opt">optional, default "notefox"</span> &mdash; Target service.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>
@@ -1129,7 +1183,9 @@ include_once($root_path . "/alpha/include/header.php");
   "service": "notefox"
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">service</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">optional, default "notefox"</span> &mdash; Target service.</li>
+                    <li><span class="docs-field-name">service</span> <span class="docs-field-type">string</span> <span
+                                class="docs-field-opt">optional, default "notefox"</span> &mdash; Target service.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>
@@ -1229,8 +1285,12 @@ include_once($root_path . "/alpha/include/header.php");
   "email": "..."
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span> &mdash; Current password.</li>
-                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash; Account email address.</li>
+                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span>
+                        &mdash; Current password.
+                    </li>
+                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash;
+                        Account email address.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>
@@ -1259,10 +1319,18 @@ include_once($root_path . "/alpha/include/header.php");
   "email": "..."
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span> &mdash; Current password.</li>
-                    <li><span class="docs-field-name">new-password</span> <span class="docs-field-type">string</span> &mdash; New password (at least 8 characters, different from current).</li>
-                    <li><span class="docs-field-name">verification-code</span> <span class="docs-field-type">string</span> &mdash; Code received by email.</li>
-                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash; Account email address.</li>
+                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span>
+                        &mdash; Current password.
+                    </li>
+                    <li><span class="docs-field-name">new-password</span> <span class="docs-field-type">string</span>
+                        &mdash; New password (at least 8 characters, different from current).
+                    </li>
+                    <li><span class="docs-field-name">verification-code</span> <span
+                                class="docs-field-type">string</span> &mdash; Code received by email.
+                    </li>
+                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash;
+                        Account email address.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>
@@ -1287,8 +1355,12 @@ include_once($root_path . "/alpha/include/header.php");
   "password": "..."
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash; Account email address.</li>
-                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span> &mdash; Current password.</li>
+                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash;
+                        Account email address.
+                    </li>
+                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span>
+                        &mdash; Current password.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>
@@ -1314,9 +1386,15 @@ include_once($root_path . "/alpha/include/header.php");
   "deleting-code": "A1B2C3"
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash; Account email address.</li>
-                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span> &mdash; Current password.</li>
-                    <li><span class="docs-field-name">deleting-code</span> <span class="docs-field-type">string</span> &mdash; Confirmation code received by email.</li>
+                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash;
+                        Account email address.
+                    </li>
+                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span>
+                        &mdash; Current password.
+                    </li>
+                    <li><span class="docs-field-name">deleting-code</span> <span class="docs-field-type">string</span>
+                        &mdash; Confirmation code received by email.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>
@@ -1337,8 +1415,12 @@ include_once($root_path . "/alpha/include/header.php");
   "password": "..."
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash; Account email address.</li>
-                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span> &mdash; Current password.</li>
+                    <li><span class="docs-field-name">email</span> <span class="docs-field-type">string</span> &mdash;
+                        Account email address.
+                    </li>
+                    <li><span class="docs-field-name">password</span> <span class="docs-field-type">string</span>
+                        &mdash; Current password.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>
@@ -1369,12 +1451,27 @@ include_once($root_path . "/alpha/include/header.php");
   "anonymous-userid": "a1b2c3..."
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">datetime</span> <span class="docs-field-type">string</span> &mdash; Client date/time when the error occurred.</li>
-                    <li><span class="docs-field-name">context</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">max 500</span> &mdash; Where the error happened (file, function, component).</li>
-                    <li><span class="docs-field-name">error</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">max 65535</span> &mdash; Error message or stack trace.</li>
-                    <li><span class="docs-field-name">url</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">optional, max 1000</span> &mdash; URL of the page where the error occurred.</li>
-                    <li><span class="docs-field-name">notefox-version</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">optional, max 20</span> &mdash; Extension version.</li>
-                    <li><span class="docs-field-name">anonymous-userid</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">optional, max 50</span> &mdash; Anonymous client identifier.</li>
+                    <li><span class="docs-field-name">datetime</span> <span class="docs-field-type">string</span>
+                        &mdash; Client date/time when the error occurred.
+                    </li>
+                    <li><span class="docs-field-name">context</span> <span class="docs-field-type">string</span> <span
+                                class="docs-field-opt">max 500</span> &mdash; Where the error happened (file, function,
+                        component).
+                    </li>
+                    <li><span class="docs-field-name">error</span> <span class="docs-field-type">string</span> <span
+                                class="docs-field-opt">max 65535</span> &mdash; Error message or stack trace.
+                    </li>
+                    <li><span class="docs-field-name">url</span> <span class="docs-field-type">string</span> <span
+                                class="docs-field-opt">optional, max 1000</span> &mdash; URL of the page where the error
+                        occurred.
+                    </li>
+                    <li><span class="docs-field-name">notefox-version</span> <span class="docs-field-type">string</span>
+                        <span class="docs-field-opt">optional, max 20</span> &mdash; Extension version.
+                    </li>
+                    <li><span class="docs-field-name">anonymous-userid</span> <span
+                                class="docs-field-type">string</span> <span
+                                class="docs-field-opt">optional, max 50</span> &mdash; Anonymous client identifier.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>
@@ -1403,18 +1500,46 @@ include_once($root_path . "/alpha/include/header.php");
   "other": ""
 }</code></pre>
                 <ul class="docs-field-list">
-                    <li><span class="docs-field-name">notefox-account</span> <span class="docs-field-type">boolean</span> &mdash; Whether the user is signed in to a Notefox account.</li>
-                    <li><span class="docs-field-name">anonymous-userid</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">max 50</span> &mdash; Anonymous client identifier.</li>
-                    <li><span class="docs-field-name">client-datetime</span> <span class="docs-field-type">string</span> &mdash; Client date/time of the event.</li>
-                    <li><span class="docs-field-name">language</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">max 20</span> &mdash; Client language code.</li>
-                    <li><span class="docs-field-name">action</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">max 500</span> &mdash; Action being tracked (e.g. "sync", "open-popup").</li>
-                    <li><span class="docs-field-name">context</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">optional, max 500</span> &mdash; Additional context for the action.</li>
-                    <li><span class="docs-field-name">url</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">optional, max 65535</span> &mdash; Page URL when the event fired.</li>
-                    <li><span class="docs-field-name">browser</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">max 20</span> &mdash; Browser name.</li>
-                    <li><span class="docs-field-name">browser-version</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">optional, max 20</span> &mdash; Browser version.</li>
-                    <li><span class="docs-field-name">notefox-version</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">max 20</span> &mdash; Extension version.</li>
-                    <li><span class="docs-field-name">os</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">optional, max 20</span> &mdash; Operating system.</li>
-                    <li><span class="docs-field-name">other</span> <span class="docs-field-type">string</span> <span class="docs-field-opt">optional, max 65535</span> &mdash; Any additional data.</li>
+                    <li><span class="docs-field-name">notefox-account</span> <span
+                                class="docs-field-type">boolean</span> &mdash; Whether the user is signed in to a
+                        Notefox account.
+                    </li>
+                    <li><span class="docs-field-name">anonymous-userid</span> <span
+                                class="docs-field-type">string</span> <span class="docs-field-opt">max 50</span> &mdash;
+                        Anonymous client identifier.
+                    </li>
+                    <li><span class="docs-field-name">client-datetime</span> <span class="docs-field-type">string</span>
+                        &mdash; Client date/time of the event.
+                    </li>
+                    <li><span class="docs-field-name">language</span> <span class="docs-field-type">string</span> <span
+                                class="docs-field-opt">max 20</span> &mdash; Client language code.
+                    </li>
+                    <li><span class="docs-field-name">action</span> <span class="docs-field-type">string</span> <span
+                                class="docs-field-opt">max 500</span> &mdash; Action being tracked (e.g. "sync",
+                        "open-popup").
+                    </li>
+                    <li><span class="docs-field-name">context</span> <span class="docs-field-type">string</span> <span
+                                class="docs-field-opt">optional, max 500</span> &mdash; Additional context for the
+                        action.
+                    </li>
+                    <li><span class="docs-field-name">url</span> <span class="docs-field-type">string</span> <span
+                                class="docs-field-opt">optional, max 65535</span> &mdash; Page URL when the event fired.
+                    </li>
+                    <li><span class="docs-field-name">browser</span> <span class="docs-field-type">string</span> <span
+                                class="docs-field-opt">max 20</span> &mdash; Browser name.
+                    </li>
+                    <li><span class="docs-field-name">browser-version</span> <span class="docs-field-type">string</span>
+                        <span class="docs-field-opt">optional, max 20</span> &mdash; Browser version.
+                    </li>
+                    <li><span class="docs-field-name">notefox-version</span> <span class="docs-field-type">string</span>
+                        <span class="docs-field-opt">max 20</span> &mdash; Extension version.
+                    </li>
+                    <li><span class="docs-field-name">os</span> <span class="docs-field-type">string</span> <span
+                                class="docs-field-opt">optional, max 20</span> &mdash; Operating system.
+                    </li>
+                    <li><span class="docs-field-name">other</span> <span class="docs-field-type">string</span> <span
+                                class="docs-field-opt">optional, max 65535</span> &mdash; Any additional data.
+                    </li>
                 </ul>
 
                 <p class="docs-label">Response</p>

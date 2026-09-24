@@ -34,18 +34,21 @@ include_once($root_path . "/alpha/include/header.php");
                 </div>
 
                 <div class="form-field" id="delete-verify-code-field">
-                    <label class="form-label" for="delete-verify-code"><?php echo te('account.delete_verify_code'); ?></label>
+                    <label class="form-label"
+                           for="delete-verify-code"><?php echo te('account.delete_verify_code'); ?></label>
                     <input class="form-input" type="text" id="delete-verify-code" name="deleting-code" maxlength="64"
                            required autofocus>
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn--block btn--danger" id="delete-verify-submit"><?php echo te('account.delete_verify_submit'); ?></button>
+                    <button type="submit" class="btn btn--block btn--danger"
+                            id="delete-verify-submit"><?php echo te('account.delete_verify_submit'); ?></button>
                 </div>
             </form>
 
             <p class="auth-footer">
-                <?php echo t('account.didnt_get_code'); ?> <a href="#" id="delete-resend-code"><?php echo te('account.send_new_code'); ?></a>
+                <?php echo t('account.didnt_get_code'); ?> <a href="#"
+                                                              id="delete-resend-code"><?php echo te('account.send_new_code'); ?></a>
             </p>
         </div>
     </div>

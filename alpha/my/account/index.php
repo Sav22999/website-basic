@@ -28,10 +28,14 @@ include_once($root_path . "/alpha/include/header.php");
         </div>
 
         <div class="account-links">
-            <a href="/alpha/my/account/sync-history/" class="btn btn--secondary"><?php echo te('account.sync_history'); ?></a>
-            <a href="/alpha/my/account/password/" class="btn btn--secondary"><?php echo te('account.change_password'); ?></a>
-            <a href="/alpha/my/account/delete/" class="btn btn--secondary"><?php echo te('account.delete_account'); ?></a>
-            <button type="button" id="logout-button" class="btn btn--secondary"><?php echo te('account.log_out'); ?></button>
+            <a href="/alpha/my/account/sync-history/"
+               class="btn btn--secondary"><?php echo te('account.sync_history'); ?></a>
+            <a href="/alpha/my/account/password/"
+               class="btn btn--secondary"><?php echo te('account.change_password'); ?></a>
+            <a href="/alpha/my/account/delete/"
+               class="btn btn--secondary"><?php echo te('account.delete_account'); ?></a>
+            <button type="button" id="logout-button"
+                    class="btn btn--secondary"><?php echo te('account.log_out'); ?></button>
         </div>
     </div>
 </main>

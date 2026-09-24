@@ -1,5 +1,6 @@
 <?php
 global $title, $description, $canonical_path, $url_opengraph, $noindex, $english_only;
+include_once($root_path . "/alpha/include/maintenance.php");
 include_once($root_path . "/alpha/include/i18n.php");
 global $i18n_lang, $i18n_dir, $i18n_supported;
 if (!isset($title) || $title === "") {

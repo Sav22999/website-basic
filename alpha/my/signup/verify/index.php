@@ -30,12 +30,14 @@ include_once($root_path . "/alpha/include/header.php");
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn--block" id="verify-submit"><?php echo te('account.signup_verify_submit'); ?></button>
+                    <button type="submit" class="btn btn--block"
+                            id="verify-submit"><?php echo te('account.signup_verify_submit'); ?></button>
                 </div>
             </form>
 
             <p class="auth-footer">
-                <?php echo t('account.did_not_receive_code'); ?> <a href="#" id="resend-code"><?php echo te('account.send_new_code'); ?></a>
+                <?php echo t('account.did_not_receive_code'); ?> <a href="#"
+                                                                    id="resend-code"><?php echo te('account.send_new_code'); ?></a>
             </p>
         </div>
     </div>

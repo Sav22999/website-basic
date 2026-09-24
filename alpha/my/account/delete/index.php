@@ -34,7 +34,8 @@ include_once($root_path . "/alpha/include/header.php");
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn--block btn--danger" id="delete-submit"><?php echo te('account.delete_request'); ?></button>
+                    <button type="submit" class="btn btn--block btn--danger"
+                            id="delete-submit"><?php echo te('account.delete_request'); ?></button>
                 </div>
             </form>
 

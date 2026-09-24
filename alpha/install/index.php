@@ -37,7 +37,8 @@ include_once($root_path . "/alpha/include/header.php");
         <hr>
 
         <p style="color: var(--color-text-muted); font-size: 0.875rem; margin-bottom: 12px;"><?php echo t('install.github_note'); ?></p>
-        <a href="https://github.com/Sav22999/websites-notes" class="btn btn--secondary" target="_blank" rel="noopener"><?php echo t('install.view_on_github'); ?></a>
+        <a href="https://github.com/Sav22999/websites-notes" class="btn btn--secondary" target="_blank"
+           rel="noopener"><?php echo t('install.view_on_github'); ?></a>
     </div>
 </main>
 
