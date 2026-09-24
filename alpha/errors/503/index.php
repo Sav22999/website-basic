@@ -70,7 +70,8 @@ include_once($root_path . "/alpha/include/header.php");
             <p class="error-message"><?php echo t('errors.503_message'); ?></p>
             <div class="error-actions">
                 <button onclick="location.reload()" class="btn"><?php echo t('errors.refresh'); ?></button>
-                <a href="https://t.me/sav_projects/7" class="btn btn--secondary" target="_blank" rel="noopener"><?php echo t('errors.service_status'); ?></a>
+                <a href="https://t.me/sav_projects/7" class="btn btn--secondary" target="_blank"
+                   rel="noopener"><?php echo t('errors.service_status'); ?></a>
             </div>
         </div>
     </div>
