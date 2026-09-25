@@ -14,6 +14,7 @@ req_require_post();
 
 $login_id = req_string("login-id", 512);
 $password = req_password("password");
+$source = req_optional_string("source", 16);
 
 $c = db();
 $ip_address = req_ip_address();
@@ -60,7 +61,7 @@ if ($issued === null) {
 }
 
 $username = decryptTextWithPassword($user["username"], $password);
-v2_email_login_code($email, $username === false ? "" : $username, $issued["code"], $ip_address, $issued["expiry"], true);
+v2_email_login_code($email, $username === false ? "" : $username, $issued["code"], $ip_address, $issued["expiry"], true, $source);
 
 api_ok(array(
     "otp-required" => true,

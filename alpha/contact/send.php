@@ -80,7 +80,7 @@ if ($altcha === '' || !altcha_verify($altcha, $altcha_hmac_key)) {
     exit;
 }
 
-$topic_labels = array('bug' => 'Bug', 'report' => 'Report', 'suggestion' => 'Suggestion', 'other' => 'Other');
+$topic_labels = array('bug' => 'Bug', 'report' => 'Report', 'suggestion' => 'Suggestion', 'donation' => 'Donation', 'pro-features' => 'Pro features', 'other' => 'Other');
 $topic_display = isset($topic_labels[$topic]) ? $topic_labels[$topic] : $topic;
 if ($topic === 'other' && $topic_other !== '') {
     $topic_display = 'Other: ' . $topic_other;

@@ -20,6 +20,7 @@ req_require_post();
 
 $email = req_email("email");
 $password = req_password("password");
+$source = req_optional_string("source", 16);
 
 $c = db();
 $ip_address = req_ip_address();
@@ -65,7 +66,7 @@ if (!v2_otp_enabled($c, $user)) {
         api_error(ERR_INTERNAL);
     }
 
-    v2_email_logged_in($email, $username === null ? "" : $username, $ip_address);
+    v2_email_logged_in($email, $username === null ? "" : $username, $ip_address, $source);
 
     api_ok(array(
         "otp-required" => false,
@@ -103,7 +104,7 @@ if ($issued === null) {
     api_error(ERR_INTERNAL);
 }
 
-v2_email_login_code($email, $username === null ? "" : $username, $issued["code"], $ip_address, $issued["expiry"], false);
+v2_email_login_code($email, $username === null ? "" : $username, $issued["code"], $ip_address, $issued["expiry"], false, $source);
 
 api_ok(array(
     "otp-required" => true,

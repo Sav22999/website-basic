@@ -119,7 +119,8 @@ include_once($root_path . "/alpha/include/header.php");
                 "login-id": pending["login-id"],
                 "email": email,
                 "password": password,
-                "verification-code": code
+                "verification-code": code,
+                "source": pending["source"] || "web"
             }).then(function (data) {
                 sessionStorage.removeItem("notefox-pending-login");
                 saveSession({
@@ -149,7 +150,8 @@ include_once($root_path . "/alpha/include/header.php");
             notefoxApi("/login/verify/get-new-code", {
                 "login-id": pending["login-id"],
                 "email": email,
-                "password": password
+                "password": password,
+                "source": pending["source"] || "web"
             }).then(function () {
                 showFormMessage("login-verify-message", "A new code has been sent.", false);
             }).catch(function (error) {

@@ -69,12 +69,13 @@ function v2_email_signed_up($to, $username, $ip_address)
     return v2_send_email($to, "Notefox: account created", $html);
 }
 
-function v2_email_login_code($to, $username, $code, $ip_address, $expiry, $new_code = false)
+function v2_email_login_code($to, $username, $code, $ip_address, $expiry, $new_code = false, $source = null)
 {
+    $via = $source === "web" ? " via the web" : ($source === "addon" ? " via the addon" : "");
     $html = v2_email_render(
         $username,
         $new_code ? "New code to log in" : "Confirm your log in",
-        ($new_code ? "You required another otp to verify the login process.<br>" : "") . "To confirm your login, please use the following code:",
+        ($new_code ? "You required another otp to verify the login process.<br>" : "") . "To confirm your login" . $via . ", please use the following code:",
         "The code will be valid until " . $expiry . ".<br>If you didn't log in to Notefox, you should definitely change your password.",
         $code,
         $ip_address
@@ -82,12 +83,13 @@ function v2_email_login_code($to, $username, $code, $ip_address, $expiry, $new_c
     return v2_send_email($to, "Notefox: confirm your login", $html);
 }
 
-function v2_email_logged_in($to, $username, $ip_address)
+function v2_email_logged_in($to, $username, $ip_address, $source = null)
 {
+    $via = $source === "web" ? " via the web" : ($source === "addon" ? " via the addon" : "");
     $html = v2_email_render(
         $username,
         "Just logged in",
-        "You just logged in to your Notefox account.",
+        "You just logged in to your Notefox account" . $via . ".",
         "If you haven't logged in to Notefox, please change your password immediately.",
         null,
         $ip_address

@@ -81,13 +81,15 @@ include_once($root_path . "/alpha/include/header.php");
 
             notefoxApi("/login", {
                 "email": email,
-                "password": password
+                "password": password,
+                "source": "web"
             }).then(function (data) {
                 if (data["otp-required"]) {
                     sessionStorage.setItem("notefox-pending-login", JSON.stringify({
                         "login-id": data["login-id"],
                         "email": email,
-                        "password": password
+                        "password": password,
+                        "source": "web"
                     }));
                     location.href = "/alpha/my/login/verify/";
                     return;

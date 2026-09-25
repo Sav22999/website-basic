@@ -62,8 +62,8 @@ include_once($root_path . "/alpha/include/header.php");
 
         <h2>Limitations</h2>
         <ul>
-            <li>The web interface is <strong>read-only</strong>: you can view and download your notes, but editing and
-                creating new notes still requires the browser extension.
+            <li>Editing notes from the web requires <a href="/alpha/help/pro-features/">pro features</a> to be enabled
+                on your account. Without it, the web interface is read-only.
             </li>
             <li>Only notes that have been <strong>synced</strong> with a Notefox Account are visible from the web. Notes
                 stored locally only (without an account) cannot be accessed this way.
@@ -73,13 +73,6 @@ include_once($root_path . "/alpha/include/header.php");
             </li>
         </ul>
 
-        <h2>Related</h2>
-        <ul>
-            <li><a href="/alpha/help/notefox-account/">How the Notefox Account works</a></li>
-            <li><a href="/alpha/help/notefox-account-v2/">Notefox Account v2 (Sav Account)</a></li>
-            <li><a href="/alpha/help/import-export-data/">How to import and export data</a></li>
-            <li><a href="/alpha/help/how-to-get-history-sync/">How to get the sync history</a></li>
-        </ul>
     </div>
 </main>
 

@@ -123,15 +123,12 @@ include_once($root_path . "/alpha/include/header.php");
                 // is reachable by URL, so it has to say so by itself. The
                 // download of the CURRENT version stays available: it comes
                 // from POST /data/get, which this permission never touches.
-                showFormMessage("history-message", "The sync history is not enabled for your account.", true);
-                // The help page is linked inside the same message, as a
-                // secondary button aligned to the right: showFormMessage()
-                // writes plain text, so the link is appended afterwards.
+                showFormMessage("history-message", "This feature requires pro features to be enabled on your account.", true);
                 var messageElement = document.getElementById("history-message");
                 var helpLink = document.createElement("a");
-                helpLink.href = "/alpha/help/how-to-get-history-sync/";
+                helpLink.href = "/alpha/help/pro-features/";
                 helpLink.className = "form-message-link";
-                helpLink.textContent = "How to get the Sync history →";
+                helpLink.textContent = "What are pro features? →";
                 messageElement.appendChild(helpLink);
 
                 var loginIdBlock = document.createElement("div");

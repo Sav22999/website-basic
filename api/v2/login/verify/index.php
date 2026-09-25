@@ -19,6 +19,7 @@ req_require_post();
 $login_id = req_string("login-id", 512);
 $password = req_password("password");
 $code = req_code("verification-code");
+$source = req_optional_string("source", 16);
 
 $c = db();
 $ip_address = req_ip_address();
@@ -94,7 +95,7 @@ v2_refresh_password_hash($c, $login["user-id"], $password);
 $dek = v2_get_or_create_dek($c, $login["user-id"], $password);
 $username = decryptTextWithPassword($user["username"], $password);
 
-v2_email_logged_in($email, $username === false ? "" : $username, $ip_address);
+v2_email_logged_in($email, $username === false ? "" : $username, $ip_address, $source);
 
 api_ok(array(
     "login-id" => $login_id,

@@ -64,6 +64,8 @@ $challenge_json = altcha_create_challenge($hmac_key);
                         <option value="bug"><?php echo te('contact.topic_bug'); ?></option>
                         <option value="report"><?php echo te('contact.topic_report'); ?></option>
                         <option value="suggestion"><?php echo te('contact.topic_suggestion'); ?></option>
+                        <option value="donation"><?php echo te('contact.topic_donation'); ?></option>
+                        <option value="pro-features"><?php echo te('contact.topic_pro_features'); ?></option>
                         <option value="other"><?php echo te('contact.topic_other'); ?></option>
                     </select>
                 </div>
