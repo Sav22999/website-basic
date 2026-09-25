@@ -28,7 +28,7 @@ echo '<script>setAction("' . $selected_menu . '");</script>';
         } ?>">Reviews</a>
     </div>
 </nav>
-<div style="position:fixed;top:0;left:0;right:0;z-index:10000;background:#b71c1c;color:#fff;display:flex;align-items:center;justify-content:center;gap:16px;padding:10px 16px;font-family:'Open Sans',sans-serif;font-size:14px;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,0.3);">
+<div style="position:fixed;top:0;left:0;right:0;z-index:10000;background:#b71c1c;color:#fff;display:flex;align-items:center;justify-content:center;gap:16px;padding:10px 16px;font-family:'Open Sans',sans-serif;font-size:14px;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,0.3);pointer-events:none;opacity:0.5;">
     <span>This is an outdated version of the website</span>
-    <a href="/" style="background:#fff;color:#b71c1c;padding:6px 18px;border-radius:20px;text-decoration:none;font-size:13px;font-weight:700;white-space:nowrap;">Go to new site &rarr;</a>
+    <a href="/" style="background:#fff;color:#b71c1c;padding:6px 18px;border-radius:20px;text-decoration:none;font-size:13px;font-weight:700;white-space:nowrap;pointer-events:auto;">Go to new site &rarr;</a>
 </div>
