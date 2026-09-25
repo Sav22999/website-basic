@@ -45,7 +45,7 @@ Sav PDF Viewer is a paid Android app (€2.49 on Google Play) that opens and rea
 
 - Website: https://www.savpdfviewer.com
 - Source code: https://github.com/Sav22999/sav-pdf-viewer-pro
-- Privacy policy: https://www.savpdfviewer.com/alpha/privacy/
+- Privacy policy: https://www.savpdfviewer.com/privacy/
 - Support: https://t.me/sav_projects (Telegram) or saverio.morelli@protonmail.com
 - Donate: https://liberapay.com/Sav22999/ (LiberaPay, no fees) or https://www.paypal.me/saveriomorelli (PayPal)
 - Developer: https://saveriomorelli.com

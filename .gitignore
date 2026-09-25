@@ -1,5 +1,5 @@
 
 /.claude
-alpha/.mail_config.php
-alpha/.maintenance
-alpha/vendor/
+.mail_config.php
+.maintenance
+vendor/
