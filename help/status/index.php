@@ -1,516 +1,231 @@
-<html>
-<head>
-    <?php
-    $title = "Services Status & Health Detection – Notefox";
-    include_once($_SERVER['DOCUMENT_ROOT'] . "/include/header.php");
-    ?>
-    <style>
-        .status-hero {
-            border-radius: var(--border-radius);
-            padding: 24px 20px;
-            margin: 25px 0px;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
-        }
-
-        .status-hero--loading {
-            background-color: var(--tertiary-color);
-            color: var(--on-tertiary-color);
-            border: 1px solid var(--secondary-color-variant);
-        }
-
-        .status-hero--online {
-            background-color: rgba(40, 167, 69, 0.15);
-            border: 1px solid rgba(40, 167, 69, 0.45);
-            color: var(--on-primary-color);
-        }
-
-        .status-hero--warning {
-            background-color: rgba(255, 193, 7, 0.15);
-            border: 1px solid rgba(255, 193, 7, 0.45);
-            color: var(--on-primary-color);
-        }
-
-        .status-hero--offline {
-            background-color: rgba(220, 53, 69, 0.18);
-            border: 1px solid rgba(220, 53, 69, 0.45);
-            color: var(--on-primary-color);
-        }
-
-        .status-hero-icon {
-            font-size: 42px;
-            line-height: 1;
-            margin-bottom: 10px;
-        }
-
-        .status-hero-title {
-            font-size: var(--font-size-big);
-            font-weight: 700;
-            margin: 0px 0px 8px 0px;
-        }
-
-        .status-hero-desc {
-            font-size: var(--font-size-normal);
-            margin: 0px 0px 14px 0px;
-            opacity: 0.95;
-        }
-
-        .status-hero-meta {
-            font-size: var(--font-size-very-small);
-            opacity: 0.8;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .status-hero-meta span {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .status-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 18px;
-            margin: 25px 0px;
-        }
-
-        .status-card {
-            background-color: var(--tertiary-color);
-            color: var(--on-tertiary-color);
-            border-radius: var(--border-radius);
-            padding: 18px 20px;
-            box-sizing: border-box;
-            border: 1px solid var(--secondary-color-variant);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .status-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        .status-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-
-        .status-card-title {
-            font-size: var(--font-size-normal);
-            font-weight: 600;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: var(--font-size-very-very-small);
-            font-weight: 600;
-            padding: 3px 10px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .status-badge--ok {
-            background-color: rgba(40, 167, 69, 0.25);
-            color: #b3f0c1;
-            border: 1px solid rgba(40, 167, 69, 0.4);
-        }
-
-        .status-badge--warn {
-            background-color: rgba(255, 193, 7, 0.25);
-            color: #ffe082;
-            border: 1px solid rgba(255, 193, 7, 0.4);
-        }
-
-        .status-badge--error {
-            background-color: rgba(220, 53, 69, 0.25);
-            color: #ffb3bb;
-            border: 1px solid rgba(220, 53, 69, 0.4);
-        }
-
-        .status-badge--loading {
-            background-color: rgba(120, 120, 120, 0.25);
-            color: #d0d0d0;
-            border: 1px solid rgba(120, 120, 120, 0.4);
-        }
-
-        .status-card-body {
-            font-size: var(--font-size-small);
-            line-height: 1.45;
-            margin-bottom: 10px;
-            opacity: 0.9;
-        }
-
-        .status-card-footer {
-            font-size: var(--font-size-very-very-small);
-            opacity: 0.75;
-            border-top: 1px solid var(--secondary-color-variant);
-            padding-top: 8px;
-            margin-top: 6px;
-        }
-
-        .pulse-dot {
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        .pulse-dot--green {
-            background-color: #28a745;
-            box-shadow: 0 0 0 rgba(40, 167, 69, 0.5);
-            animation: pulse-green 2s infinite;
-        }
-
-        .pulse-dot--yellow {
-            background-color: #ffc107;
-            box-shadow: 0 0 0 rgba(255, 193, 7, 0.5);
-            animation: pulse-yellow 2s infinite;
-        }
-
-        .pulse-dot--red {
-            background-color: #dc3545;
-            box-shadow: 0 0 0 rgba(220, 53, 69, 0.5);
-            animation: pulse-red 2s infinite;
-        }
-
-        .pulse-dot--gray {
-            background-color: #888888;
-        }
-
-        @keyframes pulse-green {
-            0% {
-                box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 8px rgba(40, 167, 69, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
-            }
-        }
-
-        @keyframes pulse-yellow {
-            0% {
-                box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 8px rgba(255, 193, 7, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);
-            }
-        }
-
-        @keyframes pulse-red {
-            0% {
-                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 8px rgba(220, 53, 69, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
-            }
-        }
-
-        .details-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0px;
-            font-size: var(--font-size-small);
-        }
-
-        .details-table th, .details-table td {
-            padding: 10px 14px;
-            text-align: left;
-            border-bottom: 1px solid var(--secondary-color-variant);
-        }
-
-        .details-table th {
-            font-weight: 600;
-            background-color: var(--tertiary-color);
-        }
-
-        .details-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-top-color: currentColor;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            vertical-align: middle;
-            margin-right: 6px;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .raw-debug-box {
-            background-color: rgba(0, 0, 0, 0.25);
-            border-radius: var(--border-radius);
-            padding: 12px 16px;
-            font-family: monospace;
-            font-size: var(--font-size-very-small);
-            white-space: pre-wrap;
-            word-break: break-all;
-            max-height: 220px;
-            overflow-y: auto;
-            border: 1px solid var(--secondary-color-variant);
-            margin-top: 10px;
-        }
-
-        .check-actions {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-    </style>
-</head>
-<body>
 <?php
+include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
+global $root_path, $path;
+include_once($root_path . "/include/i18n.php");
+$title = "Services Status & Health Detection – Notefox";
 $selected_menu = "help";
-include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
+include_once($root_path . "/include/header.php");
 ?>
+<body>
+<?php include_once($root_path . "/include/menu.php"); ?>
 
-<main class="padding-top-menu">
-    <div class="horizontal-center">
-        <div class="center-content justify">
-            <h1 class="title-section center">Services Status &amp; Health Detection</h1>
-            <p class="center" style="margin-top: -10px; margin-bottom: 20px; opacity: 0.9;">
-                Real-time automatic diagnostic detection for Notefox sync servers, database, security, and messaging
-                services.
-            </p>
+<main id="main" class="page">
+    <div class="container">
+        <a href="/help/" class="back-link">Back to Help</a>
+        <?php i18n_english_only_notice(); ?>
+        <h1 class="text-center">Services Status &amp; Health Detection</h1>
+        <p class="text-center">
+            Real-time automatic diagnostic detection for Notefox sync servers, database, security, and messaging
+            services.
+        </p>
 
-            <!-- Main Overall Hero Banner -->
-            <div id="status-hero" class="status-hero status-hero--loading">
-                <div id="status-hero-icon" class="status-hero-icon">
-                    <span class="spinner"></span>
-                </div>
-                <div id="status-hero-title" class="status-hero-title">Checking Services...</div>
-                <div id="status-hero-desc" class="status-hero-desc">Connecting to Notefox API check endpoint to test
-                    system availability...
-                </div>
-                <div class="status-hero-meta">
-                    <span id="hero-meta-time">Checking...</span>
-                    <span id="hero-meta-latency">Latency: -- ms</span>
-                    <span id="hero-meta-endpoint">Endpoint: /api/v2/status/</span>
-                </div>
+        <!-- Main Overall Hero Banner -->
+        <div id="status-hero" class="status-hero status-hero--loading">
+            <div id="status-hero-icon" class="status-hero-icon">
+                <span class="spinner"></span>
             </div>
-
-            <div class="check-actions">
-                <button type="button" id="btn-refresh-check" class="button button-with-icon button-sync">
-                    Run Check Again
-                </button>
+            <div id="status-hero-title" class="status-hero-title">Checking Services...</div>
+            <div id="status-hero-desc" class="status-hero-desc">Connecting to Notefox API check endpoint to test system
+                availability...
             </div>
-
-            <!-- Detailed Grid -->
-            <h2 class="subtitle-section">Component Health Breakdown</h2>
-            <div class="status-grid">
-                <!-- API Gateway Card -->
-                <div class="status-card" id="card-api">
-                    <div>
-                        <div class="status-card-header">
-                            <h3 class="status-card-title">API Gateway</h3>
-                            <span class="status-badge status-badge--loading" id="badge-api">Checking</span>
-                        </div>
-                        <div class="status-card-body" id="desc-api">
-                            Testing connection to the central API server...
-                        </div>
-                    </div>
-                    <div class="status-card-footer" id="footer-api">
-                        Version: -- | Latency: --
-                    </div>
-                </div>
-
-                <!-- Database Card -->
-                <div class="status-card" id="card-db">
-                    <div>
-                        <div class="status-card-header">
-                            <h3 class="status-card-title">Database (DBMS)</h3>
-                            <span class="status-badge status-badge--loading" id="badge-db">Checking</span>
-                        </div>
-                        <div class="status-card-body" id="desc-db">
-                            Verifying active database connections and transactions...
-                        </div>
-                    </div>
-                    <div class="status-card-footer" id="footer-db">
-                        Storage: --
-                    </div>
-                </div>
-
-                <!-- Sync & Key Schema Card -->
-                <div class="status-card" id="card-sync">
-                    <div>
-                        <div class="status-card-header">
-                            <h3 class="status-card-title">Sync &amp; Encryption Engine</h3>
-                            <span class="status-badge status-badge--loading" id="badge-sync">Checking</span>
-                        </div>
-                        <div class="status-card-body" id="desc-sync">
-                            Checking multi-service snapshot schema, revision management, and DEK/KEK encryption keys...
-                        </div>
-                    </div>
-                    <div class="status-card-footer" id="footer-sync">
-                        Multi-service &amp; Revisions: --
-                    </div>
-                </div>
-
-                <!-- Mailer Card -->
-                <div class="status-card" id="card-mailer">
-                    <div>
-                        <div class="status-card-header">
-                            <h3 class="status-card-title">Email Delivery (SMTP)</h3>
-                            <span class="status-badge status-badge--loading" id="badge-mailer">Checking</span>
-                        </div>
-                        <div class="status-card-body" id="desc-mailer">
-                            Checking mailer transport readiness for signup verification, 2FA codes, and password
-                            resets...
-                        </div>
-                    </div>
-                    <div class="status-card-footer" id="footer-mailer">
-                        Service: Authenticated SMTP
-                    </div>
-                </div>
-
-                <!-- Security & Rate Limiting Card -->
-                <div class="status-card" id="card-security">
-                    <div>
-                        <div class="status-card-header">
-                            <h3 class="status-card-title">Security &amp; Rate Limiting</h3>
-                            <span class="status-badge status-badge--loading" id="badge-security">Checking</span>
-                        </div>
-                        <div class="status-card-body" id="desc-security">
-                            Verifying brute-force prevention, token security, and request throttling rules...
-                        </div>
-                    </div>
-                    <div class="status-card-footer" id="footer-security">
-                        Rate limits: --
-                    </div>
-                </div>
-
-                <!-- Clock Skew Card -->
-                <div class="status-card" id="card-clock">
-                    <div>
-                        <div class="status-card-header">
-                            <h3 class="status-card-title">Clock Synchronization</h3>
-                            <span class="status-badge status-badge--loading" id="badge-clock">Checking</span>
-                        </div>
-                        <div class="status-card-body" id="desc-clock">
-                            Comparing local client clock with server time to detect time skew...
-                        </div>
-                    </div>
-                    <div class="status-card-footer" id="footer-clock">
-                        Skew: --
-                    </div>
-                </div>
-            </div>
-
-            <!-- Technical Schema Diagnostics -->
-            <h2 class="subtitle-section">Technical Subsystem Diagnostics</h2>
-            <div style="background-color: var(--tertiary-color); border-radius: var(--border-radius); border: 1px solid var(--secondary-color-variant); overflow: hidden;">
-                <table class="details-table">
-                    <thead>
-                    <tr>
-                        <th>Subsystem Component</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                    </tr>
-                    </thead>
-                    <tbody id="subsystem-table-body">
-                    <tr>
-                        <td><strong>Data Encryption Keys (`keys`)</strong></td>
-                        <td>Dedicated Data Encryption Key storage per account</td>
-                        <td id="diag-keys"><span class="pulse-dot pulse-dot--gray"></span> Checking</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Snapshots (`snapshots`)</strong></td>
-                        <td>Encrypted notes data storage table</td>
-                        <td id="diag-snapshots"><span class="pulse-dot pulse-dot--gray"></span> Checking</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Multi-Service Partitioning</strong></td>
-                        <td>Multi-service workspace isolation and independent sync</td>
-                        <td id="diag-multi-service"><span class="pulse-dot pulse-dot--gray"></span> Checking</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Rate Limiting Engine</strong></td>
-                        <td>Flood &amp; brute-force protection table</td>
-                        <td id="diag-rate-limits"><span class="pulse-dot pulse-dot--gray"></span> Checking</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Two-Factor Authentication (2FA)</strong></td>
-                        <td>Configurable login OTP &amp; verification columns</td>
-                        <td id="diag-otp"><span class="pulse-dot pulse-dot--gray"></span> Checking</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Password Reset Workflow</strong></td>
-                        <td>Secure password change tokens &amp; key re-wrapping</td>
-                        <td id="diag-pwd"><span class="pulse-dot pulse-dot--gray"></span> Checking</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Sync History Permissions</strong></td>
-                        <td>Account-level sync history inspection permissions</td>
-                        <td id="diag-history"><span class="pulse-dot pulse-dot--gray"></span> Checking</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Legacy v1 Compatibility Mirror</strong></td>
-                        <td>Real-time backward compatibility bridge for older extensions</td>
-                        <td id="diag-legacy"><span class="pulse-dot pulse-dot--gray"></span> Checking</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Troubleshooting and Information Section -->
-            <h2 class="subtitle-section">Troubleshooting &amp; FAQ</h2>
-            <p>
-                <strong>What should I do if a service is reported as Offline?</strong><br>
-                1. Check your local internet connection and ensure your browser or ad-blocker is not blocking API
-                requests to <code>notefox.eu</code>.<br>
-                2. If the API or Database is temporarily unavailable, maintenance might be currently underway. Please
-                wait a few moments and click <strong>"Run Check Again"</strong>.<br>
-                3. If the problem persists, feel free to report it directly via our support channels.
-            </p>
-            <p>
-                <strong>Why does Clock Synchronization matter?</strong><br>
-                While Notefox Account v2 uses smart revision counters and conflict detection (HTTP 409) rather than
-                relying exclusively on device timestamps, keeping your device's clock synchronized with network time
-                ensures that your local edit history and logs reflect accurate times.
-            </p>
-
-            <br>
-            <div class="center" style="margin-top: 15px;">
-                <input type="button" class="button" value="Back to Help" onclick="location.href='../'">
+            <div class="status-hero-meta">
+                <span id="hero-meta-time">Checking...</span>
+                <span id="hero-meta-latency">Latency: -- ms</span>
+                <span id="hero-meta-endpoint">Endpoint: /api/v2/status/</span>
             </div>
         </div>
+
+        <div class="text-center">
+            <button type="button" id="btn-refresh-check" class="btn">
+                Run Check Again
+            </button>
+        </div>
+
+        <!-- Detailed Grid -->
+        <h2>Component Health Breakdown</h2>
+        <div class="status-grid">
+            <!-- API Gateway Card -->
+            <div class="status-card" id="card-api">
+                <div>
+                    <div class="status-card-header">
+                        <h3 class="status-card-title">API Gateway</h3>
+                        <span class="status-badge status-badge--loading" id="badge-api">Checking</span>
+                    </div>
+                    <div class="status-card-body" id="desc-api">
+                        Testing connection to the central API server...
+                    </div>
+                </div>
+                <div class="status-card-footer" id="footer-api">
+                    Version: -- | Latency: --
+                </div>
+            </div>
+
+            <!-- Database Card -->
+            <div class="status-card" id="card-db">
+                <div>
+                    <div class="status-card-header">
+                        <h3 class="status-card-title">Database (DBMS)</h3>
+                        <span class="status-badge status-badge--loading" id="badge-db">Checking</span>
+                    </div>
+                    <div class="status-card-body" id="desc-db">
+                        Verifying active database connections and transactions...
+                    </div>
+                </div>
+                <div class="status-card-footer" id="footer-db">
+                    Storage: --
+                </div>
+            </div>
+
+            <!-- Sync & Key Schema Card -->
+            <div class="status-card" id="card-sync">
+                <div>
+                    <div class="status-card-header">
+                        <h3 class="status-card-title">Sync &amp; Encryption Engine</h3>
+                        <span class="status-badge status-badge--loading" id="badge-sync">Checking</span>
+                    </div>
+                    <div class="status-card-body" id="desc-sync">
+                        Checking multi-service snapshot schema, revision management, and DEK/KEK encryption keys...
+                    </div>
+                </div>
+                <div class="status-card-footer" id="footer-sync">
+                    Multi-service &amp; Revisions: --
+                </div>
+            </div>
+
+            <!-- Mailer Card -->
+            <div class="status-card" id="card-mailer">
+                <div>
+                    <div class="status-card-header">
+                        <h3 class="status-card-title">Email Delivery (SMTP)</h3>
+                        <span class="status-badge status-badge--loading" id="badge-mailer">Checking</span>
+                    </div>
+                    <div class="status-card-body" id="desc-mailer">
+                        Checking mailer transport readiness for signup verification, 2FA codes, and password resets...
+                    </div>
+                </div>
+                <div class="status-card-footer" id="footer-mailer">
+                    Service: Authenticated SMTP
+                </div>
+            </div>
+
+            <!-- Security & Rate Limiting Card -->
+            <div class="status-card" id="card-security">
+                <div>
+                    <div class="status-card-header">
+                        <h3 class="status-card-title">Security &amp; Rate Limiting</h3>
+                        <span class="status-badge status-badge--loading" id="badge-security">Checking</span>
+                    </div>
+                    <div class="status-card-body" id="desc-security">
+                        Verifying brute-force prevention, token security, and request throttling rules...
+                    </div>
+                </div>
+                <div class="status-card-footer" id="footer-security">
+                    Rate limits: --
+                </div>
+            </div>
+
+            <!-- Clock Skew Card -->
+            <div class="status-card" id="card-clock">
+                <div>
+                    <div class="status-card-header">
+                        <h3 class="status-card-title">Clock Synchronization</h3>
+                        <span class="status-badge status-badge--loading" id="badge-clock">Checking</span>
+                    </div>
+                    <div class="status-card-body" id="desc-clock">
+                        Comparing local client clock with server time to detect time skew...
+                    </div>
+                </div>
+                <div class="status-card-footer" id="footer-clock">
+                    Skew: --
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Schema Diagnostics -->
+        <h2>Technical Subsystem Diagnostics</h2>
+        <div class="status-card" style="padding: 0; overflow: hidden;">
+            <table class="details-table">
+                <thead>
+                <tr>
+                    <th>Subsystem Component</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody id="subsystem-table-body">
+                <tr>
+                    <td><strong>Data Encryption Keys (<code>keys</code>)</strong></td>
+                    <td>Dedicated Data Encryption Key storage per account</td>
+                    <td id="diag-keys"><span class="pulse-dot pulse-dot--gray"></span> Checking</td>
+                </tr>
+                <tr>
+                    <td><strong>Snapshots (<code>snapshots</code>)</strong></td>
+                    <td>Encrypted notes data storage table</td>
+                    <td id="diag-snapshots"><span class="pulse-dot pulse-dot--gray"></span> Checking</td>
+                </tr>
+                <tr>
+                    <td><strong>Multi-Service Partitioning</strong></td>
+                    <td>Multi-service workspace isolation and independent sync</td>
+                    <td id="diag-multi-service"><span class="pulse-dot pulse-dot--gray"></span> Checking</td>
+                </tr>
+                <tr>
+                    <td><strong>Rate Limiting Engine</strong></td>
+                    <td>Flood &amp; brute-force protection table</td>
+                    <td id="diag-rate-limits"><span class="pulse-dot pulse-dot--gray"></span> Checking</td>
+                </tr>
+                <tr>
+                    <td><strong>Two-Factor Authentication (2FA)</strong></td>
+                    <td>Configurable login OTP &amp; verification columns</td>
+                    <td id="diag-otp"><span class="pulse-dot pulse-dot--gray"></span> Checking</td>
+                </tr>
+                <tr>
+                    <td><strong>Password Reset Workflow</strong></td>
+                    <td>Secure password change tokens &amp; key re-wrapping</td>
+                    <td id="diag-pwd"><span class="pulse-dot pulse-dot--gray"></span> Checking</td>
+                </tr>
+                <tr>
+                    <td><strong>Sync History Permissions</strong></td>
+                    <td>Account-level sync history inspection permissions</td>
+                    <td id="diag-history"><span class="pulse-dot pulse-dot--gray"></span> Checking</td>
+                </tr>
+                <tr>
+                    <td><strong>Legacy v1 Compatibility Mirror</strong></td>
+                    <td>Real-time backward compatibility bridge for older extensions</td>
+                    <td id="diag-legacy"><span class="pulse-dot pulse-dot--gray"></span> Checking</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Troubleshooting and Information Section -->
+        <h2>Troubleshooting &amp; FAQ</h2>
+        <p>
+            <strong>What should I do if a service is reported as Offline?</strong>
+        </p>
+        <p>
+            1. Check your local internet connection and ensure your browser or ad-blocker is not blocking API requests
+            to <code>notefox.eu</code>.
+        </p>
+        <p>
+            2. If the API or Database is temporarily unavailable, maintenance might be currently underway. Please wait a
+            few moments and click <strong>"Run Check Again"</strong>.
+        </p>
+        <p>
+            3. If the problem persists, feel free to report it directly via our support channels.
+        </p>
+        <p>
+            <strong>Why does Clock Synchronization matter?</strong>
+        </p>
+        <p>
+            While Notefox Account v2 uses smart revision counters and conflict detection (HTTP 409) rather than relying
+            exclusively on device timestamps, keeping your device's clock synchronized with network time ensures that
+            your local edit history and logs reflect accurate times.
+        </p>
     </div>
 </main>
 
+<?php include_once($root_path . "/include/footer.php"); ?>
+<script src="/js/script.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var heroEl = document.getElementById("status-hero");
@@ -770,6 +485,5 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         runDetectionCheck();
     });
 </script>
-
 </body>
 </html>

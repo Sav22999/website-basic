@@ -1,40 +1,48 @@
-<html>
-<head>
-    <?php
-    $title = "Install – Notefox";
-    include_once($_SERVER['DOCUMENT_ROOT'] . "/include/header.php");
-    ?>
-</head>
-<body>
 <?php
+include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
+global $root_path, $path;
+include_once($root_path . "/include/i18n.php");
+$title = t('install.title');
+$description = t('meta.install');
+$canonical_path = "/install/";
 $selected_menu = "install";
-include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
+include_once($root_path . "/include/header.php");
 ?>
+<body>
+<?php include_once($root_path . "/include/menu.php"); ?>
 
-<main>
-    <div class="vertical-middle">
-        <div class="horizontal-center">
-            <h1 class="title-section">Install</h1>
-            <h2 class="subtitle-section no-bold font-small">Select your web browser</h2>
-            <br>
-            <br>
-            <input type="button" class="button button-with-icon button-mozillafirefox" value="Mozilla Firefox"
-                   onclick="location.href='https://addons.mozilla.org/firefox/addon/websites-notes/'">
-            <input type="button" class="button button-with-icon button-googlechrome" value="Google Chrome"
-                   onclick="location.href='https://chromewebstore.google.com/detail/agcdffobijddcccbfnhfjmaohnljefpm'">
-            <input type="button" class="button button-with-icon button-microsoftedge" value="Microsoft Edge"
-                   onclick="location.href='https://microsoftedge.microsoft.com/addons/detail/lkahmkadpaibphpoiofpdinacjffddda'">
-            <br>
-            <h2 class="subtitle-section no-bold font-very-small">you can also install the app from:</h2>
-            <br>
-            <br><input type="button" class="button button-with-icon-secondary button-secondary button-github"
-                       value="GitHub" onclick="location.href='https://github.com/Sav22999/websites-notes'">
+<main id="main" class="page">
+    <div class="container text-center">
+        <h1><?php echo t('install.heading'); ?></h1>
+        <p class="page-subtitle"><?php echo t('install.subtitle'); ?></p>
+
+        <div class="install-grid">
+            <a href="https://addons.mozilla.org/firefox/addon/websites-notes/" class="install-card" target="_blank"
+               rel="noopener">
+                <span class="install-card-icon icon-mask icon-mask--firefox" aria-hidden="true"></span>
+                <span><?php echo t('install.firefox'); ?></span>
+            </a>
+            <a href="https://chromewebstore.google.com/detail/agcdffobijddcccbfnhfjmaohnljefpm" class="install-card"
+               target="_blank" rel="noopener">
+                <span class="install-card-icon icon-mask icon-mask--chrome" aria-hidden="true"></span>
+                <span><?php echo t('install.chrome'); ?></span>
+            </a>
+            <a href="https://microsoftedge.microsoft.com/addons/detail/lkahmkadpaibphpoiofpdinacjffddda"
+               class="install-card" target="_blank" rel="noopener">
+                <span class="install-card-icon icon-mask icon-mask--edge" aria-hidden="true"></span>
+                <span><?php echo t('install.edge'); ?></span>
+            </a>
         </div>
+
+        <hr>
+
+        <p style="color: var(--color-text-muted); font-size: 0.875rem; margin-bottom: 12px;"><?php echo t('install.github_note'); ?></p>
+        <a href="https://github.com/Sav22999/websites-notes" class="btn btn--secondary" target="_blank"
+           rel="noopener"><?php echo t('install.view_on_github'); ?></a>
     </div>
 </main>
 
+<?php include_once($root_path . "/include/footer.php"); ?>
+<script src="/js/script.js"></script>
 </body>
 </html>
-
-<?php
-?>

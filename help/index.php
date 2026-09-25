@@ -1,78 +1,146 @@
-<html>
-<head>
-    <?php
-    $title = "Get help – Notefox";
-    include_once($_SERVER['DOCUMENT_ROOT'] . "/include/header.php");
-    ?>
-</head>
-<body>
 <?php
+include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
+global $root_path, $path;
+include_once($root_path . "/include/i18n.php");
+$title = t('help.title');
+$description = t('meta.help');
+$canonical_path = "/help/";
 $selected_menu = "help";
-include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
+include_once($root_path . "/include/header.php");
 ?>
+<body>
+<?php include_once($root_path . "/include/menu.php"); ?>
 
-<main class="padding-top-menu">
-    <div class="horizontal-center">
-        <div class="center-content">
-            <h1 class="title-section center">Get help</h1>
-            <h2 class="subtitle-section no-bold font-small">To get help, please contact me via Telegram or e-mail</h2>
-            <br>
-            <br>
-            <div class="center">
-                <input type="button" class="button button-with-icon button-telegram" value="Telegram"
-                       onclick="location.href='https://t.me/sav_projects/7'">
-                <input type="button" class="button button-with-icon button-email" value="Email"
-                       onclick="location.href='mailto:saverio.morelli@protonmail.com'">
-            </div>
-            <hr class="hr-big-space">
-            <button type="button" class="help-faq-item" onclick="goto('./status/')">Check services status &amp; health
-                detection
-            </button>
-            <button type="button" class="help-faq-item" onclick="goto('./notefox-account-v2/')">Notefox Account v2 (Sav
-                Account) &amp; what's new
-            </button>
-            <button type="button" class="help-faq-item" onclick="goto('./how-to-get-history-sync/')">How to get the Sync
-                history
-            </button>
-            <button type="button" class="help-faq-item" onclick="goto('./download-error-logs')">How to download the
-                Error logs file
-            </button>
-            <button type="button" class="help-faq-item" onclick="goto('./delete-error-logs')">How to delete the Error
-                logs file
-            </button>
-            <button type="button" class="help-faq-item" onclick="goto('./get-data-for-debugging')">How to get data for
-                debugging
-            </button>
-            <button type="button" class="help-faq-item" onclick="goto('./open-console')">How to open the Console panel
-            </button>
-            <button type="button" class="help-faq-item" onclick="goto('./notefox-4.0/')">Notefox 4.0 overview</button>
-            <button type="button" class="help-faq-item" onclick="goto('./import-export-data/')">How to import and export
-                data
-            </button>
-            <button type="button" class="help-faq-item" onclick="goto('./local-data-storage/')">Local data storage
-            </button>
-            <button type="button" class="help-faq-item" onclick="goto('./inline-edit/')">How to edit inline a note
-            </button>
-            <button type="button" class="help-faq-item" onclick="goto('./search/')">How the search feature works
-            </button>
-            <button type="button" class="help-faq-item" onclick="goto('./translate/')">How to translate Notefox</button>
-            <button type="button" class="help-faq-item" onclick="goto('./own-server-for-notefox-sync/')">How to run your
-                own Notefox sync server
-            </button>
-            <button type="button" class="help-faq-item" onclick="goto('/sticky-notes/')">Simulate the sticky-notes
-                feature
-            </button>
-            <button type="button" class="help-faq-item" onclick="goto('./notefox-account/')">How the Notefox Account
-                works
-            </button>
-            <button type="button" class="help-faq-item" onclick="goto('/privacy/')">Privacy policy</button>
-            <button type="button" class="help-faq-item" onclick="goto('/terms/')">Terms of service</button>
+<main id="main" class="page">
+    <div class="container">
+        <h1><?php echo t('help.heading'); ?></h1>
+        <p><?php echo t('help.subtitle'); ?></p>
+
+        <style>
+            .help-cards {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+                margin: 24px 0;
+            }
+
+            .help-card {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                padding: 24px 16px;
+                background: var(--color-surface);
+                border: 1px solid var(--color-border);
+                border-radius: var(--radius-md);
+                text-decoration: none;
+                color: var(--color-text);
+                box-shadow: var(--shadow-glow);
+                transition: border-color var(--transition), box-shadow var(--transition);
+                text-align: center;
+            }
+
+            .help-card:hover {
+                border-color: var(--color-primary);
+                box-shadow: var(--shadow-glow-hover);
+                text-decoration: none;
+                color: var(--color-text);
+            }
+
+            .help-card-icon {
+                color: var(--color-primary);
+            }
+
+            .help-card-title {
+                font-weight: 600;
+                font-size: 1rem;
+            }
+
+            .help-card-desc {
+                font-size: 0.875rem;
+                color: var(--color-text-muted);
+                margin: 0;
+                text-align: left;
+                align-self: stretch;
+            }
+
+            @media (max-width: 640px) {
+                .help-cards {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+
+        <div class="help-cards">
+            <a href="/help/status/" class="help-card">
+                <svg class="help-card-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+                <span class="help-card-title"><?php echo t('help.card_status_title'); ?></span>
+                <p class="help-card-desc"><?php echo t('help.card_status_desc'); ?></p>
+            </a>
+            <a href="/help/faq/" class="help-card">
+                <svg class="help-card-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                <span class="help-card-title"><?php echo te('help.card_faq_title'); ?></span>
+                <p class="help-card-desc"><?php echo t('help.card_faq_desc'); ?></p>
+            </a>
+            <a href="/docs/" class="help-card">
+                <svg class="help-card-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="16 18 22 12 16 6"/>
+                    <polyline points="8 6 2 12 8 18"/>
+                </svg>
+                <span class="help-card-title"><?php echo t('help.card_api_title'); ?></span>
+                <p class="help-card-desc"><?php echo t('help.card_api_desc'); ?></p>
+            </a>
+            <a href="https://github.com/Sav22999/websites-notes/issues" class="help-card" target="_blank"
+               rel="noopener">
+                <svg class="help-card-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                </svg>
+                <span class="help-card-title"><?php echo t('help.card_issue_title'); ?></span>
+                <p class="help-card-desc"><?php echo t('help.card_issue_desc'); ?></p>
+            </a>
         </div>
+
+        <hr>
+
+        <h2><?php echo t('help.contact_title'); ?></h2>
+        <p><?php echo t('help.contact_text'); ?></p>
+
+        <div class="btn-group" style="margin-bottom: 32px;">
+            <a href="https://t.me/sav_projects/7" class="btn" target="_blank" rel="noopener">Telegram</a>
+            <a href="/contact/" class="btn btn--secondary">Email</a>
+        </div>
+
+        <hr>
+
+        <h2><?php echo t('help.quick_links'); ?></h2>
+        <ul class="link-list">
+            <li class="link-list-item"><a href="/help/notefox-account-v2/" class="link-list-link"><span
+                            class="lang-badge">EN</span> Notefox Account v2 (Sav Account)</a></li>
+            <li class="link-list-item"><a href="/help/import-export-data/" class="link-list-link"><span
+                            class="lang-badge">EN</span> How to import and export data</a></li>
+            <li class="link-list-item"><a href="/help/search/" class="link-list-link"><span
+                            class="lang-badge">EN</span> How the search feature works</a></li>
+            <li class="link-list-item"><a href="/help/own-server-for-notefox-sync/" class="link-list-link"><span
+                            class="lang-badge">EN</span> How to run your own sync server</a></li>
+            <li class="link-list-item"><a href="/privacy/"
+                                          class="link-list-link"><?php echo t('help.link_privacy'); ?></a></li>
+            <li class="link-list-item"><a href="/terms/"
+                                          class="link-list-link"><?php echo t('help.link_terms'); ?></a></li>
+        </ul>
     </div>
 </main>
 
+<?php include_once($root_path . "/include/footer.php"); ?>
+<script src="/js/script.js"></script>
 </body>
 </html>
-
-<?php
-?>

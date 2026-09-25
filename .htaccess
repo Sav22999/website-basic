@@ -1,8 +1,8 @@
-ErrorDocument 401 /alpha/errors/401/
-ErrorDocument 403 /alpha/errors/403/
-ErrorDocument 404 /alpha/errors/404/
-ErrorDocument 500 /alpha/errors/500/
-ErrorDocument 503 /alpha/errors/503/
+ErrorDocument 401 /errors/401/
+ErrorDocument 403 /errors/403/
+ErrorDocument 404 /errors/404/
+ErrorDocument 500 /errors/500/
+ErrorDocument 503 /errors/503/
 
 <IfModule mod_headers.c>
     Header set Access-Control-Allow-Origin "*"

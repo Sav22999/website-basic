@@ -1,0 +1,44 @@
+User-agent: *
+Allow: /
+Disallow: /my/
+Disallow: /errors/
+Disallow: /api/
+
+Sitemap: https://www.notefox.eu/sitemap.php
+
+# AI crawlers
+User-agent: GPTBot
+Allow: /
+Disallow: /my/
+Disallow: /errors/
+Disallow: /api/
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /my/
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /my/
+
+User-agent: Amazonbot
+Allow: /
+Disallow: /my/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /my/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /my/
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: CCBot
+Allow: /
+Disallow: /my/

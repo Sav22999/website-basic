@@ -1,63 +1,65 @@
-<html>
-<head>
-    <?php
-    $title = "Two-step verification – Notefox";
-    include_once($_SERVER['DOCUMENT_ROOT'] . "/include/header.php");
-    ?>
-    <script src="/js/account.js"></script>
-</head>
-<body>
 <?php
+include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
+global $root_path, $path;
+include_once($root_path . "/include/i18n.php");
+$title = t('account.otp_page_title');
 $selected_menu = "my";
-include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
+include_once($root_path . "/include/header.php");
 ?>
+<body>
+<?php include_once($root_path . "/include/menu.php"); ?>
 
-<main class="padding-top-menu">
-    <div class="horizontal-center">
-        <div class="center-content">
-            <h1 class="title-section center">Two-step verification</h1>
-            <p>
-                When two-step verification is enabled, every login needs both your password and a code sent to your
-                email address. Turning it off makes your account less safe, so it has to be confirmed with a code.
-            </p>
-            <p>
-                Changing your password and deleting your account always need a code sent by email, whatever this
-                setting: this option only concerns the login.
-            </p>
+<main id="main" class="page">
+    <div class="container">
+        <a href="/my/account/" class="back-link"><?php echo te('account.back_to_account'); ?></a>
+
+        <div class="auth-card">
+            <div class="auth-header">
+                <img src="/images/icon.svg" alt="" width="48" height="48">
+                <h1><?php echo te('account.otp_page_heading'); ?></h1>
+                <p><?php echo t('account.otp_desc'); ?></p>
+            </div>
 
             <div class="account-section">
-                <h2>Current state</h2>
-                <div id="otp-status" class="account-status">Checking...</div>
-                <p id="otp-hint">Reading the state of your account...</p>
+                <h2><?php echo te('account.otp_current_state'); ?></h2>
+                <div id="otp-status" class="account-status"><?php echo te('js.checking'); ?></div>
+                <p id="otp-hint"><?php echo te('js.reading_state'); ?></p>
             </div>
 
             <form id="otp-form" class="form-container hidden2">
                 <div id="otp-message" class="form-message hidden2"></div>
 
                 <div class="form-field" id="otp-email-field">
-                    <label class="form-label" for="otp-email">Email</label>
+                    <label class="form-label" for="otp-email"><?php echo te('common.email'); ?></label>
                     <input class="form-input" type="email" id="otp-email" name="email" maxlength="320" required>
                 </div>
 
                 <div class="form-field" id="otp-password-field">
-                    <label class="form-label" for="otp-password">Password</label>
+                    <label class="form-label" for="otp-password"><?php echo te('common.password'); ?></label>
                     <input class="form-input" type="password" id="otp-password" name="password" required>
                 </div>
 
                 <div class="form-field hidden2" id="otp-code-field">
-                    <label class="form-label" for="otp-code">Verification code</label>
+                    <label class="form-label" for="otp-code"><?php echo te('account.signup_verify_code'); ?></label>
                     <input class="form-input" type="text" id="otp-code" name="verification-code" maxlength="64">
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="button" id="otp-submit">Continue</button>
-                    <a href="/my/account/" class="button button-secondary">Cancel</a>
+                    <button type="submit" class="btn btn--block"
+                            id="otp-submit"><?php echo te('account.otp_continue'); ?></button>
                 </div>
             </form>
+
+            <p class="auth-footer">
+                <a href="/my/account/"><?php echo te('common.cancel'); ?></a>
+            </p>
         </div>
     </div>
 </main>
 
+<?php include_once($root_path . "/include/footer.php"); ?>
+<script src="/js/script.js"></script>
+<script src="/js/account.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var session = requireSession();
@@ -203,6 +205,3 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
 </script>
 </body>
 </html>
-
-<?php
-?>

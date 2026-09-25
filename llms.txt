@@ -1,0 +1,51 @@
+# Notefox
+
+> Notefox is a free, open-source browser extension that lets you take notes on any website.
+
+Notefox allows users to create, manage, and sync notes directly linked to web pages. Notes are stored locally in the browser and can optionally be synced across devices with end-to-end encryption via a free account. The extension is available for Firefox, Google Chrome, and Microsoft Edge.
+
+## Key facts
+
+- Type: Browser extension (WebExtension)
+- Price: Free and open-source (GPL-3.0)
+- Author: Saverio Morelli
+- Browsers: Firefox, Chrome, Edge
+- Languages: English, Italian, French, German, Spanish, Russian, Portuguese (BR), Portuguese (PT), Polish, Chinese (Simplified), Japanese, Arabic, Dutch
+- Sync: Optional, end-to-end encrypted (AES-256), revision-based conflict detection
+- Account system: Email-based with OTP verification
+- Data stored: Notes are stored locally in the browser; synced data is encrypted at rest on the server
+
+## Features
+
+- Take notes on any website with a browser popup
+- Notes are linked to the page URL
+- Rich text formatting
+- Search through all notes
+- Optional cloud sync across devices
+- End-to-end encryption for synced data
+- Multi-browser support
+- Open-source codebase on GitHub
+- No ads, no tracking
+
+## Links
+
+- Website: https://www.notefox.eu/
+- Install: https://www.notefox.eu/install/
+- GitHub: https://github.com/Sav22999/websites-notes
+- API docs: https://www.notefox.eu/docs/
+- Privacy policy: https://www.notefox.eu/privacy/
+- Terms of service: https://www.notefox.eu/terms/
+- Contact: https://www.notefox.eu/contact/
+- Donate: https://www.notefox.eu/donate/
+
+## API
+
+The Notefox REST API (v2) is available at `https://notefox.eu/api/v2`. It powers account management, authentication (with optional OTP), and encrypted data sync. All user data is encrypted at rest using AES-256-CBC with a per-user DEK (Data Encryption Key). The API uses revision-based conflict detection for sync operations. Full documentation is at https://www.notefox.eu/docs/.
+
+## Technical architecture
+
+- Server-side encryption: password → PBKDF2 → KEK → wraps DEK → encrypts all user data
+- The server never stores plaintext email (SHA-512 hash only) or plaintext passwords
+- Sync uses revision numbers for conflict detection
+- Rate limiting is per-account, not per-service
+- Sessions use 64-character hex login-id and token pairs

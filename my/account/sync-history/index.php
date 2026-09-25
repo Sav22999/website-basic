@@ -1,38 +1,40 @@
-<html>
-<head>
-    <?php
-    $title = "Sync history – Notefox";
-    include_once($_SERVER['DOCUMENT_ROOT'] . "/include/header.php");
-    ?>
-    <script src="/js/account.js"></script>
-</head>
-<body>
 <?php
+include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
+global $root_path, $path;
+include_once($root_path . "/include/i18n.php");
+$title = t('account.history_title');
 $selected_menu = "my";
-include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
+include_once($root_path . "/include/header.php");
 ?>
+<body>
+<?php include_once($root_path . "/include/menu.php"); ?>
 
-<main class="padding-top-menu">
-    <div class="horizontal-center">
-        <div class="center-content">
-            <h1 class="title-section center">Sync history</h1>
-            <p>
-                Here you can find the list of the synced versions of your notes, sorted from the most recent one. You
-                can download the current version or any previous version in JSON format.
-            </p>
+<main id="main" class="page">
+    <div class="container">
+        <a href="/my/account/" class="back-link"><?php echo te('account.back_to_account'); ?></a>
+        <h1 class="text-center"><?php echo te('account.history_heading'); ?></h1>
+        <p>
+            <?php echo t('account.history_desc'); ?>
+        </p>
 
-            <div id="history-message" class="form-message hidden2"></div>
+        <div id="history-message" class="form-message hidden2"></div>
 
-            <div class="horizontal-center">
-                <button type="button" id="download-current-button" class="button hidden2">Download the current version
-                </button>
-            </div>
-
-            <ul id="history-list" class="history-list"></ul>
+        <div id="history-loading" class="text-center" style="padding: 48px 0;">
+            <span class="spinner" style="width: 28px; height: 28px; border-width: 3px;"></span>
         </div>
+
+        <div class="text-center">
+            <button type="button" id="download-current-button"
+                    class="btn hidden2"><?php echo te('account.history_download_current'); ?></button>
+        </div>
+
+        <ul id="history-list" class="history-list"></ul>
     </div>
 </main>
 
+<?php include_once($root_path . "/include/footer.php"); ?>
+<script src="/js/script.js"></script>
+<script src="/js/account.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var session = requireSession();
@@ -42,6 +44,11 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
 
         var listElement = document.getElementById("history-list");
         var downloadCurrentButton = document.getElementById("download-current-button");
+        var loadingElement = document.getElementById("history-loading");
+
+        function hideLoading() {
+            if (loadingElement) loadingElement.style.display = "none";
+        }
 
         function formatDate(value) {
             if (!value) {
@@ -81,11 +88,11 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 item.className = "history-item" + (index === 0 ? " history-item--current" : "");
 
                 var dateSpan = document.createElement("span");
-                dateSpan.className = "history-item-date";
+                dateSpan.className = "history-date";
                 dateSpan.textContent = formatDate(entry["inserted-date"]);
                 if (index === 0) {
                     var badge = document.createElement("span");
-                    badge.className = "history-item-badge";
+                    badge.className = "history-badge";
                     badge.textContent = "current";
                     dateSpan.appendChild(badge);
                 }
@@ -93,7 +100,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
 
                 var downloadButton = document.createElement("button");
                 downloadButton.type = "button";
-                downloadButton.className = "button button-secondary";
+                downloadButton.className = "btn btn--secondary";
                 downloadButton.textContent = "Download";
                 downloadButton.addEventListener("click", function () {
                     downloadHistoryEntry(entry["id"], entry["inserted-date"]);
@@ -107,22 +114,21 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         notefoxAuthenticatedApi("/data/get/history", {
             "service": NOTEFOX_DEFAULT_SERVICE
         }).then(function (data) {
+            hideLoading();
             renderEntries(data["entries"] || []);
         }).catch(function (error) {
+            hideLoading();
             if (error.code === 433) {
                 // Per-account permission (`users`.`history-enabled`): the page
                 // is reachable by URL, so it has to say so by itself. The
                 // download of the CURRENT version stays available: it comes
                 // from POST /data/get, which this permission never touches.
-                showFormMessage("history-message", "The sync history is not enabled for your account.", true);
-                // The help page is linked inside the same message, as a
-                // secondary button aligned to the right: showFormMessage()
-                // writes plain text, so the link is appended afterwards.
+                showFormMessage("history-message", "This feature requires pro features to be enabled on your account.", true);
                 var messageElement = document.getElementById("history-message");
                 var helpLink = document.createElement("a");
-                helpLink.href = "/help/how-to-get-history-sync/";
-                helpLink.className = "button button-secondary form-message-action";
-                helpLink.textContent = "How to get the Sync history";
+                helpLink.href = "/help/pro-features/";
+                helpLink.className = "form-message-link";
+                helpLink.textContent = "What are pro features? →";
                 messageElement.appendChild(helpLink);
 
                 var loginIdBlock = document.createElement("div");
@@ -167,6 +173,3 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
 </script>
 </body>
 </html>
-
-<?php
-?>

@@ -1,0 +1,73 @@
+<?php
+include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
+global $root_path, $path;
+include_once($root_path . "/include/i18n.php");
+$title = t('errors.500_title');
+$noindex = true;
+$selected_menu = "";
+include_once($root_path . "/include/header.php");
+?>
+<body>
+<?php include_once($root_path . "/include/menu.php"); ?>
+
+<main id="main" class="page">
+    <div class="container text-center">
+        <style>
+            .error-page {
+                padding: 48px 0;
+            }
+
+            .error-code {
+                font-size: 6rem;
+                font-weight: 700;
+                line-height: 1;
+                color: var(--color-primary);
+                margin-bottom: 8px;
+            }
+
+            .error-icon {
+                margin-bottom: 24px;
+                color: var(--color-text-muted);
+            }
+
+            .error-message {
+                font-size: 1.125rem;
+                color: var(--color-text-muted);
+                margin-bottom: 32px;
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .error-actions {
+                display: flex;
+                gap: 12px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        </style>
+
+        <div class="error-page">
+            <div class="error-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+            </div>
+            <div class="error-code"><?php echo t('errors.500_code'); ?></div>
+            <h1><?php echo t('errors.500_heading'); ?></h1>
+            <p class="error-message"><?php echo t('errors.500_message'); ?></p>
+            <div class="error-actions">
+                <a href="/" class="btn"><?php echo t('errors.go_to_homepage'); ?></a>
+                <button onclick="history.back()" class="btn btn--secondary"><?php echo t('common.go_back'); ?></button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<?php include_once($root_path . "/include/footer.php"); ?>
+<script src="/js/script.js"></script>
+</body>
+</html>
