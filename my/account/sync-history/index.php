@@ -119,37 +119,18 @@ include_once($root_path . "/include/header.php");
         }).catch(function (error) {
             hideLoading();
             if (error.code === 433) {
-                // Per-account permission (`users`.`history-enabled`): the page
-                // is reachable by URL, so it has to say so by itself. The
-                // download of the CURRENT version stays available: it comes
-                // from POST /data/get, which this permission never touches.
-                showFormMessage("history-message", "This feature requires pro features to be enabled on your account.", true);
-                var messageElement = document.getElementById("history-message");
-                var helpLink = document.createElement("a");
-                helpLink.href = "/help/pro-features/";
-                helpLink.className = "form-message-link";
-                helpLink.textContent = "What are pro features? →";
-                messageElement.appendChild(helpLink);
-
-                var loginIdBlock = document.createElement("div");
-                loginIdBlock.style.marginTop = "12px";
-                loginIdBlock.style.paddingTop = "10px";
-                loginIdBlock.style.borderTop = "1px solid rgba(255, 255, 255, 0.15)";
-
-                var loginIdText = document.createElement("p");
-                loginIdText.className = "font-small";
-                loginIdText.style.margin = "0 0 4px 0";
-                loginIdText.innerHTML = "Your account identifier (login-id) to communicate after donating: <code>" + (session["login-id"] || "") + "</code>";
-
-                var loginIdNote = document.createElement("p");
-                loginIdNote.className = "font-very-small";
-                loginIdNote.style.margin = "0";
-                loginIdNote.style.opacity = "0.85";
-                loginIdNote.textContent = "The Login ID is not sensitive data and can be safely communicated to the developer.";
-
-                loginIdBlock.appendChild(loginIdText);
-                loginIdBlock.appendChild(loginIdNote);
-                messageElement.appendChild(loginIdBlock);
+                showFormMessage("history-message", <?php echo json_encode(t('account.history_pro_required'), JSON_UNESCAPED_UNICODE); ?>, true);
+                var msgEl = document.getElementById("history-message");
+                var historyLink = document.createElement("a");
+                historyLink.href = "/help/how-to-get-history-sync/";
+                historyLink.className = "form-message-link";
+                historyLink.textContent = <?php echo json_encode(t('account.history_learn_more'), JSON_UNESCAPED_UNICODE); ?>;
+                msgEl.appendChild(historyLink);
+                var proLink = document.createElement("a");
+                proLink.href = "/help/pro-features/";
+                proLink.className = "form-message-link";
+                proLink.textContent = <?php echo json_encode(t('account.notes_pro_learn_more'), JSON_UNESCAPED_UNICODE); ?>;
+                msgEl.appendChild(proLink);
             } else if (error.code === 432) {
                 showFormMessage("history-message", "The sync history is not available for this service.", true);
             } else if (error.code === 201) {

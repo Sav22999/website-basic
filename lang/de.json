@@ -217,6 +217,8 @@
     "history_title": "Synchronisationsverlauf – Notefox",
     "history_heading": "Synchronisationsverlauf",
     "history_desc": "Hier finden Sie die Liste der synchronisierten Versionen Ihrer Notizen, sortiert von der neuesten. Sie können die aktuelle Version oder eine frühere Version im JSON-Format herunterladen.",
+    "history_pro_required": "Der Synchronisationsverlauf erfordert die Aktivierung der Pro-Funktionen oder der Synchronisationsverlauf-Funktion in deinem Konto. Nach der Aktivierung kannst du frühere Versionen deiner synchronisierten Daten durchsuchen und herunterladen.",
+    "history_learn_more": "Wie erhalte ich den Synchronisationsverlauf →",
     "history_download_current": "Aktuelle Version herunterladen",
     "back_to_account": "Zurück zum Konto",
     "back_to_login": "Zurück zur Anmeldung",

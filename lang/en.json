@@ -322,6 +322,8 @@
     "history_title": "Sync history – Notefox",
     "history_heading": "Sync history",
     "history_desc": "Here you can find the list of the synced versions of your notes, sorted from the most recent one. You can download the current version or any previous version in JSON format.",
+    "history_pro_required": "The sync history requires pro features or the sync history feature to be enabled on your account. Once enabled, you can browse and download previous versions of your synced data.",
+    "history_learn_more": "How to get the sync history →",
     "history_download_current": "Download the current version",
     "back_to_account": "Back to Account",
     "back_to_login": "Back to Login",

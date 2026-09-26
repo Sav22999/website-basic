@@ -217,6 +217,8 @@
     "history_title": "Histórico de sincronização – Notefox",
     "history_heading": "Histórico de sincronização",
     "history_desc": "Aqui você pode encontrar a lista das versões sincronizadas das suas notas, ordenadas da mais recente. Você pode baixar a versão atual ou qualquer versão anterior em formato JSON.",
+    "history_pro_required": "O histórico de sincronização requer a ativação das funcionalidades pro ou do recurso histórico de sincronização na sua conta. Uma vez ativado, você poderá navegar e baixar versões anteriores dos seus dados sincronizados.",
+    "history_learn_more": "Como obter o histórico de sincronização →",
     "history_download_current": "Baixar a versão atual",
     "back_to_account": "Voltar para a Conta",
     "back_to_login": "Voltar para o Login",

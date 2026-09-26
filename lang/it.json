@@ -217,6 +217,8 @@
     "history_title": "Cronologia sincronizzazione – Notefox",
     "history_heading": "Cronologia sincronizzazione",
     "history_desc": "Qui puoi trovare l'elenco delle versioni sincronizzate dei tuoi appunti, ordinate dalla più recente. Puoi scaricare la versione attuale o qualsiasi versione precedente in formato JSON.",
+    "history_pro_required": "La cronologia di sincronizzazione richiede l'attivazione delle funzioni pro o della funzione cronologia di sincronizzazione sul tuo account. Una volta attivata, potrai sfogliare e scaricare le versioni precedenti dei tuoi dati sincronizzati.",
+    "history_learn_more": "Come ottenere la cronologia di sincronizzazione →",
     "history_download_current": "Scarica la versione attuale",
     "back_to_account": "Torna all'account",
     "back_to_login": "Torna al login",

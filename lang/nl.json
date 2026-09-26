@@ -217,6 +217,8 @@
     "history_title": "Synchronisatiegeschiedenis – Notefox",
     "history_heading": "Synchronisatiegeschiedenis",
     "history_desc": "Hier vind je de lijst van gesynchroniseerde versies van je notities, gesorteerd van de meest recente. Je kunt de huidige versie of een eerdere versie downloaden in JSON-formaat.",
+    "history_pro_required": "De synchronisatiegeschiedenis vereist dat de pro-functies of de synchronisatiegeschiedenis-functie zijn ingeschakeld op je account. Eenmaal ingeschakeld kun je eerdere versies van je gesynchroniseerde gegevens bekijken en downloaden.",
+    "history_learn_more": "Hoe de synchronisatiegeschiedenis te verkrijgen →",
     "history_download_current": "Download de huidige versie",
     "back_to_account": "Terug naar account",
     "back_to_login": "Terug naar inloggen",

@@ -37,7 +37,9 @@
       <path value="$PROJECT_DIR$/test-email/vendor/symfony/polyfill-php80" />
     </include_path>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="7.4" />
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.0">
+    <option name="suggestChangeDefaultLanguageLevel" value="false" />
+  </component>
   <component name="PhpStan">
     <PhpStan_settings>
       <phpstan_by_interpreter asDefaultInterpreter="true" interpreter_id="61ad1d15-8fc8-484e-a9af-b3a1ef040fbd" timeout="60000" />

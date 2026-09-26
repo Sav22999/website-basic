@@ -217,6 +217,8 @@
     "history_title": "同步历史 – Notefox",
     "history_heading": "同步历史",
     "history_desc": "在这里您可以找到笔记的同步版本列表，按从最近到最早的顺序排列。您可以下载当前版本或以 JSON 格式下载任何以前的版本。",
+    "history_pro_required": "同步历史需要在您的账户中启用专业版功能或同步历史功能。启用后，您可以浏览和下载以前同步数据的版本。",
+    "history_learn_more": "如何获取同步历史 →",
     "history_download_current": "下载当前版本",
     "back_to_account": "返回账户",
     "back_to_login": "返回登录",

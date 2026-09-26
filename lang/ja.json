@@ -217,6 +217,8 @@
     "history_title": "同期履歴 – Notefox",
     "history_heading": "同期履歴",
     "history_desc": "ここでは、メモの同期バージョンの一覧を最新のものから順に確認できます。現在のバージョンまたは以前のバージョンを JSON 形式でダウンロードできます。",
+    "history_pro_required": "同期履歴を利用するには、アカウントでプロ機能または同期履歴機能を有効にする必要があります。有効にすると、同期済みデータの以前のバージョンを閲覧してダウンロードできるようになります。",
+    "history_learn_more": "同期履歴を取得する方法 →",
     "history_download_current": "現在のバージョンをダウンロード",
     "back_to_account": "アカウントに戻る",
     "back_to_login": "ログインに戻る",
