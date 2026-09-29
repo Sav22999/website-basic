@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Doctrine\Deprecations;
 
 use Psr\Log\LoggerInterface;
-
 use function array_key_exists;
 use function array_reduce;
 use function assert;
@@ -16,7 +15,6 @@ use function strpos;
 use function strrpos;
 use function substr;
 use function trigger_error;
-
 use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use const DIRECTORY_SEPARATOR;
 use const E_USER_DEPRECATED;
@@ -43,10 +41,10 @@ use const E_USER_DEPRECATED;
  */
 class Deprecation
 {
-    private const TYPE_NONE               = 0;
+    private const TYPE_NONE = 0;
     private const TYPE_TRACK_DEPRECATIONS = 1;
-    private const TYPE_TRIGGER_ERROR      = 2;
-    private const TYPE_PSR_LOGGER         = 4;
+    private const TYPE_TRIGGER_ERROR = 2;
+    private const TYPE_PSR_LOGGER = 4;
 
     /** @var int-mask-of<self::TYPE_*>|null */
     private static $type;
@@ -191,7 +189,7 @@ class Deprecation
             self::$logger->notice($message, $context);
         }
 
-        if (! (($type & self::TYPE_TRIGGER_ERROR) > 0)) {
+        if (!(($type & self::TYPE_TRIGGER_ERROR) > 0)) {
             return;
         }
 
@@ -224,20 +222,20 @@ class Deprecation
 
     public static function enableTrackingDeprecations(): void
     {
-        self::$type  = self::$type ?? self::getTypeFromEnv();
+        self::$type = self::$type ?? self::getTypeFromEnv();
         self::$type |= self::TYPE_TRACK_DEPRECATIONS;
     }
 
     public static function enableWithTriggerError(): void
     {
-        self::$type  = self::$type ?? self::getTypeFromEnv();
+        self::$type = self::$type ?? self::getTypeFromEnv();
         self::$type |= self::TYPE_TRIGGER_ERROR;
     }
 
     public static function enableWithPsrLogger(LoggerInterface $logger): void
     {
-        self::$type   = self::$type ?? self::getTypeFromEnv();
-        self::$type  |= self::TYPE_PSR_LOGGER;
+        self::$type = self::$type ?? self::getTypeFromEnv();
+        self::$type |= self::TYPE_PSR_LOGGER;
         self::$logger = $logger;
     }
 
@@ -248,10 +246,10 @@ class Deprecation
 
     public static function disable(): void
     {
-        self::$type          = self::TYPE_NONE;
-        self::$logger        = null;
+        self::$type = self::TYPE_NONE;
+        self::$logger = null;
         self::$deduplication = true;
-        self::$ignoredLinks  = [];
+        self::$ignoredLinks = [];
 
         foreach (self::$triggeredDeprecations as $link => $count) {
             self::$triggeredDeprecations[$link] = 0;

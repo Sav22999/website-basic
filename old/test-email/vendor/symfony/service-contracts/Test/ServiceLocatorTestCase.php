@@ -30,9 +30,15 @@ abstract class ServiceLocatorTestCase extends TestCase
     public function testHas()
     {
         $locator = $this->getServiceLocator([
-            'foo' => function () { return 'bar'; },
-            'bar' => function () { return 'baz'; },
-            function () { return 'dummy'; },
+            'foo' => function () {
+                return 'bar';
+            },
+            'bar' => function () {
+                return 'baz';
+            },
+            function () {
+                return 'dummy';
+            },
         ]);
 
         $this->assertTrue($locator->has('foo'));
@@ -43,8 +49,12 @@ abstract class ServiceLocatorTestCase extends TestCase
     public function testGet()
     {
         $locator = $this->getServiceLocator([
-            'foo' => function () { return 'bar'; },
-            'bar' => function () { return 'baz'; },
+            'foo' => function () {
+                return 'bar';
+            },
+            'bar' => function () {
+                return 'baz';
+            },
         ]);
 
         $this->assertSame('bar', $locator->get('foo'));
@@ -74,7 +84,9 @@ abstract class ServiceLocatorTestCase extends TestCase
             $this->expectExceptionMessage('The service "foo" has a dependency on a non-existent service "bar". This locator only knows about the "foo" service.');
         }
         $locator = $this->getServiceLocator([
-            'foo' => function () use (&$locator) { return $locator->get('bar'); },
+            'foo' => function () use (&$locator) {
+                return $locator->get('bar');
+            },
         ]);
 
         $locator->get('foo');
@@ -85,9 +97,15 @@ abstract class ServiceLocatorTestCase extends TestCase
         $this->expectException(\Psr\Container\ContainerExceptionInterface::class);
         $this->expectExceptionMessage('Circular reference detected for service "bar", path: "bar -> baz -> bar".');
         $locator = $this->getServiceLocator([
-            'foo' => function () use (&$locator) { return $locator->get('bar'); },
-            'bar' => function () use (&$locator) { return $locator->get('baz'); },
-            'baz' => function () use (&$locator) { return $locator->get('bar'); },
+            'foo' => function () use (&$locator) {
+                return $locator->get('bar');
+            },
+            'bar' => function () use (&$locator) {
+                return $locator->get('baz');
+            },
+            'baz' => function () use (&$locator) {
+                return $locator->get('bar');
+            },
         ]);
 
         $locator->get('foo');

@@ -216,8 +216,8 @@ class EventDispatcher implements EventDispatcherInterface
      * for each listener.
      *
      * @param callable[] $listeners The event listeners
-     * @param string     $eventName The name of the event to dispatch
-     * @param object     $event     The event object to pass to the event handlers/listeners
+     * @param string $eventName The name of the event to dispatch
+     * @param object $event The event object to pass to the event handlers/listeners
      */
     protected function callListeners(iterable $listeners, string $eventName, object $event)
     {

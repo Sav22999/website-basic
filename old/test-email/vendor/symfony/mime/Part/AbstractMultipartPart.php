@@ -56,9 +56,9 @@ abstract class AbstractMultipartPart extends AbstractPart
         $parts = $this->getParts();
         $string = '';
         foreach ($parts as $part) {
-            $string .= '--'.$this->getBoundary()."\r\n".$part->toString()."\r\n";
+            $string .= '--' . $this->getBoundary() . "\r\n" . $part->toString() . "\r\n";
         }
-        $string .= '--'.$this->getBoundary()."--\r\n";
+        $string .= '--' . $this->getBoundary() . "--\r\n";
 
         return $string;
     }
@@ -67,11 +67,11 @@ abstract class AbstractMultipartPart extends AbstractPart
     {
         $parts = $this->getParts();
         foreach ($parts as $part) {
-            yield '--'.$this->getBoundary()."\r\n";
+            yield '--' . $this->getBoundary() . "\r\n";
             yield from $part->toIterable();
             yield "\r\n";
         }
-        yield '--'.$this->getBoundary()."--\r\n";
+        yield '--' . $this->getBoundary() . "--\r\n";
     }
 
     public function asDebugString(): string
@@ -79,9 +79,9 @@ abstract class AbstractMultipartPart extends AbstractPart
         $str = parent::asDebugString();
         foreach ($this->getParts() as $part) {
             $lines = explode("\n", $part->asDebugString());
-            $str .= "\n  └ ".array_shift($lines);
+            $str .= "\n  └ " . array_shift($lines);
             foreach ($lines as $line) {
-                $str .= "\n  |".$line;
+                $str .= "\n  |" . $line;
             }
         }
 

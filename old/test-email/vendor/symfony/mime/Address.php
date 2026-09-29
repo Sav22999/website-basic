@@ -82,7 +82,7 @@ final class Address
 
     public function toString(): string
     {
-        return ($n = $this->getEncodedName()) ? $n.' <'.$this->getEncodedAddress().'>' : $this->getEncodedAddress();
+        return ($n = $this->getEncodedName()) ? $n . ' <' . $this->getEncodedAddress() . '>' : $this->getEncodedAddress();
     }
 
     public function getEncodedName(): string

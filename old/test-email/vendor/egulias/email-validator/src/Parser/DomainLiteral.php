@@ -1,24 +1,25 @@
 <?php
+
 namespace Egulias\EmailValidator\Parser;
 
 use Egulias\EmailValidator\EmailLexer;
-use Egulias\EmailValidator\Result\Result;
-use Egulias\EmailValidator\Result\ValidEmail;
 use Egulias\EmailValidator\Result\InvalidEmail;
-use Egulias\EmailValidator\Warning\CFWSWithFWS;
-use Egulias\EmailValidator\Warning\IPV6BadChar;
 use Egulias\EmailValidator\Result\Reason\CRNoLF;
-use Egulias\EmailValidator\Warning\IPV6ColonEnd;
-use Egulias\EmailValidator\Warning\IPV6MaxGroups;
-use Egulias\EmailValidator\Warning\ObsoleteDTEXT;
-use Egulias\EmailValidator\Warning\AddressLiteral;
-use Egulias\EmailValidator\Warning\IPV6ColonStart;
-use Egulias\EmailValidator\Warning\IPV6Deprecated;
-use Egulias\EmailValidator\Warning\IPV6GroupCount;
-use Egulias\EmailValidator\Warning\IPV6DoubleColon;
 use Egulias\EmailValidator\Result\Reason\ExpectingDTEXT;
 use Egulias\EmailValidator\Result\Reason\UnusualElements;
+use Egulias\EmailValidator\Result\Result;
+use Egulias\EmailValidator\Result\ValidEmail;
+use Egulias\EmailValidator\Warning\AddressLiteral;
+use Egulias\EmailValidator\Warning\CFWSWithFWS;
 use Egulias\EmailValidator\Warning\DomainLiteral as WarningDomainLiteral;
+use Egulias\EmailValidator\Warning\IPV6BadChar;
+use Egulias\EmailValidator\Warning\IPV6ColonEnd;
+use Egulias\EmailValidator\Warning\IPV6ColonStart;
+use Egulias\EmailValidator\Warning\IPV6Deprecated;
+use Egulias\EmailValidator\Warning\IPV6DoubleColon;
+use Egulias\EmailValidator\Warning\IPV6GroupCount;
+use Egulias\EmailValidator\Warning\IPV6MaxGroups;
+use Egulias\EmailValidator\Warning\ObsoleteDTEXT;
 
 class DomainLiteral extends PartParser
 {
@@ -31,7 +32,7 @@ class DomainLiteral extends PartParser
         EmailLexer::S_BACKSLASH
     ];
 
-    public function parse() : Result
+    public function parse(): Result
     {
         $this->addTagWarnings();
 
@@ -39,14 +40,14 @@ class DomainLiteral extends PartParser
         $addressLiteral = '';
 
         do {
-            if (((array) $this->lexer->token)['type'] === EmailLexer::C_NUL) {
-                return new InvalidEmail(new ExpectingDTEXT(), ((array) $this->lexer->token)['value']);
+            if (((array)$this->lexer->token)['type'] === EmailLexer::C_NUL) {
+                return new InvalidEmail(new ExpectingDTEXT(), ((array)$this->lexer->token)['value']);
             }
 
             $this->addObsoleteWarnings();
 
             if ($this->lexer->isNextTokenAny(array(EmailLexer::S_OPENBRACKET, EmailLexer::S_OPENBRACKET))) {
-                return new InvalidEmail(new ExpectingDTEXT(), ((array) $this->lexer->token)['value']);
+                return new InvalidEmail(new ExpectingDTEXT(), ((array)$this->lexer->token)['value']);
             }
 
             if ($this->lexer->isNextTokenAny(
@@ -57,21 +58,21 @@ class DomainLiteral extends PartParser
             }
 
             if ($this->lexer->isNextToken(EmailLexer::S_CR)) {
-                return new InvalidEmail(new CRNoLF(), ((array) $this->lexer->token)['value']);
+                return new InvalidEmail(new CRNoLF(), ((array)$this->lexer->token)['value']);
             }
 
-            if (((array) $this->lexer->token)['type'] === EmailLexer::S_BACKSLASH) {
-                return new InvalidEmail(new UnusualElements(((array) $this->lexer->token)['value']), ((array) $this->lexer->token)['value']);
+            if (((array)$this->lexer->token)['type'] === EmailLexer::S_BACKSLASH) {
+                return new InvalidEmail(new UnusualElements(((array)$this->lexer->token)['value']), ((array)$this->lexer->token)['value']);
             }
-            if (((array) $this->lexer->token)['type'] === EmailLexer::S_IPV6TAG) {
+            if (((array)$this->lexer->token)['type'] === EmailLexer::S_IPV6TAG) {
                 $IPv6TAG = true;
             }
 
-            if (((array) $this->lexer->token)['type'] === EmailLexer::S_CLOSEBRACKET) {
+            if (((array)$this->lexer->token)['type'] === EmailLexer::S_CLOSEBRACKET) {
                 break;
             }
 
-            $addressLiteral .= ((array) $this->lexer->token)['value'];
+            $addressLiteral .= ((array)$this->lexer->token)['value'];
 
         } while ($this->lexer->moveNext());
 
@@ -102,18 +103,18 @@ class DomainLiteral extends PartParser
      * @param string $addressLiteral
      * @param int $maxGroups
      */
-    public function checkIPV6Tag($addressLiteral, $maxGroups = 8) : void
+    public function checkIPV6Tag($addressLiteral, $maxGroups = 8): void
     {
         $prev = $this->lexer->getPrevious();
         if ($prev['type'] === EmailLexer::S_COLON) {
             $this->warnings[IPV6ColonEnd::CODE] = new IPV6ColonEnd();
         }
 
-        $IPv6       = substr($addressLiteral, 5);
+        $IPv6 = substr($addressLiteral, 5);
         //Daniel Marschall's new IPv6 testing strategy
-        $matchesIP  = explode(':', $IPv6);
+        $matchesIP = explode(':', $IPv6);
         $groupCount = count($matchesIP);
-        $colons     = strpos($IPv6, '::');
+        $colons = strpos($IPv6, '::');
 
         if (count(preg_grep('/^[0-9A-Fa-f]{0,4}$/', $matchesIP, PREG_GREP_INVERT)) !== 0) {
             $this->warnings[IPV6BadChar::CODE] = new IPV6BadChar();
@@ -145,14 +146,14 @@ class DomainLiteral extends PartParser
         }
     }
 
-    public function convertIPv4ToIPv6(string $addressLiteralIPv4) : string
+    public function convertIPv4ToIPv6(string $addressLiteralIPv4): string
     {
-        $matchesIP  = [];
+        $matchesIP = [];
         $IPv4Match = preg_match(self::IPV4_REGEX, $addressLiteralIPv4, $matchesIP);
 
         // Extract IPv4 part from the end of the address-literal (if there is one)
         if ($IPv4Match > 0) {
-            $index = (int) strrpos($addressLiteralIPv4, $matchesIP[0]);
+            $index = (int)strrpos($addressLiteralIPv4, $matchesIP[0]);
             //There's a match but it is at the start
             if ($index > 0) {
                 // Convert IPv4 part to IPv6 format for further testing
@@ -168,9 +169,9 @@ class DomainLiteral extends PartParser
      *
      * @return bool
      */
-    protected function checkIPV4Tag($addressLiteral) : bool
+    protected function checkIPV4Tag($addressLiteral): bool
     {
-        $matchesIP  = [];
+        $matchesIP = [];
         $IPv4Match = preg_match(self::IPV4_REGEX, $addressLiteral, $matchesIP);
 
         // Extract IPv4 part from the end of the address-literal (if there is one)
@@ -187,14 +188,14 @@ class DomainLiteral extends PartParser
         return true;
     }
 
-    private function addObsoleteWarnings() : void
+    private function addObsoleteWarnings(): void
     {
-        if(in_array(((array) $this->lexer->token)['type'], self::OBSOLETE_WARNINGS)) {
+        if (in_array(((array)$this->lexer->token)['type'], self::OBSOLETE_WARNINGS)) {
             $this->warnings[ObsoleteDTEXT::CODE] = new ObsoleteDTEXT();
         }
     }
 
-    private function addTagWarnings() : void
+    private function addTagWarnings(): void
     {
         if ($this->lexer->isNextToken(EmailLexer::S_COLON)) {
             $this->warnings[IPV6ColonStart::CODE] = new IPV6ColonStart();

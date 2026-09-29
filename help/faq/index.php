@@ -68,7 +68,8 @@ include_once($root_path . "/include/header.php");
                     <li class="link-list-item" data-search="sync history get download"><a
                                 href="/help/how-to-get-history-sync/" class="link-list-link">How to get the sync
                             history</a></li>
-                    <li class="link-list-item" data-search="pro features donate liberapay premium sync history edit notes web"><a
+                    <li class="link-list-item"
+                        data-search="pro features donate liberapay premium sync history edit notes web"><a
                                 href="/help/pro-features/" class="link-list-link">Pro features</a></li>
                 </ul>
             </div>

@@ -6,13 +6,11 @@ namespace Doctrine\Common\Lexer;
 
 use ReflectionClass;
 use UnitEnum;
-
 use function get_class;
 use function implode;
 use function preg_split;
 use function sprintf;
 use function substr;
-
 use const PREG_SPLIT_DELIM_CAPTURE;
 use const PREG_SPLIT_NO_EMPTY;
 use const PREG_SPLIT_OFFSET_CAPTURE;
@@ -86,7 +84,7 @@ abstract class AbstractLexer
      */
     public function setInput($input)
     {
-        $this->input  = $input;
+        $this->input = $input;
         $this->tokens = [];
 
         $this->reset();
@@ -101,9 +99,9 @@ abstract class AbstractLexer
     public function reset()
     {
         $this->lookahead = null;
-        $this->token     = null;
-        $this->peek      = 0;
-        $this->position  = 0;
+        $this->token = null;
+        $this->peek = 0;
+        $this->position = 0;
     }
 
     /**
@@ -177,8 +175,8 @@ abstract class AbstractLexer
      */
     public function moveNext()
     {
-        $this->peek      = 0;
-        $this->token     = $this->lookahead;
+        $this->peek = 0;
+        $this->token = $this->lookahead;
         $this->lookahead = isset($this->tokens[$this->position])
             ? $this->tokens[$this->position++] : null;
 
@@ -194,7 +192,7 @@ abstract class AbstractLexer
      */
     public function skipUntil($type)
     {
-        while ($this->lookahead !== null && ! $this->lookahead->isA($type)) {
+        while ($this->lookahead !== null && !$this->lookahead->isA($type)) {
             $this->moveNext();
         }
     }
@@ -202,7 +200,7 @@ abstract class AbstractLexer
     /**
      * Checks if given value is identical to the given token.
      *
-     * @param string     $value
+     * @param string $value
      * @param int|string $token
      *
      * @return bool
@@ -233,7 +231,7 @@ abstract class AbstractLexer
      */
     public function glimpse()
     {
-        $peek       = $this->peek();
+        $peek = $this->peek();
         $this->peek = 0;
 
         return $peek;
@@ -248,7 +246,7 @@ abstract class AbstractLexer
      */
     protected function scan($input)
     {
-        if (! isset($this->regex)) {
+        if (!isset($this->regex)) {
             $this->regex = sprintf(
                 '/(%s)|%s/%s',
                 implode(')|(', $this->getCatchablePatterns()),
@@ -257,7 +255,7 @@ abstract class AbstractLexer
             );
         }
 
-        $flags   = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE;
+        $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE;
         $matches = preg_split($this->regex, $input, -1, $flags);
 
         if ($matches === false) {
@@ -268,7 +266,7 @@ abstract class AbstractLexer
         foreach ($matches as $match) {
             // Must remain before 'value' assignment since it can change content
             $firstMatch = $match[0];
-            $type       = $this->getType($firstMatch);
+            $type = $this->getType($firstMatch);
 
             $this->tokens[] = new Token(
                 $firstMatch,

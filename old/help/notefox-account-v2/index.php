@@ -155,7 +155,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/old/include/menu.php");
                 <tr style="border-bottom: 1px solid var(--secondary-color-variant);">
                     <td style="padding: 10px;"><strong>Web Management</strong></td>
                     <td style="padding: 10px;">None (managed only via the extension)</td>
-                    <td style="padding: 10px;">Web dashboard (<a href="/old/my/">/my/</a>) + future on-the-fly notes access
+                    <td style="padding: 10px;">Web dashboard (<a href="/old/my/">/my/</a>) + future on-the-fly notes
+                        access
                     </td>
                 </tr>
                 <tr style="border-bottom: 1px solid var(--secondary-color-variant);">
@@ -186,7 +187,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/old/include/menu.php");
             </p>
             <p>
                 <strong>Can I manage my account or view my notes from the web?</strong><br>
-                Yes, you can log in to your account at <a href="/old/my/">notefox.eu/my</a> from any web browser to manage
+                Yes, you can log in to your account at <a href="/old/my/">notefox.eu/my</a> from any web browser to
+                manage
                 your profile, security settings (like 2FA), change your password, or download sync history. In the
                 future, we also plan to allow accessing and viewing your notes on the fly directly from the web portal.
             </p>

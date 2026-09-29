@@ -8,7 +8,6 @@ use ArrayAccess;
 use Doctrine\Deprecations\Deprecation;
 use ReturnTypeWillChange;
 use UnitEnum;
-
 use function in_array;
 
 /**
@@ -43,13 +42,13 @@ final class Token implements ArrayAccess
     public $position;
 
     /**
-     * @param V      $value
+     * @param V $value
      * @param T|null $type
      */
     public function __construct($value, $type, int $position)
     {
-        $this->value    = $value;
-        $this->type     = $type;
+        $this->value = $value;
+        $this->type = $type;
         $this->position = $position;
     }
 
@@ -76,9 +75,6 @@ final class Token implements ArrayAccess
     }
 
     /**
-     * @deprecated Use the value, type or position property instead
-     * {@inheritDoc}
-     *
      * @param O $offset
      *
      * @return mixed
@@ -97,6 +93,9 @@ final class Token implements ArrayAccess
      * )
      *
      * @template O of array-key
+     * @deprecated Use the value, type or position property instead
+     * {@inheritDoc}
+     *
      */
     #[ReturnTypeWillChange]
     public function offsetGet($offset)

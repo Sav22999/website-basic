@@ -43,7 +43,7 @@ final class SocketStream extends AbstractStream
 
     public function getTimeout(): float
     {
-        return $this->timeout ?? (float) \ini_get('default_socket_timeout');
+        return $this->timeout ?? (float)\ini_get('default_socket_timeout');
     }
 
     /**
@@ -134,13 +134,13 @@ final class SocketStream extends AbstractStream
 
     public function initialize(): void
     {
-        $this->url = $this->host.':'.$this->port;
+        $this->url = $this->host . ':' . $this->port;
         if ($this->tls) {
-            $this->url = 'ssl://'.$this->url;
+            $this->url = 'ssl://' . $this->url;
         }
         $options = [];
         if ($this->sourceIp) {
-            $options['socket']['bindto'] = $this->sourceIp.':0';
+            $options['socket']['bindto'] = $this->sourceIp . ':0';
         }
         if ($this->streamContextOptions) {
             $options = array_merge($options, $this->streamContextOptions);
@@ -151,7 +151,7 @@ final class SocketStream extends AbstractStream
 
         $timeout = $this->getTimeout();
         set_error_handler(function ($type, $msg) {
-            throw new TransportException(sprintf('Connection could not be established with host "%s": ', $this->url).$msg);
+            throw new TransportException(sprintf('Connection could not be established with host "%s": ', $this->url) . $msg);
         });
         try {
             $this->stream = stream_socket_client($this->url, $errno, $errstr, $timeout, \STREAM_CLIENT_CONNECT, $streamContext);
@@ -160,7 +160,7 @@ final class SocketStream extends AbstractStream
         }
 
         stream_set_blocking($this->stream, true);
-        stream_set_timeout($this->stream, (int) $timeout, (int) (($timeout - (int) $timeout) * 1000000));
+        stream_set_timeout($this->stream, (int)$timeout, (int)(($timeout - (int)$timeout) * 1000000));
         $this->in = &$this->stream;
         $this->out = &$this->stream;
     }
@@ -168,7 +168,7 @@ final class SocketStream extends AbstractStream
     public function startTLS(): bool
     {
         set_error_handler(function ($type, $msg) {
-            throw new TransportException('Unable to connect with STARTTLS: '.$msg);
+            throw new TransportException('Unable to connect with STARTTLS: ' . $msg);
         });
         try {
             return stream_socket_enable_crypto($this->stream, true);

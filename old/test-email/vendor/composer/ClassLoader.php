@@ -171,15 +171,15 @@ class ClassLoader
      * Registers a set of PSR-0 directories for a given prefix, either
      * appending or prepending to the ones previously set for this prefix.
      *
-     * @param string              $prefix  The prefix
-     * @param list<string>|string $paths   The PSR-0 root directories
-     * @param bool                $prepend Whether to prepend the directories
+     * @param string $prefix The prefix
+     * @param list<string>|string $paths The PSR-0 root directories
+     * @param bool $prepend Whether to prepend the directories
      *
      * @return void
      */
     public function add($prefix, $paths, $prepend = false)
     {
-        $paths = (array) $paths;
+        $paths = (array)$paths;
         if (!$prefix) {
             if ($prepend) {
                 $this->fallbackDirsPsr0 = array_merge(
@@ -219,17 +219,17 @@ class ClassLoader
      * Registers a set of PSR-4 directories for a given namespace, either
      * appending or prepending to the ones previously set for this namespace.
      *
-     * @param string              $prefix  The prefix/namespace, with trailing '\\'
-     * @param list<string>|string $paths   The PSR-4 base directories
-     * @param bool                $prepend Whether to prepend the directories
-     *
-     * @throws \InvalidArgumentException
+     * @param string $prefix The prefix/namespace, with trailing '\\'
+     * @param list<string>|string $paths The PSR-4 base directories
+     * @param bool $prepend Whether to prepend the directories
      *
      * @return void
+     * @throws \InvalidArgumentException
+     *
      */
     public function addPsr4($prefix, $paths, $prepend = false)
     {
-        $paths = (array) $paths;
+        $paths = (array)$paths;
         if (!$prefix) {
             // Register directories for the root namespace.
             if ($prepend) {
@@ -270,17 +270,17 @@ class ClassLoader
      * Registers a set of PSR-0 directories for a given prefix,
      * replacing any others previously set for this prefix.
      *
-     * @param string              $prefix The prefix
-     * @param list<string>|string $paths  The PSR-0 base directories
+     * @param string $prefix The prefix
+     * @param list<string>|string $paths The PSR-0 base directories
      *
      * @return void
      */
     public function set($prefix, $paths)
     {
         if (!$prefix) {
-            $this->fallbackDirsPsr0 = (array) $paths;
+            $this->fallbackDirsPsr0 = (array)$paths;
         } else {
-            $this->prefixesPsr0[$prefix[0]][$prefix] = (array) $paths;
+            $this->prefixesPsr0[$prefix[0]][$prefix] = (array)$paths;
         }
     }
 
@@ -288,24 +288,24 @@ class ClassLoader
      * Registers a set of PSR-4 directories for a given namespace,
      * replacing any others previously set for this namespace.
      *
-     * @param string              $prefix The prefix/namespace, with trailing '\\'
-     * @param list<string>|string $paths  The PSR-4 base directories
-     *
-     * @throws \InvalidArgumentException
+     * @param string $prefix The prefix/namespace, with trailing '\\'
+     * @param list<string>|string $paths The PSR-4 base directories
      *
      * @return void
+     * @throws \InvalidArgumentException
+     *
      */
     public function setPsr4($prefix, $paths)
     {
         if (!$prefix) {
-            $this->fallbackDirsPsr4 = (array) $paths;
+            $this->fallbackDirsPsr4 = (array)$paths;
         } else {
             $length = strlen($prefix);
             if ('\\' !== $prefix[$length - 1]) {
                 throw new \InvalidArgumentException("A non-empty PSR-4 prefix must end with a namespace separator.");
             }
             $this->prefixLengthsPsr4[$prefix[0]][$prefix] = $length;
-            $this->prefixDirsPsr4[$prefix] = (array) $paths;
+            $this->prefixDirsPsr4[$prefix] = (array)$paths;
         }
     }
 
@@ -417,7 +417,7 @@ class ClassLoader
     /**
      * Loads the given class or interface.
      *
-     * @param  string    $class The name of the class
+     * @param string $class The name of the class
      * @return true|null True if loaded, null otherwise
      */
     public function loadClass($class)
@@ -449,7 +449,7 @@ class ClassLoader
             return false;
         }
         if (null !== $this->apcuPrefix) {
-            $file = apcu_fetch($this->apcuPrefix.$class, $hit);
+            $file = apcu_fetch($this->apcuPrefix . $class, $hit);
             if ($hit) {
                 return $file;
             }
@@ -463,7 +463,7 @@ class ClassLoader
         }
 
         if (null !== $this->apcuPrefix) {
-            apcu_add($this->apcuPrefix.$class, $file);
+            apcu_add($this->apcuPrefix . $class, $file);
         }
 
         if (false === $file) {
@@ -485,8 +485,8 @@ class ClassLoader
     }
 
     /**
-     * @param  string       $class
-     * @param  string       $ext
+     * @param string $class
+     * @param string $ext
      * @return string|false
      */
     private function findFileWithExtension($class, $ext)
@@ -569,10 +569,10 @@ class ClassLoader
          *
          * Prevents access to $this/self from included files.
          *
-         * @param  string $file
+         * @param string $file
          * @return void
          */
-        self::$includeFile = \Closure::bind(static function($file) {
+        self::$includeFile = \Closure::bind(static function ($file) {
             include $file;
         }, null, null);
     }

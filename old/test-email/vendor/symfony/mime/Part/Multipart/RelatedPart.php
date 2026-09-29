@@ -41,7 +41,7 @@ final class RelatedPart extends AbstractMultipartPart
 
     private function generateContentId(): string
     {
-        return bin2hex(random_bytes(16)).'@symfony';
+        return bin2hex(random_bytes(16)) . '@symfony';
     }
 
     private function prepareParts(AbstractPart ...$parts): void

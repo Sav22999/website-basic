@@ -62,7 +62,7 @@ abstract class AbstractTransport implements TransportInterface
         $envelope = null !== $envelope ? clone $envelope : Envelope::create($message);
 
         if (null !== $this->dispatcher) {
-            $event = new MessageEvent($message, $envelope, (string) $this);
+            $event = new MessageEvent($message, $envelope, (string)$this);
             $this->dispatcher->dispatch($event);
             $envelope = $event->getEnvelope();
             $message = $event->getMessage();
@@ -104,7 +104,7 @@ abstract class AbstractTransport implements TransportInterface
         $sleep = (1 / $this->rate) - (microtime(true) - $this->lastSent);
         if (0 < $sleep) {
             $this->logger->debug(sprintf('Email transport "%s" sleeps for %.2f seconds', __CLASS__, $sleep));
-            usleep((int) ($sleep * 1000000));
+            usleep((int)($sleep * 1000000));
         }
         $this->lastSent = microtime(true);
     }

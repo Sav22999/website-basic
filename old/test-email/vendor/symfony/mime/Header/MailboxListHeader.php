@@ -109,7 +109,7 @@ final class MailboxListHeader extends AbstractHeader
         foreach ($this->addresses as $address) {
             $str = $address->getEncodedAddress();
             if ($name = $address->getName()) {
-                $str = $this->createPhrase($this, $name, $this->getCharset(), !$strings).' <'.$str.'>';
+                $str = $this->createPhrase($this, $name, $this->getCharset(), !$strings) . ' <' . $str . '>';
             }
             $strings[] = $str;
         }

@@ -37,6 +37,7 @@ function v2_mailer_autoload()
     $candidates = array(
         dirname(__DIR__) . "/vendor/autoload.php",
         NOTEFOX_V2_ROOT . "/test-email/vendor/autoload.php",
+        NOTEFOX_V2_ROOT . "/old/test-email/vendor/autoload.php",
         NOTEFOX_V2_ROOT . "/vendor/autoload.php",
     );
 
@@ -64,6 +65,16 @@ function v2_mailer_autoload()
 function v2_mailer_available()
 {
     return v2_mailer_autoload() === null && v2_mailer_configured();
+}
+
+function v2_mailer_diagnostics()
+{
+    $autoload = v2_mailer_autoload();
+    return array(
+        "autoload" => $autoload === null,
+        "autoload-error" => $autoload,
+        "configured" => v2_mailer_configured(),
+    );
 }
 
 function v2_mailer_configured()

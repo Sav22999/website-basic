@@ -107,7 +107,8 @@ include_once($root_path . "/include/header.php");
             <li class="pro-feature-item">
                 <svg class="pro-feature-icon" width="22" height="22" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    <polygon
+                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                 </svg>
                 <div>
                     <div class="pro-feature-title">Future features</div>
@@ -137,7 +138,8 @@ include_once($root_path . "/include/header.php");
             they will stay active on your account permanently, even if a subscription ends or is cancelled.
         </p>
         <p class="text-center">
-            <a href="https://liberapay.com/Sav22999/donate" class="btn" target="_blank" rel="noopener">Donate on LiberaPay</a>
+            <a href="https://liberapay.com/Sav22999/donate" class="btn" target="_blank" rel="noopener">Donate on
+                LiberaPay</a>
         </p>
 
         <h3>2. Contact the developer</h3>

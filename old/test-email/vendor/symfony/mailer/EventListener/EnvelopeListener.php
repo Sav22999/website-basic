@@ -27,7 +27,7 @@ class EnvelopeListener implements EventSubscriberInterface
     private $recipients;
 
     /**
-     * @param Address|string        $sender
+     * @param Address|string $sender
      * @param array<Address|string> $recipients
      */
     public function __construct($sender = null, ?array $recipients = null)

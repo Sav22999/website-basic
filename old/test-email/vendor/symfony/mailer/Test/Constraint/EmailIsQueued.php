@@ -41,6 +41,6 @@ final class EmailIsQueued extends Constraint
      */
     protected function failureDescription($event): string
     {
-        return 'the Email '.$this->toString();
+        return 'the Email ' . $this->toString();
     }
 }

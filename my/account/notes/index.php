@@ -24,7 +24,11 @@ include_once($root_path . "/include/header.php");
         <div id="notes-container" class="hidden2">
             <div class="notes-toolbar">
                 <div class="notes-search-wrap" id="notes-search-wrap">
-                    <svg class="notes-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <svg class="notes-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
                     <input type="text" id="notes-search" class="notes-search-input"
                            placeholder="<?php echo te('account.notes_search'); ?>">
                 </div>
@@ -36,7 +40,10 @@ include_once($root_path . "/include/header.php");
                     <option value="url-az"><?php echo te('account.notes_sort_url'); ?></option>
                 </select>
                 <button type="button" id="notes-filter-toggle" class="btn btn--secondary notes-filter-btn">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                    </svg>
                     <?php echo te('account.notes_filters'); ?>
                 </button>
             </div>
@@ -45,10 +52,14 @@ include_once($root_path . "/include/header.php");
                 <div class="notes-filter-group">
                     <label><?php echo te('account.notes_filter_type'); ?></label>
                     <div class="notes-filter-chips" id="filter-type">
-                        <button type="button" class="notes-chip notes-chip--active" data-value=""><?php echo te('account.notes_filter_all'); ?></button>
-                        <button type="button" class="notes-chip" data-value="0"><?php echo te('account.notes_global'); ?></button>
-                        <button type="button" class="notes-chip" data-value="1"><?php echo te('account.notes_domain'); ?></button>
-                        <button type="button" class="notes-chip" data-value="2"><?php echo te('account.notes_page'); ?></button>
+                        <button type="button" class="notes-chip notes-chip--active"
+                                data-value=""><?php echo te('account.notes_filter_all'); ?></button>
+                        <button type="button" class="notes-chip"
+                                data-value="0"><?php echo te('account.notes_global'); ?></button>
+                        <button type="button" class="notes-chip"
+                                data-value="1"><?php echo te('account.notes_domain'); ?></button>
+                        <button type="button" class="notes-chip"
+                                data-value="2"><?php echo te('account.notes_page'); ?></button>
                     </div>
                 </div>
                 <div class="notes-filter-group">
@@ -58,18 +69,21 @@ include_once($root_path . "/include/header.php");
                 <div class="notes-filter-group">
                     <label><?php echo te('account.notes_filter_folder'); ?></label>
                     <div class="notes-search-wrap notes-filter-chip-wrap" id="filter-folder-wrap">
-                        <input type="text" id="filter-folder" class="notes-search-input" placeholder="<?php echo te('account.notes_filter_all'); ?>">
+                        <input type="text" id="filter-folder" class="notes-search-input"
+                               placeholder="<?php echo te('account.notes_filter_all'); ?>">
                         <div class="notes-autocomplete hidden2" id="filter-folder-suggestions"></div>
                     </div>
                 </div>
                 <div class="notes-filter-group">
                     <label><?php echo te('account.notes_filter_tag'); ?></label>
                     <div class="notes-search-wrap notes-filter-chip-wrap" id="filter-tag-wrap">
-                        <input type="text" id="filter-tag" class="notes-search-input" placeholder="<?php echo te('account.notes_filter_all'); ?>">
+                        <input type="text" id="filter-tag" class="notes-search-input"
+                               placeholder="<?php echo te('account.notes_filter_all'); ?>">
                         <div class="notes-autocomplete hidden2" id="filter-tag-suggestions"></div>
                     </div>
                 </div>
-                <button type="button" id="notes-clear-filters" class="btn btn--secondary btn--small"><?php echo te('account.notes_clear_filters'); ?></button>
+                <button type="button" id="notes-clear-filters"
+                        class="btn btn--secondary btn--small"><?php echo te('account.notes_clear_filters'); ?></button>
             </div>
 
             <p id="notes-stats" class="notes-stats"></p>
@@ -77,7 +91,8 @@ include_once($root_path . "/include/header.php");
             <p id="notes-empty" class="text-center hidden2" style="color: var(--color-text-muted); padding: 32px 0;">
                 <?php echo te('account.notes_empty'); ?>
             </p>
-            <p id="notes-no-results" class="text-center hidden2" style="color: var(--color-text-muted); padding: 32px 0;">
+            <p id="notes-no-results" class="text-center hidden2"
+               style="color: var(--color-text-muted); padding: 32px 0;">
                 <?php echo te('account.notes_no_results'); ?>
             </p>
         </div>
@@ -94,9 +109,12 @@ include_once($root_path . "/include/header.php");
                     <input type="text" id="editor-url" class="note-editor-url-input" placeholder="URL">
                 </div>
             </div>
-            <button type="button" id="editor-close" class="note-editor-close" aria-label="<?php echo te('common.cancel'); ?>">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            <button type="button" id="editor-close" class="note-editor-close"
+                    aria-label="<?php echo te('common.cancel'); ?>">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
                 </svg>
             </button>
         </div>
@@ -106,29 +124,99 @@ include_once($root_path . "/include/header.php");
         <div class="note-editor-body">
             <div class="note-editor-field">
                 <label for="editor-title"><?php echo te('account.notes_label_title'); ?></label>
-                <input type="text" id="editor-title" class="form-input" placeholder="<?php echo te('account.notes_title_placeholder'); ?>">
+                <input type="text" id="editor-title" class="form-input"
+                       placeholder="<?php echo te('account.notes_title_placeholder'); ?>">
             </div>
 
             <div class="note-editor-field note-editor-field--grow">
                 <label><?php echo te('account.notes_label_content'); ?></label>
                 <div class="note-editor-toolbar" id="editor-toolbar">
-                    <button type="button" data-cmd="bold" title="Bold (Ctrl+B)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/></svg></button>
-                    <button type="button" data-cmd="italic" title="Italic (Ctrl+I)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg></button>
-                    <button type="button" data-cmd="underline" title="Underline (Ctrl+U)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"/><line x1="4" y1="21" x2="20" y2="21"/></svg></button>
-                    <button type="button" data-cmd="strikeThrough" title="Strikethrough"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.3 4.9c-1.2-1.1-2.9-1.6-4.8-1.4-2.3.3-4.1 1.8-4.5 3.8"/><path d="M4 12h16"/><path d="M19 16.6c0 2.4-2.1 4.4-4.7 4.4-2.1 0-3.8-1.2-4.5-2.8"/></svg></button>
+                    <button type="button" data-cmd="bold" title="Bold (Ctrl+B)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/>
+                            <path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/>
+                        </svg>
+                    </button>
+                    <button type="button" data-cmd="italic" title="Italic (Ctrl+I)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" y1="4" x2="10" y2="4"/>
+                            <line x1="14" y1="20" x2="5" y2="20"/>
+                            <line x1="15" y1="4" x2="9" y2="20"/>
+                        </svg>
+                    </button>
+                    <button type="button" data-cmd="underline" title="Underline (Ctrl+U)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"/>
+                            <line x1="4" y1="21" x2="20" y2="21"/>
+                        </svg>
+                    </button>
+                    <button type="button" data-cmd="strikeThrough" title="Strikethrough">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17.3 4.9c-1.2-1.1-2.9-1.6-4.8-1.4-2.3.3-4.1 1.8-4.5 3.8"/>
+                            <path d="M4 12h16"/>
+                            <path d="M19 16.6c0 2.4-2.1 4.4-4.7 4.4-2.1 0-3.8-1.2-4.5-2.8"/>
+                        </svg>
+                    </button>
                     <span class="note-editor-toolbar-sep"></span>
-                    <button type="button" data-cmd="insertUnorderedList" title="<?php echo te('account.notes_ul'); ?>"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1" fill="currentColor"/><circle cx="3" cy="12" r="1" fill="currentColor"/><circle cx="3" cy="18" r="1" fill="currentColor"/></svg></button>
-                    <button type="button" data-cmd="insertOrderedList" title="<?php echo te('account.notes_ol'); ?>"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><text x="1" y="8" font-size="8" fill="currentColor" stroke="none" font-family="sans-serif">1</text><text x="1" y="14" font-size="8" fill="currentColor" stroke="none" font-family="sans-serif">2</text><text x="1" y="20" font-size="8" fill="currentColor" stroke="none" font-family="sans-serif">3</text></svg></button>
+                    <button type="button" data-cmd="insertUnorderedList" title="<?php echo te('account.notes_ul'); ?>">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="8" y1="6" x2="21" y2="6"/>
+                            <line x1="8" y1="12" x2="21" y2="12"/>
+                            <line x1="8" y1="18" x2="21" y2="18"/>
+                            <circle cx="3" cy="6" r="1" fill="currentColor"/>
+                            <circle cx="3" cy="12" r="1" fill="currentColor"/>
+                            <circle cx="3" cy="18" r="1" fill="currentColor"/>
+                        </svg>
+                    </button>
+                    <button type="button" data-cmd="insertOrderedList" title="<?php echo te('account.notes_ol'); ?>">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="10" y1="6" x2="21" y2="6"/>
+                            <line x1="10" y1="12" x2="21" y2="12"/>
+                            <line x1="10" y1="18" x2="21" y2="18"/>
+                            <text x="1" y="8" font-size="8" fill="currentColor" stroke="none" font-family="sans-serif">
+                                1
+                            </text>
+                            <text x="1" y="14" font-size="8" fill="currentColor" stroke="none" font-family="sans-serif">
+                                2
+                            </text>
+                            <text x="1" y="20" font-size="8" fill="currentColor" stroke="none" font-family="sans-serif">
+                                3
+                            </text>
+                        </svg>
+                    </button>
                     <span class="note-editor-toolbar-sep"></span>
-                    <button type="button" data-action="link" title="Link"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
-                    <button type="button" data-cmd="removeFormat" title="<?php echo te('account.notes_clear_format'); ?>"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h7l-2 13"/><line x1="3" y1="20" x2="21" y2="4"/></svg></button>
+                    <button type="button" data-action="link" title="Link">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                        </svg>
+                    </button>
+                    <button type="button" data-cmd="removeFormat"
+                            title="<?php echo te('account.notes_clear_format'); ?>">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 7h7l-2 13"/>
+                            <line x1="3" y1="20" x2="21" y2="4"/>
+                        </svg>
+                    </button>
                 </div>
                 <div id="editor-content" class="note-editor-content" contenteditable="true" spellcheck="true"></div>
             </div>
 
             <details class="note-editor-details" id="editor-details">
                 <summary class="note-editor-summary">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                    </svg>
                     <?php echo te('account.notes_properties'); ?>
                 </summary>
                 <div class="note-editor-details-body">
@@ -140,16 +228,21 @@ include_once($root_path . "/include/header.php");
                     <div class="note-editor-row">
                         <div class="note-editor-field note-editor-field--half">
                             <label for="editor-folder"><?php echo te('account.notes_label_folder'); ?></label>
-                            <input type="text" id="editor-folder" class="form-input" placeholder="<?php echo te('account.notes_folder_placeholder'); ?>" list="editor-folder-list">
+                            <input type="text" id="editor-folder" class="form-input"
+                                   placeholder="<?php echo te('account.notes_folder_placeholder'); ?>"
+                                   list="editor-folder-list">
                             <datalist id="editor-folder-list"></datalist>
                         </div>
                         <div class="note-editor-field note-editor-field--half">
                             <label><?php echo te('account.notes_label_tags'); ?></label>
                             <div class="note-tags-input">
                                 <div class="note-tags-add">
-                                    <input type="text" id="editor-tag-input" class="form-input" placeholder="<?php echo te('account.notes_tag_placeholder'); ?>" list="editor-tag-list">
+                                    <input type="text" id="editor-tag-input" class="form-input"
+                                           placeholder="<?php echo te('account.notes_tag_placeholder'); ?>"
+                                           list="editor-tag-list">
                                     <datalist id="editor-tag-list"></datalist>
-                                    <button type="button" id="editor-tag-add" class="btn btn--small"><?php echo te('account.notes_add_tag'); ?></button>
+                                    <button type="button" id="editor-tag-add"
+                                            class="btn btn--small"><?php echo te('account.notes_add_tag'); ?></button>
                                 </div>
                                 <div id="editor-tags-list" class="note-tags-chips"></div>
                             </div>
@@ -162,7 +255,8 @@ include_once($root_path . "/include/header.php");
         <div class="note-editor-footer">
             <span id="editor-last-update" class="note-editor-meta"></span>
             <div class="note-editor-footer-actions">
-                <button type="button" id="editor-cancel" class="btn btn--secondary"><?php echo te('common.cancel'); ?></button>
+                <button type="button" id="editor-cancel"
+                        class="btn btn--secondary"><?php echo te('common.cancel'); ?></button>
                 <button type="button" id="editor-save" class="btn"><?php echo te('account.notes_save'); ?></button>
             </div>
         </div>
@@ -230,7 +324,7 @@ include_once($root_path . "/include/header.php");
 
         // ── Filters ──
 
-        var activeFilters = { type: "", color: "", folders: [], tags: [] };
+        var activeFilters = {type: "", color: "", folders: [], tags: []};
         var filterToggleBtn = document.getElementById("notes-filter-toggle");
         var filtersEl = document.getElementById("notes-filters");
         var filterTypeEl = document.getElementById("filter-type");
@@ -250,7 +344,9 @@ include_once($root_path . "/include/header.php");
         filterTypeEl.addEventListener("click", function (e) {
             var btn = e.target.closest(".notes-chip");
             if (!btn) return;
-            filterTypeEl.querySelectorAll(".notes-chip").forEach(function (c) { c.classList.remove("notes-chip--active"); });
+            filterTypeEl.querySelectorAll(".notes-chip").forEach(function (c) {
+                c.classList.remove("notes-chip--active");
+            });
             btn.classList.add("notes-chip--active");
             activeFilters.type = btn.dataset.value;
             renderAll();
@@ -285,12 +381,15 @@ include_once($root_path . "/include/header.php");
             filterColorEl.addEventListener("click", function (e) {
                 var btn = e.target.closest(".notes-chip");
                 if (!btn) return;
-                filterColorEl.querySelectorAll(".notes-chip").forEach(function (c) { c.classList.remove("notes-chip--active"); });
+                filterColorEl.querySelectorAll(".notes-chip").forEach(function (c) {
+                    c.classList.remove("notes-chip--active");
+                });
                 btn.classList.add("notes-chip--active");
                 activeFilters.color = btn.dataset.value;
                 renderAll();
             });
         }
+
         buildColorFilterChips();
 
         function setupFilterChipInput(inputEl, wrapEl, suggestionsEl, filterKey, getOptions) {
@@ -314,7 +413,7 @@ include_once($root_path . "/include/header.php");
                     wrapEl.insertBefore(chip, inputEl);
                 });
                 inputEl.placeholder = activeFilters[filterKey].length ? "" :
-                    <?php echo json_encode(t('account.notes_filter_all'), JSON_UNESCAPED_UNICODE); ?>;
+                <?php echo json_encode(t('account.notes_filter_all'), JSON_UNESCAPED_UNICODE); ?>;
             }
 
             function showSuggestions() {
@@ -349,7 +448,9 @@ include_once($root_path . "/include/header.php");
             inputEl.addEventListener("input", showSuggestions);
             inputEl.addEventListener("focus", showSuggestions);
             inputEl.addEventListener("blur", function () {
-                setTimeout(function () { suggestionsEl.classList.add("hidden2"); }, 150);
+                setTimeout(function () {
+                    suggestionsEl.classList.add("hidden2");
+                }, 150);
             });
 
             inputEl.addEventListener("keydown", function (e) {
@@ -378,7 +479,9 @@ include_once($root_path . "/include/header.php");
                 }
             });
 
-            wrapEl.addEventListener("click", function () { inputEl.focus(); });
+            wrapEl.addEventListener("click", function () {
+                inputEl.focus();
+            });
 
             return renderChips;
         }
@@ -386,11 +489,15 @@ include_once($root_path . "/include/header.php");
         var allFolders = [];
         var allTags = [];
 
-        var renderFolderChips = setupFilterChipInput(filterFolderEl, filterFolderWrap, filterFolderSuggestions, "folders", function () { return allFolders; });
-        var renderTagChips = setupFilterChipInput(filterTagEl, filterTagWrap, filterTagSuggestions, "tags", function () { return allTags; });
+        var renderFolderChips = setupFilterChipInput(filterFolderEl, filterFolderWrap, filterFolderSuggestions, "folders", function () {
+            return allFolders;
+        });
+        var renderTagChips = setupFilterChipInput(filterTagEl, filterTagWrap, filterTagSuggestions, "tags", function () {
+            return allTags;
+        });
 
         document.getElementById("notes-clear-filters").addEventListener("click", function () {
-            activeFilters = { type: "", color: "", folders: [], tags: [] };
+            activeFilters = {type: "", color: "", folders: [], tags: []};
             filterTypeEl.querySelectorAll(".notes-chip").forEach(function (c, i) {
                 c.classList.toggle("notes-chip--active", i === 0);
             });
@@ -411,7 +518,9 @@ include_once($root_path . "/include/header.php");
             var folders = {}, tags = {};
             allNotes.forEach(function (n) {
                 if (n.folder) folders[n.folder] = true;
-                n.tags.forEach(function (t) { tags[t] = true; });
+                n.tags.forEach(function (t) {
+                    tags[t] = true;
+                });
             });
 
             allFolders = [""].concat(Object.keys(folders).sort());
@@ -463,7 +572,9 @@ include_once($root_path . "/include/header.php");
 
         function nowDateString() {
             var d = new Date();
-            var pad = function (n) { return n < 10 ? "0" + n : "" + n; };
+            var pad = function (n) {
+                return n < 10 ? "0" + n : "" + n;
+            };
             return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()) +
                 " " + pad(d.getHours()) + ":" + pad(d.getMinutes()) + ":" + pad(d.getSeconds());
         }
@@ -525,15 +636,24 @@ include_once($root_path . "/include/header.php");
             if (activeFilters.folders.length > 0) {
                 var folderMatch = false;
                 for (var i = 0; i < activeFilters.folders.length; i++) {
-                    if (activeFilters.folders[i] === "" && note.folder === "") { folderMatch = true; break; }
-                    if (activeFilters.folders[i] === note.folder) { folderMatch = true; break; }
+                    if (activeFilters.folders[i] === "" && note.folder === "") {
+                        folderMatch = true;
+                        break;
+                    }
+                    if (activeFilters.folders[i] === note.folder) {
+                        folderMatch = true;
+                        break;
+                    }
                 }
                 if (!folderMatch) return false;
             }
             if (activeFilters.tags.length > 0) {
                 var tagMatch = false;
                 for (var i = 0; i < activeFilters.tags.length; i++) {
-                    if (note.tags.indexOf(activeFilters.tags[i]) !== -1) { tagMatch = true; break; }
+                    if (note.tags.indexOf(activeFilters.tags[i]) !== -1) {
+                        tagMatch = true;
+                        break;
+                    }
                 }
                 if (!tagMatch) return false;
             }
@@ -543,15 +663,25 @@ include_once($root_path . "/include/header.php");
         function sortNotes(notes, mode) {
             var sorted = notes.slice();
             if (mode === "date-new") {
-                sorted.sort(function (a, b) { return b.lastUpdate.localeCompare(a.lastUpdate); });
+                sorted.sort(function (a, b) {
+                    return b.lastUpdate.localeCompare(a.lastUpdate);
+                });
             } else if (mode === "date-old") {
-                sorted.sort(function (a, b) { return a.lastUpdate.localeCompare(b.lastUpdate); });
+                sorted.sort(function (a, b) {
+                    return a.lastUpdate.localeCompare(b.lastUpdate);
+                });
             } else if (mode === "name-az") {
-                sorted.sort(function (a, b) { return (a.title || a.url).localeCompare(b.title || b.url); });
+                sorted.sort(function (a, b) {
+                    return (a.title || a.url).localeCompare(b.title || b.url);
+                });
             } else if (mode === "name-za") {
-                sorted.sort(function (a, b) { return (b.title || b.url).localeCompare(a.title || a.url); });
+                sorted.sort(function (a, b) {
+                    return (b.title || b.url).localeCompare(a.title || a.url);
+                });
             } else if (mode === "url-az") {
-                sorted.sort(function (a, b) { return a.url.localeCompare(b.url); });
+                sorted.sort(function (a, b) {
+                    return a.url.localeCompare(b.url);
+                });
             }
             return sorted;
         }
@@ -607,7 +737,9 @@ include_once($root_path . "/include/header.php");
             editBtn.className = "note-card-action-btn";
             editBtn.title = STRINGS.edit;
             editBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
-            editBtn.addEventListener("click", function () { openEditor(note.url); });
+            editBtn.addEventListener("click", function () {
+                openEditor(note.url);
+            });
             actions.appendChild(editBtn);
 
             var copyBtn = document.createElement("button");
@@ -633,7 +765,9 @@ include_once($root_path . "/include/header.php");
             delBtn.className = "note-card-action-btn note-card-action-btn--danger";
             delBtn.title = STRINGS.del;
             delBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
-            delBtn.addEventListener("click", function () { deleteNote(note.url); });
+            delBtn.addEventListener("click", function () {
+                deleteNote(note.url);
+            });
             actions.appendChild(delBtn);
 
             header.appendChild(actions);
@@ -832,7 +966,9 @@ include_once($root_path . "/include/header.php");
 
         searchEl.addEventListener("input", renderAll);
 
-        searchWrap.addEventListener("click", function () { searchEl.focus(); });
+        searchWrap.addEventListener("click", function () {
+            searchEl.focus();
+        });
 
         sortEl.addEventListener("change", renderAll);
 
@@ -847,9 +983,9 @@ include_once($root_path . "/include/header.php");
                 var snapshot;
                 var revision = freshData["revision"] || null;
                 try {
-                    snapshot = freshData["data"] ? JSON.parse(freshData["data"]) : { websites: {} };
+                    snapshot = freshData["data"] ? JSON.parse(freshData["data"]) : {websites: {}};
                 } catch (e) {
-                    throw { code: 0, message: "Parse error" };
+                    throw {code: 0, message: "Parse error"};
                 }
                 if (!snapshot.websites) snapshot.websites = {};
 
@@ -923,13 +1059,15 @@ include_once($root_path . "/include/header.php");
             if (pollTimer) return;
             pollTimer = setInterval(function () {
                 if (document.hidden || editorOpen) return;
-                fetchNotes().catch(function () {});
+                fetchNotes().catch(function () {
+                });
             }, POLL_INTERVAL);
         }
 
         document.addEventListener("visibilitychange", function () {
             if (!document.hidden && lastUpdate !== "" && !editorOpen) {
-                fetchNotes().catch(function () {});
+                fetchNotes().catch(function () {
+                });
             }
         });
 
@@ -964,7 +1102,9 @@ include_once($root_path . "/include/header.php");
             noneBtn.className = "notes-chip notes-chip--active";
             noneBtn.dataset.color = "none";
             noneBtn.textContent = <?php echo json_encode(t('account.notes_filter_no_color'), JSON_UNESCAPED_UNICODE); ?>;
-            noneBtn.addEventListener("click", function () { selectColor("none"); });
+            noneBtn.addEventListener("click", function () {
+                selectColor("none");
+            });
             editorColorGrid.appendChild(noneBtn);
 
             COLOR_NAMES_SORTED.forEach(function (name) {
@@ -974,10 +1114,13 @@ include_once($root_path . "/include/header.php");
                 btn.dataset.color = name;
                 btn.style.setProperty("--chip-color", TAG_COLORS[name]);
                 btn.textContent = name.charAt(0).toUpperCase() + name.slice(1);
-                btn.addEventListener("click", function () { selectColor(name); });
+                btn.addEventListener("click", function () {
+                    selectColor(name);
+                });
                 editorColorGrid.appendChild(btn);
             });
         }
+
         buildColorGrid();
 
         function selectColor(name) {
@@ -1025,7 +1168,10 @@ include_once($root_path . "/include/header.php");
 
         document.getElementById("editor-tag-add").addEventListener("click", addEditorTag);
         editorTagInput.addEventListener("keydown", function (e) {
-            if (e.key === "Enter") { e.preventDefault(); addEditorTag(); }
+            if (e.key === "Enter") {
+                e.preventDefault();
+                addEditorTag();
+            }
         });
 
         document.getElementById("editor-toolbar").addEventListener("click", function (e) {
@@ -1136,7 +1282,7 @@ include_once($root_path . "/include/header.php");
                         "sticky-notes": {}, "storage": "", "last-update": ""
                     };
                 } catch (e) {
-                    throw { code: 0, message: "Parse error" };
+                    throw {code: 0, message: "Parse error"};
                 }
 
                 if (!snapshot.websites) snapshot.websites = {};
@@ -1159,7 +1305,7 @@ include_once($root_path . "/include/header.php");
                     entry.domain = domainOf(newUrl);
                     if (newUrl === "**global") entry.type = 0;
                     else if (newUrl.indexOf("/", newUrl.indexOf("//") + 2) === -1 ||
-                             newUrl.endsWith("/")) entry.type = 1;
+                        newUrl.endsWith("/")) entry.type = 1;
                     else entry.type = 2;
                 }
 

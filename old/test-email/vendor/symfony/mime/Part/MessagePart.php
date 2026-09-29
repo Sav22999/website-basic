@@ -26,7 +26,7 @@ class MessagePart extends DataPart
     public function __construct(RawMessage $message)
     {
         if ($message instanceof Message) {
-            $name = $message->getHeaders()->getHeaderBody('Subject').'.eml';
+            $name = $message->getHeaders()->getHeaderBody('Subject') . '.eml';
         } else {
             $name = 'email.eml';
         }

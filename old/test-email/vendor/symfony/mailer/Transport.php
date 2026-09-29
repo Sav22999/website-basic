@@ -60,8 +60,8 @@ class Transport
 
     /**
      * @param EventDispatcherInterface|null $dispatcher
-     * @param HttpClientInterface|null      $client
-     * @param LoggerInterface|null          $logger
+     * @param HttpClientInterface|null $client
+     * @param LoggerInterface|null $logger
      */
     public static function fromDsn(string $dsn/* , ?EventDispatcherInterface $dispatcher = null, ?HttpClientInterface $client = null, ?LoggerInterface $logger = null */): TransportInterface
     {
@@ -76,8 +76,8 @@ class Transport
 
     /**
      * @param EventDispatcherInterface|null $dispatcher
-     * @param HttpClientInterface|null      $client
-     * @param LoggerInterface|null          $logger
+     * @param HttpClientInterface|null $client
+     * @param LoggerInterface|null $logger
      */
     public static function fromDsns(array $dsns/* , ?EventDispatcherInterface $dispatcher = null, ?HttpClientInterface $client = null, ?LoggerInterface $logger = null */): TransportInterface
     {
@@ -178,8 +178,8 @@ class Transport
 
     /**
      * @param EventDispatcherInterface|null $dispatcher
-     * @param HttpClientInterface|null      $client
-     * @param LoggerInterface|null          $logger
+     * @param HttpClientInterface|null $client
+     * @param LoggerInterface|null $logger
      *
      * @return \Traversable<int, TransportFactoryInterface>
      */

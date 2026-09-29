@@ -52,6 +52,6 @@ final class EmailHasHeader extends Constraint
      */
     protected function failureDescription($message): string
     {
-        return 'the Email '.$this->toString();
+        return 'the Email ' . $this->toString();
     }
 }

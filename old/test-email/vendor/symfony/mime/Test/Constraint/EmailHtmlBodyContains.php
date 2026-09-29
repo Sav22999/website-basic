@@ -53,6 +53,6 @@ final class EmailHtmlBodyContains extends Constraint
      */
     protected function failureDescription($message): string
     {
-        return 'the Email HTML body '.$this->toString();
+        return 'the Email HTML body ' . $this->toString();
     }
 }

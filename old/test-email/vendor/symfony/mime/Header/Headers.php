@@ -144,7 +144,7 @@ final class Headers
     public function addHeader(string $name, $argument, array $more = []): self
     {
         $parts = explode('\\', self::HEADER_CLASS_MAP[strtolower($name)] ?? UnstructuredHeader::class);
-        $method = 'add'.ucfirst(array_pop($parts));
+        $method = 'add' . ucfirst(array_pop($parts));
         if ('addUnstructuredHeader' === $method) {
             $method = 'addTextHeader';
         } elseif ('addIdentificationHeader' === $method) {
@@ -236,7 +236,7 @@ final class Headers
     {
         $string = '';
         foreach ($this->toArray() as $str) {
-            $string .= $str."\r\n";
+            $string .= $str . "\r\n";
         }
 
         return $string;
@@ -270,7 +270,7 @@ final class Headers
         if ($this->has($name)) {
             $this->get($name)->setBody($body);
         } else {
-            $this->{'add'.$type.'Header'}($name, $body);
+            $this->{'add' . $type . 'Header'}($name, $body);
         }
     }
 

@@ -55,7 +55,7 @@ final class Mailer implements MailerInterface
             // Listeners should act depending on the `$queued` argument of the `MessageEvent` instance.
             $clonedMessage = clone $message;
             $clonedEnvelope = null !== $envelope ? clone $envelope : Envelope::create($clonedMessage);
-            $event = new MessageEvent($clonedMessage, $clonedEnvelope, (string) $this->transport, true);
+            $event = new MessageEvent($clonedMessage, $clonedEnvelope, (string)$this->transport, true);
             $this->dispatcher->dispatch($event);
         }
 

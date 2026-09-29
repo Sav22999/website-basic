@@ -32,7 +32,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/old/include/menu.php");
                 them.
             </p>
             <p>
-                If you want to see the new Notefox 4.0 before the release, you can see the <a href="/old/help/notefox-4.0/">preview
+                If you want to see the new Notefox 4.0 before the release, you can see the <a
+                        href="/old/help/notefox-4.0/">preview
                     page</a>.
             </p>
             <p>

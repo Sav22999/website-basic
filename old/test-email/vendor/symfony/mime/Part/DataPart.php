@@ -123,7 +123,7 @@ class DataPart extends TextPart
     {
         $str = parent::asDebugString();
         if (null !== $this->filename) {
-            $str .= ' filename: '.$this->filename;
+            $str .= ' filename: ' . $this->filename;
         }
 
         return $str;
@@ -131,7 +131,7 @@ class DataPart extends TextPart
 
     private function generateContentId(): string
     {
-        return bin2hex(random_bytes(16)).'@symfony';
+        return bin2hex(random_bytes(16)) . '@symfony';
     }
 
     public function __destruct()
@@ -168,11 +168,11 @@ class DataPart extends TextPart
         unset($this->_headers);
 
         if (!\is_array($this->_parent)) {
-            throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
+            throw new \BadMethodCallException('Cannot unserialize ' . __CLASS__);
         }
         foreach (['body', 'charset', 'subtype', 'disposition', 'name', 'encoding'] as $name) {
             if (null !== $this->_parent[$name] && !\is_string($this->_parent[$name])) {
-                throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
+                throw new \BadMethodCallException('Cannot unserialize ' . __CLASS__);
             }
             $r = new \ReflectionProperty(TextPart::class, $name);
             $r->setAccessible(true);

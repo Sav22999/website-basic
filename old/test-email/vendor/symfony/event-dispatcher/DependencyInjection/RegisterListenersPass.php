@@ -109,10 +109,12 @@ class RegisterListenersPass implements CompilerPassInterface
                 $event['event'] = $aliases[$event['event']] ?? $event['event'];
 
                 if (!isset($event['method'])) {
-                    $event['method'] = 'on'.preg_replace_callback([
-                        '/(?<=\b|_)[a-z]/i',
-                        '/[^a-z0-9]/i',
-                    ], function ($matches) { return strtoupper($matches[0]); }, $event['event']);
+                    $event['method'] = 'on' . preg_replace_callback([
+                            '/(?<=\b|_)[a-z]/i',
+                            '/[^a-z0-9]/i',
+                        ], function ($matches) {
+                            return strtoupper($matches[0]);
+                        }, $event['event']);
                     $event['method'] = preg_replace('/[^a-z0-9]/i', '', $event['method']);
 
                     if (null !== ($class = $container->getDefinition($id)->getClass()) && ($r = $container->getReflectionClass($class, false)) && !$r->hasMethod($event['method'])) {

@@ -83,7 +83,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/old/include/menu.php");
                 </span>
             </p>
             <p>
-                <small><sup>*</sup> See the <a href="/old/help/privacy/">Privacy Policy</a> and the <a href="/old/terms/">Terms
+                <small><sup>*</sup> See the <a href="/old/help/privacy/">Privacy Policy</a> and the <a
+                            href="/old/terms/">Terms
                         of Service</a> for more information.</small>
                 <br>
                 <small><sup>**</sup> You'll receive a verification code via email to verify your account.</small>

@@ -58,7 +58,7 @@ class SmtpTransport extends AbstractTransport
      * By default, the threshold is set to 100 (and no sleep at restart).
      *
      * @param int $threshold The maximum number of messages (0 to disable)
-     * @param int $sleep     The number of seconds to sleep between stopping and re-starting the transport
+     * @param int $sleep The number of seconds to sleep between stopping and re-starting the transport
      *
      * @return $this
      */
@@ -108,9 +108,9 @@ class SmtpTransport extends AbstractTransport
     {
         if ('' !== $domain && '[' !== $domain[0]) {
             if (filter_var($domain, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
-                $domain = '['.$domain.']';
+                $domain = '[' . $domain . ']';
             } elseif (filter_var($domain, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
-                $domain = '[IPv6:'.$domain.']';
+                $domain = '[IPv6:' . $domain . ']';
             }
         }
 
@@ -157,7 +157,7 @@ class SmtpTransport extends AbstractTransport
             $name = sprintf('smtp%s://%s', ($tls = $this->stream->isTLS()) ? 's' : '', $this->stream->getHost());
             $port = $this->stream->getPort();
             if (!(25 === $port || ($tls && 465 === $port))) {
-                $name .= ':'.$port;
+                $name .= ':' . $port;
             }
 
             return $name;
@@ -304,7 +304,7 @@ class SmtpTransport extends AbstractTransport
             $codeStr = $code ? sprintf('code "%s"', $code) : 'empty code';
             $responseStr = $response ? sprintf(', with message "%s"', trim($response)) : '';
 
-            throw new TransportException(sprintf('Expected response code "%s" but got ', implode('/', $codes)).$codeStr.$responseStr.'.', $code ?: 0);
+            throw new TransportException(sprintf('Expected response code "%s" but got ', implode('/', $codes)) . $codeStr . $responseStr . '.', $code ?: 0);
         }
     }
 
@@ -346,12 +346,12 @@ class SmtpTransport extends AbstractTransport
      */
     public function __sleep()
     {
-        throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
+        throw new \BadMethodCallException('Cannot serialize ' . __CLASS__);
     }
 
     public function __wakeup()
     {
-        throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
+        throw new \BadMethodCallException('Cannot unserialize ' . __CLASS__);
     }
 
     public function __destruct()

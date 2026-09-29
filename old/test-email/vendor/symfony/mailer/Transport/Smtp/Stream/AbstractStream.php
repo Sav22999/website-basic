@@ -85,7 +85,7 @@ abstract class AbstractStream
                 throw new TransportException(sprintf('Connection to "%s" has been closed unexpectedly.', $this->getReadConnectionDescription()));
             }
             if (false === $line) {
-                throw new TransportException(sprintf('Unable to read from connection to "%s": ', $this->getReadConnectionDescription()).error_get_last()['message']);
+                throw new TransportException(sprintf('Unable to read from connection to "%s": ', $this->getReadConnectionDescription()) . error_get_last()['message']);
             }
         }
 
@@ -114,7 +114,7 @@ abstract class AbstractStream
         $fromLen = \strlen($from);
 
         foreach ($chunks as $chunk) {
-            if ('' === $chunk = $carry.$chunk) {
+            if ('' === $chunk = $carry . $chunk) {
                 continue;
             }
 
@@ -122,7 +122,7 @@ abstract class AbstractStream
                 $chunk = explode($from, $chunk);
                 $carry = array_pop($chunk);
 
-                yield implode($to, $chunk).$to;
+                yield implode($to, $chunk) . $to;
             } else {
                 $carry = $chunk;
             }

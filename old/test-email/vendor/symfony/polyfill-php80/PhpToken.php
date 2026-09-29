@@ -63,7 +63,7 @@ class PhpToken implements \Stringable
      */
     public function is($kind): bool
     {
-        foreach ((array) $kind as $value) {
+        foreach ((array)$kind as $value) {
             if (\in_array($value, [$this->id, $this->text], true)) {
                 return true;
             }
@@ -79,7 +79,7 @@ class PhpToken implements \Stringable
 
     public function __toString(): string
     {
-        return (string) $this->text;
+        return (string)$this->text;
     }
 
     /**

@@ -7,7 +7,6 @@ namespace Doctrine\Deprecations\PHPUnit;
 use Doctrine\Deprecations\Deprecation;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Before;
-
 use function sprintf;
 
 trait VerifyDeprecations

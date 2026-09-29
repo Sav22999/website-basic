@@ -61,7 +61,7 @@ class FileinfoMimeTypeGuesser implements MimeTypeGuesserInterface
 
         if ($mimeType && 0 === (\strlen($mimeType) % 2)) {
             $mimeStart = substr($mimeType, 0, \strlen($mimeType) >> 1);
-            $mimeType = $mimeStart.$mimeStart === $mimeType ? $mimeStart : $mimeType;
+            $mimeType = $mimeStart . $mimeStart === $mimeType ? $mimeStart : $mimeType;
         }
 
         return $mimeType;

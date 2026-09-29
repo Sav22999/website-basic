@@ -32,7 +32,7 @@ final class EmailCount extends Constraint
      */
     public function toString(): string
     {
-        return sprintf('%shas %s "%d" emails', $this->transport ? $this->transport.' ' : '', $this->queued ? 'queued' : 'sent', $this->expectedValue);
+        return sprintf('%shas %s "%d" emails', $this->transport ? $this->transport . ' ' : '', $this->queued ? 'queued' : 'sent', $this->expectedValue);
     }
 
     /**
