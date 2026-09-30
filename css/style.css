@@ -696,6 +696,58 @@ img {
     text-align: left;
 }
 
+.legal-lang-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 24px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.legal-lang-tab {
+    padding: 10px 24px;
+    font-size: var(--fs-base);
+    font-family: var(--font-family);
+    font-weight: 600;
+    color: var(--on-secondary-color);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    transition: var(--transition);
+    opacity: 0.5;
+}
+
+.legal-lang-tab:hover {
+    opacity: 0.8;
+}
+
+.legal-lang-tab.active {
+    opacity: 1;
+    border-bottom-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.legal-lang-content {
+    display: none;
+}
+
+.legal-lang-content.active {
+    display: block;
+}
+
+.legal-courtesy-notice {
+    font-size: var(--fs-sm);
+    color: var(--on-secondary-color);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 3px solid var(--primary-color);
+    border-radius: var(--radius-sm);
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
 .support-lang-note {
     font-size: var(--fs-sm);
     color: var(--on-secondary-color);
