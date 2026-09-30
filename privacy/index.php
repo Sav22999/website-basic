@@ -5,7 +5,6 @@ include_once($root_path . "/include/i18n.php");
 $title = t('privacy.title');
 $description = t('meta.privacy');
 $canonical_path = "/privacy/";
-$english_only = true;
 $selected_menu = "privacy";
 include_once($root_path . "/include/header.php");
 ?>
@@ -14,15 +13,25 @@ include_once($root_path . "/include/header.php");
 <?php
 $_saved_i18n = $i18n;
 $_saved_lang = $i18n_lang;
-i18n_load("en");
+$_content_lang = ($i18n_lang === "it") ? "it" : "en";
+i18n_load($_content_lang);
 ?>
 
 <main id="main" class="page">
     <div class="container">
-        <?php $i18n = $_saved_i18n;
-        $i18n_lang = $_saved_lang;
-        i18n_english_only_notice();
-        i18n_load("en"); ?>
+        <?php
+        if ($_saved_lang !== "it" && $_saved_lang !== "en") {
+            $i18n_tmp = $i18n;
+            $i18n = $_saved_i18n;
+            $i18n_lang = $_saved_lang;
+            i18n_english_only_notice();
+            $i18n = $i18n_tmp;
+            $i18n_lang = $_content_lang;
+        }
+        if ($_content_lang === "en") {
+            echo '<div class="lang-notice">' . t('privacy.en_disclaimer') . '</div>';
+        }
+        ?>
         <h1><?php echo t('privacy.heading'); ?></h1>
 
         <p><strong><?php echo t('privacy.last_update'); ?></strong> <?php echo t('privacy.last_update_date'); ?></p>
@@ -30,6 +39,17 @@ i18n_load("en");
         <p><?php echo t('privacy.intro'); ?></p>
 
         <p><?php echo t('privacy.developer_info'); ?></p>
+
+        <h2><?php echo t('privacy.s0_title'); ?></h2>
+        <p><?php echo t('privacy.s0_text'); ?></p>
+
+        <h2><?php echo t('privacy.s0b_title'); ?></h2>
+        <p><?php echo t('privacy.s0b_intro'); ?></p>
+        <ul>
+            <li><?php echo t('privacy.s0b_item_consent'); ?></li>
+            <li><?php echo t('privacy.s0b_item_contract'); ?></li>
+            <li><?php echo t('privacy.s0b_item_interest'); ?></li>
+        </ul>
 
         <h2><?php echo t('privacy.s1_title'); ?></h2>
         <p><?php echo t('privacy.s1_intro'); ?></p>
@@ -41,6 +61,7 @@ i18n_load("en");
         <p><?php echo t('privacy.s1_encryption'); ?></p>
         <p><?php echo t('privacy.s1_otp'); ?></p>
         <p><?php echo t('privacy.s1_sessions'); ?></p>
+        <p><?php echo t('privacy.s1_sessions_retention'); ?></p>
         <p><?php echo t('privacy.s1_retention'); ?></p>
         <p><?php echo t('privacy.s1_no_cookies'); ?></p>
 
@@ -77,6 +98,7 @@ i18n_load("en");
             <li><?php echo t('privacy.s2_item_os'); ?></li>
         </ul>
         <p><?php echo t('privacy.s2_usage'); ?></p>
+        <p><?php echo t('privacy.s2_retention'); ?></p>
 
         <h2><?php echo t('privacy.s3_title'); ?></h2>
         <p><?php echo t('privacy.s3_intro'); ?></p>
@@ -113,6 +135,41 @@ i18n_load("en");
         </ul>
         <p><?php echo t('privacy.s6_usage'); ?></p>
         <p><?php echo t('privacy.s6_captcha'); ?></p>
+
+        <h2><?php echo t('privacy.s_retention_title'); ?></h2>
+        <p><?php echo t('privacy.s_retention_intro'); ?></p>
+        <ul>
+            <li><?php echo t('privacy.s_retention_item_account'); ?></li>
+            <li><?php echo t('privacy.s_retention_item_ip_sessions'); ?></li>
+            <li><?php echo t('privacy.s_retention_item_ip_sync'); ?></li>
+            <li><?php echo t('privacy.s_retention_item_rate'); ?></li>
+            <li><?php echo t('privacy.s_retention_item_errors'); ?></li>
+            <li><?php echo t('privacy.s_retention_item_telemetry'); ?></li>
+            <li><?php echo t('privacy.s_retention_item_history'); ?></li>
+            <li><?php echo t('privacy.s_retention_item_contact'); ?></li>
+            <li><?php echo t('privacy.s_retention_item_ip_creation'); ?></li>
+        </ul>
+        <p><?php echo t('privacy.s_retention_deletion'); ?></p>
+
+        <h2><?php echo t('privacy.s_rights_title'); ?></h2>
+        <p><?php echo t('privacy.s_rights_intro'); ?></p>
+        <ul>
+            <li><?php echo t('privacy.s_rights_item_access'); ?></li>
+            <li><?php echo t('privacy.s_rights_item_rectification'); ?></li>
+            <li><?php echo t('privacy.s_rights_item_erasure'); ?></li>
+            <li><?php echo t('privacy.s_rights_item_restriction'); ?></li>
+            <li><?php echo t('privacy.s_rights_item_portability'); ?></li>
+            <li><?php echo t('privacy.s_rights_item_objection'); ?></li>
+            <li><?php echo t('privacy.s_rights_item_withdraw'); ?></li>
+        </ul>
+        <p><?php echo t('privacy.s_rights_exercise'); ?></p>
+        <p><?php echo t('privacy.s_rights_complaint'); ?></p>
+
+        <h2><?php echo t('privacy.s_automated_title'); ?></h2>
+        <p><?php echo t('privacy.s_automated_text'); ?></p>
+
+        <h2><?php echo t('privacy.s_transfers_title'); ?></h2>
+        <p><?php echo t('privacy.s_transfers_text'); ?></p>
 
         <h2><?php echo t('privacy.s7_title'); ?></h2>
         <p><?php echo t('privacy.s7_text'); ?></p>

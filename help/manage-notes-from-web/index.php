@@ -55,16 +55,13 @@ include_once($root_path . "/include/header.php");
             <li><strong>Download notes</strong> &mdash; Export your current notes or any previous version from the sync
                 history in JSON format.
             </li>
-            <li><strong>Sync history</strong> &mdash; Access past versions of your synced data (if <a
-                        href="/help/how-to-get-history-sync/">sync history</a> is enabled for your account).
+            <li><strong>Sync history</strong> &mdash; Access past versions of your synced data. See
+                <a href="/help/how-to-get-history-sync/">how the sync history works</a>.
             </li>
         </ul>
 
         <h2>Limitations</h2>
         <ul>
-            <li>Editing notes from the web requires <a href="/help/pro-features/">pro features</a> to be enabled
-                on your account. Without it, the web interface is read-only.
-            </li>
             <li>Only notes that have been <strong>synced</strong> with a Notefox Account are visible from the web. Notes
                 stored locally only (without an account) cannot be accessed this way.
             </li>

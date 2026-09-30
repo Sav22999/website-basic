@@ -69,14 +69,17 @@ include_once($root_path . "/include/header.php");
                                 href="/help/how-to-get-history-sync/" class="link-list-link">How to get the sync
                             history</a></li>
                     <li class="link-list-item"
-                        data-search="pro features donate liberapay premium sync history edit notes web"><a
-                                href="/help/pro-features/" class="link-list-link">Pro features</a></li>
+                        data-search="pro features donate liberapay premium sync history edit notes web advanced donation support"><a
+                                href="/help/pro-features/" class="link-list-link">Advanced features &amp; donations</a></li>
                 </ul>
             </div>
 
             <div class="faq-section">
                 <h2>Version highlights</h2>
                 <ul class="link-list">
+                    <li class="link-list-item" data-search="notefox 5.0 overview new version features free pro web edit"><a
+                                href="/help/notefox-5.0/" class="link-list-link">Notefox 5.0 &mdash; What's
+                            new</a></li>
                     <li class="link-list-item" data-search="notefox 4.6 overview new version features"><a
                                 href="/help/notefox-4.6/" class="link-list-link">Notefox 4.6 &mdash; What's
                             new</a></li>

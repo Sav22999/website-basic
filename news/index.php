@@ -31,6 +31,15 @@ function render_release_item($text)
 }
 
 $releases = array(
+        array("Release 5.0 – 30 Sep 2026", array(
+                "[new] All advanced features (sync history, web editing) are now free for everyone",
+                "[new] View and edit synced notes from the web with full formatting support",
+                "[new] Updated Terms of Service and Privacy Policy for full GDPR compliance",
+                "[new] Data retention periods clearly documented for all data types",
+                "[new] Prohibited Use clause added to Terms of Service",
+                "[improved] Updated help articles and FAQ",
+                "[improved] Account dashboard improvements"
+        )),
         array("Release 4.7.1 – 9 Apr 2026", array(
                 "[new] Now you can set Notefox also in the sidebar view",
                 "[updated] Updated translations",

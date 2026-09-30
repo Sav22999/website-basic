@@ -29,43 +29,46 @@ include_once($root_path . "/include/header.php");
         </div>
 
         <p>
-            The <strong>Sync history</strong> is part of <a href="/help/pro-features/">pro features</a>,
-            a set of extra capabilities reserved for people who support the project with a donation.
-            It lets you see the previous versions of the notes you synced with your Notefox Account, and
-            download one of them again. It is useful when you need to recover a note you deleted or
-            overwrote by mistake on one of your devices.
+            The <strong>Sync history</strong> lets you see the previous versions of the notes you
+            synced with your Notefox Account, and download one of them again. It is useful when you
+            need to recover a note you deleted or overwrote by mistake on one of your devices.
+        </p>
+        <p>
+            The sync history is <strong>available to all users</strong> with a Notefox Account &mdash;
+            no extra steps are needed.
         </p>
 
         <h2>How it works</h2>
         <p>
-            Every account starts without the sync history. While it is not enabled, the history stays
-            hidden and the sync keeps working exactly as usual &mdash; only the latest sync is stored.
-            Once pro features are granted on your account, the server begins keeping previous versions
-            of your synced notes.
+            Every time you sync your notes, the server keeps a copy of the previous version. You can
+            browse the dated list of past synced versions and download the one you need. The data stays
+            encrypted on the server, and no one else can access your notes.
         </p>
         <p>
             The history only contains the versions that were actually synced with the Notefox Account,
-            so notes you never synced cannot be recovered from it. The data stays encrypted on the
-            server, and enabling the sync history does not give anyone else access to your notes.
+            so notes you never synced cannot be recovered from it.
         </p>
 
-        <h2>How to get it</h2>
+        <h2>How to access it</h2>
         <p>
-            The sync history is included in <strong>pro features</strong>. To get it, follow the
-            instructions on the <a href="/help/pro-features/">pro features</a> page: make a
-            donation on LiberaPay (via Stripe) and then contact the developer with your Login ID.
+            Log in to your <a href="/my/account/">account dashboard</a> and navigate to the
+            <strong>Sync history</strong> section. From there you can see the dated list of your past
+            synced versions and download any of them.
+        </p>
+        <p>
+            It is always a good idea to keep your own backup too: see
+            <a href="/help/import-export-data/">how to import and export data</a>.
+        </p>
+
+        <h2>Help keep this feature free</h2>
+        <p>
+            Storing every version of every note for all users requires significant server resources.
+            If you find the sync history useful, consider
+            <a href="/help/pro-features/">supporting the project with a donation</a> &mdash; even a
+            small periodic contribution helps cover the costs and keep Notefox free for everyone.
         </p>
         <p class="text-center">
-            <a href="/help/pro-features/" class="btn">Pro features &rarr;</a>
-        </p>
-
-        <h2>After it is enabled</h2>
-        <p>
-            Once pro features have been granted, the sync history becomes available in Notefox for
-            your account: you can see the dated list of your past synced versions and download the one
-            you need. Nothing else changes &mdash; your notes, your password, and the normal syncing
-            stay the same. It is always a good idea to keep your own backup too: see
-            <a href="/help/import-export-data/">how to import and export data</a>.
+            <a href="/help/pro-features/" class="btn">Support Notefox &rarr;</a>
         </p>
     </div>
 </main>

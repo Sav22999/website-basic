@@ -5,7 +5,6 @@ include_once($root_path . "/include/i18n.php");
 $title = t('terms.title');
 $description = t('meta.terms');
 $canonical_path = "/terms/";
-$english_only = true;
 $selected_menu = "terms";
 include_once($root_path . "/include/header.php");
 ?>
@@ -14,15 +13,25 @@ include_once($root_path . "/include/header.php");
 <?php
 $_saved_i18n = $i18n;
 $_saved_lang = $i18n_lang;
-i18n_load("en");
+$_content_lang = ($i18n_lang === "it") ? "it" : "en";
+i18n_load($_content_lang);
 ?>
 
 <main id="main" class="page">
     <div class="container">
-        <?php $i18n = $_saved_i18n;
-        $i18n_lang = $_saved_lang;
-        i18n_english_only_notice();
-        i18n_load("en"); ?>
+        <?php
+        if ($_saved_lang !== "it" && $_saved_lang !== "en") {
+            $i18n_tmp = $i18n;
+            $i18n = $_saved_i18n;
+            $i18n_lang = $_saved_lang;
+            i18n_english_only_notice();
+            $i18n = $i18n_tmp;
+            $i18n_lang = $_content_lang;
+        }
+        if ($_content_lang === "en") {
+            echo '<div class="lang-notice">' . t('terms.en_disclaimer') . '</div>';
+        }
+        ?>
         <h1><?php echo t('terms.heading'); ?></h1>
 
         <p><strong><?php echo t('terms.last_update'); ?></strong> <?php echo t('terms.last_update_date'); ?></p>
@@ -54,16 +63,36 @@ i18n_load("en");
             <li><?php echo t('terms.s5_item_errors'); ?></li>
         </ul>
         <p><?php echo t('terms.s5_usage'); ?></p>
+        <p><?php echo t('terms.s5_retention_intro'); ?></p>
+        <ul>
+            <li><?php echo t('terms.s5_retention_ip_sessions'); ?></li>
+            <li><?php echo t('terms.s5_retention_ip_sync'); ?></li>
+            <li><?php echo t('terms.s5_retention_rate'); ?></li>
+            <li><?php echo t('terms.s5_retention_errors'); ?></li>
+            <li><?php echo t('terms.s5_retention_telemetry'); ?></li>
+            <li><?php echo t('terms.s5_retention_history'); ?></li>
+            <li><?php echo t('terms.s5_retention_account'); ?></li>
+            <li><?php echo t('terms.s5_retention_ip_creation'); ?></li>
+        </ul>
 
         <h2><?php echo t('terms.s6_title'); ?></h2>
         <p><?php echo t('terms.s6_p1'); ?></p>
         <p><?php echo t('terms.s6_p2'); ?></p>
 
         <h2><?php echo t('terms.s7_title'); ?></h2>
-        <p><?php echo t('terms.s7_text'); ?></p>
+        <p><?php echo t('terms.s7_p1'); ?></p>
+        <p><?php echo t('terms.s7_p2'); ?></p>
+        <p><?php echo t('terms.s7_p3'); ?></p>
 
         <h2><?php echo t('terms.s8_title'); ?></h2>
         <p><?php echo t('terms.s8_text'); ?></p>
+
+        <h2><?php echo t('terms.s9_title'); ?></h2>
+        <p><?php echo t('terms.s9_p1'); ?></p>
+        <p><?php echo t('terms.s9_p2'); ?></p>
+
+        <h2><?php echo t('terms.s10_title'); ?></h2>
+        <p><?php echo t('terms.s10_text'); ?></p>
     </div>
 </main>
 
