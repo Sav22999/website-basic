@@ -6,9 +6,11 @@ if (!isset($selected_menu) || $selected_menu == "") {
 if (isset($_GET["test"])) $selected_menu = $selected_menu . " (test)";
 echo '<script>setAction("' . $selected_menu . '");</script>';
 
-function menu_class($name, $selected_menu) {
+function menu_class($name, $selected_menu)
+{
     return "menu-button" . ($selected_menu == $name ? " selected" : "");
 }
+
 ?>
 <header class="site-header">
     <div class="site-header__inner">

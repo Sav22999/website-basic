@@ -98,8 +98,6 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <a href="https://notefox.eu" class="button button-secondary" target="_blank" rel="noopener noreferrer">Notefox</a>
             <a href="https://addons.mozilla.org/it/firefox/addon/limite/" class="button button-secondary"
                target="_blank" rel="noopener noreferrer">Limite</a>
-            <a href="https://play.google.com/store/apps/details?id=com.saverio.wordoftheday_en"
-               class="button button-secondary" target="_blank" rel="noopener noreferrer">Word of the Day</a>
         </div>
     </section>
 </main>

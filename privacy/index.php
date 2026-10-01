@@ -36,17 +36,27 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <p class="justify">
                 <b>1. Quali dati raccogliamo</b>
                 <br>
-                Sav PDF Viewer non raccoglie alcun dato personale dai propri utenti. Nessun dato di utilizzo, identificativo personale, dato di localizzazione, informazione sul dispositivo o qualsiasi altra forma di dato personale viene raccolto, conservato o trasmesso a server esterni. L'app funziona in modo completamente offline per quanto riguarda i dati degli utenti.
+                Sav PDF Viewer non raccoglie alcun dato personale dai propri utenti. Nessun dato di utilizzo,
+                identificativo personale, dato di localizzazione, informazione sul dispositivo o qualsiasi altra forma
+                di dato personale viene raccolto, conservato o trasmesso a server esterni. L'app funziona in modo
+                completamente offline per quanto riguarda i dati degli utenti.
             </p>
             <p class="justify">
                 <b>2. Servizi di terze parti</b>
                 <br>
-                Non utilizziamo alcun servizio di analisi, pubblicit&agrave;, segnalazione di crash o tracciamento di terze parti che raccolga dati personali degli utenti. L'app non include alcun SDK o libreria che trasmetta dati a terze parti. Qualora in futuro venissero introdotte librerie di terze parti, aggiorneremo la presente informativa di conseguenza e ne daremo comunicazione agli utenti tramite un aggiornamento dell'app.
+                Non utilizziamo alcun servizio di analisi, pubblicit&agrave;, segnalazione di crash o tracciamento di
+                terze parti che raccolga dati personali degli utenti. L'app non include alcun SDK o libreria che
+                trasmetta dati a terze parti. Qualora in futuro venissero introdotte librerie di terze parti,
+                aggiorneremo la presente informativa di conseguenza e ne daremo comunicazione agli utenti tramite un
+                aggiornamento dell'app.
             </p>
             <p class="justify">
                 <b>3. Permessi</b>
                 <br>
-                Sav PDF Viewer non richiede alcun permesso per funzionare. L'app utilizza il selettore di file integrato di Android (Storage Access Framework) per consentire la scelta del file da aprire. Solo il file selezionato viene consultato &mdash; l'app non pu&ograve; esplorare la memoria del dispositivo n&eacute; accedere ad altri file.
+                Sav PDF Viewer non richiede alcun permesso per funzionare. L'app utilizza il selettore di file integrato
+                di Android (Storage Access Framework) per consentire la scelta del file da aprire. Solo il file
+                selezionato viene consultato &mdash; l'app non pu&ograve; esplorare la memoria del dispositivo n&eacute;
+                accedere ad altri file.
             </p>
             <p class="justify">
                 <b>4. Conservazione locale dei dati</b>
@@ -59,19 +69,33 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <br>
                 - Preferenze e impostazioni dell'utente
                 <br>
-                Questi dati non vengono mai trasmessi, sincronizzati o sottoposti a backup su alcun server. Rimangono sul dispositivo e vengono eliminati quando si disinstalla l'app o se ne cancellano i dati.
+                Questi dati non vengono mai trasmessi, sincronizzati o sottoposti a backup su alcun server. Rimangono
+                sul dispositivo e vengono eliminati quando si disinstalla l'app o se ne cancellano i dati.
             </p>
             <p class="justify">
                 <b>5. Modulo di contatto ed email</b>
                 <br>
-                Quando si utilizza il modulo di contatto presente su questo sito web, raccogliamo le informazioni fornite volontariamente dall'utente: nome, indirizzo email e dettagli della richiesta (argomento, versione dell'app, sistema operativo e descrizione). Inoltre, la lingua predefinita del browser e il Paese approssimativo (ricavato dall'indirizzo IP tramite un servizio di geolocalizzazione di terze parti) vengono raccolti automaticamente per consentirci di rispondere nella lingua appropriata. L'indirizzo IP non viene conservato.
+                Quando si utilizza il modulo di contatto presente su questo sito web, raccogliamo le informazioni
+                fornite volontariamente dall'utente: nome, indirizzo email e dettagli della richiesta (argomento,
+                versione dell'app, sistema operativo e descrizione). Inoltre, la lingua predefinita del browser e il
+                Paese approssimativo (ricavato dall'indirizzo IP tramite un servizio di geolocalizzazione di terze
+                parti) vengono raccolti automaticamente per consentirci di rispondere nella lingua appropriata.
+                L'indirizzo IP non viene conservato.
                 <br><br>
-                Questi dati vengono utilizzati esclusivamente per rispondere alla richiesta. Un'email di conferma viene inviata all'indirizzo fornito e una copia del messaggio (incluse le informazioni raccolte automaticamente) viene inviata allo sviluppatore. Il messaggio non viene pubblicato, condiviso con terze parti o utilizzato per scopi diversi dalla gestione della richiesta. Le email vengono conservate nella casella di posta dello sviluppatore per il tempo necessario alla risoluzione della richiesta, dopodiché vengono eliminate.
+                Questi dati vengono utilizzati esclusivamente per rispondere alla richiesta. Un'email di conferma viene
+                inviata all'indirizzo fornito e una copia del messaggio (incluse le informazioni raccolte
+                automaticamente) viene inviata allo sviluppatore. Il messaggio non viene pubblicato, condiviso con terze
+                parti o utilizzato per scopi diversi dalla gestione della richiesta. Le email vengono conservate nella
+                casella di posta dello sviluppatore per il tempo necessario alla risoluzione della richiesta, dopodiché
+                vengono eliminate.
             </p>
             <p class="justify">
                 <b>6. Base giuridica</b>
                 <br>
-                L'app non raccoglie n&eacute; tratta alcun dato personale. Per il modulo di contatto presente su questo sito web, la base giuridica del trattamento &egrave; il consenso dell'utente (art. 6, par. 1, lett. a) del GDPR), prestato al momento dell'invio del modulo. Il consenso pu&ograve; essere revocato in qualsiasi momento contattandoci.
+                L'app non raccoglie n&eacute; tratta alcun dato personale. Per il modulo di contatto presente su questo
+                sito web, la base giuridica del trattamento &egrave; il consenso dell'utente (art. 6, par. 1, lett. a)
+                del GDPR), prestato al momento dell'invio del modulo. Il consenso pu&ograve; essere revocato in
+                qualsiasi momento contattandoci.
             </p>
             <p class="justify">
                 <b>7. Diritti dell'utente</b>
@@ -80,38 +104,52 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <br>
                 - Diritto di accesso: &egrave; possibile chiederci quali dati deteniamo.
                 <br>
-                - Diritto alla cancellazione: &egrave; possibile richiedere la cancellazione di qualsiasi dato personale in nostro possesso.
+                - Diritto alla cancellazione: &egrave; possibile richiedere la cancellazione di qualsiasi dato personale
+                in nostro possesso.
                 <br>
-                - Diritto di contattarci: &egrave; possibile raggiungerci in qualsiasi momento tramite <a href="https://saveriomorelli.com/contact" target="_blank" rel="noopener noreferrer">https://saveriomorelli.com/contact</a>.
+                - Diritto di contattarci: &egrave; possibile raggiungerci in qualsiasi momento tramite <a
+                        href="https://saveriomorelli.com/contact" target="_blank" rel="noopener noreferrer">https://saveriomorelli.com/contact</a>.
                 <br>
-                - Diritto all'informazione: &egrave; possibile richiedere informazioni su eventuali future modifiche alla presente informativa sulla privacy.
+                - Diritto all'informazione: &egrave; possibile richiedere informazioni su eventuali future modifiche
+                alla presente informativa sulla privacy.
             </p>
             <p class="justify">
                 <b>8. Privacy dei minori</b>
                 <br>
-                Sav PDF Viewer non raccoglie consapevolmente alcun dato da minori o da qualsiasi altro utente. Il modulo di contatto non raccoglie consapevolmente dati da minori di 16 anni. Se si ritiene che un minore abbia inviato dati personali tramite il modulo di contatto, si prega di contattarci affinch&eacute; possiamo procedere alla cancellazione.
+                Sav PDF Viewer non raccoglie consapevolmente alcun dato da minori o da qualsiasi altro utente. Il modulo
+                di contatto non raccoglie consapevolmente dati da minori di 16 anni. Se si ritiene che un minore abbia
+                inviato dati personali tramite il modulo di contatto, si prega di contattarci affinch&eacute; possiamo
+                procedere alla cancellazione.
             </p>
             <p class="justify">
                 <b>9. Sicurezza</b>
                 <br>
-                Poich&eacute; non raccogliamo n&eacute; conserviamo alcun dato personale su server esterni, il rischio di violazione dei dati &egrave; minimo. I messaggi inviati tramite il modulo di contatto vengono trasmessi tramite email crittografata (TLS) e conservati esclusivamente nella casella di posta dello sviluppatore. Seguiamo le migliori pratiche nello sviluppo di app per garantire che l'app rimanga sicura e non introduca vulnerabilit&agrave; sul dispositivo dell'utente.
+                Poich&eacute; non raccogliamo n&eacute; conserviamo alcun dato personale su server esterni, il rischio
+                di violazione dei dati &egrave; minimo. I messaggi inviati tramite il modulo di contatto vengono
+                trasmessi tramite email crittografata (TLS) e conservati esclusivamente nella casella di posta dello
+                sviluppatore. Seguiamo le migliori pratiche nello sviluppo di app per garantire che l'app rimanga sicura
+                e non introduca vulnerabilit&agrave; sul dispositivo dell'utente.
             </p>
             <p class="justify">
                 <b>10. Modifiche alla presente informativa</b>
                 <br>
-                Potremmo aggiornare la presente Informativa sulla Privacy periodicamente. Eventuali modifiche saranno riportate su questa pagina con una data di revisione aggiornata. Invitiamo gli utenti a consultare periodicamente questa pagina.
+                Potremmo aggiornare la presente Informativa sulla Privacy periodicamente. Eventuali modifiche saranno
+                riportate su questa pagina con una data di revisione aggiornata. Invitiamo gli utenti a consultare
+                periodicamente questa pagina.
             </p>
             <p class="justify">
                 <b>11. Legge applicabile</b>
                 <br>
-                La presente Informativa sulla Privacy &egrave; disciplinata dalle leggi applicabili in Italia e, ove applicabile, dal Regolamento generale sulla protezione dei dati (GDPR) dell'Unione Europea.
+                La presente Informativa sulla Privacy &egrave; disciplinata dalle leggi applicabili in Italia e, ove
+                applicabile, dal Regolamento generale sulla protezione dei dati (GDPR) dell'Unione Europea.
             </p>
             <p class="justify">
                 <b>12. Contatti</b>
                 <br>
                 Per qualsiasi domanda o dubbio relativo alla presente Informativa sulla Privacy, contattare:
                 <br>
-                Saverio Morelli &mdash; <a href="https://saveriomorelli.com/contact" target="_blank" rel="noopener noreferrer">https://saveriomorelli.com/contact</a>
+                Saverio Morelli &mdash; <a href="https://saveriomorelli.com/contact" target="_blank"
+                                           rel="noopener noreferrer">https://saveriomorelli.com/contact</a>
             </p>
             <p class="justify">
                 <em>Ultimo aggiornamento: 30 settembre 2026</em>
@@ -121,7 +159,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
         <!-- ENGLISH VERSION (courtesy translation) -->
         <div class="legal-lang-content" id="legal-en">
             <div class="legal-courtesy-notice">
-                This is a courtesy translation. In case of any discrepancy between this English version and the Italian version, the Italian version shall prevail.
+                This is a courtesy translation. In case of any discrepancy between this English version and the Italian
+                version, the Italian version shall prevail.
             </div>
             <p class="justify">
                 Data Controller: Saverio Morelli
@@ -132,14 +171,16 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <b>1. What data we collect</b>
                 <br>
                 Sav PDF Viewer does not collect any personal data from its users. No usage data, personal identifiers,
-                location data, device information, or any other form of personally identifiable information is collected,
+                location data, device information, or any other form of personally identifiable information is
+                collected,
                 stored, or transmitted to external servers. The app operates entirely offline with respect to user data.
             </p>
             <p class="justify">
                 <b>2. Third-party services</b>
                 <br>
                 We do not use any third-party analytics, advertising, crash-reporting, or tracking services that collect
-                personal user data. The app does not include any SDK or library that transmits data to third parties. If in
+                personal user data. The app does not include any SDK or library that transmits data to third parties. If
+                in
                 the future third-party libraries are introduced, we will update this policy accordingly and notify users
                 through an app update.
             </p>
@@ -161,7 +202,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <br>
                 - Your preferences and settings
                 <br>
-                This data is never transmitted, synced, or backed up to any server. It remains on your device and is deleted
+                This data is never transmitted, synced, or backed up to any server. It remains on your device and is
+                deleted
                 when you uninstall the app or clear its data.
             </p>
             <p class="justify">
@@ -169,21 +211,26 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <br>
                 When you use the contact form on this website, we collect the information you voluntarily provide: your
                 name, email address, and the details of your request (topic, app version, operating system, and
-                description). In addition, your browser's default language and your approximate country (derived from your
+                description). In addition, your browser's default language and your approximate country (derived from
+                your
                 IP address via a third-party geolocation service) are automatically collected to help us respond in the
                 appropriate language. Your IP address is not stored.
                 <br><br>
-                This data is used exclusively to respond to your request. A confirmation email is sent to the address you
+                This data is used exclusively to respond to your request. A confirmation email is sent to the address
+                you
                 provide, and a copy of your message (including the automatically collected information) is sent to the
                 developer. Your message is not published, shared with third parties, or used for any purpose other than
-                handling your request. Emails are stored only in the developer's mailbox for as long as necessary to resolve
+                handling your request. Emails are stored only in the developer's mailbox for as long as necessary to
+                resolve
                 your inquiry, and are then deleted.
             </p>
             <p class="justify">
                 <b>6. Legal basis</b>
                 <br>
-                The app does not collect or process any personal data. For the contact form on this website, the legal basis
-                for processing is your consent (Art. 6(1)(a) GDPR), given when you submit the form. You may withdraw your
+                The app does not collect or process any personal data. For the contact form on this website, the legal
+                basis
+                for processing is your consent (Art. 6(1)(a) GDPR), given when you submit the form. You may withdraw
+                your
                 consent at any time by contacting us.
             </p>
             <p class="justify">
@@ -203,7 +250,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <p class="justify">
                 <b>8. Children's privacy</b>
                 <br>
-                Sav PDF Viewer does not knowingly collect any data from children or any other users. The contact form does
+                Sav PDF Viewer does not knowingly collect any data from children or any other users. The contact form
+                does
                 not knowingly collect data from children under 16. If you believe a child has submitted personal data
                 through the contact form, please contact us so we can delete it.
             </p>
@@ -212,7 +260,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <br>
                 Because we do not collect or store any personal data on external servers, the risk of data breach is
                 minimal. Contact form submissions are transmitted via encrypted email (TLS) and stored only in the
-                developer's mailbox. We follow best practices in app development to ensure the app itself remains secure and
+                developer's mailbox. We follow best practices in app development to ensure the app itself remains secure
+                and
                 does not introduce vulnerabilities on your device.
             </p>
             <p class="justify">
@@ -232,7 +281,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
                 <br>
                 If you have any questions or concerns about this Privacy Policy, please contact:
                 <br>
-                Saverio Morelli — <a href="https://saveriomorelli.com/contact" target="_blank" rel="noopener noreferrer">https://saveriomorelli.com/contact</a>
+                Saverio Morelli — <a href="https://saveriomorelli.com/contact" target="_blank"
+                                     rel="noopener noreferrer">https://saveriomorelli.com/contact</a>
             </p>
             <p class="justify">
                 <em>Last update: 30 September 2026</em>
@@ -257,13 +307,17 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
 </footer>
 
 <script>
-function switchLegalLang(lang, btn) {
-    document.querySelectorAll('.legal-lang-tab').forEach(function(t) { t.classList.remove('active'); });
-    document.querySelectorAll('.legal-lang-content').forEach(function(c) { c.classList.remove('active'); });
-    btn.classList.add('active');
-    var target = document.getElementById('legal-' + lang);
-    if (target) target.classList.add('active');
-}
+    function switchLegalLang(lang, btn) {
+        document.querySelectorAll('.legal-lang-tab').forEach(function (t) {
+            t.classList.remove('active');
+        });
+        document.querySelectorAll('.legal-lang-content').forEach(function (c) {
+            c.classList.remove('active');
+        });
+        btn.classList.add('active');
+        var target = document.getElementById('legal-' + lang);
+        if (target) target.classList.add('active');
+    }
 </script>
 
 </body>

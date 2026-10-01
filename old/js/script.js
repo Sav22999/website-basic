@@ -62,12 +62,12 @@ function nextReview(allReviews, index) {
 
         if (index === (allReviews.length - 1)) {
             document.getElementById("next-btn-review").style.display = "none";
-        }else{
+        } else {
             document.getElementById("next-btn-review").style.display = "inline-block";
         }
         if (index === 0) {
             document.getElementById("prev-btn-review").style.display = "none";
-        }else{
+        } else {
             document.getElementById("prev-btn-review").style.display = "inline-block";
         }
 
@@ -84,12 +84,12 @@ function prevReview(allReviews, index) {
 
         if (index === (allReviews.length - 1)) {
             document.getElementById("next-btn-review").style.display = "none";
-        }else{
+        } else {
             document.getElementById("next-btn-review").style.display = "inline-block";
         }
         if (index === 0) {
             document.getElementById("prev-btn-review").style.display = "none";
-        }else{
+        } else {
             document.getElementById("prev-btn-review").style.display = "inline-block";
         }
 

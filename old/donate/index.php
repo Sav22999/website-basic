@@ -43,7 +43,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/old/include/menu.php");
             <input type="button" class="button button-with-icon-secondary button-secondary button-limite"
                    value="Limite" onclick="location.href='https://addons.mozilla.org/it/firefox/addon/limite/'">
             <input type="button" class="button button-with-icon-secondary button-secondary button-wordoftheday"
-                   value="Word of the Day" onclick="location.href='https://play.google.com/store/apps/details?id=com.saverio.wordoftheday_en'">
+                   value="Word of the Day"
+                   onclick="location.href='https://play.google.com/store/apps/details?id=com.saverio.wordoftheday_en'">
         </div>
     </div>
 </main>

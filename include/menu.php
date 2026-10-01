@@ -29,7 +29,8 @@ function menu_class($name, $selected_menu)
                data-i18n="nav.help">Help</a>
             <a href="/news/" class="<?php echo menu_class("news", $selected_menu); ?>"
                data-i18n="nav.news">News</a>
-            <a href="/donate/" class="<?php echo menu_class("donate", $selected_menu); ?>" data-i18n="nav.donate">Donate</a>
+            <a href="/donate/" class="<?php echo menu_class("donate", $selected_menu); ?>"
+               data-i18n="nav.donate">Donate</a>
 
             <div class="lang-dropdown" id="lang-dropdown">
                 <button type="button" class="lang-trigger" id="lang-trigger" onclick="toggleLangDropdown()">
@@ -109,9 +110,9 @@ function menu_class($name, $selected_menu)
 </header>
 <label for="nav-toggle" class="nav-overlay" aria-hidden="true"></label>
 <?php if (!empty($GLOBALS['_maintenance_bypass'])): ?>
-<div class="maintenance-banner">
-    <div class="maintenance-banner__tape"></div>
-    <span class="maintenance-banner__text">Maintenance mode active</span>
-    <div class="maintenance-banner__tape"></div>
-</div>
+    <div class="maintenance-banner">
+        <div class="maintenance-banner__tape"></div>
+        <span class="maintenance-banner__text">Maintenance mode active</span>
+        <div class="maintenance-banner__tape"></div>
+    </div>
 <?php endif; ?>
