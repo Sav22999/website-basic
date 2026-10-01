@@ -84,8 +84,6 @@ include_once($root_path . "/include/header.php");
                 Viewer</a>
             <a href="https://addons.mozilla.org/it/firefox/addon/limite/" class="btn btn--secondary" target="_blank"
                rel="noopener">Limite</a>
-            <a href="https://play.google.com/store/apps/details?id=com.saverio.wordoftheday_en"
-               class="btn btn--secondary" target="_blank" rel="noopener">Word of the Day</a>
         </div>
     </div>
 </main>
