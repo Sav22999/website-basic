@@ -52,8 +52,6 @@ include_once($root_path . "/include/header.php");
                 <div class="notes-filter-group">
                     <label><?php echo te('account.notes_filter_type'); ?></label>
                     <div class="notes-filter-chips" id="filter-type">
-                        <button type="button" class="notes-chip notes-chip--active"
-                                data-value=""><?php echo te('account.notes_filter_all'); ?></button>
                         <button type="button" class="notes-chip"
                                 data-value="0"><?php echo te('account.notes_global'); ?></button>
                         <button type="button" class="notes-chip"
@@ -227,24 +225,25 @@ include_once($root_path . "/include/header.php");
 
                     <div class="note-editor-row">
                         <div class="note-editor-field note-editor-field--half">
-                            <label for="editor-folder"><?php echo te('account.notes_label_folder'); ?></label>
-                            <input type="text" id="editor-folder" class="form-input"
-                                   placeholder="<?php echo te('account.notes_folder_placeholder'); ?>"
-                                   list="editor-folder-list">
-                            <datalist id="editor-folder-list"></datalist>
+                            <label><?php echo te('account.notes_label_folder'); ?></label>
+                            <div class="editor-autocomplete-wrap">
+                                <div class="notes-search-wrap notes-filter-chip-wrap" id="editor-folder-wrap">
+                                    <input type="text" id="editor-folder" class="notes-search-input"
+                                           placeholder="<?php echo te('account.notes_folder_placeholder'); ?>"
+                                           autocomplete="off">
+                                </div>
+                                <div class="notes-autocomplete hidden2" id="editor-folder-suggestions"></div>
+                            </div>
                         </div>
                         <div class="note-editor-field note-editor-field--half">
                             <label><?php echo te('account.notes_label_tags'); ?></label>
-                            <div class="note-tags-input">
-                                <div class="note-tags-add">
-                                    <input type="text" id="editor-tag-input" class="form-input"
+                            <div class="editor-autocomplete-wrap">
+                                <div class="notes-search-wrap notes-filter-chip-wrap" id="editor-tag-wrap">
+                                    <input type="text" id="editor-tag-input" class="notes-search-input"
                                            placeholder="<?php echo te('account.notes_tag_placeholder'); ?>"
-                                           list="editor-tag-list">
-                                    <datalist id="editor-tag-list"></datalist>
-                                    <button type="button" id="editor-tag-add"
-                                            class="btn btn--small"><?php echo te('account.notes_add_tag'); ?></button>
+                                           autocomplete="off">
                                 </div>
-                                <div id="editor-tags-list" class="note-tags-chips"></div>
+                                <div class="notes-autocomplete hidden2" id="editor-tag-suggestions"></div>
                             </div>
                         </div>
                     </div>
@@ -324,7 +323,7 @@ include_once($root_path . "/include/header.php");
 
         // ── Filters ──
 
-        var activeFilters = {type: "", color: "", folders: [], tags: []};
+        var activeFilters = {types: [], colors: [], folders: [], tags: []};
         var filterToggleBtn = document.getElementById("notes-filter-toggle");
         var filtersEl = document.getElementById("notes-filters");
         var filterTypeEl = document.getElementById("filter-type");
@@ -344,22 +343,20 @@ include_once($root_path . "/include/header.php");
         filterTypeEl.addEventListener("click", function (e) {
             var btn = e.target.closest(".notes-chip");
             if (!btn) return;
-            filterTypeEl.querySelectorAll(".notes-chip").forEach(function (c) {
-                c.classList.remove("notes-chip--active");
-            });
-            btn.classList.add("notes-chip--active");
-            activeFilters.type = btn.dataset.value;
+            var val = btn.dataset.value;
+            var idx = activeFilters.types.indexOf(val);
+            if (idx === -1) {
+                activeFilters.types.push(val);
+                btn.classList.add("notes-chip--active");
+            } else {
+                activeFilters.types.splice(idx, 1);
+                btn.classList.remove("notes-chip--active");
+            }
             renderAll();
         });
 
         function buildColorFilterChips() {
             filterColorEl.innerHTML = "";
-            var allBtn = document.createElement("button");
-            allBtn.type = "button";
-            allBtn.className = "notes-chip notes-chip--active";
-            allBtn.dataset.value = "";
-            allBtn.textContent = <?php echo json_encode(t('account.notes_filter_all'), JSON_UNESCAPED_UNICODE); ?>;
-            filterColorEl.appendChild(allBtn);
 
             var noneBtn = document.createElement("button");
             noneBtn.type = "button";
@@ -381,11 +378,15 @@ include_once($root_path . "/include/header.php");
             filterColorEl.addEventListener("click", function (e) {
                 var btn = e.target.closest(".notes-chip");
                 if (!btn) return;
-                filterColorEl.querySelectorAll(".notes-chip").forEach(function (c) {
-                    c.classList.remove("notes-chip--active");
-                });
-                btn.classList.add("notes-chip--active");
-                activeFilters.color = btn.dataset.value;
+                var val = btn.dataset.value;
+                var idx = activeFilters.colors.indexOf(val);
+                if (idx === -1) {
+                    activeFilters.colors.push(val);
+                    btn.classList.add("notes-chip--active");
+                } else {
+                    activeFilters.colors.splice(idx, 1);
+                    btn.classList.remove("notes-chip--active");
+                }
                 renderAll();
             });
         }
@@ -437,8 +438,8 @@ include_once($root_path . "/include/header.php");
                         activeFilters[filterKey].push(opt);
                         inputEl.value = "";
                         renderChips();
-                        suggestionsEl.classList.add("hidden2");
                         renderAll();
+                        showSuggestions();
                     });
                     suggestionsEl.appendChild(item);
                 });
@@ -466,8 +467,8 @@ include_once($root_path . "/include/header.php");
                             activeFilters[filterKey].push(match);
                             inputEl.value = "";
                             renderChips();
-                            suggestionsEl.classList.add("hidden2");
                             renderAll();
+                            showSuggestions();
                         }
                     }
                 } else if (e.key === "Backspace" && inputEl.value === "" && activeFilters[filterKey].length > 0) {
@@ -488,6 +489,8 @@ include_once($root_path . "/include/header.php");
 
         var allFolders = [];
         var allTags = [];
+        var allFolderNames = [];
+        var allTagNames = [];
 
         var renderFolderChips = setupFilterChipInput(filterFolderEl, filterFolderWrap, filterFolderSuggestions, "folders", function () {
             return allFolders;
@@ -497,12 +500,12 @@ include_once($root_path . "/include/header.php");
         });
 
         document.getElementById("notes-clear-filters").addEventListener("click", function () {
-            activeFilters = {type: "", color: "", folders: [], tags: []};
-            filterTypeEl.querySelectorAll(".notes-chip").forEach(function (c, i) {
-                c.classList.toggle("notes-chip--active", i === 0);
+            activeFilters = {types: [], colors: [], folders: [], tags: []};
+            filterTypeEl.querySelectorAll(".notes-chip").forEach(function (c) {
+                c.classList.remove("notes-chip--active");
             });
-            filterColorEl.querySelectorAll(".notes-chip").forEach(function (c, i) {
-                c.classList.toggle("notes-chip--active", i === 0);
+            filterColorEl.querySelectorAll(".notes-chip").forEach(function (c) {
+                c.classList.remove("notes-chip--active");
             });
             filterFolderEl.value = "";
             filterTagEl.value = "";
@@ -526,20 +529,8 @@ include_once($root_path . "/include/header.php");
             allFolders = [""].concat(Object.keys(folders).sort());
             allTags = Object.keys(tags).sort();
 
-            var folderList = document.getElementById("editor-folder-list");
-            folderList.innerHTML = "";
-            Object.keys(folders).sort().forEach(function (f) {
-                var o = document.createElement("option");
-                o.value = f;
-                folderList.appendChild(o);
-            });
-            var tagList = document.getElementById("editor-tag-list");
-            tagList.innerHTML = "";
-            Object.keys(tags).sort().forEach(function (t) {
-                var o = document.createElement("option");
-                o.value = t;
-                tagList.appendChild(o);
-            });
+            allFolderNames = Object.keys(folders).sort();
+            allTagNames = Object.keys(tags).sort();
         }
 
         // ── Helpers ──
@@ -628,11 +619,8 @@ include_once($root_path . "/include/header.php");
         }
 
         function matchesFilters(note) {
-            if (activeFilters.type !== "" && String(note.type) !== activeFilters.type) return false;
-            if (activeFilters.color !== "") {
-                if (activeFilters.color === "none" && note.color !== "none") return false;
-                if (activeFilters.color !== "none" && note.color !== activeFilters.color) return false;
-            }
+            if (activeFilters.types.length > 0 && activeFilters.types.indexOf(String(note.type)) === -1) return false;
+            if (activeFilters.colors.length > 0 && activeFilters.colors.indexOf(note.color) === -1) return false;
             if (activeFilters.folders.length > 0) {
                 var folderMatch = false;
                 for (var i = 0; i < activeFilters.folders.length; i++) {
@@ -1082,7 +1070,8 @@ include_once($root_path . "/include/header.php");
         var editorContentEl = document.getElementById("editor-content");
         var editorFolderEl = document.getElementById("editor-folder");
         var editorTagInput = document.getElementById("editor-tag-input");
-        var editorTagsList = document.getElementById("editor-tags-list");
+        var editorFolderWrap = document.getElementById("editor-folder-wrap");
+        var editorTagWrap = document.getElementById("editor-tag-wrap");
         var editorColorGrid = document.getElementById("editor-color-grid");
         var editorSaveBtn = document.getElementById("editor-save");
         var editorCancelBtn = document.getElementById("editor-cancel");
@@ -1138,39 +1127,136 @@ include_once($root_path . "/include/header.php");
             }
         }
 
+        // ── Editor chip inputs (folder & tag) ──
+        var editorFolderSuggestions = document.getElementById("editor-folder-suggestions");
+        var editorTagSuggestions = document.getElementById("editor-tag-suggestions");
+        var editorFolder = "";
+
+        function renderEditorFolderChips() {
+            var existing = editorFolderWrap.querySelectorAll(".notes-search-chip");
+            for (var i = existing.length - 1; i >= 0; i--) existing[i].parentNode.removeChild(existing[i]);
+            if (editorFolder) {
+                var chip = document.createElement("span");
+                chip.className = "notes-search-chip";
+                chip.textContent = editorFolder;
+                var btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "notes-search-chip-remove";
+                btn.innerHTML = "&times;";
+                btn.addEventListener("click", function () {
+                    editorFolder = "";
+                    renderEditorFolderChips();
+                });
+                chip.appendChild(btn);
+                editorFolderWrap.insertBefore(chip, editorFolderEl);
+            }
+            editorFolderEl.placeholder = editorFolder ? "" :
+                <?php echo json_encode(t('account.notes_folder_placeholder'), JSON_UNESCAPED_UNICODE); ?>;
+        }
+
         function renderEditorTags() {
-            editorTagsList.innerHTML = "";
+            var existing = editorTagWrap.querySelectorAll(".notes-search-chip");
+            for (var i = existing.length - 1; i >= 0; i--) existing[i].parentNode.removeChild(existing[i]);
             editorTags.forEach(function (tag, idx) {
                 var chip = document.createElement("span");
-                chip.className = "note-tag-chip note-tag-chip--removable";
+                chip.className = "notes-search-chip";
                 chip.textContent = tag;
-                var removeBtn = document.createElement("button");
-                removeBtn.type = "button";
-                removeBtn.className = "note-tag-remove";
-                removeBtn.innerHTML = "&times;";
-                removeBtn.addEventListener("click", function () {
+                var btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "notes-search-chip-remove";
+                btn.innerHTML = "&times;";
+                btn.addEventListener("click", function () {
                     editorTags.splice(idx, 1);
                     renderEditorTags();
                 });
-                chip.appendChild(removeBtn);
-                editorTagsList.appendChild(chip);
+                chip.appendChild(btn);
+                editorTagWrap.insertBefore(chip, editorTagInput);
+            });
+            editorTagInput.placeholder = editorTags.length ? "" :
+                <?php echo json_encode(t('account.notes_tag_placeholder'), JSON_UNESCAPED_UNICODE); ?>;
+        }
+
+        function setupEditorAutocomplete(inputEl, suggestionsEl, getOptions, onSelect) {
+            function show() {
+                var text = inputEl.value.trim().toLowerCase();
+                var options = getOptions();
+                var filtered = options.filter(function (o) {
+                    return text === "" || o.toLowerCase().indexOf(text) !== -1;
+                });
+                suggestionsEl.innerHTML = "";
+                if (filtered.length === 0) {
+                    suggestionsEl.classList.add("hidden2");
+                    return;
+                }
+                filtered.forEach(function (opt) {
+                    var item = document.createElement("div");
+                    item.className = "notes-autocomplete-item";
+                    item.textContent = opt;
+                    item.addEventListener("mousedown", function (e) {
+                        e.preventDefault();
+                        onSelect(opt);
+                        suggestionsEl.classList.add("hidden2");
+                    });
+                    suggestionsEl.appendChild(item);
+                });
+                suggestionsEl.classList.remove("hidden2");
+            }
+            inputEl.addEventListener("input", show);
+            inputEl.addEventListener("focus", show);
+            inputEl.addEventListener("blur", function () {
+                setTimeout(function () { suggestionsEl.classList.add("hidden2"); }, 150);
             });
         }
 
-        function addEditorTag() {
-            var val = editorTagInput.value.trim();
-            if (val && editorTags.indexOf(val) === -1) {
-                editorTags.push(val);
-                renderEditorTags();
+        setupEditorAutocomplete(editorFolderEl, editorFolderSuggestions,
+            function () { return allFolderNames.filter(function (f) { return f !== editorFolder; }); },
+            function (val) {
+                editorFolder = val;
+                editorFolderEl.value = "";
+                renderEditorFolderChips();
             }
-            editorTagInput.value = "";
-        }
+        );
 
-        document.getElementById("editor-tag-add").addEventListener("click", addEditorTag);
+        editorFolderEl.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                var val = editorFolderEl.value.trim();
+                if (val) {
+                    editorFolder = val;
+                    editorFolderEl.value = "";
+                    renderEditorFolderChips();
+                    editorFolderSuggestions.classList.add("hidden2");
+                }
+            } else if (e.key === "Backspace" && editorFolderEl.value === "" && editorFolder) {
+                editorFolder = "";
+                renderEditorFolderChips();
+            }
+        });
+
+        setupEditorAutocomplete(editorTagInput, editorTagSuggestions,
+            function () { return allTagNames.filter(function (t) { return editorTags.indexOf(t) === -1; }); },
+            function (val) {
+                if (editorTags.indexOf(val) === -1) {
+                    editorTags.push(val);
+                    renderEditorTags();
+                }
+                editorTagInput.value = "";
+            }
+        );
+
         editorTagInput.addEventListener("keydown", function (e) {
             if (e.key === "Enter") {
                 e.preventDefault();
-                addEditorTag();
+                var val = editorTagInput.value.trim();
+                if (val && editorTags.indexOf(val) === -1) {
+                    editorTags.push(val);
+                    renderEditorTags();
+                }
+                editorTagInput.value = "";
+                editorTagSuggestions.classList.add("hidden2");
+            } else if (e.key === "Backspace" && editorTagInput.value === "" && editorTags.length > 0) {
+                editorTags.pop();
+                renderEditorTags();
             }
         });
 
@@ -1227,7 +1313,9 @@ include_once($root_path . "/include/header.php");
             var entry = currentSnapshot && currentSnapshot.websites ? currentSnapshot.websites[url] : null;
             editorTitleEl.value = entry ? (entry.title || "") : "";
             editorContentEl.innerHTML = entry ? (entry.notes || "") : "";
-            editorFolderEl.value = entry ? (entry["tag-folder"] || "") : "";
+            editorFolder = entry ? (entry["tag-folder"] || "") : "";
+            editorFolderEl.value = "";
+            renderEditorFolderChips();
             editorTags = entry && entry["tags-text"] ? entry["tags-text"].slice() : [];
             selectColor(entry ? (entry["tag-colour"] || "none") : "none");
             renderEditorTags();
@@ -1254,6 +1342,14 @@ include_once($root_path . "/include/header.php");
             editingUrl = null;
             overlayEl.classList.add("hidden2");
             document.body.style.overflow = "";
+            editorFolder = "";
+            editorFolderEl.value = "";
+            renderEditorFolderChips();
+            editorTags = [];
+            editorTagInput.value = "";
+            renderEditorTags();
+            editorFolderSuggestions.classList.add("hidden2");
+            editorTagSuggestions.classList.add("hidden2");
         }
 
         editorCancelBtn.addEventListener("click", closeEditor);
@@ -1297,7 +1393,7 @@ include_once($root_path . "/include/header.php");
                 entry["last-update"] = now;
                 entry["tag-colour"] = selectedColor;
                 entry["tags-text"] = editorTags.slice();
-                entry["tag-folder"] = editorFolderEl.value.trim();
+                entry["tag-folder"] = editorFolder;
                 if (typeof entry.type !== "number") entry.type = 2;
 
                 if (newUrl !== editingUrl) {

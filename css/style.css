@@ -462,6 +462,43 @@ img {
     margin-bottom: 24px;
 }
 
+.lang-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 24px;
+    border-bottom: 2px solid var(--color-border);
+}
+
+.lang-tab {
+    padding: 8px 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    transition: color var(--transition), border-color var(--transition);
+}
+
+.lang-tab:hover {
+    color: var(--color-text);
+}
+
+.lang-tab.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+.lang-content {
+    display: none;
+}
+
+.lang-content.active {
+    display: block;
+}
+
 .nav-toggle {
     display: none;
     align-items: center;
@@ -2619,11 +2656,15 @@ select.form-input {
     }
 
     .note-card {
-        padding: 12px 12px 0;
+        padding: 10px 10px 0;
+    }
+
+    .note-card--colored {
+        padding-left: 24px;
     }
 
     .note-card::after {
-        margin: 0 -12px;
+        margin: 0 -10px;
     }
 
     .form-container {
@@ -2919,9 +2960,10 @@ select.form-input {
     opacity: 1;
 }
 
-.notes-filter-chip-wrap {
+.notes-filter-chip-wrap,
+.editor-autocomplete-wrap {
     position: relative;
-    max-width: 280px;
+    width: 100%;
 }
 
 .notes-autocomplete {
@@ -2933,8 +2975,8 @@ select.form-input {
     overflow-y: auto;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-top: none;
-    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    border-radius: var(--radius-md);
+    margin-top: 4px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     z-index: 10;
 }
@@ -2968,6 +3010,11 @@ select.form-input {
     background: var(--color-primary);
     color: #fff;
     border-color: var(--color-primary);
+}
+
+.notes-filter-btn--active:hover {
+    background: var(--color-primary-hover, color-mix(in srgb, var(--color-primary) 85%, #000));
+    border-color: var(--color-primary-hover, color-mix(in srgb, var(--color-primary) 85%, #000));
 }
 
 /* ── Note filters ── */
@@ -3113,13 +3160,24 @@ select.form-input {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    padding: 14px 16px 0;
+    padding: 10px 12px 0;
     margin-bottom: 8px;
     position: relative;
 }
 
 .note-card--colored {
-    border-left: 4px solid var(--note-color);
+    padding-left: 26px;
+}
+
+.note-card--colored::before {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    bottom: 6px;
+    width: 10px;
+    background: var(--note-color);
+    border-radius: 5px;
 }
 
 .note-card-header {
@@ -3692,6 +3750,10 @@ select.form-input {
 @media (max-width: 640px) {
     .notes-toolbar {
         flex-direction: column;
+    }
+
+    .notes-search-wrap {
+        width: 100%;
     }
 
     .notes-sort-select {
