@@ -136,6 +136,24 @@ function v2_pro_features($c, $user_row)
 }
 
 /**
+ * Permission level of an account. Defaults to 0 (standard user) when the
+ * additive column is missing or the value is NULL.
+ */
+function v2_permissions($c, $user_row)
+{
+    if (!is_array($user_row)) {
+        return 0;
+    }
+    if (!array_key_exists("permissions", $user_row)) {
+        return 0;
+    }
+    if ($user_row["permissions"] === null) {
+        return 0;
+    }
+    return (int)$user_row["permissions"];
+}
+
+/**
  * The sync history permission of an authenticated session, or a clean error.
  * The two `data/get/history*` endpoints call this right after the rate limit.
  */
@@ -159,6 +177,9 @@ function v2_create_session($c, $user_id, $password, $ip_address, $expiry = null)
     global $logins_table, $tokens_table;
 
     $now = getTimestamp();
+    if ($expiry === null) {
+        $expiry = date("Y-m-d H:i:s", strtotime("+30 days"));
+    }
     $login_id = v2_random_id(32);
     $token = v2_random_id(32);
     $password_token = encryptTextWithPassword($password, $token);
@@ -253,6 +274,7 @@ function v2_authenticate($c, $login_id, $token)
         "otp-enabled" => v2_otp_enabled($c, $user),
         "history-enabled" => v2_history_enabled($c, $user),
         "pro-features" => v2_pro_features($c, $user),
+        "permissions" => v2_permissions($c, $user),
         "dek" => v2_get_or_create_dek($c, $login["user-id"], $password),
     );
 }

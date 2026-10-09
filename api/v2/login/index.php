@@ -75,6 +75,7 @@ if (!v2_otp_enabled($c, $user)) {
         "expiry" => $session["expiry"],
         "username" => $username,
         "encryption-ready" => $dek !== null,
+        "permissions" => v2_permissions($c, $user),
     ));
 }
 

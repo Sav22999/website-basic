@@ -118,6 +118,7 @@ $challenge_json = altcha_create_challenge($hmac_key);
                         <span class="form-hint form-hint--required"><?php echo te('contact.required_hint'); ?></span></label>
                     <textarea class="form-input form-textarea" id="contact-message-input" name="message" rows="6"
                               required></textarea>
+                    <p style="margin: 6px 0 0; font-size: 0.8rem; color: var(--color-text-muted);"><?php echo te('contact.message_lang_hint'); ?></p>
                 </div>
 
                 <div class="captcha-card">

@@ -98,7 +98,8 @@ include_once($root_path . "/include/header.php");
                 saveSession({
                     "login-id": data["login-id"],
                     "token": data["token"],
-                    "username": data["username"]
+                    "username": data["username"],
+                    "permissions": data["permissions"] || 0
                 });
                 location.href = "/my/account/";
             }).catch(function (error) {

@@ -103,5 +103,6 @@ api_ok(array(
     "expiry" => $expiry,
     "username" => $username === false ? null : $username,
     "encryption-ready" => $dek !== null,
+    "permissions" => v2_permissions($c, $user),
 ));
 ?>

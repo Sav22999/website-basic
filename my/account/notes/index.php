@@ -584,23 +584,67 @@ include_once($root_path . "/include/header.php");
             }
         }
 
+        function entryNotes(entry) {
+            if (entry["all-notes"] && Array.isArray(entry["all-notes"])) {
+                return entry["all-notes"];
+            }
+            var primary = {
+                notes: entry.notes || "",
+                title: entry.title || "",
+                "last-update": entry["last-update"] || "",
+                content: entry.content || "",
+                "tag-colour": entry["tag-colour"] || "",
+                "tags-text": entry["tags-text"] || [],
+                "tag-folder": entry["tag-folder"] || "",
+                sticky: !!entry.sticky,
+                minimized: !!entry.minimized,
+                pinned: !!entry.pinned
+            };
+            if (entry.coords) primary.coords = entry.coords;
+            if (entry.sizes) primary.sizes = entry.sizes;
+            if (entry.opacity) primary.opacity = entry.opacity;
+            if (entry["minimized-pos"]) primary["minimized-pos"] = entry["minimized-pos"];
+            var list = [];
+            if (primary.notes || primary.title) list.push(primary);
+            if (Array.isArray(entry["notes-extra"])) {
+                entry["notes-extra"].forEach(function (ex) { if (ex) list.push(ex); });
+            }
+            return list;
+        }
+
+        var LEGACY_NOTE_FIELDS = ["notes", "title", "last-update", "content", "tag-colour", "tags-text", "tag-folder", "sticky", "minimized", "pinned", "coords", "sizes", "opacity", "minimized-pos"];
+
+        // Maps a noteIndex (as produced by entryNotes) to the primary note or a notes-extra[] item of a legacy entry
+        function legacyTarget(entry, noteIndex) {
+            var hasPrimary = !!(entry.notes || entry.title);
+            if (noteIndex === 0 && hasPrimary) return {kind: "primary"};
+            return {kind: "extra", i: noteIndex - (hasPrimary ? 1 : 0)};
+        }
+
         function parseNotes(websites) {
             var notes = [];
             for (var url in websites) {
                 if (!Object.prototype.hasOwnProperty.call(websites, url)) continue;
                 var entry = websites[url];
-                if (!entry || (!entry.notes && !entry.title)) continue;
-                notes.push({
-                    url: url,
-                    domain: domainOf(url),
-                    title: entry.title || "",
-                    content: entry.notes || "",
-                    lastUpdate: entry["last-update"] || "",
-                    color: entry["tag-colour"] || "none",
-                    tags: entry["tags-text"] || [],
-                    folder: entry["tag-folder"] || "",
-                    type: typeof entry.type === "number" ? entry.type : 2
-                });
+                if (!entry) continue;
+                var type = typeof entry.type === "number" ? entry.type : 2;
+                var list = entryNotes(entry);
+                for (var i = 0; i < list.length; i++) {
+                    var n = list[i];
+                    if (!n.notes && !n.title) continue;
+                    notes.push({
+                        url: url,
+                        domain: domainOf(url),
+                        title: n.title || "",
+                        content: n.notes || "",
+                        lastUpdate: n["last-update"] || "",
+                        color: n["tag-colour"] || "none",
+                        tags: n["tags-text"] || [],
+                        folder: n["tag-folder"] || "",
+                        type: type,
+                        noteIndex: i
+                    });
+                }
             }
             return notes;
         }
@@ -726,7 +770,7 @@ include_once($root_path . "/include/header.php");
             editBtn.title = STRINGS.edit;
             editBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
             editBtn.addEventListener("click", function () {
-                openEditor(note.url);
+                openEditor(note.url, note.noteIndex);
             });
             actions.appendChild(editBtn);
 
@@ -754,7 +798,7 @@ include_once($root_path . "/include/header.php");
             delBtn.title = STRINGS.del;
             delBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
             delBtn.addEventListener("click", function () {
-                deleteNote(note.url);
+                deleteNote(note.url, note.noteIndex);
             });
             actions.appendChild(delBtn);
 
@@ -962,7 +1006,7 @@ include_once($root_path . "/include/header.php");
 
         // ── Delete ──
 
-        function deleteNote(url) {
+        function deleteNote(url, noteIndex) {
             if (!confirm(STRINGS.del_confirm)) return;
 
             notefoxAuthenticatedApi("/data/get", {
@@ -977,7 +1021,28 @@ include_once($root_path . "/include/header.php");
                 }
                 if (!snapshot.websites) snapshot.websites = {};
 
-                delete snapshot.websites[url];
+                var entry = snapshot.websites[url];
+                var extras = entry && Array.isArray(entry["notes-extra"]) ? entry["notes-extra"] : [];
+                if (entry && entry["all-notes"] && Array.isArray(entry["all-notes"])) {
+                    if (entry["all-notes"].length > 1) entry["all-notes"].splice(noteIndex, 1);
+                    else delete snapshot.websites[url];
+                } else if (entry && extras.length > 0) {
+                    var target = legacyTarget(entry, noteIndex);
+                    if (target.kind === "extra") {
+                        extras.splice(target.i, 1);
+                    } else {
+                        // Promote the first extra note to primary
+                        var promoted = extras.shift() || {};
+                        LEGACY_NOTE_FIELDS.forEach(function (field) {
+                            if (promoted[field] !== undefined) entry[field] = promoted[field];
+                            else delete entry[field];
+                        });
+                    }
+                    if (extras.length === 0) delete entry["notes-extra"];
+                    if (!entry.notes && !entry.title && !entry["notes-extra"]) delete snapshot.websites[url];
+                } else {
+                    delete snapshot.websites[url];
+                }
                 snapshot["last-update"] = nowDateString();
 
                 var payload = {
@@ -1063,6 +1128,7 @@ include_once($root_path . "/include/header.php");
 
         var editorOpen = false;
         var editingUrl = null;
+        var editingNoteIndex = 0;
         var editorTags = [];
 
         var overlayEl = document.getElementById("note-editor-overlay");
@@ -1306,27 +1372,33 @@ include_once($root_path . "/include/header.php");
             document.execCommand("insertText", false, text);
         });
 
-        function openEditor(url) {
+        function openEditor(url, noteIndex) {
             editingUrl = url;
+            editingNoteIndex = typeof noteIndex === "number" ? noteIndex : 0;
             editorOpen = true;
 
             var entry = currentSnapshot && currentSnapshot.websites ? currentSnapshot.websites[url] : null;
-            editorTitleEl.value = entry ? (entry.title || "") : "";
-            editorContentEl.innerHTML = entry ? (entry.notes || "") : "";
-            editorFolder = entry ? (entry["tag-folder"] || "") : "";
+            var noteData = null;
+            if (entry) {
+                var list = entryNotes(entry);
+                noteData = list[editingNoteIndex] || list[0] || null;
+            }
+            editorTitleEl.value = noteData ? (noteData.title || "") : "";
+            editorContentEl.innerHTML = noteData ? (noteData.notes || "") : "";
+            editorFolder = noteData ? (noteData["tag-folder"] || "") : "";
             editorFolderEl.value = "";
             renderEditorFolderChips();
-            editorTags = entry && entry["tags-text"] ? entry["tags-text"].slice() : [];
-            selectColor(entry ? (entry["tag-colour"] || "none") : "none");
+            editorTags = noteData && noteData["tags-text"] ? noteData["tags-text"].slice() : [];
+            selectColor(noteData ? (noteData["tag-colour"] || "none") : "none");
             renderEditorTags();
 
             editorUrlEl.value = url === "**global" ? "**global" : url;
-            var lastUpd = entry ? (entry["last-update"] || "") : "";
+            var lastUpd = noteData ? (noteData["last-update"] || "") : "";
             editorLastUpdate.textContent = lastUpd ? formatDate(lastUpd) : "";
 
-            var hasMetadata = (entry && (entry["tag-colour"] && entry["tag-colour"] !== "none"))
-                || (entry && entry["tag-folder"])
-                || (entry && entry["tags-text"] && entry["tags-text"].length > 0);
+            var hasMetadata = (noteData && (noteData["tag-colour"] && noteData["tag-colour"] !== "none"))
+                || (noteData && noteData["tag-folder"])
+                || (noteData && noteData["tags-text"] && noteData["tags-text"].length > 0);
             editorDetailsEl.open = hasMetadata;
 
             hideFormMessage("editor-message");
@@ -1340,6 +1412,7 @@ include_once($root_path . "/include/header.php");
         function closeEditor() {
             editorOpen = false;
             editingUrl = null;
+            editingNoteIndex = 0;
             overlayEl.classList.add("hidden2");
             document.body.style.overflow = "";
             editorFolder = "";
@@ -1388,13 +1461,34 @@ include_once($root_path . "/include/header.php");
                 if (!newUrl) newUrl = editingUrl;
                 var entry = snapshot.websites[editingUrl] || {};
 
-                entry.title = editorTitleEl.value.trim();
-                entry.notes = editorContentEl.innerHTML;
-                entry["last-update"] = now;
-                entry["tag-colour"] = selectedColor;
-                entry["tags-text"] = editorTags.slice();
-                entry["tag-folder"] = editorFolder;
-                if (typeof entry.type !== "number") entry.type = 2;
+                var isNewFormat = entry["all-notes"] && Array.isArray(entry["all-notes"]);
+                var noteData;
+
+                if (isNewFormat) {
+                    noteData = entry["all-notes"][editingNoteIndex] || {};
+                    noteData.title = editorTitleEl.value.trim();
+                    noteData.notes = editorContentEl.innerHTML;
+                    noteData["last-update"] = now;
+                    noteData["tag-colour"] = selectedColor;
+                    noteData["tags-text"] = editorTags.slice();
+                    noteData["tag-folder"] = editorFolder;
+                    entry["all-notes"][editingNoteIndex] = noteData;
+                    if (typeof entry.type !== "number") entry.type = 2;
+                } else {
+                    var target = legacyTarget(entry, editingNoteIndex);
+                    if (target.kind === "extra" && Array.isArray(entry["notes-extra"]) && entry["notes-extra"][target.i]) {
+                        noteData = entry["notes-extra"][target.i];
+                    } else {
+                        noteData = entry;
+                    }
+                    noteData.title = editorTitleEl.value.trim();
+                    noteData.notes = editorContentEl.innerHTML;
+                    noteData["last-update"] = now;
+                    noteData["tag-colour"] = selectedColor;
+                    noteData["tags-text"] = editorTags.slice();
+                    noteData["tag-folder"] = editorFolder;
+                    if (typeof entry.type !== "number") entry.type = 2;
+                }
 
                 if (newUrl !== editingUrl) {
                     delete snapshot.websites[editingUrl];
@@ -1405,7 +1499,11 @@ include_once($root_path . "/include/header.php");
                     else entry.type = 2;
                 }
 
-                if (!entry.notes && !entry.title) {
+                var isEmpty = isNewFormat
+                    ? entry["all-notes"].every(function (n) { return !n.notes && !n.title; })
+                    : (!entry.notes && !entry.title && (entry["notes-extra"] || []).every(function (n) { return !n || (!n.notes && !n.title); }));
+
+                if (isEmpty) {
                     delete snapshot.websites[newUrl];
                 } else {
                     snapshot.websites[newUrl] = entry;

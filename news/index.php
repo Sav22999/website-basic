@@ -31,17 +31,29 @@ function render_release_item($text)
 }
 
 $releases = array(
-        /* Release 5.0 – not yet released
-        array("Release 5.0 – 30 Sep 2026", array(
-                "[new] All advanced features (sync history, web editing) are now free for everyone",
-                "[new] View and edit synced notes from the web with full formatting support",
-                "[new] Updated Terms of Service and Privacy Policy for full GDPR compliance",
-                "[new] Data retention periods clearly documented for all data types",
-                "[new] Prohibited Use clause added to Terms of Service",
-                "[improved] Updated help articles and FAQ",
-                "[improved] Account dashboard improvements"
+        array("Release 5.0, 5.0.0.1, 5.0.0.2 – 6 Oct 2026", array(
+                "[new] Notefox Account v2: notes edited on different devices are merged instead of overwritten",
+                "[new] View, search, filter, and edit your synced notes from the web, with full formatting support",
+                "[new] View and restore the sync history directly from the add-on (Settings > Data & Sync)",
+                "[new] Enable or disable two-factor authentication from the add-on and from the account portal",
+                "[new] View and revoke active sessions from the add-on and from the account portal",
+                "[new] Multiple notes per type: create several notes for the same page, domain, or global (Settings)",
+                "[new] Multiple independent sticky notes, each with its own position, size, and colour",
+                "[new] Pin sticky notes to keep them fixed on screen while scrolling",
+                "[new] Option to open sticky notes pinned by default",
+                "[new] Right-click context menu to create a note from the selected text (Settings)",
+                "[new] Websites in All notes can be collapsed and expanded, with an option to expand all by default",
+                "[new] Search bar in Settings to quickly find options",
+                "[new] Search terms are highlighted in the All notes results",
+                "[changed] Sessions now expire after 30 days",
+                "[improved] Safer password change: confirmed with an email code, without re-encrypting your notes",
+                "[improved] Clearer account and sync error messages, with a warning when the server is not fully available",
+                "[improved] Account dashboard with direct access to synced notes, sync history, and active sessions",
+                "[updated] Updated Terms of Service and Privacy Policy for full GDPR compliance, in Italian and English",
+                "[updated] Updated help articles and FAQ",
+                "[updated] Updated translations"
         )),
-        */
+
         array("Release 4.7.1 – 9 Apr 2026", array(
                 "[new] Now you can set Notefox also in the sidebar view",
                 "[updated] Updated translations",

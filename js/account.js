@@ -86,7 +86,8 @@ function saveSession(session) {
     sessionStorage.setItem(NOTEFOX_SESSION_KEY, JSON.stringify({
         "login-id": session["login-id"],
         "token": session["token"],
-        "username": session["username"] || null
+        "username": session["username"] || null,
+        "permissions": session["permissions"] || 0
     }));
 }
 

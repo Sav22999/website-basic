@@ -47,9 +47,11 @@
 --        (the sync history is a per-account permission, denied by default)
 --  11  users.`pro-features` ..................... optional - without it the
 --        pro-features flag is denied to every account
+--  12  users.`permissions` ...................... optional - without it every
+--        account is treated as a standard user (permission level 0)
 --
 -- RE-RUNNABLE (idempotent)
---   Every statement of blocks 4 to 10 is guarded: the column (or the index) is
+--   Every statement of blocks 4 to 12 is guarded: the column (or the index) is
 --   added only when it is missing, so the file can be run twice without the
 --   "#1060 - Duplicate column name" / "#1061 - Duplicate key name" errors
 --   that used to ABORT the script and silently leave the following blocks
@@ -567,6 +569,30 @@ SET
                       WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table
                         AND `COLUMN_NAME` = 'pro-features') = 0,
   CONCAT('ALTER TABLE `', @v2_users_table, '` ADD COLUMN `pro-features` TINYINT(1) NOT NULL DEFAULT 0 COMMENT ''1 = this account has access to premium features, 0 = denied (default)'''),
+  'SELECT 1');
+PREPARE v2_stmt FROM @v2_sql;
+EXECUTE v2_stmt;
+DEALLOCATE PREPARE v2_stmt;
+
+
+-- ---------------------------------------------------------------------
+-- 12) OPTIONAL - Permission level, default 0 (standard user). Same
+--     pattern as the flags above: set per account with a manual UPDATE.
+--
+--     Levels: 0 = standard user (default), 10 = administrator.
+--
+--       UPDATE `users` SET `permissions` = 10
+--        WHERE `email` = SHA2(LOWER('someone@example.com'), 512);
+--
+--     `GET /status` reports `permissions: 0` while the column is missing.
+-- ---------------------------------------------------------------------
+SET
+@v2_sql = IF((SELECT COUNT(*) FROM `information_schema`.`TABLES`
+                  WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table) = 1
+                 AND (SELECT COUNT(*) FROM `information_schema`.`COLUMNS`
+                      WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = @v2_users_table
+                        AND `COLUMN_NAME` = 'permissions') = 0,
+  CONCAT('ALTER TABLE `', @v2_users_table, '` ADD COLUMN `permissions` TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT ''0 = standard user, 10 = administrator'''),
   'SELECT 1');
 PREPARE v2_stmt FROM @v2_sql;
 EXECUTE v2_stmt;
