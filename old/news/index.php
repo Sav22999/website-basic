@@ -29,6 +29,17 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/old/include/menu.php");
     </div>
     <br class="big-space">
     <div class="expanding-container">
+        <button type="button" class="expanding-item">Release 2.5 – 8 Oct 2026</button>
+        <div class="expanding-item--expanded-details hidden">
+            <p>
+                • Option in settings: high contrast
+                <br>
+                • Option in settings: choose accent color
+                <br>
+                • Fixed minor issues
+            </p>
+        </div>
+
         <button type="button" class="expanding-item">Release 2.4 – 20 Aug 2026</button>
         <div class="expanding-item--expanded-details hidden">
             <p>

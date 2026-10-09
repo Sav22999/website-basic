@@ -37,7 +37,16 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <div class="lang-notice" data-i18n="news.lang_notice" style="display: none;">This page is available in
                 English only
             </div>
-            <button type="button" class="expanding-item">Release 2.4 – 20 Aug 2026</button>
+            <button type="button" class="expanding-item">Release 2.5, 2.5.1 – 8 Oct 2026</button>
+            <div class="expanding-item--expanded-details hidden">
+                <ul class="changelog-list">
+                    <li><span class="changelog-label changelog-label--new">new</span> Option in settings: high contrast</li>
+                    <li><span class="changelog-label changelog-label--new">new</span> Option in settings: choose accent color</li>
+                    <li><span class="changelog-label changelog-label--fixed">fixed</span> Fixed minor issues</li>
+                </ul>
+            </div>
+
+            <button type="button" class="expanding-item">Release 2.4, 2.4.0.1, 2.4.0.2 – 20 Aug 2026</button>
             <div class="expanding-item--expanded-details hidden">
                 <ul class="changelog-list">
                     <li><span class="changelog-label changelog-label--new">new</span> Toggle toolbar on tap</li>
