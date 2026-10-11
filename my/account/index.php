@@ -14,6 +14,7 @@ include_once($root_path . "/include/header.php");
         <h1 class="text-center"><?php echo te('account.dashboard_heading'); ?></h1>
         <p class="text-center">
             <?php echo te('account.signed_in_as'); ?> <strong id="account-username">...</strong>
+            <span id="admin-badge" class="account-badge hidden2">Admin</span>
         </p>
 
         <div id="account-message" class="form-message hidden2"></div>
@@ -54,7 +55,7 @@ include_once($root_path . "/include/header.php");
                     <div class="account-card--static-inner">
                         <p class="account-card-desc"><?php echo t('account.otp_when_enabled'); ?></p>
                         <a href="/my/account/two-factor/"
-                           class="btn btn--secondary btn--small"><?php echo te('account.otp_manage'); ?></a>
+                           class="btn btn--small"><?php echo te('account.otp_manage'); ?></a>
                     </div>
                 </div>
             </div>
@@ -117,6 +118,10 @@ include_once($root_path . "/include/header.php");
 
         document.getElementById("account-username").textContent = session["username"] || "user";
         document.getElementById("account-login-id").textContent = session["login-id"] || "—";
+
+        if ((session["permissions"] || 0) >= 10) {
+            document.getElementById("admin-badge").classList.remove("hidden2");
+        }
 
         document.querySelectorAll(".account-card--static").forEach(function (card) {
             card.querySelector(".account-card--static-header").addEventListener("click", function () {
