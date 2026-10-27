@@ -31,6 +31,14 @@ function render_release_item($text)
 }
 
 $releases = array(
+        array("Release 5.0.0.3 – 11 Oct 2026", array(
+                "[improved] Better performance with many tabs open: tab updates no longer trigger unnecessary work for background or still-loading tabs",
+                "[fixed] No more console errors when sticky notes can't run on a page (e.g. about:blank, the new tab page or other internal pages)",
+                "[improved] More reliable error logging: all relevant errors are now captured (only real web URLs are stored) with a capped local history",
+                "[improved] Removed leftover debug messages from the console",
+                "[new] Chrome: Notefox 5.0 is now available on Chromium-based browsers (Manifest V3)"
+        )),
+
         array("Release 5.0, 5.0.0.1, 5.0.0.2 – 6 Oct 2026", array(
                 "[new] Notefox Account v2: notes edited on different devices are merged instead of overwritten",
                 "[new] View, search, filter, and edit your synced notes from the web, with full formatting support",
@@ -54,6 +62,11 @@ $releases = array(
                 "[updated] Updated translations"
         )),
 
+        array("Release 4.7.2, 4.7.2.1 – 14 May 2026", array(
+                "[new] Added donation message popup",
+                "[updated] Updated translations",
+                "[fixed] Fixed a bug in other languages different to English caused by the donation message"
+        )),
         array("Release 4.7.1 – 9 Apr 2026", array(
                 "[new] Now you can set Notefox also in the sidebar view",
                 "[updated] Updated translations",

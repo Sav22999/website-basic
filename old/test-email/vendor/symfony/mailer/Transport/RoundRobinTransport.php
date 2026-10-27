@@ -63,11 +63,6 @@ class RoundRobinTransport implements TransportInterface
         throw $exception ?? new TransportException('No transports found.');
     }
 
-    public function __toString(): string
-    {
-        return $this->getNameSymbol() . '(' . implode(' ', array_map('strval', $this->transports)) . ')';
-    }
-
     /**
      * Rotates the transport list around and returns the first instance.
      */
@@ -101,11 +96,6 @@ class RoundRobinTransport implements TransportInterface
         return $transport;
     }
 
-    protected function isTransportDead(TransportInterface $transport): bool
-    {
-        return $this->deadTransports->contains($transport);
-    }
-
     protected function getInitialCursor(): int
     {
         // the cursor initial value is randomized so that
@@ -113,13 +103,23 @@ class RoundRobinTransport implements TransportInterface
         return mt_rand(0, \count($this->transports) - 1);
     }
 
-    protected function getNameSymbol(): string
+    protected function isTransportDead(TransportInterface $transport): bool
     {
-        return 'roundrobin';
+        return $this->deadTransports->contains($transport);
     }
 
     private function moveCursor(int $cursor): int
     {
         return ++$cursor >= \count($this->transports) ? 0 : $cursor;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getNameSymbol() . '(' . implode(' ', array_map('strval', $this->transports)) . ')';
+    }
+
+    protected function getNameSymbol(): string
+    {
+        return 'roundrobin';
     }
 }

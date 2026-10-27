@@ -19,16 +19,6 @@ abstract class Parser
      */
     protected $lexer;
 
-    /**
-     * id-left "@" id-right
-     */
-    abstract protected function parseRightFromAt(): Result;
-
-    abstract protected function parseLeftFromAt(): Result;
-
-    abstract protected function preLeftParsing(): Result;
-
-
     public function __construct(EmailLexer $lexer)
     {
         $this->lexer = $lexer;
@@ -61,6 +51,15 @@ abstract class Parser
 
         return new ValidEmail();
     }
+
+    abstract protected function preLeftParsing(): Result;
+
+    abstract protected function parseLeftFromAt(): Result;
+
+    /**
+     * id-left "@" id-right
+     */
+    abstract protected function parseRightFromAt(): Result;
 
     /**
      * @return Warning\Warning[]

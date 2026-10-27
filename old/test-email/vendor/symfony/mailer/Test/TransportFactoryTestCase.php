@@ -35,8 +35,6 @@ abstract class TransportFactoryTestCase extends TestCase
     protected $client;
     protected $logger;
 
-    abstract public function getFactory(): TransportFactoryInterface;
-
     abstract public static function supportsProvider(): iterable;
 
     abstract public static function createProvider(): iterable;
@@ -60,6 +58,8 @@ abstract class TransportFactoryTestCase extends TestCase
 
         $this->assertSame($supports, $factory->supports($dsn));
     }
+
+    abstract public function getFactory(): TransportFactoryInterface;
 
     /**
      * @dataProvider createProvider

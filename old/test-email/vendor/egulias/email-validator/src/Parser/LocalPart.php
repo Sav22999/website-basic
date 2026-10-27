@@ -97,29 +97,6 @@ class LocalPart extends PartParser
         return new ValidEmail();
     }
 
-    protected function validateTokens(bool $hasComments): Result
-    {
-        if (isset(self::INVALID_TOKENS[((array)$this->lexer->token)['type']])) {
-            return new InvalidEmail(new ExpectingATEXT('Invalid token found'), ((array)$this->lexer->token)['value']);
-        }
-        return new ValidEmail();
-    }
-
-    public function localPart(): string
-    {
-        return $this->localPart;
-    }
-
-    private function parseLocalFWS(): Result
-    {
-        $foldingWS = new FoldingWhiteSpace($this->lexer);
-        $resultFWS = $foldingWS->parse();
-        if ($resultFWS->isValid()) {
-            $this->warnings = array_merge($this->warnings, $foldingWS->getWarnings());
-        }
-        return $resultFWS;
-    }
-
     private function hasDotAtStart(): bool
     {
         return ((array)$this->lexer->token)['type'] === EmailLexer::S_DOT && null === $this->lexer->getPrevious()['type'];
@@ -161,5 +138,28 @@ class LocalPart extends PartParser
         }
 
         return new ValidEmail();
+    }
+
+    protected function validateTokens(bool $hasComments): Result
+    {
+        if (isset(self::INVALID_TOKENS[((array)$this->lexer->token)['type']])) {
+            return new InvalidEmail(new ExpectingATEXT('Invalid token found'), ((array)$this->lexer->token)['value']);
+        }
+        return new ValidEmail();
+    }
+
+    private function parseLocalFWS(): Result
+    {
+        $foldingWS = new FoldingWhiteSpace($this->lexer);
+        $resultFWS = $foldingWS->parse();
+        if ($resultFWS->isValid()) {
+            $this->warnings = array_merge($this->warnings, $foldingWS->getWarnings());
+        }
+        return $resultFWS;
+    }
+
+    public function localPart(): string
+    {
+        return $this->localPart;
     }
 }

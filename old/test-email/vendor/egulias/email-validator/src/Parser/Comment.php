@@ -71,6 +71,15 @@ class Comment extends PartParser
         return $finalValidations;
     }
 
+    private function noClosingParenthesis(): bool
+    {
+        try {
+            $this->lexer->find(EmailLexer::S_CLOSEPARENTHESIS);
+            return false;
+        } catch (\RuntimeException $e) {
+            return true;
+        }
+    }
 
     /**
      * @return bool
@@ -90,15 +99,5 @@ class Comment extends PartParser
             new QuotedPart($this->lexer->getPrevious()['type'], ((array)$this->lexer->token)['type']);
         return true;
 
-    }
-
-    private function noClosingParenthesis(): bool
-    {
-        try {
-            $this->lexer->find(EmailLexer::S_CLOSEPARENTHESIS);
-            return false;
-        } catch (\RuntimeException $e) {
-            return true;
-        }
     }
 }

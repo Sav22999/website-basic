@@ -33,6 +33,20 @@ class MessageEvents
     }
 
     /**
+     * @return RawMessage[]
+     */
+    public function getMessages(?string $name = null): array
+    {
+        $events = $this->getEvents($name);
+        $messages = [];
+        foreach ($events as $event) {
+            $messages[] = $event->getMessage();
+        }
+
+        return $messages;
+    }
+
+    /**
      * @return MessageEvent[]
      */
     public function getEvents(?string $name = null): array
@@ -49,19 +63,5 @@ class MessageEvents
         }
 
         return $events;
-    }
-
-    /**
-     * @return RawMessage[]
-     */
-    public function getMessages(?string $name = null): array
-    {
-        $events = $this->getEvents($name);
-        $messages = [];
-        foreach ($events as $event) {
-            $messages[] = $event->getMessage();
-        }
-
-        return $messages;
     }
 }

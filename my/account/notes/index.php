@@ -607,7 +607,9 @@ include_once($root_path . "/include/header.php");
             var list = [];
             if (primary.notes || primary.title) list.push(primary);
             if (Array.isArray(entry["notes-extra"])) {
-                entry["notes-extra"].forEach(function (ex) { if (ex) list.push(ex); });
+                entry["notes-extra"].forEach(function (ex) {
+                    if (ex) list.push(ex);
+                });
             }
             return list;
         }
@@ -1217,7 +1219,7 @@ include_once($root_path . "/include/header.php");
                 editorFolderWrap.insertBefore(chip, editorFolderEl);
             }
             editorFolderEl.placeholder = editorFolder ? "" :
-                <?php echo json_encode(t('account.notes_folder_placeholder'), JSON_UNESCAPED_UNICODE); ?>;
+            <?php echo json_encode(t('account.notes_folder_placeholder'), JSON_UNESCAPED_UNICODE); ?>;
         }
 
         function renderEditorTags() {
@@ -1239,7 +1241,7 @@ include_once($root_path . "/include/header.php");
                 editorTagWrap.insertBefore(chip, editorTagInput);
             });
             editorTagInput.placeholder = editorTags.length ? "" :
-                <?php echo json_encode(t('account.notes_tag_placeholder'), JSON_UNESCAPED_UNICODE); ?>;
+            <?php echo json_encode(t('account.notes_tag_placeholder'), JSON_UNESCAPED_UNICODE); ?>;
         }
 
         function setupEditorAutocomplete(inputEl, suggestionsEl, getOptions, onSelect) {
@@ -1267,15 +1269,22 @@ include_once($root_path . "/include/header.php");
                 });
                 suggestionsEl.classList.remove("hidden2");
             }
+
             inputEl.addEventListener("input", show);
             inputEl.addEventListener("focus", show);
             inputEl.addEventListener("blur", function () {
-                setTimeout(function () { suggestionsEl.classList.add("hidden2"); }, 150);
+                setTimeout(function () {
+                    suggestionsEl.classList.add("hidden2");
+                }, 150);
             });
         }
 
         setupEditorAutocomplete(editorFolderEl, editorFolderSuggestions,
-            function () { return allFolderNames.filter(function (f) { return f !== editorFolder; }); },
+            function () {
+                return allFolderNames.filter(function (f) {
+                    return f !== editorFolder;
+                });
+            },
             function (val) {
                 editorFolder = val;
                 editorFolderEl.value = "";
@@ -1300,7 +1309,11 @@ include_once($root_path . "/include/header.php");
         });
 
         setupEditorAutocomplete(editorTagInput, editorTagSuggestions,
-            function () { return allTagNames.filter(function (t) { return editorTags.indexOf(t) === -1; }); },
+            function () {
+                return allTagNames.filter(function (t) {
+                    return editorTags.indexOf(t) === -1;
+                });
+            },
             function (val) {
                 if (editorTags.indexOf(val) === -1) {
                     editorTags.push(val);
@@ -1500,8 +1513,12 @@ include_once($root_path . "/include/header.php");
                 }
 
                 var isEmpty = isNewFormat
-                    ? entry["all-notes"].every(function (n) { return !n.notes && !n.title; })
-                    : (!entry.notes && !entry.title && (entry["notes-extra"] || []).every(function (n) { return !n || (!n.notes && !n.title); }));
+                    ? entry["all-notes"].every(function (n) {
+                        return !n.notes && !n.title;
+                    })
+                    : (!entry.notes && !entry.title && (entry["notes-extra"] || []).every(function (n) {
+                        return !n || (!n.notes && !n.title);
+                    }));
 
                 if (isEmpty) {
                     delete snapshot.websites[newUrl];

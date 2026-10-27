@@ -221,15 +221,9 @@ class RegisterListenersPass implements CompilerPassInterface
  */
 class ExtractingEventDispatcher extends EventDispatcher implements EventSubscriberInterface
 {
-    public $listeners = [];
-
     public static $aliases = [];
     public static $subscriber;
-
-    public function addListener(string $eventName, $listener, int $priority = 0)
-    {
-        $this->listeners[] = [$eventName, $listener[1], $priority];
-    }
+    public $listeners = [];
 
     public static function getSubscribedEvents(): array
     {
@@ -240,5 +234,10 @@ class ExtractingEventDispatcher extends EventDispatcher implements EventSubscrib
         }
 
         return $events;
+    }
+
+    public function addListener(string $eventName, $listener, int $priority = 0)
+    {
+        $this->listeners[] = [$eventName, $listener[1], $priority];
     }
 }

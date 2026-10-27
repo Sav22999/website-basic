@@ -25,6 +25,14 @@ abstract class PartParser
         $this->lexer = $lexer;
     }
 
+    protected function parseFWS(): Result
+    {
+        $foldingWS = new FoldingWhiteSpace($this->lexer);
+        $resultFWS = $foldingWS->parse();
+        $this->warnings = array_merge($this->warnings, $foldingWS->getWarnings());
+        return $resultFWS;
+    }
+
     abstract public function parse(): Result;
 
     /**
@@ -33,14 +41,6 @@ abstract class PartParser
     public function getWarnings()
     {
         return $this->warnings;
-    }
-
-    protected function parseFWS(): Result
-    {
-        $foldingWS = new FoldingWhiteSpace($this->lexer);
-        $resultFWS = $foldingWS->parse();
-        $this->warnings = array_merge($this->warnings, $foldingWS->getWarnings());
-        return $resultFWS;
     }
 
     protected function checkConsecutiveDots(): Result

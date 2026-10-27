@@ -24,8 +24,6 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 abstract class AbstractApiTransport extends AbstractHttpTransport
 {
-    abstract protected function doSendApi(SentMessage $sentMessage, Email $email, Envelope $envelope): ResponseInterface;
-
     protected function doSendHttp(SentMessage $message): ResponseInterface
     {
         try {
@@ -36,6 +34,8 @@ abstract class AbstractApiTransport extends AbstractHttpTransport
 
         return $this->doSendApi($message, $email, $message->getEnvelope());
     }
+
+    abstract protected function doSendApi(SentMessage $sentMessage, Email $email, Envelope $envelope): ResponseInterface;
 
     protected function getRecipients(Email $email, Envelope $envelope): array
     {

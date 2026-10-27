@@ -30,14 +30,6 @@ abstract class AbstractMultipartPart extends AbstractPart
         }
     }
 
-    /**
-     * @return AbstractPart[]
-     */
-    public function getParts(): array
-    {
-        return $this->parts;
-    }
-
     public function getMediaType(): string
     {
         return 'multipart';
@@ -51,6 +43,15 @@ abstract class AbstractMultipartPart extends AbstractPart
         return $headers;
     }
 
+    private function getBoundary(): string
+    {
+        if (null === $this->boundary) {
+            $this->boundary = strtr(base64_encode(random_bytes(6)), '+/', '-_');
+        }
+
+        return $this->boundary;
+    }
+
     public function bodyToString(): string
     {
         $parts = $this->getParts();
@@ -61,6 +62,14 @@ abstract class AbstractMultipartPart extends AbstractPart
         $string .= '--' . $this->getBoundary() . "--\r\n";
 
         return $string;
+    }
+
+    /**
+     * @return AbstractPart[]
+     */
+    public function getParts(): array
+    {
+        return $this->parts;
     }
 
     public function bodyToIterable(): iterable
@@ -86,14 +95,5 @@ abstract class AbstractMultipartPart extends AbstractPart
         }
 
         return $str;
-    }
-
-    private function getBoundary(): string
-    {
-        if (null === $this->boundary) {
-            $this->boundary = strtr(base64_encode(random_bytes(6)), '+/', '-_');
-        }
-
-        return $this->boundary;
     }
 }

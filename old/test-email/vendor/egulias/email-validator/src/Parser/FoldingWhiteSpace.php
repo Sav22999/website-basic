@@ -58,6 +58,15 @@ class  FoldingWhiteSpace extends PartParser
         return new ValidEmail();
     }
 
+    protected function isFWS(): bool
+    {
+        if ($this->escaped()) {
+            return false;
+        }
+
+        return in_array(((array)$this->lexer->token)['type'], self::FWS_TYPES);
+    }
+
     protected function checkCRLFInFWS(): Result
     {
         if (((array)$this->lexer->token)['type'] !== EmailLexer::CRLF) {
@@ -74,14 +83,5 @@ class  FoldingWhiteSpace extends PartParser
         }
 
         return new ValidEmail();
-    }
-
-    protected function isFWS(): bool
-    {
-        if ($this->escaped()) {
-            return false;
-        }
-
-        return in_array(((array)$this->lexer->token)['type'], self::FWS_TYPES);
     }
 }

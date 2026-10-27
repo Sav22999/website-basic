@@ -54,6 +54,14 @@ final class MailboxListHeader extends AbstractHeader
     }
 
     /**
+     * @return Address[]
+     */
+    public function getAddresses(): array
+    {
+        return $this->addresses;
+    }
+
+    /**
      * Sets a list of addresses to be shown in this Header.
      *
      * @param Address[] $addresses
@@ -88,12 +96,9 @@ final class MailboxListHeader extends AbstractHeader
         $this->addresses[] = $address;
     }
 
-    /**
-     * @return Address[]
-     */
-    public function getAddresses(): array
+    public function getBodyAsString(): string
     {
-        return $this->addresses;
+        return implode(', ', $this->getAddressStrings());
     }
 
     /**
@@ -115,11 +120,6 @@ final class MailboxListHeader extends AbstractHeader
         }
 
         return $strings;
-    }
-
-    public function getBodyAsString(): string
-    {
-        return implode(', ', $this->getAddressStrings());
     }
 
     /**

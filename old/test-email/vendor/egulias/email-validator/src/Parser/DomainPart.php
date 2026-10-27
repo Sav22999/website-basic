@@ -38,6 +38,20 @@ class DomainPart extends PartParser
      */
     protected $label = '';
 
+    public function domainPart(): string
+    {
+        return $this->domainPart;
+    }
+
+    protected function parseComments(): Result
+    {
+        $commentParser = new Comment($this->lexer, new DomainComment());
+        $result = $commentParser->parse();
+        $this->warnings = array_merge($this->warnings, $commentParser->getWarnings());
+
+        return $result;
+    }
+
     public function parse(): Result
     {
         $this->lexer->clearRecorded();
@@ -75,23 +89,6 @@ class DomainPart extends PartParser
         return new ValidEmail();
     }
 
-    private function checkEndOfDomain(): Result
-    {
-        $prev = $this->lexer->getPrevious();
-        if ($prev['type'] === EmailLexer::S_DOT) {
-            return new InvalidEmail(new DotAtEnd(), ((array)$this->lexer->token)['value']);
-        }
-        if ($prev['type'] === EmailLexer::S_HYPHEN) {
-            return new InvalidEmail(new DomainHyphened('Hypen found at the end of the domain'), $prev['value']);
-        }
-
-        if (((array)$this->lexer->token)['type'] === EmailLexer::S_SP) {
-            return new InvalidEmail(new CRLFAtTheEnd(), $prev['value']);
-        }
-        return new ValidEmail();
-
-    }
-
     private function performDomainStartChecks(): Result
     {
         $invalidTokens = $this->checkInvalidTokensAfterAT();
@@ -110,19 +107,6 @@ class DomainPart extends PartParser
         return new ValidEmail();
     }
 
-    private function checkEmptyDomain(): Result
-    {
-        $thereIsNoDomain = ((array)$this->lexer->token)['type'] === EmailLexer::S_EMPTY ||
-            (((array)$this->lexer->token)['type'] === EmailLexer::S_SP &&
-                !$this->lexer->isNextToken(EmailLexer::GENERIC));
-
-        if ($thereIsNoDomain) {
-            return new InvalidEmail(new NoDomainPart(), ((array)$this->lexer->token)['value']);
-        }
-
-        return new ValidEmail();
-    }
-
     private function checkInvalidTokensAfterAT(): Result
     {
         if (((array)$this->lexer->token)['type'] === EmailLexer::S_DOT) {
@@ -134,13 +118,17 @@ class DomainPart extends PartParser
         return new ValidEmail();
     }
 
-    protected function parseComments(): Result
+    private function checkEmptyDomain(): Result
     {
-        $commentParser = new Comment($this->lexer, new DomainComment());
-        $result = $commentParser->parse();
-        $this->warnings = array_merge($this->warnings, $commentParser->getWarnings());
+        $thereIsNoDomain = ((array)$this->lexer->token)['type'] === EmailLexer::S_EMPTY ||
+            (((array)$this->lexer->token)['type'] === EmailLexer::S_SP &&
+                !$this->lexer->isNextToken(EmailLexer::GENERIC));
 
-        return $result;
+        if ($thereIsNoDomain) {
+            return new InvalidEmail(new NoDomainPart(), ((array)$this->lexer->token)['value']);
+        }
+
+        return new ValidEmail();
     }
 
     protected function doParseDomainPart(): Result
@@ -242,6 +230,34 @@ class DomainPart extends PartParser
         return $result;
     }
 
+    private function addTLDWarnings(bool $isTLDMissing): void
+    {
+        if ($isTLDMissing) {
+            $this->warnings[TLD::CODE] = new TLD();
+        }
+    }
+
+    private function checkLabelLength(bool $isEndOfDomain = false): Result
+    {
+        if (((array)$this->lexer->token)['type'] === EmailLexer::S_DOT || $isEndOfDomain) {
+            if ($this->isLabelTooLong($this->label)) {
+                return new InvalidEmail(new LabelTooLong(), ((array)$this->lexer->token)['value']);
+            }
+            $this->label = '';
+        }
+        $this->label .= ((array)$this->lexer->token)['value'];
+        return new ValidEmail();
+    }
+
+    private function isLabelTooLong(string $label): bool
+    {
+        if (preg_match('/[^\x00-\x7F]/', $label)) {
+            idn_to_ascii($label, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46, $idnaInfo);
+            return (bool)($idnaInfo['errors'] & IDNA_ERROR_LABEL_TOO_LONG);
+        }
+        return strlen($label) > self::LABEL_MAX_LENGTH;
+    }
+
     protected function checkDomainPartExceptions(array $prev, bool $hasComments): Result
     {
         if (((array)$this->lexer->token)['type'] === EmailLexer::S_OPENBRACKET && $prev['type'] !== EmailLexer::S_AT) {
@@ -280,37 +296,20 @@ class DomainPart extends PartParser
         return new ValidEmail();
     }
 
-    private function checkLabelLength(bool $isEndOfDomain = false): Result
+    private function checkEndOfDomain(): Result
     {
-        if (((array)$this->lexer->token)['type'] === EmailLexer::S_DOT || $isEndOfDomain) {
-            if ($this->isLabelTooLong($this->label)) {
-                return new InvalidEmail(new LabelTooLong(), ((array)$this->lexer->token)['value']);
-            }
-            $this->label = '';
+        $prev = $this->lexer->getPrevious();
+        if ($prev['type'] === EmailLexer::S_DOT) {
+            return new InvalidEmail(new DotAtEnd(), ((array)$this->lexer->token)['value']);
         }
-        $this->label .= ((array)$this->lexer->token)['value'];
+        if ($prev['type'] === EmailLexer::S_HYPHEN) {
+            return new InvalidEmail(new DomainHyphened('Hypen found at the end of the domain'), $prev['value']);
+        }
+
+        if (((array)$this->lexer->token)['type'] === EmailLexer::S_SP) {
+            return new InvalidEmail(new CRLFAtTheEnd(), $prev['value']);
+        }
         return new ValidEmail();
-    }
 
-
-    private function isLabelTooLong(string $label): bool
-    {
-        if (preg_match('/[^\x00-\x7F]/', $label)) {
-            idn_to_ascii($label, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46, $idnaInfo);
-            return (bool)($idnaInfo['errors'] & IDNA_ERROR_LABEL_TOO_LONG);
-        }
-        return strlen($label) > self::LABEL_MAX_LENGTH;
-    }
-
-    private function addTLDWarnings(bool $isTLDMissing): void
-    {
-        if ($isTLDMissing) {
-            $this->warnings[TLD::CODE] = new TLD();
-        }
-    }
-
-    public function domainPart(): string
-    {
-        return $this->domainPart;
     }
 }

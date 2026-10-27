@@ -31,19 +31,9 @@ final class SocketStream extends AbstractStream
     private $sourceIp;
     private $streamContextOptions = [];
 
-    /**
-     * @return $this
-     */
-    public function setTimeout(float $timeout): self
+    public function getHost(): string
     {
-        $this->timeout = $timeout;
-
-        return $this;
-    }
-
-    public function getTimeout(): float
-    {
-        return $this->timeout ?? (float)\ini_get('default_socket_timeout');
+        return $this->host;
     }
 
     /**
@@ -58,9 +48,9 @@ final class SocketStream extends AbstractStream
         return $this;
     }
 
-    public function getHost(): string
+    public function getPort(): int
     {
-        return $this->host;
+        return $this->port;
     }
 
     /**
@@ -71,11 +61,6 @@ final class SocketStream extends AbstractStream
         $this->port = $port;
 
         return $this;
-    }
-
-    public function getPort(): int
-    {
-        return $this->port;
     }
 
     /**
@@ -111,6 +96,14 @@ final class SocketStream extends AbstractStream
     }
 
     /**
+     * Returns the IP used to connect to the destination.
+     */
+    public function getSourceIp(): ?string
+    {
+        return $this->sourceIp;
+    }
+
+    /**
      * Sets the source IP.
      *
      * IPv6 addresses should be wrapped in square brackets.
@@ -122,14 +115,6 @@ final class SocketStream extends AbstractStream
         $this->sourceIp = $ip;
 
         return $this;
-    }
-
-    /**
-     * Returns the IP used to connect to the destination.
-     */
-    public function getSourceIp(): ?string
-    {
-        return $this->sourceIp;
     }
 
     public function initialize(): void
@@ -163,6 +148,21 @@ final class SocketStream extends AbstractStream
         stream_set_timeout($this->stream, (int)$timeout, (int)(($timeout - (int)$timeout) * 1000000));
         $this->in = &$this->stream;
         $this->out = &$this->stream;
+    }
+
+    public function getTimeout(): float
+    {
+        return $this->timeout ?? (float)\ini_get('default_socket_timeout');
+    }
+
+    /**
+     * @return $this
+     */
+    public function setTimeout(float $timeout): self
+    {
+        $this->timeout = $timeout;
+
+        return $this;
     }
 
     public function startTLS(): bool

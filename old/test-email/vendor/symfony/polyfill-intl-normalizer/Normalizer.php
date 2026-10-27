@@ -56,59 +56,6 @@ class Normalizer
         return self::normalize($s, $form) === $s;
     }
 
-    public static function getRawDecomposition(string $s, int $form = self::FORM_C)
-    {
-        if ('' === $s || !preg_match('//u', $s)) {
-            return null;
-        }
-
-        $ulen = $s[0] < "\x80" ? 1 : (self::$ulenMask[$s[0] & "\xF0"] ?? 0);
-        if (!$ulen || \strlen($s) !== $ulen) {
-            return null;
-        }
-
-        if (self::NFC !== $form && self::NFD !== $form && self::NFKC !== $form && self::NFKD !== $form) {
-            return '';
-        }
-
-        if ($s >= "\xEA\xB0\x80" && $s <= "\xED\x9E\xA3") {
-            $u = unpack('C*', $s);
-            $j = (($u[1] - 224) << 12) + (($u[2] - 128) << 6) + $u[3] - 0xAC80;
-
-            if ($t = $j % 28) {
-                $j -= $t;
-                $lv = 0xAC00 + $j;
-                $r = \chr(0xE0 | $lv >> 12) . \chr(0x80 | $lv >> 6 & 0x3F) . \chr(0x80 | $lv & 0x3F);
-                $r .= $t < 25
-                    ? ("\xE1\x86" . \chr(0xA7 + $t))
-                    : ("\xE1\x87" . \chr(0x67 + $t));
-
-                return $r;
-            }
-
-            return "\xE1\x84" . \chr(0x80 + (int)($j / 588))
-                . "\xE1\x85" . \chr(0xA1 + (int)(($j % 588) / 28));
-        }
-
-        if (null === self::$rawD) {
-            self::$rawD = self::getData('rawCanonicalDecomposition');
-        }
-
-        if (isset(self::$rawD[$s])) {
-            return self::$rawD[$s];
-        }
-
-        if (self::NFKC === $form || self::NFKD === $form) {
-            if (null === self::$rawKD) {
-                self::$rawKD = self::getData('rawCompatibilityDecomposition');
-            }
-
-            return self::$rawKD[$s] ?? null;
-        }
-
-        return null;
-    }
-
     public static function normalize(string $s, int $form = self::FORM_C)
     {
         if (!preg_match('//u', $s)) {
@@ -178,88 +125,13 @@ class Normalizer
         return $r;
     }
 
-    private static function recompose($s)
+    private static function getData($file)
     {
-        $ASCII = self::$ASCII;
-        $compMap = self::$C;
-        $combClass = self::$cC;
-        $ulenMask = self::$ulenMask;
-
-        $result = $tail = '';
-
-        $i = $s[0] < "\x80" ? 1 : $ulenMask[$s[0] & "\xF0"];
-        $len = \strlen($s);
-
-        $lastUchr = substr($s, 0, $i);
-        $lastUcls = isset($combClass[$lastUchr]) ? 256 : 0;
-
-        while ($i < $len) {
-            if ($s[$i] < "\x80") {
-                // ASCII chars
-
-                if ($tail) {
-                    $lastUchr .= $tail;
-                    $tail = '';
-                }
-
-                if ($j = strspn($s, $ASCII, $i + 1)) {
-                    $lastUchr .= substr($s, $i, $j);
-                    $i += $j;
-                }
-
-                $result .= $lastUchr;
-                $lastUchr = $s[$i];
-                $lastUcls = 0;
-                ++$i;
-                continue;
-            }
-
-            $ulen = $ulenMask[$s[$i] & "\xF0"];
-            $uchr = substr($s, $i, $ulen);
-
-            if ($lastUchr < "\xE1\x84\x80" || "\xE1\x84\x92" < $lastUchr
-                || $uchr < "\xE1\x85\xA1" || "\xE1\x85\xB5" < $uchr
-                || $lastUcls) {
-                // Table lookup and combining chars composition
-
-                $ucls = $combClass[$uchr] ?? 0;
-
-                if (isset($compMap[$lastUchr . $uchr]) && (!$lastUcls || $lastUcls < $ucls)) {
-                    $lastUchr = $compMap[$lastUchr . $uchr];
-                } elseif ($lastUcls = $ucls) {
-                    $tail .= $uchr;
-                } else {
-                    if ($tail) {
-                        $lastUchr .= $tail;
-                        $tail = '';
-                    }
-
-                    $result .= $lastUchr;
-                    $lastUchr = $uchr;
-                }
-            } else {
-                // Hangul chars
-
-                $L = \ord($lastUchr[2]) - 0x80;
-                $V = \ord($uchr[2]) - 0xA1;
-                $T = 0;
-
-                $uchr = substr($s, $i + $ulen, 3);
-
-                if ("\xE1\x86\xA7" <= $uchr && $uchr <= "\xE1\x87\x82") {
-                    $T = \ord($uchr[2]) - 0xA7;
-                    0 > $T && $T += 0x40;
-                    $ulen += 3;
-                }
-
-                $L = 0xAC00 + ($L * 21 + $V) * 28 + $T;
-                $lastUchr = \chr(0xE0 | $L >> 12) . \chr(0x80 | $L >> 6 & 0x3F) . \chr(0x80 | $L & 0x3F);
-            }
-
-            $i += $ulen;
+        if (file_exists($file = __DIR__ . '/Resources/unidata/' . $file . '.php')) {
+            return require $file;
         }
 
-        return $result . $lastUchr . $tail;
+        return false;
     }
 
     private static function decompose($s, $c)
@@ -367,12 +239,140 @@ class Normalizer
         return $result;
     }
 
-    private static function getData($file)
+    private static function recompose($s)
     {
-        if (file_exists($file = __DIR__ . '/Resources/unidata/' . $file . '.php')) {
-            return require $file;
+        $ASCII = self::$ASCII;
+        $compMap = self::$C;
+        $combClass = self::$cC;
+        $ulenMask = self::$ulenMask;
+
+        $result = $tail = '';
+
+        $i = $s[0] < "\x80" ? 1 : $ulenMask[$s[0] & "\xF0"];
+        $len = \strlen($s);
+
+        $lastUchr = substr($s, 0, $i);
+        $lastUcls = isset($combClass[$lastUchr]) ? 256 : 0;
+
+        while ($i < $len) {
+            if ($s[$i] < "\x80") {
+                // ASCII chars
+
+                if ($tail) {
+                    $lastUchr .= $tail;
+                    $tail = '';
+                }
+
+                if ($j = strspn($s, $ASCII, $i + 1)) {
+                    $lastUchr .= substr($s, $i, $j);
+                    $i += $j;
+                }
+
+                $result .= $lastUchr;
+                $lastUchr = $s[$i];
+                $lastUcls = 0;
+                ++$i;
+                continue;
+            }
+
+            $ulen = $ulenMask[$s[$i] & "\xF0"];
+            $uchr = substr($s, $i, $ulen);
+
+            if ($lastUchr < "\xE1\x84\x80" || "\xE1\x84\x92" < $lastUchr
+                || $uchr < "\xE1\x85\xA1" || "\xE1\x85\xB5" < $uchr
+                || $lastUcls) {
+                // Table lookup and combining chars composition
+
+                $ucls = $combClass[$uchr] ?? 0;
+
+                if (isset($compMap[$lastUchr . $uchr]) && (!$lastUcls || $lastUcls < $ucls)) {
+                    $lastUchr = $compMap[$lastUchr . $uchr];
+                } elseif ($lastUcls = $ucls) {
+                    $tail .= $uchr;
+                } else {
+                    if ($tail) {
+                        $lastUchr .= $tail;
+                        $tail = '';
+                    }
+
+                    $result .= $lastUchr;
+                    $lastUchr = $uchr;
+                }
+            } else {
+                // Hangul chars
+
+                $L = \ord($lastUchr[2]) - 0x80;
+                $V = \ord($uchr[2]) - 0xA1;
+                $T = 0;
+
+                $uchr = substr($s, $i + $ulen, 3);
+
+                if ("\xE1\x86\xA7" <= $uchr && $uchr <= "\xE1\x87\x82") {
+                    $T = \ord($uchr[2]) - 0xA7;
+                    0 > $T && $T += 0x40;
+                    $ulen += 3;
+                }
+
+                $L = 0xAC00 + ($L * 21 + $V) * 28 + $T;
+                $lastUchr = \chr(0xE0 | $L >> 12) . \chr(0x80 | $L >> 6 & 0x3F) . \chr(0x80 | $L & 0x3F);
+            }
+
+            $i += $ulen;
         }
 
-        return false;
+        return $result . $lastUchr . $tail;
+    }
+
+    public static function getRawDecomposition(string $s, int $form = self::FORM_C)
+    {
+        if ('' === $s || !preg_match('//u', $s)) {
+            return null;
+        }
+
+        $ulen = $s[0] < "\x80" ? 1 : (self::$ulenMask[$s[0] & "\xF0"] ?? 0);
+        if (!$ulen || \strlen($s) !== $ulen) {
+            return null;
+        }
+
+        if (self::NFC !== $form && self::NFD !== $form && self::NFKC !== $form && self::NFKD !== $form) {
+            return '';
+        }
+
+        if ($s >= "\xEA\xB0\x80" && $s <= "\xED\x9E\xA3") {
+            $u = unpack('C*', $s);
+            $j = (($u[1] - 224) << 12) + (($u[2] - 128) << 6) + $u[3] - 0xAC80;
+
+            if ($t = $j % 28) {
+                $j -= $t;
+                $lv = 0xAC00 + $j;
+                $r = \chr(0xE0 | $lv >> 12) . \chr(0x80 | $lv >> 6 & 0x3F) . \chr(0x80 | $lv & 0x3F);
+                $r .= $t < 25
+                    ? ("\xE1\x86" . \chr(0xA7 + $t))
+                    : ("\xE1\x87" . \chr(0x67 + $t));
+
+                return $r;
+            }
+
+            return "\xE1\x84" . \chr(0x80 + (int)($j / 588))
+                . "\xE1\x85" . \chr(0xA1 + (int)(($j % 588) / 28));
+        }
+
+        if (null === self::$rawD) {
+            self::$rawD = self::getData('rawCanonicalDecomposition');
+        }
+
+        if (isset(self::$rawD[$s])) {
+            return self::$rawD[$s];
+        }
+
+        if (self::NFKC === $form || self::NFKD === $form) {
+            if (null === self::$rawKD) {
+                self::$rawKD = self::getData('rawCompatibilityDecomposition');
+            }
+
+            return self::$rawKD[$s] ?? null;
+        }
+
+        return null;
     }
 }

@@ -35,6 +35,18 @@ final class IdentificationHeader extends AbstractHeader
     }
 
     /**
+     * Set the ID used in the value of this header.
+     *
+     * @param string|array $id
+     *
+     * @throws RfcComplianceException
+     */
+    public function setId($id)
+    {
+        $this->setIds(\is_array($id) ? $id : [$id]);
+    }
+
+    /**
      * @param string|array $body a string ID or an array of IDs
      *
      * @throws RfcComplianceException
@@ -50,25 +62,13 @@ final class IdentificationHeader extends AbstractHeader
     }
 
     /**
-     * Set the ID used in the value of this header.
+     * Get the list of IDs used in this Header.
      *
-     * @param string|array $id
-     *
-     * @throws RfcComplianceException
+     * @return string[]
      */
-    public function setId($id)
+    public function getIds(): array
     {
-        $this->setIds(\is_array($id) ? $id : [$id]);
-    }
-
-    /**
-     * Get the ID used in the value of this Header.
-     *
-     * If multiple IDs are set only the first is returned.
-     */
-    public function getId(): ?string
-    {
-        return $this->ids[0] ?? null;
+        return $this->ids;
     }
 
     /**
@@ -89,13 +89,13 @@ final class IdentificationHeader extends AbstractHeader
     }
 
     /**
-     * Get the list of IDs used in this Header.
+     * Get the ID used in the value of this Header.
      *
-     * @return string[]
+     * If multiple IDs are set only the first is returned.
      */
-    public function getIds(): array
+    public function getId(): ?string
     {
-        return $this->ids;
+        return $this->ids[0] ?? null;
     }
 
     public function getBodyAsString(): string

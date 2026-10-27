@@ -43,13 +43,13 @@ class RFCValidation implements EmailValidation
         return true;
     }
 
-    public function getError(): ?InvalidEmail
-    {
-        return $this->error;
-    }
-
     public function getWarnings(): array
     {
         return $this->warnings;
+    }
+
+    public function getError(): ?InvalidEmail
+    {
+        return $this->error;
     }
 }

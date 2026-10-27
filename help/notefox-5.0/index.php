@@ -92,7 +92,8 @@ include_once($root_path . "/include/header.php");
         </p>
         <p>
             <span class="notefox-new-version-page">
-                <img src="/help/notefox-5.0/multiple-notes-option.gif" width="80%" title="Enable multiple notes per type"
+                <img src="/help/notefox-5.0/multiple-notes-option.gif" width="80%"
+                     title="Enable multiple notes per type"
                      alt="Enable multiple notes per type">
                 <small>Settings > Enable multiple notes per type</small>
             </span>
@@ -146,14 +147,16 @@ include_once($root_path . "/include/header.php");
         </p>
         <p>
             <span class="notefox-new-version-page">
-                <img src="/help/notefox-5.0/created-from-selected-text-option.gif" width="80%" title="Create note from selected text"
+                <img src="/help/notefox-5.0/created-from-selected-text-option.gif" width="80%"
+                     title="Create note from selected text"
                      alt="Create note from selected text">
                 <small>Settings > Create note from selected text</small>
             </span>
         </p>
         <p>
             <span class="notefox-new-version-page">
-                <img src="/help/notefox-5.0/created-from-selected-text.gif" width="80%" title="Context menu: create note"
+                <img src="/help/notefox-5.0/created-from-selected-text.gif" width="80%"
+                     title="Context menu: create note"
                      alt="Context menu: create note">
                 <small>Right-click > Create note via Notefox</small>
             </span>
@@ -166,14 +169,16 @@ include_once($root_path . "/include/header.php");
         </p>
         <p>
             <span class="notefox-new-version-page">
-                <img src="/help/notefox-5.0/all-websites-expanded-by-default-option.gif" width="80%" title="Expand all websites by default"
+                <img src="/help/notefox-5.0/all-websites-expanded-by-default-option.gif" width="80%"
+                     title="Expand all websites by default"
                      alt="Expand all websites by default">
                 <small>Settings > Expand all websites by default</small>
             </span>
         </p>
         <p>
             <span class="notefox-new-version-page">
-                <img src="/help/notefox-5.0/all-websites-collapsed-expanded.gif" width="80%" title="Collapsed and expanded websites"
+                <img src="/help/notefox-5.0/all-websites-collapsed-expanded.gif" width="80%"
+                     title="Collapsed and expanded websites"
                      alt="Collapsed and expanded websites">
                 <small>All notes > Websites collapsed and expanded</small>
             </span>

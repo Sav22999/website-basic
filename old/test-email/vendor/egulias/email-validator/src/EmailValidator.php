@@ -42,14 +42,6 @@ class EmailValidator
     }
 
     /**
-     * @return boolean
-     */
-    public function hasWarnings()
-    {
-        return !empty($this->warnings);
-    }
-
-    /**
      * @return array
      */
     public function getWarnings()
@@ -63,5 +55,13 @@ class EmailValidator
     public function getError()
     {
         return $this->error;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasWarnings()
+    {
+        return !empty($this->warnings);
     }
 }

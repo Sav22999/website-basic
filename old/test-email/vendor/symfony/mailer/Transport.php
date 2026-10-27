@@ -59,6 +59,14 @@ class Transport
     private $factories;
 
     /**
+     * @param TransportFactoryInterface[] $factories
+     */
+    public function __construct(iterable $factories)
+    {
+        $this->factories = $factories;
+    }
+
+    /**
      * @param EventDispatcherInterface|null $dispatcher
      * @param HttpClientInterface|null $client
      * @param LoggerInterface|null $logger
@@ -78,34 +86,28 @@ class Transport
      * @param EventDispatcherInterface|null $dispatcher
      * @param HttpClientInterface|null $client
      * @param LoggerInterface|null $logger
+     *
+     * @return \Traversable<int, TransportFactoryInterface>
      */
-    public static function fromDsns(array $dsns/* , ?EventDispatcherInterface $dispatcher = null, ?HttpClientInterface $client = null, ?LoggerInterface $logger = null */): TransportInterface
+    public static function getDefaultFactories(/* ?EventDispatcherInterface $dispatcher = null, ?HttpClientInterface $client = null, ?LoggerInterface $logger = null */): iterable
     {
-        $dispatcher = 2 <= \func_num_args() ? func_get_arg(1) : null;
-        $client = 3 <= \func_num_args() ? func_get_arg(2) : null;
-        $logger = 4 <= \func_num_args() ? func_get_arg(3) : null;
+        $dispatcher = 1 <= \func_num_args() ? func_get_arg(0) : null;
+        $client = 2 <= \func_num_args() ? func_get_arg(1) : null;
+        $logger = 3 <= \func_num_args() ? func_get_arg(2) : null;
 
-        $factory = new self(iterator_to_array(self::getDefaultFactories($dispatcher, $client, $logger)));
-
-        return $factory->fromStrings($dsns);
-    }
-
-    /**
-     * @param TransportFactoryInterface[] $factories
-     */
-    public function __construct(iterable $factories)
-    {
-        $this->factories = $factories;
-    }
-
-    public function fromStrings(array $dsns): Transports
-    {
-        $transports = [];
-        foreach ($dsns as $name => $dsn) {
-            $transports[$name] = $this->fromString($dsn);
+        foreach (self::FACTORY_CLASSES as $factoryClass) {
+            if (class_exists($factoryClass)) {
+                yield new $factoryClass($dispatcher, $client, $logger);
+            }
         }
 
-        return new Transports($transports);
+        yield new NullTransportFactory($dispatcher, $client, $logger);
+
+        yield new SendmailTransportFactory($dispatcher, $client, $logger);
+
+        yield new EsmtpTransportFactory($dispatcher, $client, $logger);
+
+        yield new NativeTransportFactory($dispatcher, $client, $logger);
     }
 
     public function fromString(string $dsn): TransportInterface
@@ -180,27 +182,25 @@ class Transport
      * @param EventDispatcherInterface|null $dispatcher
      * @param HttpClientInterface|null $client
      * @param LoggerInterface|null $logger
-     *
-     * @return \Traversable<int, TransportFactoryInterface>
      */
-    public static function getDefaultFactories(/* ?EventDispatcherInterface $dispatcher = null, ?HttpClientInterface $client = null, ?LoggerInterface $logger = null */): iterable
+    public static function fromDsns(array $dsns/* , ?EventDispatcherInterface $dispatcher = null, ?HttpClientInterface $client = null, ?LoggerInterface $logger = null */): TransportInterface
     {
-        $dispatcher = 1 <= \func_num_args() ? func_get_arg(0) : null;
-        $client = 2 <= \func_num_args() ? func_get_arg(1) : null;
-        $logger = 3 <= \func_num_args() ? func_get_arg(2) : null;
+        $dispatcher = 2 <= \func_num_args() ? func_get_arg(1) : null;
+        $client = 3 <= \func_num_args() ? func_get_arg(2) : null;
+        $logger = 4 <= \func_num_args() ? func_get_arg(3) : null;
 
-        foreach (self::FACTORY_CLASSES as $factoryClass) {
-            if (class_exists($factoryClass)) {
-                yield new $factoryClass($dispatcher, $client, $logger);
-            }
+        $factory = new self(iterator_to_array(self::getDefaultFactories($dispatcher, $client, $logger)));
+
+        return $factory->fromStrings($dsns);
+    }
+
+    public function fromStrings(array $dsns): Transports
+    {
+        $transports = [];
+        foreach ($dsns as $name => $dsn) {
+            $transports[$name] = $this->fromString($dsn);
         }
 
-        yield new NullTransportFactory($dispatcher, $client, $logger);
-
-        yield new SendmailTransportFactory($dispatcher, $client, $logger);
-
-        yield new EsmtpTransportFactory($dispatcher, $client, $logger);
-
-        yield new NativeTransportFactory($dispatcher, $client, $logger);
+        return new Transports($transports);
     }
 }

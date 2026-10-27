@@ -46,9 +46,12 @@ final class ParameterizedHeader extends UnstructuredHeader
         $this->setParameters(array_merge($this->getParameters(), [$parameter => $value]));
     }
 
-    public function getParameter(string $parameter): string
+    /**
+     * @return string[]
+     */
+    public function getParameters(): array
     {
-        return $this->getParameters()[$parameter] ?? '';
+        return $this->parameters;
     }
 
     /**
@@ -59,24 +62,9 @@ final class ParameterizedHeader extends UnstructuredHeader
         $this->parameters = $parameters;
     }
 
-    /**
-     * @return string[]
-     */
-    public function getParameters(): array
+    public function getParameter(string $parameter): string
     {
-        return $this->parameters;
-    }
-
-    public function getBodyAsString(): string
-    {
-        $body = parent::getBodyAsString();
-        foreach ($this->parameters as $name => $value) {
-            if (null !== $value) {
-                $body .= '; ' . $this->createParameter($name, $value);
-            }
-        }
-
-        return $body;
+        return $this->getParameters()[$parameter] ?? '';
     }
 
     /**
@@ -99,6 +87,18 @@ final class ParameterizedHeader extends UnstructuredHeader
         }
 
         return $tokens;
+    }
+
+    public function getBodyAsString(): string
+    {
+        $body = parent::getBodyAsString();
+        foreach ($this->parameters as $name => $value) {
+            if (null !== $value) {
+                $body .= '; ' . $this->createParameter($name, $value);
+            }
+        }
+
+        return $body;
     }
 
     /**

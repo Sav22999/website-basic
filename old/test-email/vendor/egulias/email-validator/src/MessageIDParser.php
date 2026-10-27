@@ -25,13 +25,14 @@ class MessageIDParser extends Parser
      */
     protected $idRight = '';
 
-    public function parse(string $str): Result
+    public function getLeftPart(): string
     {
-        $result = parent::parse($str);
+        return $this->idLeft;
+    }
 
-        $this->addLongEmailWarning($this->idLeft, $this->idRight);
-
-        return $result;
+    public function getRightPart(): string
+    {
+        return $this->idRight;
     }
 
     protected function preLeftParsing(): Result
@@ -47,11 +48,6 @@ class MessageIDParser extends Parser
         return $this->processIDLeft();
     }
 
-    protected function parseRightFromAt(): Result
-    {
-        return $this->processIDRight();
-    }
-
     private function processIDLeft(): Result
     {
         $localPartParser = new IDLeftPart($this->lexer);
@@ -62,6 +58,27 @@ class MessageIDParser extends Parser
         return $localPartResult;
     }
 
+    public function parse(string $str): Result
+    {
+        $result = parent::parse($str);
+
+        $this->addLongEmailWarning($this->idLeft, $this->idRight);
+
+        return $result;
+    }
+
+    private function addLongEmailWarning(string $localPart, string $parsedDomainPart): void
+    {
+        if (strlen($localPart . '@' . $parsedDomainPart) > self::EMAILID_MAX_LENGTH) {
+            $this->warnings[EmailTooLong::CODE] = new EmailTooLong();
+        }
+    }
+
+    protected function parseRightFromAt(): Result
+    {
+        return $this->processIDRight();
+    }
+
     private function processIDRight(): Result
     {
         $domainPartParser = new IDRightPart($this->lexer);
@@ -70,22 +87,5 @@ class MessageIDParser extends Parser
         $this->warnings = array_merge($domainPartParser->getWarnings(), $this->warnings);
 
         return $domainPartResult;
-    }
-
-    public function getLeftPart(): string
-    {
-        return $this->idLeft;
-    }
-
-    public function getRightPart(): string
-    {
-        return $this->idRight;
-    }
-
-    private function addLongEmailWarning(string $localPart, string $parsedDomainPart): void
-    {
-        if (strlen($localPart . '@' . $parsedDomainPart) > self::EMAILID_MAX_LENGTH) {
-            $this->warnings[EmailTooLong::CODE] = new EmailTooLong();
-        }
     }
 }

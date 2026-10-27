@@ -78,11 +78,12 @@ class MultipleValidationWithAnd implements EmailValidation
         return $result;
     }
 
-    private function initErrorStorage(): void
+    /**
+     * {@inheritdoc}
+     */
+    public function getWarnings(): array
     {
-        if (null === $this->error) {
-            $this->error = new MultipleErrors();
-        }
+        return $this->warnings;
     }
 
     private function processError(EmailValidation $validation): void
@@ -94,11 +95,6 @@ class MultipleValidationWithAnd implements EmailValidation
         }
     }
 
-    private function shouldStop(bool $result): bool
-    {
-        return !$result && $this->mode === self::STOP_ON_ERROR;
-    }
-
     /**
      * Returns the validation errors.
      */
@@ -107,11 +103,15 @@ class MultipleValidationWithAnd implements EmailValidation
         return $this->error;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getWarnings(): array
+    private function initErrorStorage(): void
     {
-        return $this->warnings;
+        if (null === $this->error) {
+            $this->error = new MultipleErrors();
+        }
+    }
+
+    private function shouldStop(bool $result): bool
+    {
+        return !$result && $this->mode === self::STOP_ON_ERROR;
     }
 }

@@ -49,6 +49,28 @@ class PhpToken implements \Stringable
         $this->pos = $position;
     }
 
+    /**
+     * @return list<static>
+     */
+    public static function tokenize(string $code, int $flags = 0): array
+    {
+        $line = 1;
+        $position = 0;
+        $tokens = token_get_all($code, $flags);
+        foreach ($tokens as $index => $token) {
+            if (\is_string($token)) {
+                $id = \ord($token);
+                $text = $token;
+            } else {
+                [$id, $text, $line] = $token;
+            }
+            $tokens[$index] = new static($id, $text, $line, $position);
+            $position += \strlen($text);
+        }
+
+        return $tokens;
+    }
+
     public function getTokenName(): ?string
     {
         if ('UNKNOWN' === $name = token_name($this->id)) {
@@ -80,27 +102,5 @@ class PhpToken implements \Stringable
     public function __toString(): string
     {
         return (string)$this->text;
-    }
-
-    /**
-     * @return list<static>
-     */
-    public static function tokenize(string $code, int $flags = 0): array
-    {
-        $line = 1;
-        $position = 0;
-        $tokens = token_get_all($code, $flags);
-        foreach ($tokens as $index => $token) {
-            if (\is_string($token)) {
-                $id = \ord($token);
-                $text = $token;
-            } else {
-                [$id, $text, $line] = $token;
-            }
-            $tokens[$index] = new static($id, $text, $line, $position);
-            $position += \strlen($text);
-        }
-
-        return $tokens;
     }
 }

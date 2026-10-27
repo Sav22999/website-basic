@@ -23,8 +23,12 @@ $_default_tab = ($i18n_lang === "it") ? "it" : "en";
         }
         ?>
         <div class="lang-tabs">
-            <button type="button" class="lang-tab<?php if ($_default_tab === 'it') echo ' active'; ?>" data-lang="it">Italiano</button>
-            <button type="button" class="lang-tab<?php if ($_default_tab === 'en') echo ' active'; ?>" data-lang="en">English</button>
+            <button type="button" class="lang-tab<?php if ($_default_tab === 'it') echo ' active'; ?>" data-lang="it">
+                Italiano
+            </button>
+            <button type="button" class="lang-tab<?php if ($_default_tab === 'en') echo ' active'; ?>" data-lang="en">
+                English
+            </button>
         </div>
 
         <?php
@@ -335,8 +339,12 @@ include_once($root_path . "/include/footer.php");
     document.querySelectorAll(".lang-tab").forEach(function (tab) {
         tab.addEventListener("click", function () {
             var lang = this.getAttribute("data-lang");
-            document.querySelectorAll(".lang-tab").forEach(function (t) { t.classList.remove("active"); });
-            document.querySelectorAll(".lang-content").forEach(function (c) { c.classList.remove("active"); });
+            document.querySelectorAll(".lang-tab").forEach(function (t) {
+                t.classList.remove("active");
+            });
+            document.querySelectorAll(".lang-content").forEach(function (c) {
+                c.classList.remove("active");
+            });
             this.classList.add("active");
             document.querySelector('.lang-content[data-lang="' + lang + '"]').classList.add("active");
         });

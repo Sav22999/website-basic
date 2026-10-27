@@ -78,6 +78,20 @@ abstract class AbstractTransport implements TransportInterface
 
     abstract protected function doSend(SentMessage $message): void;
 
+    private function checkThrottling()
+    {
+        if (0 == $this->rate) {
+            return;
+        }
+
+        $sleep = (1 / $this->rate) - (microtime(true) - $this->lastSent);
+        if (0 < $sleep) {
+            $this->logger->debug(sprintf('Email transport "%s" sleeps for %.2f seconds', __CLASS__, $sleep));
+            usleep((int)($sleep * 1000000));
+        }
+        $this->lastSent = microtime(true);
+    }
+
     /**
      * @param Address[] $addresses
      *
@@ -93,19 +107,5 @@ abstract class AbstractTransport implements TransportInterface
     protected function getLogger(): LoggerInterface
     {
         return $this->logger;
-    }
-
-    private function checkThrottling()
-    {
-        if (0 == $this->rate) {
-            return;
-        }
-
-        $sleep = (1 / $this->rate) - (microtime(true) - $this->lastSent);
-        if (0 < $sleep) {
-            $this->logger->debug(sprintf('Email transport "%s" sleeps for %.2f seconds', __CLASS__, $sleep));
-            usleep((int)($sleep * 1000000));
-        }
-        $this->lastSent = microtime(true);
     }
 }

@@ -24,6 +24,11 @@ class MultipleErrors extends InvalidEmail
         $this->reasons[$reason->code()] = $reason;
     }
 
+    public function code(): int
+    {
+        return 0;
+    }
+
     /**
      * @return Reason[]
      */
@@ -47,10 +52,5 @@ class MultipleErrors extends InvalidEmail
         }
 
         return $description;
-    }
-
-    public function code(): int
-    {
-        return 0;
     }
 }

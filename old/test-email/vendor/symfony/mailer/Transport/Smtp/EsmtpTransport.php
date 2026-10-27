@@ -63,6 +63,11 @@ class EsmtpTransport extends SmtpTransport
         $stream->setPort($port);
     }
 
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
     /**
      * @return $this
      */
@@ -73,9 +78,9 @@ class EsmtpTransport extends SmtpTransport
         return $this;
     }
 
-    public function getUsername(): string
+    public function getPassword(): string
     {
-        return $this->username;
+        return $this->password;
     }
 
     /**
@@ -86,11 +91,6 @@ class EsmtpTransport extends SmtpTransport
         $this->password = $password;
 
         return $this;
-    }
-
-    public function getPassword(): string
-    {
-        return $this->password;
     }
 
     public function addAuthenticator(AuthenticatorInterface $authenticator): void

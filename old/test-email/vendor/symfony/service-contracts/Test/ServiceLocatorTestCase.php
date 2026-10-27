@@ -17,16 +17,6 @@ use Symfony\Contracts\Service\ServiceLocatorTrait;
 
 abstract class ServiceLocatorTestCase extends TestCase
 {
-    /**
-     * @return ContainerInterface
-     */
-    protected function getServiceLocator(array $factories)
-    {
-        return new class($factories) implements ContainerInterface {
-            use ServiceLocatorTrait;
-        };
-    }
-
     public function testHas()
     {
         $locator = $this->getServiceLocator([
@@ -44,6 +34,16 @@ abstract class ServiceLocatorTestCase extends TestCase
         $this->assertTrue($locator->has('foo'));
         $this->assertTrue($locator->has('bar'));
         $this->assertFalse($locator->has('dummy'));
+    }
+
+    /**
+     * @return ContainerInterface
+     */
+    protected function getServiceLocator(array $factories)
+    {
+        return new class($factories) implements ContainerInterface {
+            use ServiceLocatorTrait;
+        };
     }
 
     public function testGet()

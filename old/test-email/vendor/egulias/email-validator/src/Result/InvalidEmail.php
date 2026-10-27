@@ -6,11 +6,11 @@ use Egulias\EmailValidator\Result\Reason\Reason;
 
 class InvalidEmail implements Result
 {
-    private $token;
     /**
      * @var Reason
      */
     protected $reason;
+    private $token;
 
     public function __construct(Reason $reason, string $token)
     {

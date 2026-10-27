@@ -31,6 +31,42 @@ abstract class AbstractStream
 
     private $debug = '';
 
+    public static function replace(string $from, string $to, iterable $chunks): \Generator
+    {
+        if ('' === $from) {
+            yield from $chunks;
+
+            return;
+        }
+
+        $carry = '';
+        $fromLen = \strlen($from);
+
+        foreach ($chunks as $chunk) {
+            if ('' === $chunk = $carry . $chunk) {
+                continue;
+            }
+
+            if (str_contains($chunk, $from)) {
+                $chunk = explode($from, $chunk);
+                $carry = array_pop($chunk);
+
+                yield implode($to, $chunk) . $to;
+            } else {
+                $carry = $chunk;
+            }
+
+            if (\strlen($carry) > $fromLen) {
+                yield substr($carry, 0, -$fromLen);
+                $carry = substr($carry, -$fromLen);
+            }
+        }
+
+        if ('' !== $carry) {
+            yield $carry;
+        }
+    }
+
     public function write(string $bytes, bool $debug = true): void
     {
         if ($debug) {
@@ -94,6 +130,8 @@ abstract class AbstractStream
         return $line;
     }
 
+    abstract protected function getReadConnectionDescription(): string;
+
     public function getDebug(): string
     {
         $debug = $this->debug;
@@ -101,42 +139,4 @@ abstract class AbstractStream
 
         return $debug;
     }
-
-    public static function replace(string $from, string $to, iterable $chunks): \Generator
-    {
-        if ('' === $from) {
-            yield from $chunks;
-
-            return;
-        }
-
-        $carry = '';
-        $fromLen = \strlen($from);
-
-        foreach ($chunks as $chunk) {
-            if ('' === $chunk = $carry . $chunk) {
-                continue;
-            }
-
-            if (str_contains($chunk, $from)) {
-                $chunk = explode($from, $chunk);
-                $carry = array_pop($chunk);
-
-                yield implode($to, $chunk) . $to;
-            } else {
-                $carry = $chunk;
-            }
-
-            if (\strlen($carry) > $fromLen) {
-                yield substr($carry, 0, -$fromLen);
-                $carry = substr($carry, -$fromLen);
-            }
-        }
-
-        if ('' !== $carry) {
-            yield $carry;
-        }
-    }
-
-    abstract protected function getReadConnectionDescription(): string;
 }

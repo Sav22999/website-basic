@@ -59,7 +59,45 @@ class EmailLexer extends AbstractLexer
     public const S_DOUBLECOLON = 5858;
     public const ASCII_INVALID_FROM = 127;
     public const ASCII_INVALID_TO = 199;
-
+    public const INVALID_CHARS_REGEX = "/[^\p{S}\p{C}\p{Cc}]+/iu";
+    public const VALID_UTF8_REGEX = '/\p{Cc}+/u';
+    public const CATCHABLE_PATTERNS = [
+        '[a-zA-Z]+[46]?', //ASCII and domain literal
+        '[^\x00-\x7F]',  //UTF-8
+        '[0-9]+',
+        '\r\n',
+        '::',
+        '\s+?',
+        '.',
+    ];
+    public const NON_CATCHABLE_PATTERNS = [
+        '[\xA0-\xff]+',
+    ];
+    public const MODIFIERS = 'iu';
+    /** @psalm-var array{value:'', type:null, position:0} */
+    private static $nullToken = [
+        'value' => '',
+        'type' => null,
+        'position' => 0,
+    ];
+    /**
+     * The last matched/seen token.
+     *
+     * @var array|Token
+     *
+     * @psalm-suppress NonInvariantDocblockPropertyType
+     * @psalm-var array{value:string, type:null|int, position:int}|Token<int, string>
+     */
+    public $token;
+    /**
+     * The next token in the input.
+     *
+     * @var array|Token|null
+     *
+     * @psalm-suppress NonInvariantDocblockPropertyType
+     * @psalm-var array{position: int, type: int|null|string, value: int|string}|Token<int, string>|null
+     */
+    public $lookahead;
     /**
      * US-ASCII visible characters not valid for atext (@link http://tools.ietf.org/html/rfc5322#section-3.2.3)
      *
@@ -110,64 +148,14 @@ class EmailLexer extends AbstractLexer
         '#' => self::NUMBER_SIGN,
         '¡' => self::INVERT_EXCLAMATION,
     ];
-
-    public const INVALID_CHARS_REGEX = "/[^\p{S}\p{C}\p{Cc}]+/iu";
-
-    public const VALID_UTF8_REGEX = '/\p{Cc}+/u';
-
-    public const CATCHABLE_PATTERNS = [
-        '[a-zA-Z]+[46]?', //ASCII and domain literal
-        '[^\x00-\x7F]',  //UTF-8
-        '[0-9]+',
-        '\r\n',
-        '::',
-        '\s+?',
-        '.',
-    ];
-
-    public const NON_CATCHABLE_PATTERNS = [
-        '[\xA0-\xff]+',
-    ];
-
-    public const MODIFIERS = 'iu';
-
     /** @var bool */
     protected $hasInvalidTokens = false;
-
     /**
      * @var array
      *
      * @psalm-var array{value:string, type:null|int, position:int}|array<empty, empty>
      */
     protected $previous = [];
-
-    /**
-     * The last matched/seen token.
-     *
-     * @var array|Token
-     *
-     * @psalm-suppress NonInvariantDocblockPropertyType
-     * @psalm-var array{value:string, type:null|int, position:int}|Token<int, string>
-     */
-    public $token;
-
-    /**
-     * The next token in the input.
-     *
-     * @var array|Token|null
-     *
-     * @psalm-suppress NonInvariantDocblockPropertyType
-     * @psalm-var array{position: int, type: int|null|string, value: int|string}|Token<int, string>|null
-     */
-    public $lookahead;
-
-    /** @psalm-var array{value:'', type:null, position:0} */
-    private static $nullToken = [
-        'value' => '',
-        'type' => null,
-        'position' => 0,
-    ];
-
     /** @var string */
     private $accumulator = '';
 
@@ -231,6 +219,41 @@ class EmailLexer extends AbstractLexer
         return $hasNext;
     }
 
+    public function hasInvalidTokens(): bool
+    {
+        return $this->hasInvalidTokens;
+    }
+
+    /**
+     * getPrevious
+     *
+     * @return array
+     */
+    public function getPrevious(): array
+    {
+        return $this->previous;
+    }
+
+    public function getAccumulatedValues(): string
+    {
+        return $this->accumulator;
+    }
+
+    public function startRecording(): void
+    {
+        $this->hasToRecord = true;
+    }
+
+    public function stopRecording(): void
+    {
+        $this->hasToRecord = false;
+    }
+
+    public function clearRecorded(): void
+    {
+        $this->accumulator = '';
+    }
+
     /**
      * Retrieve token type. Also processes the token value if necessary.
      *
@@ -283,21 +306,6 @@ class EmailLexer extends AbstractLexer
         return preg_match(self::VALID_UTF8_REGEX, $value) !== false;
     }
 
-    public function hasInvalidTokens(): bool
-    {
-        return $this->hasInvalidTokens;
-    }
-
-    /**
-     * getPrevious
-     *
-     * @return array
-     */
-    public function getPrevious(): array
-    {
-        return $this->previous;
-    }
-
     /**
      * Lexical catchable patterns.
      *
@@ -321,25 +329,5 @@ class EmailLexer extends AbstractLexer
     protected function getModifiers(): string
     {
         return self::MODIFIERS;
-    }
-
-    public function getAccumulatedValues(): string
-    {
-        return $this->accumulator;
-    }
-
-    public function startRecording(): void
-    {
-        $this->hasToRecord = true;
-    }
-
-    public function stopRecording(): void
-    {
-        $this->hasToRecord = false;
-    }
-
-    public function clearRecorded(): void
-    {
-        $this->accumulator = '';
     }
 }

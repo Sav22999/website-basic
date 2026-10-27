@@ -34,8 +34,10 @@ include_once($root_path . "/include/header.php");
             Search results update in real time as you type.
         </p>
         <p>
-            Search terms are <strong>chip-based</strong>: type a keyword and press <kbd>Enter</kbd> to add it as a search chip.
-            You can add multiple chips to refine your search. Press <kbd>Backspace</kbd> on an empty search field to remove the last chip.
+            Search terms are <strong>chip-based</strong>: type a keyword and press <kbd>Enter</kbd> to add it as a
+            search chip.
+            You can add multiple chips to refine your search. Press <kbd>Backspace</kbd> on an empty search field to
+            remove the last chip.
             You can also click the <strong>&times;</strong> button on any chip to remove it.
         </p>
         <p>
@@ -73,9 +75,13 @@ include_once($root_path . "/include/header.php");
             Click the <strong>Filter</strong> button to open the filter panel. Available filters:
         </p>
         <ul>
-            <li><strong>Type</strong> &mdash; filter by note type: Global, Domain, or Page. Multiple types can be selected at once.</li>
+            <li><strong>Type</strong> &mdash; filter by note type: Global, Domain, or Page. Multiple types can be
+                selected at once.
+            </li>
             <li><strong>Colour</strong> &mdash; filter by note colour. Multiple colours can be selected at once.</li>
-            <li><strong>Folder</strong> &mdash; filter by folder name. Type to search and select from suggestions, or type a custom value.</li>
+            <li><strong>Folder</strong> &mdash; filter by folder name. Type to search and select from suggestions, or
+                type a custom value.
+            </li>
             <li><strong>Tags</strong> &mdash; filter by tags. Same chip-based input as folder.</li>
         </ul>
         <p>

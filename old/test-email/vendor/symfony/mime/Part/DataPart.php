@@ -20,11 +20,9 @@ use Symfony\Component\Mime\MimeTypes;
  */
 class DataPart extends TextPart
 {
+    private static $mimeTypes;
     /** @internal */
     protected $_parent;
-
-    private static $mimeTypes;
-
     private $filename;
     private $mediaType;
     private $cid;
@@ -94,6 +92,11 @@ class DataPart extends TextPart
         return $this->cid ?: $this->cid = $this->generateContentId();
     }
 
+    private function generateContentId(): string
+    {
+        return bin2hex(random_bytes(16)) . '@symfony';
+    }
+
     public function hasContentId(): bool
     {
         return null !== $this->cid;
@@ -127,11 +130,6 @@ class DataPart extends TextPart
         }
 
         return $str;
-    }
-
-    private function generateContentId(): string
-    {
-        return bin2hex(random_bytes(16)) . '@symfony';
     }
 
     public function __destruct()

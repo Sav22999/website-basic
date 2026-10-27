@@ -106,6 +106,75 @@ class Deprecation
         self::delegateTriggerToBackend($message, $backtrace, $link, $package);
     }
 
+    /** @return int-mask-of<self::TYPE_*> */
+    private static function getTypeFromEnv(): int
+    {
+        switch ($_SERVER['DOCTRINE_DEPRECATIONS'] ?? $_ENV['DOCTRINE_DEPRECATIONS'] ?? null) {
+            case 'trigger':
+                self::$type = self::TYPE_TRIGGER_ERROR;
+                break;
+
+            case 'track':
+                self::$type = self::TYPE_TRACK_DEPRECATIONS;
+                break;
+
+            default:
+                self::$type = self::TYPE_NONE;
+                break;
+        }
+
+        return self::$type;
+    }
+
+    /** @param list<array{function: string, line?: int, file?: string, class?: class-string, type?: string, args?: mixed[], object?: object}> $backtrace */
+    private static function delegateTriggerToBackend(string $message, array $backtrace, string $link, string $package): void
+    {
+        $type = self::$type ?? self::getTypeFromEnv();
+
+        if (($type & self::TYPE_PSR_LOGGER) > 0) {
+            $context = [
+                'file' => $backtrace[0]['file'] ?? null,
+                'line' => $backtrace[0]['line'] ?? null,
+                'package' => $package,
+                'link' => $link,
+            ];
+
+            assert(self::$logger !== null);
+
+            self::$logger->notice($message, $context);
+        }
+
+        if (!(($type & self::TYPE_TRIGGER_ERROR) > 0)) {
+            return;
+        }
+
+        $message .= sprintf(
+            ' (%s:%d called by %s:%d, %s, package %s)',
+            self::basename($backtrace[0]['file'] ?? 'native code'),
+            $backtrace[0]['line'] ?? 0,
+            self::basename($backtrace[1]['file'] ?? 'native code'),
+            $backtrace[1]['line'] ?? 0,
+            $link,
+            $package
+        );
+
+        @trigger_error($message, E_USER_DEPRECATED);
+    }
+
+    /**
+     * A non-local-aware version of PHPs basename function.
+     */
+    private static function basename(string $filename): string
+    {
+        $pos = strrpos($filename, DIRECTORY_SEPARATOR);
+
+        if ($pos === false) {
+            return $filename;
+        }
+
+        return substr($filename, $pos + 1);
+    }
+
     /**
      * Trigger a deprecation for the given package and identifier when called from outside.
      *
@@ -171,55 +240,6 @@ class Deprecation
         self::delegateTriggerToBackend($message, $backtrace, $link, $package);
     }
 
-    /** @param list<array{function: string, line?: int, file?: string, class?: class-string, type?: string, args?: mixed[], object?: object}> $backtrace */
-    private static function delegateTriggerToBackend(string $message, array $backtrace, string $link, string $package): void
-    {
-        $type = self::$type ?? self::getTypeFromEnv();
-
-        if (($type & self::TYPE_PSR_LOGGER) > 0) {
-            $context = [
-                'file' => $backtrace[0]['file'] ?? null,
-                'line' => $backtrace[0]['line'] ?? null,
-                'package' => $package,
-                'link' => $link,
-            ];
-
-            assert(self::$logger !== null);
-
-            self::$logger->notice($message, $context);
-        }
-
-        if (!(($type & self::TYPE_TRIGGER_ERROR) > 0)) {
-            return;
-        }
-
-        $message .= sprintf(
-            ' (%s:%d called by %s:%d, %s, package %s)',
-            self::basename($backtrace[0]['file'] ?? 'native code'),
-            $backtrace[0]['line'] ?? 0,
-            self::basename($backtrace[1]['file'] ?? 'native code'),
-            $backtrace[1]['line'] ?? 0,
-            $link,
-            $package
-        );
-
-        @trigger_error($message, E_USER_DEPRECATED);
-    }
-
-    /**
-     * A non-local-aware version of PHPs basename function.
-     */
-    private static function basename(string $filename): string
-    {
-        $pos = strrpos($filename, DIRECTORY_SEPARATOR);
-
-        if ($pos === false) {
-            return $filename;
-        }
-
-        return substr($filename, $pos + 1);
-    }
-
     public static function enableTrackingDeprecations(): void
     {
         self::$type = self::$type ?? self::getTypeFromEnv();
@@ -283,25 +303,5 @@ class Deprecation
     public static function getTriggeredDeprecations(): array
     {
         return self::$triggeredDeprecations;
-    }
-
-    /** @return int-mask-of<self::TYPE_*> */
-    private static function getTypeFromEnv(): int
-    {
-        switch ($_SERVER['DOCTRINE_DEPRECATIONS'] ?? $_ENV['DOCTRINE_DEPRECATIONS'] ?? null) {
-            case 'trigger':
-                self::$type = self::TYPE_TRIGGER_ERROR;
-                break;
-
-            case 'track':
-                self::$type = self::TYPE_TRACK_DEPRECATIONS;
-                break;
-
-            default:
-                self::$type = self::TYPE_NONE;
-                break;
-        }
-
-        return self::$type;
     }
 }
