@@ -294,7 +294,11 @@
     "notes_pro_learn_more": "Подробнее о расширенных функциях →",
     "notes_properties": "Свойства",
     "notes_title_placeholder": "Заголовок заметки",
-    "notes_content_placeholder": "Напишите заметку здесь…"
+    "notes_content_placeholder": "Напишите заметку здесь…",
+    "admin_dashboard": "Панель администратора",
+    "admin_dashboard_desc": "Статистика только для чтения: аккаунты, сеансы и синхронизация.",
+    "admin_dashboard_title": "Панель администратора – Notefox",
+    "admin_dashboard_intro": "Сводная статистика только для чтения. Содержимое заметок никогда не читается."
   },
   "errors": {
     "401_title": "Не авторизован – Notefox",

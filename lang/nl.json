@@ -294,7 +294,11 @@
     "notes_pro_learn_more": "Meer over de geavanceerde functies →",
     "notes_properties": "Eigenschappen",
     "notes_title_placeholder": "Notitietitel",
-    "notes_content_placeholder": "Schrijf je notitie hier…"
+    "notes_content_placeholder": "Schrijf je notitie hier…",
+    "admin_dashboard": "Beheerdashboard",
+    "admin_dashboard_desc": "Alleen-lezen statistieken over accounts, sessies en synchronisatie.",
+    "admin_dashboard_title": "Beheerdashboard – Notefox",
+    "admin_dashboard_intro": "Geaggregeerde, alleen-lezen statistieken. De inhoud van notities wordt nooit gelezen."
   },
   "errors": {
     "401_title": "Niet geautoriseerd – Notefox",

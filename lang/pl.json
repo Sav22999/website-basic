@@ -294,7 +294,11 @@
     "notes_pro_learn_more": "Dowiedz się więcej o zaawansowanych funkcjach →",
     "notes_properties": "Właściwości",
     "notes_title_placeholder": "Tytuł notatki",
-    "notes_content_placeholder": "Napisz swoją notatkę tutaj…"
+    "notes_content_placeholder": "Napisz swoją notatkę tutaj…",
+    "admin_dashboard": "Panel administratora",
+    "admin_dashboard_desc": "Statystyki tylko do odczytu dotyczące kont, sesji i synchronizacji.",
+    "admin_dashboard_title": "Panel administratora – Notefox",
+    "admin_dashboard_intro": "Zbiorcze statystyki tylko do odczytu. Treść notatek nigdy nie jest odczytywana."
   },
   "errors": {
     "401_title": "Brak autoryzacji – Notefox",

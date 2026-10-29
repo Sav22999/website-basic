@@ -450,7 +450,11 @@
     "notes_pro_learn_more": "Scopri di più sulle funzionalità avanzate →",
     "notes_properties": "Proprietà",
     "notes_title_placeholder": "Titolo della nota",
-    "notes_content_placeholder": "Scrivi la tua nota qui…"
+    "notes_content_placeholder": "Scrivi la tua nota qui…",
+    "admin_dashboard": "Dashboard admin",
+    "admin_dashboard_desc": "Statistiche in sola lettura su account, sessioni e sincronizzazione.",
+    "admin_dashboard_title": "Dashboard admin – Notefox",
+    "admin_dashboard_intro": "Statistiche aggregate in sola lettura. Il contenuto delle note non viene mai letto."
   },
   "errors": {
     "401_title": "Non autorizzato – Notefox",

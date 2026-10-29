@@ -294,7 +294,11 @@
     "notes_pro_learn_more": "تعرّف على المزيد حول الميزات المتقدمة →",
     "notes_properties": "الخصائص",
     "notes_title_placeholder": "عنوان الملاحظة",
-    "notes_content_placeholder": "اكتب ملاحظتك هنا…"
+    "notes_content_placeholder": "اكتب ملاحظتك هنا…",
+    "admin_dashboard": "لوحة الإدارة",
+    "admin_dashboard_desc": "إحصاءات للقراءة فقط حول الحسابات والجلسات والمزامنة.",
+    "admin_dashboard_title": "لوحة الإدارة – Notefox",
+    "admin_dashboard_intro": "إحصاءات مجمّعة للقراءة فقط. لا تتم قراءة محتوى الملاحظات أبدًا."
   },
   "errors": {
     "401_title": "غير مصرّح – Notefox",

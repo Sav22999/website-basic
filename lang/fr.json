@@ -294,7 +294,11 @@
     "notes_pro_learn_more": "En savoir plus sur les fonctionnalités avancées →",
     "notes_properties": "Propriétés",
     "notes_title_placeholder": "Titre de la note",
-    "notes_content_placeholder": "Écrivez votre note ici…"
+    "notes_content_placeholder": "Écrivez votre note ici…",
+    "admin_dashboard": "Tableau de bord admin",
+    "admin_dashboard_desc": "Statistiques en lecture seule sur les comptes, les sessions et la synchronisation.",
+    "admin_dashboard_title": "Tableau de bord admin – Notefox",
+    "admin_dashboard_intro": "Statistiques agrégées en lecture seule. Le contenu des notes n'est jamais lu."
   },
   "errors": {
     "401_title": "Non autorisé – Notefox",

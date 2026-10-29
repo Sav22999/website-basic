@@ -294,7 +294,11 @@
     "notes_pro_learn_more": "Mehr über die erweiterten Funktionen erfahren →",
     "notes_properties": "Eigenschaften",
     "notes_title_placeholder": "Notiztitel",
-    "notes_content_placeholder": "Schreibe deine Notiz hier…"
+    "notes_content_placeholder": "Schreibe deine Notiz hier…",
+    "admin_dashboard": "Admin-Dashboard",
+    "admin_dashboard_desc": "Schreibgeschützte Statistiken zu Konten, Sitzungen und Synchronisierung.",
+    "admin_dashboard_title": "Admin-Dashboard – Notefox",
+    "admin_dashboard_intro": "Aggregierte, schreibgeschützte Statistiken. Notizinhalte werden nie gelesen."
   },
   "errors": {
     "401_title": "Nicht autorisiert – Notefox",

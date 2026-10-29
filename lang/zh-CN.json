@@ -294,7 +294,11 @@
     "notes_pro_learn_more": "了解更多高级功能 →",
     "notes_properties": "属性",
     "notes_title_placeholder": "笔记标题",
-    "notes_content_placeholder": "在此处撰写笔记…"
+    "notes_content_placeholder": "在此处撰写笔记…",
+    "admin_dashboard": "管理仪表板",
+    "admin_dashboard_desc": "关于账户、会话和同步的只读统计。",
+    "admin_dashboard_title": "管理仪表板 – Notefox",
+    "admin_dashboard_intro": "汇总的只读统计。绝不会读取笔记内容。"
   },
   "errors": {
     "401_title": "未授权 – Notefox",

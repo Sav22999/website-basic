@@ -95,6 +95,16 @@ include_once($root_path . "/include/header.php");
                     </div>
                 </div>
             </div>
+            <a href="/my/account/admin/" class="account-card account-card--admin hidden2" id="admin-card">
+                <svg class="account-card-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10"/>
+                    <line x1="12" y1="20" x2="12" y2="4"/>
+                    <line x1="6" y1="20" x2="6" y2="14"/>
+                </svg>
+                <span class="account-card-title"><?php echo te('account.admin_dashboard'); ?></span>
+                <p class="account-card-desc"><?php echo te('account.admin_dashboard_desc'); ?></p>
+            </a>
         </div>
 
         <div class="account-actions">
@@ -121,6 +131,7 @@ include_once($root_path . "/include/header.php");
 
         if ((session["permissions"] || 0) >= 10) {
             document.getElementById("admin-badge").classList.remove("hidden2");
+            document.getElementById("admin-card").classList.remove("hidden2");
         }
 
         document.querySelectorAll(".account-card--static").forEach(function (card) {

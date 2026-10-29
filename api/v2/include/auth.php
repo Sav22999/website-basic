@@ -307,6 +307,14 @@ function v2_require_auth($c)
  * additive `user_keys` table has not been created yet answers 409 to every
  * single read.
  */
+function v2_require_admin($session)
+{
+    if (!isset($session["permissions"]) || (int)$session["permissions"] < 10) {
+        api_error(ERR_ADMIN_REQUIRED);
+    }
+    return true;
+}
+
 function v2_require_dek($session)
 {
     if (!isset($session["dek"]) || $session["dek"] === null) {

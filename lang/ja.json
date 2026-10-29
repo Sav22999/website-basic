@@ -294,7 +294,11 @@
     "notes_pro_learn_more": "高度な機能について詳しく →",
     "notes_properties": "プロパティ",
     "notes_title_placeholder": "ノートのタイトル",
-    "notes_content_placeholder": "ここにノートを書いてください…"
+    "notes_content_placeholder": "ここにノートを書いてください…",
+    "admin_dashboard": "管理ダッシュボード",
+    "admin_dashboard_desc": "アカウント、セッション、同期に関する読み取り専用の統計。",
+    "admin_dashboard_title": "管理ダッシュボード – Notefox",
+    "admin_dashboard_intro": "集計された読み取り専用の統計です。メモの内容が読み取られることはありません。"
   },
   "errors": {
     "401_title": "未認証 – Notefox",

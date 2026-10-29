@@ -452,7 +452,11 @@
     "notes_pro_learn_more": "Learn more about advanced features →",
     "notes_properties": "Properties",
     "notes_title_placeholder": "Note title",
-    "notes_content_placeholder": "Write your note here…"
+    "notes_content_placeholder": "Write your note here…",
+    "admin_dashboard": "Admin dashboard",
+    "admin_dashboard_desc": "Read-only statistics about accounts, sessions and sync.",
+    "admin_dashboard_title": "Admin dashboard – Notefox",
+    "admin_dashboard_intro": "Aggregate, read-only statistics. No note content is ever read."
   },
   "errors": {
     "401_title": "Unauthorized – Notefox",
