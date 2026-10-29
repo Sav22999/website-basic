@@ -31,6 +31,16 @@ function render_release_item($text)
 }
 
 $releases = array(
+        array("Release 5.0.0.5 – 27 Oct 2026", array(
+                "[updated] Completed translations: all 30+ languages now include the active sessions and sync history strings",
+                "[fixed] Fixed duplicate translation keys in Italian",
+                "[updated] Updated add-on icons"
+        )),
+
+        array("Release 5.0.0.4 – 27 Oct 2026", array(
+                "[fixed] Hardened text formatting against HTML injection (CWE-79): tag names are now validated against an allowlist"
+        )),
+
         array("Release 5.0.0.3 – 11 Oct 2026", array(
                 "[improved] Better performance with many tabs open: tab updates no longer trigger unnecessary work for background or still-loading tabs",
                 "[fixed] No more console errors when sticky notes can't run on a page (e.g. about:blank, the new tab page or other internal pages)",
