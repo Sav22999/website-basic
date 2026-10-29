@@ -4,9 +4,8 @@
  * Intended to be called by a cron job.
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'] . "/include/credentials.php");
+require __DIR__ . "/cron-guard.php";
 global $error_logs_table, $localhost_db, $username_db, $password_db, $database_notefox;
-header("Content-Type: application/json");
 
 $c = new mysqli($localhost_db, $username_db, $password_db, $database_notefox);
 if (!$c || $c->connect_errno) {
@@ -36,6 +35,7 @@ if ($stmt->execute()) {
     $error = $stmt->error;
     $stmt->close();
     $c->close();
-    echo json_encode(array("code" => "500", "status" => "Error", "description" => "Delete failed - " . $error));
+    error_log("[periodic-checks] check-error-logs.php: " . $error);
+    echo json_encode(array("code" => "500", "status" => "Error", "description" => "Delete failed"));
 }
 ?>

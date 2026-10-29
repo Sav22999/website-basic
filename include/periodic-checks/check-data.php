@@ -5,9 +5,8 @@
  * called by a cron job.
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'] . "/include/credentials.php");
+require __DIR__ . "/cron-guard.php";
 global $localhost_db, $username_db, $password_db, $data_table, $database_notefox;
-header("Content-Type: application/json");
 
 $MAX_RECORDS = 200;
 
@@ -51,6 +50,7 @@ if ($stmt->execute()) {
     $error = $stmt->error;
     $stmt->close();
     $c->close();
-    echo json_encode(array("code" => "500", "status" => "Error", "description" => "Delete failed - " . $error));
+    error_log("[periodic-checks] check-data.php: " . $error);
+    echo json_encode(array("code" => "500", "status" => "Error", "description" => "Delete failed"));
 }
 ?>

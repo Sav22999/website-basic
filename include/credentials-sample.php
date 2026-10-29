@@ -29,4 +29,8 @@ $email_address = "<EMAIL ADDRESS>";
 $email_password = "<EMAIL PASSWORD>";
 $email_smtp = "<EMAIL SMTP SERVER>";
 $email_smtp_port = "<EMAIL SMTP PORT>";//probably 465
+
+// Secret for the cron calls to include/periodic-checks/*.php (at least 32 chars),
+// e.g. php -r 'echo bin2hex(random_bytes(32));'
+$cron_token = "<CRON TOKEN>";
 ?>

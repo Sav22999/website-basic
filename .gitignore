@@ -1,5 +1,6 @@
 
 include/credentials.php
+include/mail-config.php
 alpha/include/mail-config.php
 .maintenance
 .idea/*

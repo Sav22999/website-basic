@@ -5,9 +5,8 @@
  * Intended to be called by a cron job.
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'] . "/include/credentials.php");
+require __DIR__ . "/cron-guard.php";
 global $rate_limits_table, $localhost_db, $username_db, $password_db, $database_notefox;
-header("Content-Type: application/json");
 
 if (!isset($rate_limits_table) || $rate_limits_table === "") {
     echo json_encode(array("code" => "200", "status" => "Successful", "data" => array("deleted" => 0, "note" => "rate_limits_table not configured")));
@@ -41,6 +40,7 @@ if ($stmt->execute()) {
     $error = $stmt->error;
     $stmt->close();
     $c->close();
-    echo json_encode(array("code" => "500", "status" => "Error", "description" => "Delete failed - " . $error));
+    error_log("[periodic-checks] check-rate-limits.php: " . $error);
+    echo json_encode(array("code" => "500", "status" => "Error", "description" => "Delete failed"));
 }
 ?>
