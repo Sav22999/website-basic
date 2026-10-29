@@ -34,16 +34,16 @@ include_once($root_path . "/include/header.php");
 
         <div id="admin-skeleton" class="admin-skeleton" aria-hidden="true">
             <div class="admin-stat-grid admin-stat-grid--hero">
-                <div class="admin-stat admin-stat--skeleton"></div>
-                <div class="admin-stat admin-stat--skeleton"></div>
-                <div class="admin-stat admin-stat--skeleton"></div>
-                <div class="admin-stat admin-stat--skeleton"></div>
+                <div class="admin-stat admin-stat--skeleton skeleton"></div>
+                <div class="admin-stat admin-stat--skeleton skeleton"></div>
+                <div class="admin-stat admin-stat--skeleton skeleton"></div>
+                <div class="admin-stat admin-stat--skeleton skeleton"></div>
             </div>
             <div class="admin-stat-grid">
-                <div class="admin-stat admin-stat--skeleton"></div>
-                <div class="admin-stat admin-stat--skeleton"></div>
-                <div class="admin-stat admin-stat--skeleton"></div>
-                <div class="admin-stat admin-stat--skeleton"></div>
+                <div class="admin-stat admin-stat--skeleton skeleton"></div>
+                <div class="admin-stat admin-stat--skeleton skeleton"></div>
+                <div class="admin-stat admin-stat--skeleton skeleton"></div>
+                <div class="admin-stat admin-stat--skeleton skeleton"></div>
             </div>
         </div>
 
@@ -108,6 +108,12 @@ include_once($root_path . "/include/header.php");
             var card = el("div", "admin-stat" + (hero ? " admin-stat--hero" : ""));
             if (hero && tile.icon) card.appendChild(icon(tile.icon, 22));
 
+            if (tile.text !== undefined) {
+                card.appendChild(el("span", "admin-stat-value admin-stat-value--text", tile.text));
+                card.appendChild(el("span", "admin-stat-label", tile.label));
+                return card;
+            }
+
             var available = isNumber(tile.value);
             card.appendChild(el("span", "admin-stat-value" + (available ? "" : " admin-stat-value--na"), formatNumber(tile.value)));
             card.appendChild(el("span", "admin-stat-label", tile.label));
@@ -151,7 +157,12 @@ include_once($root_path . "/include/header.php");
             });
 
             list.items.forEach(function (item) {
-                var row = el("div", "admin-top-row");
+                var linked = !!list.link && item.label !== "unknown";
+                var row = el(linked ? "a" : "div", "admin-top-row" + (linked ? " admin-top-row--link" : ""));
+                if (linked) {
+                    row.href = list.link(item);
+                    row.title = "Show these entries";
+                }
                 var head = el("div", "admin-top-head");
                 var label = el("span", "admin-top-label", item.label);
                 label.title = item.label;
@@ -178,7 +189,18 @@ include_once($root_path . "/include/header.php");
             titles.appendChild(el("h2", "admin-section-title", options.title));
             if (options.desc) titles.appendChild(el("p", "admin-section-desc", options.desc));
             header.appendChild(titles);
+            if (options.action) {
+                var action = el("a", "btn btn--small admin-section-action", options.action.label);
+                action.href = options.action.href;
+                header.appendChild(action);
+            }
             section.appendChild(header);
+
+            if (options.notice) {
+                section.appendChild(el("p", "admin-section-notice", options.notice));
+                container.appendChild(section);
+                return;
+            }
 
             var grid = el("div", "admin-stat-grid");
             options.tiles.forEach(function (tile) {
@@ -194,6 +216,22 @@ include_once($root_path . "/include/header.php");
             }
 
             container.appendChild(section);
+        }
+
+        function logsUrl(type, filters) {
+            var query = new URLSearchParams({type: type});
+            Object.keys(filters || {}).forEach(function (key) {
+                if (filters[key] !== "unknown") query.set(key, filters[key]);
+            });
+            return "/my/account/admin/logs/?" + query.toString();
+        }
+
+        function unavailableText(section) {
+            var reasons = {
+                "table-missing": "The configured table does not exist in the database",
+                "date-column-missing": "The configured table has no date column"
+            };
+            return (reasons[section["reason"]] || "Not available") + (section["table"] ? " (table: " + section["table"] + ")." : ".");
         }
 
         function render(data) {
@@ -213,7 +251,7 @@ include_once($root_path . "/include/header.php");
                 {icon: "users", label: "Registered accounts", value: a["total"]},
                 {icon: "activity", label: "Active in the last 30 days", value: s["users-logged-in-30d"], of: verified},
                 {icon: "sync", label: "Synced in the last 7 days", value: y ? y["synced-7d"] : null, of: verified},
-                {icon: "alert", label: "Errors in the last 7 days", value: e ? e["errors-7d"] : null}
+                {icon: "alert", label: "Errors in the last 7 days", value: e && e["available"] ? e["errors-7d"] : null}
             ].forEach(function (tile) { hero.appendChild(statTile(tile, true)); });
             container.appendChild(hero);
 
@@ -265,15 +303,22 @@ include_once($root_path . "/include/header.php");
                 addSection({
                     icon: "chart",
                     title: "Telemetry",
-                    desc: "Last 30 days, only from installations that turned on anonymous telemetry.",
+                    desc: "Only from installations that turned on anonymous telemetry. Lists cover the last 30 days.",
+                    action: t["available"] ? {label: "View events", href: logsUrl("telemetry")} : null,
+                    notice: t["available"] ? null : unavailableText(t),
                     tiles: [
-                        {label: "Events", value: t["events-30d"]},
-                        {label: "Anonymous installations", value: t["installations-30d"]}
+                        {label: "Events (30 days)", value: t["events-30d"], of: {value: t["events-total"], label: "all time"}},
+                        {label: "Events (all time)", value: t["events-total"]},
+                        {label: "Installations (30 days)", value: t["installations-30d"], of: {value: t["installations-total"], label: "all time"}},
+                        {label: "Installations (all time)", value: t["installations-total"]},
+                        {label: "Last event", text: t["last-event"] ? t["last-event"] : "Never"}
                     ],
                     lists: [
-                        {title: "Notefox versions", items: t["versions"]},
+                        {title: "Actions", items: t["actions"], link: function (item) { return logsUrl("telemetry", {group: item.label, days: 30}); }},
+                        {title: "Notefox versions", items: t["versions"], link: function (item) { return logsUrl("telemetry", {version: item.label, days: 30}); }},
                         {title: "Browsers", items: t["browsers"]},
-                        {title: "Operating systems", items: t["os"]}
+                        {title: "Operating systems", items: t["os"]},
+                        {title: "Languages", items: t["languages"]}
                     ]
                 });
             }
@@ -282,14 +327,17 @@ include_once($root_path . "/include/header.php");
                 addSection({
                     icon: "alert",
                     title: "Error logs",
-                    desc: "Error reports sent automatically by the add-on.",
+                    desc: "Error reports sent automatically by the add-on. Lists cover the last 7 days.",
+                    action: e["available"] ? {label: "View error logs", href: logsUrl("errors")} : null,
+                    notice: e["available"] ? null : unavailableText(e),
                     tiles: [
                         {label: "Errors in the last 7 days", value: e["errors-7d"]},
-                        {label: "Errors in the last 30 days", value: e["errors-30d"]}
+                        {label: "Errors in the last 30 days", value: e["errors-30d"]},
+                        {label: "Errors (all time)", value: e["errors-total"]}
                     ],
                     lists: [
-                        {title: "Top contexts (7 days)", items: e["contexts"]},
-                        {title: "Notefox versions (7 days)", items: e["versions"]}
+                        {title: "Top contexts (7 days)", items: e["contexts"], link: function (item) { return logsUrl("errors", {group: item.label, days: 7}); }},
+                        {title: "Notefox versions (7 days)", items: e["versions"], link: function (item) { return logsUrl("errors", {version: item.label, days: 7}); }}
                     ]
                 });
             }

@@ -22,7 +22,7 @@ include_once($root_path . "/include/header.php");
 
             <div class="account-section">
                 <h2><?php echo te('account.otp_current_state'); ?></h2>
-                <div id="otp-status" class="account-status"><?php echo te('js.checking'); ?></div>
+                <div id="otp-status" class="account-status skeleton skeleton--pill"><?php echo te('js.checking'); ?></div>
                 <p id="otp-hint"><?php echo te('js.reading_state'); ?></p>
             </div>
 
@@ -83,6 +83,7 @@ include_once($root_path . "/include/header.php");
         var action = null;
 
         function render(enabled, codePending) {
+            statusElement.classList.remove("skeleton", "skeleton--pill");
             statusElement.textContent = enabled ? "Enabled" : "Disabled";
             statusElement.classList.toggle("account-status--off", !enabled);
 
@@ -131,6 +132,7 @@ include_once($root_path . "/include/header.php");
         notefoxAuthenticatedApi("/otp/status", {}).then(function (data) {
             render(data["otp-enabled"], false);
         }).catch(function (error) {
+            statusElement.classList.remove("skeleton", "skeleton--pill");
             statusElement.textContent = "Unknown";
             statusElement.classList.add("account-status--off");
             hintElement.textContent = "";

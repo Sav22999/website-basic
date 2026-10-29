@@ -15,8 +15,8 @@ include_once($root_path . "/include/header.php");
 <main id="main" class="page">
     <div class="container">
 
-        <div id="account-loading" class="text-center" style="padding: 80px 0;">
-            <span class="spinner" style="width: 28px; height: 28px; border-width: 3px;"></span>
+        <div id="account-loading" style="padding: 40px 0;" aria-hidden="true">
+            <div class="skeleton skeleton--auth"></div>
         </div>
 
         <div id="account-content" style="display: none;">

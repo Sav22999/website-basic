@@ -17,8 +17,11 @@ include_once($root_path . "/include/header.php");
 
         <div id="notes-message" class="form-message hidden2"></div>
 
-        <div id="notes-loading" class="text-center" style="padding: 48px 0;">
-            <span class="spinner" style="width: 28px; height: 28px; border-width: 3px;"></span>
+        <div id="notes-loading" style="margin-top: 24px;" aria-hidden="true">
+            <div class="skeleton skeleton--toolbar"></div>
+            <div class="skeleton skeleton--note"></div>
+            <div class="skeleton skeleton--note"></div>
+            <div class="skeleton skeleton--note"></div>
         </div>
 
         <div id="notes-container" class="hidden2">

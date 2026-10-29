@@ -19,8 +19,12 @@ include_once($root_path . "/include/header.php");
 
         <div id="history-message" class="form-message hidden2"></div>
 
-        <div id="history-loading" class="text-center" style="padding: 48px 0;">
-            <span class="spinner" style="width: 28px; height: 28px; border-width: 3px;"></span>
+        <div id="history-loading" class="skeleton-list" aria-hidden="true">
+            <div class="skeleton skeleton--row"></div>
+            <div class="skeleton skeleton--row"></div>
+            <div class="skeleton skeleton--row"></div>
+            <div class="skeleton skeleton--row"></div>
+            <div class="skeleton skeleton--row"></div>
         </div>
 
         <div class="text-center">

@@ -6,10 +6,12 @@
  *
  * Only COUNT/SUM/AVG over metadata columns: the encrypted `data` column is
  * never read, and no per-user value (email hash, IP, username) is returned.
- * Every section degrades to null when its table or column does not exist.
+ * Sections whose table is missing are null (accounts/sync) or report
+ * "available": false with the reason (telemetry, error logs).
  */
 
 include_once(__DIR__ . "/../../include/bootstrap.php");
+include_once(__DIR__ . "/../admin-common.php");
 
 req_require_post();
 
@@ -20,7 +22,7 @@ v2_require_admin($session);
 
 v2_rate_limit($c, "admin-stats", $session["user-id"], 30, 60, 60);
 
-global $users_table, $logins_table, $data_current_table, $telemetry_table, $error_logs_table;
+global $users_table, $logins_table, $data_current_table;
 
 function admin_stats_int($c, $sql)
 {
@@ -42,14 +44,15 @@ function admin_stats_float($c, $sql)
     return $value === null ? 0 : round((float)$value, 1);
 }
 
-function admin_stats_top($c, $table, $column, $date_column, $days, $limit = 5)
+function admin_stats_top($c, $table, $column, $date_expression, $days, $limit = 5)
 {
-    if (!db_has_column($c, $table, $column) || !db_has_column($c, $table, $date_column)) {
+    if (!db_has_column($c, $table, $column)) {
         return null;
     }
+    $where = $days === null ? "" : " WHERE $date_expression >= DATE_SUB(NOW(), INTERVAL " . (int)$days . " DAY)";
     $rows = db_select(
         $c,
-        "SELECT `$column` AS label, COUNT(*) AS total FROM `$table` WHERE `$date_column` >= DATE_SUB(NOW(), INTERVAL " . (int)$days . " DAY) GROUP BY `$column` ORDER BY total DESC LIMIT " . (int)$limit
+        "SELECT `$column` AS label, COUNT(*) AS total FROM `$table`$where GROUP BY `$column` ORDER BY total DESC LIMIT " . (int)$limit
     );
     $out = array();
     foreach ($rows as $row) {
@@ -60,6 +63,12 @@ function admin_stats_top($c, $table, $column, $date_column, $days, $limit = 5)
         );
     }
     return $out;
+}
+
+function admin_stats_count_since($c, $table, $date_expression, $days, $select = "COUNT(*)")
+{
+    $where = $days === null ? "" : " WHERE $date_expression >= DATE_SUB(NOW(), INTERVAL " . (int)$days . " DAY)";
+    return admin_stats_int($c, "SELECT $select FROM `$table`$where");
 }
 
 $accounts = array(
@@ -111,25 +120,48 @@ if (db_has_table($c, $data_current_table)) {
     );
 }
 
-$telemetry = null;
-if (db_has_table($c, $telemetry_table) && db_has_column($c, $telemetry_table, "server-datetime")) {
+$sources = admin_log_sources();
+
+$telemetry_state = admin_log_source_state($c, $sources["telemetry"]);
+if ($telemetry_state["available"]) {
+    $t = $telemetry_state["table"];
+    $d = $telemetry_state["date"];
+    $has_installations = db_has_column($c, $t, "anonymous-userid");
     $telemetry = array(
-        "events-30d" => admin_stats_int($c, "SELECT COUNT(*) FROM `$telemetry_table` WHERE `server-datetime` >= DATE_SUB(NOW(), INTERVAL 30 DAY)"),
-        "installations-30d" => admin_stats_int($c, "SELECT COUNT(DISTINCT `anonymous-userid`) FROM `$telemetry_table` WHERE `server-datetime` >= DATE_SUB(NOW(), INTERVAL 30 DAY)"),
-        "versions" => admin_stats_top($c, $telemetry_table, "notefox-version", "server-datetime", 30),
-        "browsers" => admin_stats_top($c, $telemetry_table, "browser", "server-datetime", 30),
-        "os" => admin_stats_top($c, $telemetry_table, "os", "server-datetime", 30),
+        "available" => true,
+        "events-total" => admin_stats_count_since($c, $t, $d, null),
+        "events-30d" => admin_stats_count_since($c, $t, $d, 30),
+        "installations-total" => $has_installations ? admin_stats_count_since($c, $t, $d, null, "COUNT(DISTINCT `anonymous-userid`)") : null,
+        "installations-30d" => $has_installations ? admin_stats_count_since($c, $t, $d, 30, "COUNT(DISTINCT `anonymous-userid`)") : null,
+        "last-event" => null,
+        "actions" => admin_stats_top($c, $t, "action", $d, 30, 8),
+        "versions" => admin_stats_top($c, $t, "notefox-version", $d, 30),
+        "browsers" => admin_stats_top($c, $t, "browser", $d, 30),
+        "os" => admin_stats_top($c, $t, "os", $d, 30),
+        "languages" => admin_stats_top($c, $t, "language", $d, 30),
     );
+    $last = db_select_one($c, "SELECT MAX($d) AS `last` FROM `$t`");
+    if ($last !== null && $last["last"] !== null) {
+        $telemetry["last-event"] = (string)$last["last"];
+    }
+} else {
+    $telemetry = $telemetry_state;
 }
 
-$error_logs = null;
-if (db_has_table($c, $error_logs_table) && db_has_column($c, $error_logs_table, "inserted-date")) {
+$errors_state = admin_log_source_state($c, $sources["errors"]);
+if ($errors_state["available"]) {
+    $t = $errors_state["table"];
+    $d = $errors_state["date"];
     $error_logs = array(
-        "errors-7d" => admin_stats_int($c, "SELECT COUNT(*) FROM `$error_logs_table` WHERE `inserted-date` >= DATE_SUB(NOW(), INTERVAL 7 DAY)"),
-        "errors-30d" => admin_stats_int($c, "SELECT COUNT(*) FROM `$error_logs_table` WHERE `inserted-date` >= DATE_SUB(NOW(), INTERVAL 30 DAY)"),
-        "contexts" => admin_stats_top($c, $error_logs_table, "context", "inserted-date", 7),
-        "versions" => admin_stats_top($c, $error_logs_table, "notefox-version", "inserted-date", 7),
+        "available" => true,
+        "errors-total" => admin_stats_count_since($c, $t, $d, null),
+        "errors-7d" => admin_stats_count_since($c, $t, $d, 7),
+        "errors-30d" => admin_stats_count_since($c, $t, $d, 30),
+        "contexts" => admin_stats_top($c, $t, "context", $d, 7),
+        "versions" => admin_stats_top($c, $t, "notefox-version", $d, 7),
     );
+} else {
+    $error_logs = $errors_state;
 }
 
 api_ok(array(
