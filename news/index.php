@@ -37,6 +37,22 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/include/menu.php");
             <div class="lang-notice" data-i18n="news.lang_notice" style="display: none;">This page is available in
                 English only
             </div>
+            <button type="button" class="expanding-item">Release 2.5.4 – 15 Nov 2026</button>
+            <div class="expanding-item--expanded-details hidden">
+                <ul class="changelog-list">
+                    <li><span class="changelog-label changelog-label--fixed">fixed</span> Fixed an issue with the first page not rendering correctly</li>
+                    <li><span class="changelog-label changelog-label--fixed">fixed</span> Fixed minor bugs</li>
+                    <li><span class="changelog-label changelog-label--other">other</span> Updated screenshots</li>
+                </ul>
+            </div>
+
+            <button type="button" class="expanding-item">Release 2.5.3 – 13 Oct 2026</button>
+            <div class="expanding-item--expanded-details hidden">
+                <ul class="changelog-list">
+                    <li><span class="changelog-label changelog-label--other">other</span> Updated translations</li>
+                </ul>
+            </div>
+
             <button type="button" class="expanding-item">Release 2.5.2 – 12 Oct 2026</button>
             <div class="expanding-item--expanded-details hidden">
                 <ul class="changelog-list">
