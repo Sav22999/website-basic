@@ -2779,6 +2779,49 @@ a.admin-top-row--link:hover .admin-top-label {
     color: var(--color-text-muted);
 }
 
+.savaccount-box {
+    margin-top: 20px;
+}
+
+.savaccount-or {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 16px;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+}
+
+.savaccount-or::before,
+.savaccount-or::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--color-border);
+}
+
+.savaccount-slot savaccount-button {
+    display: block;
+}
+
+#savaccount-card-message:not(.hidden2) {
+    margin-top: 12px;
+}
+
+.savaccount-connect {
+    margin-top: 12px;
+    text-align: start;
+}
+
+.savaccount-connect .form-label {
+    margin-top: 10px;
+}
+
+.savaccount-connect .btn,
+#savaccount-unlink {
+    margin-top: 12px;
+}
+
 /* ── Article meta ── */
 
 .article-meta {

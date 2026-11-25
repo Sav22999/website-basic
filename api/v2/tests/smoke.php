@@ -322,6 +322,22 @@ check("a payload that is too large is a real 413", $catalogue[ERR_PAYLOAD_TOO_LA
 check("the rate limit is a real 429", $catalogue[ERR_RATE_LIMITED][1] === 429);
 check("a denied sync history is a real 403", $catalogue[ERR_HISTORY_FORBIDDEN][1] === 403);
 
+echo "\nSavAccount\n";
+$savaccount_pepper = str_repeat("p", 32);
+$sub = v2_savaccount_b64u(random_bytes(32));
+$sealed = v2_wrap_key(json_encode(array("password" => $password, "email" => "a@example.com")), v2_savaccount_key($sub));
+$opened = v2_savaccount_link_open(array("sealed" => $sealed), array("password" => encryptHash($password)), $sub);
+check("the link opens with its SavAccount", $opened !== null && $opened["valid"] && $opened["password"] === $password);
+$opened = v2_savaccount_link_open(array("sealed" => $sealed), array("password" => encryptHash("another")), $sub);
+check("a link sealed before a password change is not valid", $opened !== null && !$opened["valid"]);
+check("the link does not open with another SavAccount", v2_savaccount_link_open(array("sealed" => $sealed), array("password" => encryptHash($password)), v2_savaccount_b64u(random_bytes(32))) === null);
+check("the link does not open with the stored hash", v2_savaccount_link_open(array("sealed" => $sealed), array("password" => encryptHash($password)), v2_savaccount_sub_hash($sub)) === null);
+$savaccount_pepper = str_repeat("q", 32);
+check("the link does not open without the pepper", v2_savaccount_link_open(array("sealed" => $sealed), array("password" => encryptHash($password)), $sub) === null);
+$box = v2_savaccount_box(array("a" => 1), "secret");
+check("a box opens only with its secret", v2_savaccount_unbox($box, "secret") === array("a" => 1) && v2_savaccount_unbox($box, "other") === null);
+check("a malformed box is refused", v2_savaccount_unbox("zzz", "secret") === null);
+
 echo "\nemail\n";
 $html = v2_email_render("Sara", "Title", "Body", "Footer", "A1B2C3", "127.0.0.1");
 check("the template is filled in", strpos($html, "A1B2C3") !== false && strpos($html, "Sara") !== false);

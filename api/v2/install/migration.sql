@@ -49,6 +49,8 @@
 --        pro-features flag is denied to every account
 --  12  users.`permissions` ...................... optional - without it every
 --        account is treated as a standard user (permission level 0)
+--  13  savaccount_links + savaccount_flows ....... optional - without them
+--        "Continue with SavAccount" stays hidden
 --
 -- RE-RUNNABLE (idempotent)
 --   Every statement of blocks 4 to 12 is guarded: the column (or the index) is
@@ -597,3 +599,44 @@ SET
 PREPARE v2_stmt FROM @v2_sql;
 EXECUTE v2_stmt;
 DEALLOCATE PREPARE v2_stmt;
+
+
+-- ---------------------------------------------------------------------
+-- 13) OPTIONAL - "Continue with SavAccount".
+--
+--     savaccount_links: one row per linked account. `sealed` can be opened
+--       only with the SavAccount identifier, which is never stored (only its
+--       SHA-256 is), see api/v2/include/savaccount.php.
+--     savaccount_flows: sign-ins in progress, 15 minutes at most; the rows
+--       clean themselves up, no cron is needed.
+--
+--     If different names are used, declare them in include/credentials.php
+--     ($savaccount_links_table, $savaccount_flows_table).
+-- ---------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `savaccount_links`
+(
+    `id`           INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `user-id`      VARCHAR(128) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    `sub-hash`     CHAR(64) CHARACTER SET ascii COLLATE ascii_bin     NOT NULL,
+    `sealed`       TEXT CHARACTER SET ascii COLLATE ascii_bin         NOT NULL,
+    `created-date` DATETIME                                           NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_savaccount_user` (`user-id`),
+    UNIQUE KEY `uniq_savaccount_sub` (`sub-hash`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `savaccount_flows`
+(
+    `id`        INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name-hash` CHAR(64) CHARACTER SET ascii COLLATE ascii_bin    NOT NULL,
+    `kind`      VARCHAR(16) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    `payload`   TEXT CHARACTER SET ascii COLLATE ascii_bin        NOT NULL,
+    `user-id`   VARCHAR(128) CHARACTER SET ascii COLLATE ascii_bin         DEFAULT NULL,
+    `attempts`  TINYINT UNSIGNED                                  NOT NULL DEFAULT 0,
+    `expiry`    DATETIME                                          NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_savaccount_flow` (`name-hash`),
+    KEY `idx_savaccount_expiry` (`expiry`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;

@@ -2,6 +2,7 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
 include_once($root_path . "/include/i18n.php");
+include_once($root_path . "/include/savaccount.php");
 $title = t('account.dashboard_title');
 $selected_menu = "my";
 include_once($root_path . "/include/header.php");
@@ -56,6 +57,37 @@ include_once($root_path . "/include/header.php");
                         <p class="account-card-desc"><?php echo t('account.otp_when_enabled'); ?></p>
                         <a href="/my/account/two-factor/"
                            class="btn btn--small"><?php echo te('account.otp_manage'); ?></a>
+                    </div>
+                </div>
+            </div>
+            <div class="account-card account-card--static hidden2" id="savaccount-card">
+                <div class="account-card--static-header">
+                    <svg class="account-card-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/>
+                        <path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>
+                    </svg>
+                    <span class="account-card-title">SavAccount</span>
+                    <span id="savaccount-status" class="account-status"></span>
+                </div>
+                <div class="account-card--static-body">
+                    <div class="account-card--static-inner">
+                        <p class="account-card-desc"><?php echo te('savaccount.card_desc'); ?></p>
+                        <div id="savaccount-card-message" class="form-message hidden2" role="alert"></div>
+                        <form id="savaccount-connect-form" class="savaccount-connect hidden2">
+                            <label class="form-label"
+                                   for="savaccount-connect-email"><?php echo te('common.email'); ?></label>
+                            <input class="form-input" type="email" id="savaccount-connect-email" maxlength="320"
+                                   autocomplete="username" required>
+                            <label class="form-label"
+                                   for="savaccount-connect-password"><?php echo te('savaccount.password'); ?></label>
+                            <input class="form-input" type="password" id="savaccount-connect-password"
+                                   autocomplete="current-password" required>
+                            <button type="submit"
+                                    class="btn btn--small"><?php echo te('savaccount.link'); ?></button>
+                        </form>
+                        <button type="button" id="savaccount-unlink"
+                                class="btn btn--small btn--secondary hidden2"><?php echo te('savaccount.unlink'); ?></button>
                     </div>
                 </div>
             </div>
@@ -119,6 +151,7 @@ include_once($root_path . "/include/header.php");
 <?php include_once($root_path . "/include/footer.php"); ?>
 <script src="/js/script.js"></script>
 <script src="/js/account.js"></script>
+<?php savaccount_scripts(); ?>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var session = requireSession();
@@ -151,6 +184,8 @@ include_once($root_path . "/include/header.php");
                 }, 1500);
             });
         });
+
+        savaccountCard();
 
         var statusElement = document.getElementById("otp-status");
 

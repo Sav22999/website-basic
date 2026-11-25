@@ -2,6 +2,7 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . "/root-path.php");
 global $root_path, $path;
 include_once($root_path . "/include/i18n.php");
+include_once($root_path . "/include/savaccount.php");
 $title = t('account.login_title');
 $selected_menu = "my";
 include_once($root_path . "/include/header.php");
@@ -39,6 +40,8 @@ include_once($root_path . "/include/header.php");
                 </div>
             </form>
 
+            <?php savaccount_box(); ?>
+
             <p class="auth-footer">
                 <?php echo t('account.login_no_account'); ?> <a
                         href="/my/signup/"><?php echo te('account.login_create_one'); ?></a>
@@ -50,6 +53,7 @@ include_once($root_path . "/include/header.php");
 <?php include_once($root_path . "/include/footer.php"); ?>
 <script src="/js/script.js"></script>
 <script src="/js/account.js"></script>
+<?php savaccount_scripts(); ?>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         if (hasSession()) {
@@ -61,6 +65,10 @@ include_once($root_path . "/include/header.php");
         if (flashMessage) {
             showFormMessage("login-message", flashMessage, true);
         }
+
+        savaccountShowButton(document.getElementById("savaccount-box"), function (message) {
+            showFormMessage("login-message", message, true);
+        });
 
         var form = document.getElementById("login-form");
         var submitButton = document.getElementById("login-submit");

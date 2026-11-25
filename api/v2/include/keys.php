@@ -164,6 +164,8 @@ function v2_rewrap_user_key($c, $user_id, $old_password, $new_password)
 function v2_delete_user_keys($c, $user_id)
 {
     global $user_keys_table;
+    // Without the account its SavAccount link has nothing to open any more.
+    v2_savaccount_forget_user($c, $user_id);
     if (!v2_keys_table_available($c)) {
         return;
     }

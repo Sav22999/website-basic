@@ -151,6 +151,21 @@ function v2_email_otp_changed($to, $username, $enabled, $ip_address)
     return v2_send_email($to, $enabled ? "Notefox: login code enabled" : "Notefox: login code disabled", $html);
 }
 
+function v2_email_savaccount_linked($to, $username, $linked, $ip_address)
+{
+    $html = v2_email_render(
+        $username,
+        $linked ? "SavAccount linked" : "SavAccount unlinked",
+        $linked
+            ? "Your Notefox account is now linked to SavAccount: from now on you can log in with \"Continue with SavAccount\" too. Your password keeps working."
+            : "Your Notefox account is no longer linked to SavAccount: from now on you can log in with your email and password only.",
+        "If you didn't ask for this change, please change your password immediately.",
+        null,
+        $ip_address
+    );
+    return v2_send_email($to, $linked ? "Notefox: SavAccount linked" : "Notefox: SavAccount unlinked", $html);
+}
+
 function v2_email_delete_code($to, $username, $code, $ip_address, $expiry, $new_code = false)
 {
     $html = v2_email_render(

@@ -295,6 +295,10 @@ v1 behaviour), but it still receives the `revision` in the answer.
 | 432    | 409  | Sync history is not available for this service                                    |
 | 433    | 403  | Sync history is not enabled for this account (`users`.`history-enabled` = 0)      |
 | 434    | 409  | This history entry was encrypted with a previous password and cannot be decrypted |
+| 440    | 503  | SavAccount sign-in is not available on this installation                          |
+| 441    | 400  | SavAccount did not confirm the sign-in                                            |
+| 442    | 400  | The SavAccount sign-in (or its ticket) has expired, start again                   |
+| 443    | 409  | This SavAccount is already linked to another Notefox account                      |
 | 452    | 429  | A deletion code has already been requested                                        |
 | 500    | 500  | Internal error (details only in the server log)                                   |
 | 503    | 503  | Service temporarily unavailable                                                   |
@@ -493,6 +497,38 @@ spurious `fetch_assoc()`).
 
 **The token is mandatory**: in v1 knowing a `login-id` was enough to terminate
 somebody else's sessions.
+
+---
+
+### 7.3bis "Continue with SavAccount"
+
+Optional: block 13 of `migration.sql` and the `$savaccount_*` keys of
+`include/credentials.php`. SavAccount (OpenID Connect, code flow with PKCE) only
+proves who is signing in: an account always keeps its password, because the
+notes are encrypted with a key only that password opens. The link stores the
+password sealed with a key derived from the SavAccount identifier, which is
+pairwise, has 256 bits and is never stored: see `include/savaccount.php`.
+
+| Endpoint                   | Body                                                                           | Answer                                                             |
+|----------------------------|--------------------------------------------------------------------------------|--------------------------------------------------------------------|
+| `POST /savaccount/status`  | `{}` or `login-id`, `token`                                                    | `enabled`, and with a session `linked`, `linked-date`              |
+| `POST /savaccount/start`   | `mode: login`, or `mode: connect` + `login-id`, `token`, `email`, `password`; `lang` | `url` to open, `flow` to keep, `state`, `redirect-uri`              |
+| `POST /savaccount/finish`  | `flow`, `state`, `code`, `iss`, `source`; connect: `login-id`, `token` | `result`, see below                                                |
+| `POST /savaccount/link`    | `ticket`, `password`, `source`                                                 | `result: session`                                                  |
+| `POST /savaccount/signup`  | `ticket`, `username`, `password` (8+), `source`                                | `result: session`                                                  |
+| `POST /savaccount/unlink`  | `login-id`, `token`, `email` (optional)                                        | `linked: false`                                                    |
+
+`result` of `/savaccount/finish`:
+
+- `session`: same fields as `/login/verify` plus `email`; the code by email is
+  not asked.
+- `link-required`: an account with this email exists and is not linked. It is
+  never opened just because the email is the same: `ticket` + its password.
+- `password-required`: linked, but the password has changed since (`ticket`).
+- `signup-required`: no account with this email (`ticket`, `email`, `name`).
+- `connected`: the account of the session is now linked.
+
+A ticket lives 15 minutes and 5 attempts, a sign-in 15 minutes and one use.
 
 ---
 
@@ -820,6 +856,8 @@ Same parameters as v1, with length limits and a rate limit per IP.
 | `data-services`                          | user              | 60 / min                  |
 | `data-history`                           | user              | 60 / min                  |
 | `data-history-download`                  | user              | 30 / min                  |
+| `savaccount-start-ip` / `-finish-ip` / `-link-ip` | IP       | 30 / 15 min               |
+| `savaccount-connect` / `savaccount-link` | user              | 5 and 10 / 15 min         |
 | `error-logs` / `telemetry`               | IP                | 30 / 10 min               |
 
 Beyond the limit: `429`, with a temporary block. The counters live in

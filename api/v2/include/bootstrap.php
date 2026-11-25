@@ -59,6 +59,7 @@ include_once(__DIR__ . "/rate-limit.php");
 include_once(__DIR__ . "/mailer.php");
 include_once(__DIR__ . "/emails.php");
 include_once(__DIR__ . "/sync.php");
+include_once(__DIR__ . "/savaccount.php");
 
 if (PHP_SAPI !== "cli") {
     header("Content-Type: application/json; charset=utf-8");

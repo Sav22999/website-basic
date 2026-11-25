@@ -184,6 +184,19 @@ report(
     "the two data/get/history* endpoints answer 433 to every account (the permission cannot be granted)"
 );
 
+report(
+    "13) tables `" . v2_savaccount_table("links") . "` and `" . v2_savaccount_table("flows") . "`",
+    db_has_table($c, v2_savaccount_table("links")) && db_has_table($c, v2_savaccount_table("flows")),
+    false,
+    "\"Continue with SavAccount\" stays hidden"
+);
+report(
+    "the SavAccount keys are configured",
+    v2_savaccount_configured(),
+    false,
+    "\"Continue with SavAccount\" stays hidden"
+);
+
 echo "\nlegacy mirror (v1 tables, not part of the additive DDL)\n";
 $mirrors = 0;
 foreach ($service_names as $service) {

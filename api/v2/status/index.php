@@ -41,6 +41,8 @@ if ($database_ok) {
         // Per-account flag for future premium features (same pattern).
         "pro-features" => db_has_column($c, $users_table, "pro-features"),
         // Per-account permission level (0 = standard, 10 = admin).
+        // "Continue with SavAccount": tables created and keys configured.
+        "savaccount" => v2_savaccount_enabled($c),
         "permissions" => db_has_column($c, $users_table, "permissions"),
         // The v1 mirror table of every service that declares one: when it is
         // false the table configured in include/credentials.php does not exist

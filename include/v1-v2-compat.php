@@ -322,6 +322,18 @@ function v1v2_account_deleted($c, $user_id)
             $stmt->close();
         }
     }
+
+    // The link with SavAccount (see api/v2/include/savaccount.php).
+    global $savaccount_links_table;
+    $links_table = isset($savaccount_links_table) && is_string($savaccount_links_table) && preg_match('/^[A-Za-z0-9_\-]+$/', $savaccount_links_table) ? $savaccount_links_table : "savaccount_links";
+    if (v1v2_table_exists($c, $links_table)) {
+        $stmt = @$c->prepare("DELETE FROM `$links_table` WHERE `user-id` = ?");
+        if ($stmt !== false) {
+            $stmt->bind_param("s", $user_id);
+            $stmt->execute();
+            $stmt->close();
+        }
+    }
 }
 
 /**

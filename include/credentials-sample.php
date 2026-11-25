@@ -30,6 +30,17 @@ $email_password = "<EMAIL PASSWORD>";
 $email_smtp = "<EMAIL SMTP SERVER>";
 $email_smtp_port = "<EMAIL SMTP PORT>";//probably 465
 
+// "Continue with SavAccount" (optional: the button stays hidden until the keys
+// are here and block 13 of api/v2/install/migration.sql has been run).
+// Register Notefox on https://www.savaccount.eu as a CONFIDENTIAL service with
+// PAIRWISE identifiers and this redirect URI:
+//   https://www.notefox.eu/my/savaccount/
+$savaccount_client_id = "<SAVACCOUNT CLIENT ID>";
+$savaccount_client_secret = "<SAVACCOUNT CLIENT SECRET>";
+// At least 32 chars, e.g. php -r 'echo bin2hex(random_bytes(32));'
+// Changing it makes every linked account type its password once again.
+$savaccount_pepper = "<SAVACCOUNT PEPPER>";
+
 // Secret for the cron calls to include/periodic-checks/*.php (at least 32 chars),
 // e.g. php -r 'echo bin2hex(random_bytes(32));'
 $cron_token = "<CRON TOKEN>";

@@ -157,7 +157,7 @@ skipped as well, instead of aborting with `#1146 - Table ... doesn't exist`.
 Block 2b is the only non-idempotent one (`RENAME` + `DROP PRIMARY KEY`): it must
 be run exactly once, and it ships commented out.
 
-Mandatory blocks: **1, 2, 3, 4, 5, 8**. Optional: 6, 7, 9, 10 (see the header of
+Mandatory blocks: **1, 2, 3, 4, 5, 8**. Optional: 6, 7, 9 to 13 (see the header of
 `migration.sql` for what degrades without each one).
 
 > Block 10 (`users`.`history-enabled`) grants **nothing** by itself: the sync
@@ -281,6 +281,7 @@ which prints the same information with the name of the affected endpoint).
 | `POST /otp/disable` answers `503`                                         | `otp-change-code` false                       | block 6 not applied                                                                                                                                                                                                                                                                   |
 | `POST /data/get/history` answers `433`, the "Sync history" link is hidden | `history-permission` false                    | block 10 not applied - or, with the block applied, that account still has `history-enabled` = 0 (the default): see [Granting the sync history](#7bis-granting-the-sync-history)                                                                                                       |
 | the v1 extension no longer sees the new notes, the history is empty       | `legacy-mirror` false                         | the table in `$services[...]["legacy-table"]` does not exist (wrong name - it is `data` on notefox.eu, not `notefox_data` - renamed, moved, never imported) or lost one of the columns the API reads (`id`, `user-id`, `data`, `inserted-date`, `updated-locally-date`, `ip-address`) |
+| "Continue with SavAccount" is not shown | `savaccount` false | block 13 not applied, or the `$savaccount_*` keys are missing in `include/credentials.php` (see `credentials-sample.php`) |
 | no code is ever received                                                  | `mailer` false                                | Composer not installed or SMTP credentials missing                                                                                                                                                                                                                                    |
 | every answer is `401`/HTTP `503`                                          | `database` false                              | credentials, or the DBMS is down (details only in the server log)                                                                                                                                                                                                                     |
 | POST bodies arrive empty                                                  | -                                             | `mod_rewrite` off: the URL without the trailing slash is being 301-redirected                                                                                                                                                                                                         |
