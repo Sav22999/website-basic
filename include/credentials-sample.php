@@ -13,6 +13,8 @@ $telemetry_table = "<YOUR TELEMETRY TABLE>";
 $user_keys_table = "<YOUR USER KEYS TABLE>";//e.g. user_keys
 $data_current_table = "<YOUR DATA CURRENT TABLE>";//e.g. sav_data_current
 $rate_limits_table = "<YOUR RATE LIMITS TABLE>";//e.g. rate_limits
+$attachments_table = "<YOUR ATTACHMENTS TABLE>";//e.g. sav_attachments (optional, default sav_attachments)
+$attachments_quota_bytes = 100 * 1024 * 1024;//space for the screenshots of each account (optional, default 100 MB)
 
 // Sav Account services: the account is shared, the synchronised data is
 // partitioned per service. "legacy-table" is the v1 mirror table, if any.

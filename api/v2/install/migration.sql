@@ -51,6 +51,9 @@
 --        account is treated as a standard user (permission level 0)
 --  13  savaccount_links + savaccount_flows ....... optional - without them
 --        "Continue with SavAccount" stays hidden
+--  14  sav_attachments ........................... optional - without it
+--        the attachments/* endpoints answer 503 and the screenshots of
+--        the notes stay on the device where they have been taken
 --
 -- RE-RUNNABLE (idempotent)
 --   Every statement of blocks 4 to 12 is guarded: the column (or the index) is
@@ -638,5 +641,31 @@ CREATE TABLE IF NOT EXISTS `savaccount_flows`
     PRIMARY KEY (`id`),
     UNIQUE KEY `uniq_savaccount_flow` (`name-hash`),
     KEY `idx_savaccount_expiry` (`expiry`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
+
+-- ---------------------------------------------------------------------
+-- 14) OPTIONAL - Screenshots attached to the notes.
+--
+--     One row per image, encrypted with the DEK of the account like the
+--     notes (a password change never touches them). The sync snapshot only
+--     keeps the id of each image: see api/v2/include/attachments.php.
+--     `size` is the size of the decoded image, used for the quota
+--     ($attachments_quota_bytes, 100 MB by default).
+--
+--     If a different name is used, declare it in include/credentials.php
+--     ($attachments_table).
+-- ---------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sav_attachments`
+(
+    `user-id`      VARCHAR(128) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    `service`      VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin  NOT NULL DEFAULT 'notefox',
+    `id`           VARCHAR(64) CHARACTER SET ascii COLLATE ascii_bin  NOT NULL,
+    `mime`         VARCHAR(16) CHARACTER SET ascii COLLATE ascii_bin  NOT NULL,
+    `size`         INT UNSIGNED                                       NOT NULL,
+    `data`         LONGTEXT CHARACTER SET ascii COLLATE ascii_bin     NOT NULL,
+    `created-date` DATETIME                                           NOT NULL,
+    PRIMARY KEY (`user-id`, `service`, `id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;

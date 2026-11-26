@@ -78,6 +78,8 @@ try {
 
         // Snapshots of every service of the account.
         v2_sync_delete_user($c, $user_id);
+        // Screenshots attached to the notes (block 14).
+        v2_attachments_delete_user($c, $user_id);
         v2_delete_user_keys($c, $user_id);
 
         $deleted = db_execute($c, "DELETE FROM `$users_table` WHERE `email` = ?", "s", array($user_id));

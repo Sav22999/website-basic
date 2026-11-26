@@ -338,6 +338,28 @@ $box = v2_savaccount_box(array("a" => 1), "secret");
 check("a box opens only with its secret", v2_savaccount_unbox($box, "secret") === array("a" => 1) && v2_savaccount_unbox($box, "other") === null);
 check("a malformed box is refused", v2_savaccount_unbox("zzz", "secret") === null);
 
+echo "\nattachments\n";
+$png = "\x89PNG\r\n\x1a\n" . str_repeat("a", 32);
+$jpeg = "\xFF\xD8\xFF" . str_repeat("b", 32);
+$webp = "RIFF" . pack("V", 40) . "WEBP" . str_repeat("c", 32);
+check("a PNG is accepted", v2_attachment_parse("data:image/png;base64," . base64_encode($png)) !== null);
+check("a JPEG is accepted", v2_attachment_parse("data:image/jpeg;base64," . base64_encode($jpeg)) !== null);
+check("a WebP is accepted and measured on its decoded size", v2_attachment_parse("data:image/webp;base64," . base64_encode($webp))["size"] === strlen($webp));
+check("a declared type which doesn't match the content is refused", v2_attachment_parse("data:image/png;base64," . base64_encode($jpeg)) === null);
+check("an SVG (it can contain scripts) is refused", v2_attachment_parse("data:image/svg+xml;base64," . base64_encode("<svg onload='x'></svg>")) === null);
+check("HTML disguised as an image is refused", v2_attachment_parse("data:image/png;base64," . base64_encode("<html></html>")) === null);
+check("invalid base64 is refused", v2_attachment_parse("data:image/png;base64,***") === null);
+check("an image above the limit is refused", v2_attachment_parse("data:image/png;base64," . base64_encode("\x89PNG\r\n\x1a\n" . str_repeat("a", ATT_MAX_IMAGE_BYTES))) === null);
+check("a client id is accepted", v2_attachment_id_valid("0b6f2b1e-6d1c-4b8e-9f3a-2c4d5e6f7a8b"));
+check("an id with SQL or path characters is refused", !v2_attachment_id_valid("x'; DROP TABLE") && !v2_attachment_id_valid("../../etc/passwd"));
+$image_base64 = base64_encode($png);
+$encrypted_image = v2_encrypt_with_dek($image_base64, $dek);
+check("the stored image is not readable without the key", strpos($encrypted_image, $image_base64) === false);
+check("the stored image opens with the key", v2_decrypt_with_dek($encrypted_image, $dek) === $image_base64);
+check("the default quota is 100 MB", v2_attachments_quota() === 100 * 1024 * 1024);
+$delete_verify_source = source_without_comments(__DIR__ . "/../delete/verify/index.php");
+check("deleting the account deletes its screenshots", strpos($delete_verify_source, "v2_attachments_delete_user(") !== false);
+
 echo "\nemail\n";
 $html = v2_email_render("Sara", "Title", "Body", "Footer", "A1B2C3", "127.0.0.1");
 check("the template is filled in", strpos($html, "A1B2C3") !== false && strpos($html, "Sara") !== false);

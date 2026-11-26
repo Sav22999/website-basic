@@ -197,6 +197,13 @@ report(
     "\"Continue with SavAccount\" stays hidden"
 );
 
+report(
+    "14) table `" . v2_attachments_table() . "`",
+    v2_attachments_available($c),
+    false,
+    "the attachments/* endpoints answer 503: the screenshots stay on the device where they have been taken"
+);
+
 echo "\nlegacy mirror (v1 tables, not part of the additive DDL)\n";
 $mirrors = 0;
 foreach ($service_names as $service) {

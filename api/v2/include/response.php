@@ -40,6 +40,7 @@ define("ERR_SAVACCOUNT_UNAVAILABLE", 440);
 define("ERR_SAVACCOUNT_FAILED", 441);
 define("ERR_SAVACCOUNT_EXPIRED", 442);
 define("ERR_SAVACCOUNT_IN_USE", 443);
+define("ERR_ATTACHMENTS_QUOTA", 444);
 define("ERR_DELETING_PENDING", 452);
 define("ERR_ADMIN_REQUIRED", 460);
 define("ERR_INTERNAL", 500);
@@ -80,6 +81,7 @@ function api_catalogue()
         ERR_SAVACCOUNT_FAILED => array("SavAccount did not confirm the sign-in", 400),
         ERR_SAVACCOUNT_EXPIRED => array("The SavAccount sign-in has expired, please start again", 400),
         ERR_SAVACCOUNT_IN_USE => array("This SavAccount is already linked to another Notefox account", 409),
+        ERR_ATTACHMENTS_QUOTA => array("The space for the attachments of this account is full", 413),
         ERR_DELETING_PENDING => array("You already requested a deleting code. Please wait for the email or try again later.", 429),
         ERR_ADMIN_REQUIRED => array("Administrator privileges are required", 403),
         ERR_INTERNAL => array("Internal error", 500),

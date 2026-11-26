@@ -49,6 +49,9 @@ if ($database_ok) {
         // (or lost a column), the sync history is empty and the v1 clients stop
         // seeing the notes. It used to make POST /data/get answer 503.
         "legacy-mirror" => v2_sync_legacy_mirrors_ready($c),
+        // Screenshots attached to the notes (block 14): when it is false the
+        // attachments/* endpoints answer 503 and the images stay on the device.
+        "attachments" => v2_attachments_available($c),
     );
 
     $schema_ready = $schema_details["keys"]

@@ -98,6 +98,9 @@ exactly once.
 | 9                  | indexes on the v1 data table (`data`) and on `tokens`                                                                                                                              | no        | performance only                                                        |
 | 10                 | `users`.`history-enabled`                                                                                                                                                          | no        | the two `data/get/history*` endpoints answer `433` to **every** account |
 | 11                 | `users`.`pro-features`                                                                                                                                                             | no        | the pro-features flag is denied to every account                        |
+| 12                 | `users`.`permissions`                                                                                                                                                              | no        | every account is a standard user                                        |
+| 13                 | `savaccount_links`, `savaccount_flows`                                                                                                                                             | no        | "Continue with SavAccount" stays hidden                                 |
+| 14                 | `CREATE TABLE sav_attachments`                                                                                                                                                     | no        | the `attachments/*` endpoints answer `503`, the screenshots stay on the device|
 
 Run **exactly one** branch of block 2. Inside block 2b the order is not
 negotiable: the `service` column, with its `DEFAULT 'notefox'`, must exist **before** the primary key is rebuilt,
@@ -299,6 +302,7 @@ v1 behaviour), but it still receives the `revision` in the answer.
 | 441    | 400  | SavAccount did not confirm the sign-in                                            |
 | 442    | 400  | The SavAccount sign-in (or its ticket) has expired, start again                   |
 | 443    | 409  | This SavAccount is already linked to another Notefox account                      |
+| 444    | 413  | The space for the attachments of this account is full (`attachments/upload`)      |
 | 452    | 429  | A deletion code has already been requested                                        |
 | 500    | 500  | Internal error (details only in the server log)                                   |
 | 503    | 503  | Service temporarily unavailable                                                   |
@@ -812,8 +816,8 @@ deletion code. `452` if one has already been requested and is still valid.
 ```
 
 → `{ "deleted": true }` — deletes, in one transaction, the tokens, the logins,
-the legacy data of every service that has a mirror table, the snapshots of **every service**, the encryption keys and
-the user row.
+the legacy data of every service that has a mirror table, the snapshots of **every service**, the attachments
+(block 14), the encryption keys and the user row.
 
 #### `POST /delete/verify/get-new-code`
 
@@ -822,6 +826,58 @@ the user row.
 ```
 
 → `{ "verification-required": true, "verification-expiry": "..." }`
+
+---
+
+### 7.6bis Attachments (screenshots of the notes)
+
+The sync snapshot is limited to 1.5 MB as a whole, so the images attached to the
+notes travel on their own: the note only keeps the id of each image (generated
+by the client), the image is uploaded and read here. Requires block 14
+(`GET /status` → `schema-details.attachments`); without it every endpoint below
+answers `503` and the client keeps the images on the device.
+
+- Every image is encrypted with the DEK of the account, like the notes: a
+  password change never touches them.
+- Only WebP, JPEG and PNG are accepted, recognised by their signature and not
+  only by the declared type (no SVG: it can contain scripts). At most 1 MB per
+  decoded image (its base64 must fit the 2 MB limit of the body).
+- Every account has a quota, `$attachments_quota_bytes` in
+  `include/credentials.php` (100 MB by default), counted on the decoded size.
+- All the endpoints accept the optional `service` field, like `data/*`.
+
+#### `POST /attachments/upload`
+
+```json
+{ "login-id": "...", "token": "...", "id": "0b6f2b1e-...", "data": "data:image/webp;base64,..." }
+```
+
+→ `{ "service": "notefox", "id": "...", "used": 1048576, "count": 3, "quota": 104857600 }`.
+Uploading the same `id` again replaces the image, so an interrupted upload can be
+retried. `444` (HTTP 413) when the quota would be exceeded, with the current
+`used`/`count`/`quota` in `data`. Rate limit: 60 per minute.
+
+#### `POST /attachments/get`
+
+```json
+{ "login-id": "...", "token": "...", "id": "0b6f2b1e-..." }
+```
+
+→ `{ "service": "notefox", "id": "...", "mime": "image/webp", "data": "data:image/webp;base64,..." }`,
+`201` when the image does not exist.
+
+#### `POST /attachments/delete`
+
+```json
+{ "login-id": "...", "token": "...", "ids": ["0b6f2b1e-...", "..."] }
+```
+
+→ `{ "service": "notefox", "deleted": 2, "used": ..., "count": ..., "quota": ... }`.
+At most 200 ids per call; the ones that do not exist are ignored.
+
+#### `POST /attachments/usage`
+
+→ `{ "service": "notefox", "used": ..., "count": ..., "quota": ... }`
 
 ---
 
