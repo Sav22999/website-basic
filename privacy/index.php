@@ -66,6 +66,11 @@ $_default_tab = ($i18n_lang === "it") ? "it" : "en";
             <p><?php echo t('privacy.s1_retention'); ?></p>
             <p><?php echo t('privacy.s1_no_cookies'); ?></p>
 
+            <h3><?php echo t('privacy.s1_attachments_title'); ?></h3>
+            <p><?php echo t('privacy.s1_attachments_text'); ?></p>
+            <p><?php echo t('privacy.s1_attachments_details'); ?></p>
+            <p><?php echo t('privacy.s1_attachments_deletion'); ?></p>
+
             <h3><?php echo t('privacy.s1_emails_title'); ?></h3>
             <p><?php echo t('privacy.s1_emails_intro'); ?></p>
             <ul>
@@ -147,6 +152,7 @@ $_default_tab = ($i18n_lang === "it") ? "it" : "en";
                 <li><?php echo t('privacy.s_retention_item_errors'); ?></li>
                 <li><?php echo t('privacy.s_retention_item_telemetry'); ?></li>
                 <li><?php echo t('privacy.s_retention_item_history'); ?></li>
+                <li><?php echo t('privacy.s_retention_item_attachments'); ?></li>
                 <li><?php echo t('privacy.s_retention_item_contact'); ?></li>
                 <li><?php echo t('privacy.s_retention_item_ip_creation'); ?></li>
             </ul>
@@ -215,6 +221,11 @@ $_default_tab = ($i18n_lang === "it") ? "it" : "en";
             <p><?php echo t('privacy.s1_retention'); ?></p>
             <p><?php echo t('privacy.s1_no_cookies'); ?></p>
 
+            <h3><?php echo t('privacy.s1_attachments_title'); ?></h3>
+            <p><?php echo t('privacy.s1_attachments_text'); ?></p>
+            <p><?php echo t('privacy.s1_attachments_details'); ?></p>
+            <p><?php echo t('privacy.s1_attachments_deletion'); ?></p>
+
             <h3><?php echo t('privacy.s1_emails_title'); ?></h3>
             <p><?php echo t('privacy.s1_emails_intro'); ?></p>
             <ul>
@@ -296,6 +307,7 @@ $_default_tab = ($i18n_lang === "it") ? "it" : "en";
                 <li><?php echo t('privacy.s_retention_item_errors'); ?></li>
                 <li><?php echo t('privacy.s_retention_item_telemetry'); ?></li>
                 <li><?php echo t('privacy.s_retention_item_history'); ?></li>
+                <li><?php echo t('privacy.s_retention_item_attachments'); ?></li>
                 <li><?php echo t('privacy.s_retention_item_contact'); ?></li>
                 <li><?php echo t('privacy.s_retention_item_ip_creation'); ?></li>
             </ul>

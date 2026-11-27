@@ -360,6 +360,15 @@ check("the default quota is 100 MB", v2_attachments_quota() === 100 * 1024 * 102
 $delete_verify_source = source_without_comments(__DIR__ . "/../delete/verify/index.php");
 check("deleting the account deletes its screenshots", strpos($delete_verify_source, "v2_attachments_delete_user(") !== false);
 
+echo "\nSavAccount link without password\n";
+$start_source = source_without_comments(__DIR__ . "/../savaccount/start/index.php");
+$finish_source = source_without_comments(__DIR__ . "/../savaccount/finish/index.php");
+check("connect still verifies the password when it is sent", strpos($start_source, "v2_verify_password") !== false && strpos($start_source, "v2_require_recipient") !== false);
+check("connect without password is marked as not verified", strpos($start_source, '$mode === "connect" && $verified') !== false);
+check("without the password only a SavAccount with the email of the account is linked", strpos($finish_source, "ERR_SAVACCOUNT_EMAIL_MISMATCH") !== false && strpos($finish_source, "v2_email_hash(\$who[\"email\"])") !== false);
+check("the flows started before the check keep working", strpos($finish_source, 'array_key_exists("password-verified"') !== false);
+check("445 has its own message", isset(api_catalogue()[ERR_SAVACCOUNT_EMAIL_MISMATCH]) && api_catalogue()[ERR_SAVACCOUNT_EMAIL_MISMATCH][1] === 409);
+
 echo "\nemail\n";
 $html = v2_email_render("Sara", "Title", "Body", "Footer", "A1B2C3", "127.0.0.1");
 check("the template is filled in", strpos($html, "A1B2C3") !== false && strpos($html, "Sara") !== false);

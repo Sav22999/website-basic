@@ -168,7 +168,12 @@ function v2_savaccount_row_consume($c, $row)
  * Starts a sign-in: array("url" => SavAccount page, "flow" => secret that
  * the same client must send back to /savaccount/finish).
  */
-function v2_savaccount_start($c, $mode, $user_id, $email, $language)
+/**
+ * $password_verified: a "connect" whose password has been checked by
+ * /savaccount/start; without it /savaccount/finish only accepts a SavAccount
+ * with the email of the account.
+ */
+function v2_savaccount_start($c, $mode, $user_id, $email, $language, $password_verified = false)
 {
     global $savaccount_client_id;
 
@@ -177,7 +182,7 @@ function v2_savaccount_start($c, $mode, $user_id, $email, $language)
     $nonce = v2_savaccount_b64u(random_bytes(24));
     $verifier = v2_savaccount_b64u(random_bytes(48));
 
-    v2_savaccount_row_create($c, $mode, $state, $flow, array("nonce" => $nonce, "verifier" => $verifier, "email" => $email), $user_id, SAVACCOUNT_FLOW_MINUTES);
+    v2_savaccount_row_create($c, $mode, $state, $flow, array("nonce" => $nonce, "verifier" => $verifier, "email" => $email, "password-verified" => $password_verified), $user_id, SAVACCOUNT_FLOW_MINUTES);
 
     $query = array(
         "response_type" => "code",

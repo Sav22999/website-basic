@@ -74,6 +74,9 @@ include_once($root_path . "/include/header.php");
                     <div class="account-card--static-inner">
                         <p class="account-card-desc"><?php echo te('savaccount.card_desc'); ?></p>
                         <div id="savaccount-card-message" class="form-message hidden2" role="alert"></div>
+                        <button type="button" id="savaccount-connect"
+                                class="btn btn--small hidden2"><?php echo te('savaccount.connect'); ?></button>
+                        <!--only when the email of the SavAccount is not the one of the account (445)-->
                         <form id="savaccount-connect-form" class="savaccount-connect hidden2">
                             <label class="form-label"
                                    for="savaccount-connect-email"><?php echo te('common.email'); ?></label>

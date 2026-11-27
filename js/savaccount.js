@@ -19,7 +19,7 @@ function savaccountText(key, values) {
 }
 
 function savaccountErrorMessage(error) {
-    var keys = {440: "unavailable", 441: "failed", 442: "expired", 443: "in_use"};
+    var keys = {440: "unavailable", 441: "failed", 442: "expired", 443: "in_use", 445: "email_mismatch"};
     if (error && keys[error.code]) {
         return savaccountText(keys[error.code]);
     }
@@ -189,6 +189,12 @@ function savaccountFinish() {
             link(data);
         }
     }).catch(function (error) {
+        if (error && error.code === 445 && pending["mode"] === "connect") {
+            // Another email: the card asks the password and starts again with it
+            sessionStorage.setItem(NOTEFOX_SAVACCOUNT_KEY + "-needs-password", "1");
+            location.replace("/my/account/");
+            return;
+        }
         problem(savaccountErrorMessage(error));
     });
 
@@ -262,19 +268,28 @@ function savaccountFinish() {
 
 /**
  * The SavAccount card of /my/account/.
+ *
+ * "Connect" goes straight to SavAccount: there a SavAccount with the email of
+ * the account is linked without asking anything. Only when SavAccount answers
+ * with another email (445) the card asks the email and the password, and the
+ * link starts again with them.
  */
 function savaccountCard() {
     var card = document.getElementById("savaccount-card");
     var status = document.getElementById("savaccount-status");
+    var connect = document.getElementById("savaccount-connect");
     var form = document.getElementById("savaccount-connect-form");
     var email = document.getElementById("savaccount-connect-email");
     var password = document.getElementById("savaccount-connect-password");
     var unlink = document.getElementById("savaccount-unlink");
+    var needsPassword = sessionStorage.getItem(NOTEFOX_SAVACCOUNT_KEY + "-needs-password") === "1";
+    sessionStorage.removeItem(NOTEFOX_SAVACCOUNT_KEY + "-needs-password");
 
     function draw(linked) {
         status.textContent = savaccountText(linked ? "linked" : "not_linked");
         status.classList.toggle("account-status--off", !linked);
-        form.classList.toggle("hidden2", linked);
+        connect.classList.toggle("hidden2", linked || needsPassword);
+        form.classList.toggle("hidden2", linked || !needsPassword);
         unlink.classList.toggle("hidden2", !linked);
     }
 
@@ -288,8 +303,25 @@ function savaccountCard() {
             sessionStorage.removeItem(NOTEFOX_SAVACCOUNT_KEY + "-done");
             showFormMessage("account-message", savaccountText("done_linked"), false);
         }
+        if (needsPassword && !data["linked"]) {
+            showFormMessage("savaccount-card-message", savaccountText("email_mismatch"), true);
+            email.focus();
+        }
     }).catch(function () {
         // The card just stays hidden.
+    });
+
+    connect.addEventListener("click", function () {
+        hideFormMessage("savaccount-card-message");
+        connect.disabled = true;
+        savaccountStart("connect", {}).catch(function (error) {
+            connect.disabled = false;
+            showFormMessage("savaccount-card-message", savaccountErrorMessage(error), true);
+        });
+    });
+    // a page restored by the "back" button must not stay disabled
+    window.addEventListener("pageshow", function () {
+        connect.disabled = false;
     });
 
     form.addEventListener("submit", function (event) {

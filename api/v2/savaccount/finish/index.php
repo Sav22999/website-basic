@@ -16,6 +16,10 @@
  *                        (POST /savaccount/signup)
  *   "connected"          (connect) the account of the session is now linked
  *
+ * A "connect" started without the password (the "Connect" button) is answered
+ * 445 when the verified email of the SavAccount is not the one of the account:
+ * the client asks the password and starts again with it.
+ *
  * An account is never opened - or linked - just because the email is the same.
  */
 
@@ -62,11 +66,21 @@ if ($row["kind"] === "connect") {
     if ($link !== null && $link["user-id"] !== $user_id) {
         api_error(ERR_SAVACCOUNT_IN_USE);
     }
-    $recipient = $row["payload"]["email"];
+    // Without the password (the "Connect" button) the proof is SavAccount itself:
+    // only a verified email equal to the one of the account. The flows started
+    // before this check existed always had the password verified.
+    $password_verified = !array_key_exists("password-verified", $row["payload"]) || $row["payload"]["password-verified"] === true;
+    $same_email = hash_equals((string)$user_id, v2_email_hash($who["email"]));
+    if (!$password_verified && !$same_email) {
+        api_error(ERR_SAVACCOUNT_EMAIL_MISMATCH);
+    }
+    $recipient = $row["payload"]["email"] !== null ? $row["payload"]["email"] : ($same_email ? $who["email"] : null);
     if (!v2_savaccount_link_save($c, $user_id, $who["sub"], $session["password"], $recipient)) {
         api_error(ERR_INTERNAL);
     }
-    v2_email_savaccount_linked($recipient, (string)$session["username"], true, req_ip_address());
+    if ($recipient !== null) {
+        v2_email_savaccount_linked($recipient, (string)$session["username"], true, req_ip_address());
+    }
     api_ok(array("result" => "connected"));
 }
 

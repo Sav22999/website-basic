@@ -303,6 +303,7 @@ v1 behaviour), but it still receives the `revision` in the answer.
 | 442    | 400  | The SavAccount sign-in (or its ticket) has expired, start again                   |
 | 443    | 409  | This SavAccount is already linked to another Notefox account                      |
 | 444    | 413  | The space for the attachments of this account is full (`attachments/upload`)      |
+| 445    | 409  | SavAccount link without password: its email is not the one of the account         |
 | 452    | 429  | A deletion code has already been requested                                        |
 | 500    | 500  | Internal error (details only in the server log)                                   |
 | 503    | 503  | Service temporarily unavailable                                                   |
@@ -516,7 +517,7 @@ pairwise, has 256 bits and is never stored: see `include/savaccount.php`.
 | Endpoint                   | Body                                                                           | Answer                                                             |
 |----------------------------|--------------------------------------------------------------------------------|--------------------------------------------------------------------|
 | `POST /savaccount/status`  | `{}` or `login-id`, `token`                                                    | `enabled`, and with a session `linked`, `linked-date`              |
-| `POST /savaccount/start`   | `mode: login`, or `mode: connect` + `login-id`, `token`, `email`, `password`; `lang` | `url` to open, `flow` to keep, `state`, `redirect-uri`              |
+| `POST /savaccount/start`   | `mode: login`, or `mode: connect` + `login-id`, `token`, and optionally `email`, `password`; `lang` | `url` to open, `flow` to keep, `state`, `redirect-uri`              |
 | `POST /savaccount/finish`  | `flow`, `state`, `code`, `iss`, `source`; connect: `login-id`, `token` | `result`, see below                                                |
 | `POST /savaccount/link`    | `ticket`, `password`, `source`                                                 | `result: session`                                                  |
 | `POST /savaccount/signup`  | `ticket`, `username`, `password` (8+), `source`                                | `result: session`                                                  |
@@ -531,6 +532,16 @@ pairwise, has 256 bits and is never stored: see `include/savaccount.php`.
 - `password-required`: linked, but the password has changed since (`ticket`).
 - `signup-required`: no account with this email (`ticket`, `email`, `name`).
 - `connected`: the account of the session is now linked.
+
+Linking (`mode: connect`) adds a way to log in, so a session left open on a
+shared computer must not be enough to do it:
+
+- without `email` and `password` (the "Connect" button of the account page):
+  only a SavAccount whose **verified** email is the one of the account is
+  linked; with another email `/savaccount/finish` answers `445` and the client
+  asks the password;
+- with `email` and `password` (verified by `/savaccount/start`, as the first
+  clients always did): any SavAccount can be linked.
 
 A ticket lives 15 minutes and 5 attempts, a sign-in 15 minutes and one use.
 

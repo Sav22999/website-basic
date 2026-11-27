@@ -25,6 +25,13 @@ include_once($root_path . "/include/header.php");
         </div>
 
         <div id="notes-container" class="hidden2">
+            <div class="notes-view-tabs hidden2" id="notes-view-tabs" role="tablist">
+                <button type="button" class="notes-chip notes-chip--active" id="notes-view-active" role="tab"
+                        aria-selected="true"><?php echo te('account.notes_view_active'); ?></button>
+                <button type="button" class="notes-chip" id="notes-view-archive" role="tab"
+                        aria-selected="false"><?php echo te('account.notes_view_archive'); ?> <span
+                            id="notes-archive-count"></span></button>
+            </div>
             <div class="notes-toolbar">
                 <div class="notes-search-wrap" id="notes-search-wrap">
                     <svg class="notes-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -61,6 +68,8 @@ include_once($root_path . "/include/header.php");
                                 data-value="1"><?php echo te('account.notes_domain'); ?></button>
                         <button type="button" class="notes-chip"
                                 data-value="2"><?php echo te('account.notes_page'); ?></button>
+                        <button type="button" class="notes-chip"
+                                data-value="3"><?php echo te('account.notes_subdomain'); ?></button>
                     </div>
                 </div>
                 <div class="notes-filter-group">
@@ -265,9 +274,43 @@ include_once($root_path . "/include/header.php");
     </div>
 </div>
 
+<!--screenshot attached to a note-->
+<div id="attachment-viewer-overlay" class="note-editor-overlay hidden2">
+    <div class="note-editor attachment-viewer">
+        <div class="note-editor-header">
+            <div class="note-editor-header-left">
+                <h2 id="attachment-viewer-title"></h2>
+            </div>
+            <button type="button" id="attachment-viewer-close" class="note-editor-close"
+                    aria-label="<?php echo te('common.cancel'); ?>">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <div id="attachment-viewer-message" class="form-message hidden2"></div>
+        <div class="attachment-viewer-body">
+            <img id="attachment-viewer-image" alt="">
+            <p id="attachment-viewer-missing" class="attachment-viewer-missing hidden2"><?php echo te('account.notes_screenshot_unavailable'); ?></p>
+        </div>
+        <div class="note-editor-footer">
+            <span id="attachment-viewer-meta" class="note-editor-meta"></span>
+            <div class="note-editor-footer-actions">
+                <a id="attachment-viewer-page" class="btn btn--secondary hidden2" target="_blank"
+                   rel="noopener noreferrer"><?php echo te('account.notes_screenshot_open_page'); ?></a>
+                <button type="button" id="attachment-viewer-delete"
+                        class="btn btn--danger"><?php echo te('account.notes_screenshot_delete'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php include_once($root_path . "/include/footer.php"); ?>
 <script src="/js/script.js"></script>
 <script src="/js/account.js"></script>
+<script src="/js/notes-sync.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var session = requireSession();
@@ -303,7 +346,8 @@ include_once($root_path . "/include/header.php");
         var TYPE_LABELS = {
             0: <?php echo json_encode(t('account.notes_global'), JSON_UNESCAPED_UNICODE); ?>,
             1: <?php echo json_encode(t('account.notes_domain'), JSON_UNESCAPED_UNICODE); ?>,
-            2: <?php echo json_encode(t('account.notes_page'), JSON_UNESCAPED_UNICODE); ?>
+            2: <?php echo json_encode(t('account.notes_page'), JSON_UNESCAPED_UNICODE); ?>,
+            3: <?php echo json_encode(t('account.notes_subdomain'), JSON_UNESCAPED_UNICODE); ?>
         };
 
         var STRINGS = {
@@ -321,8 +365,20 @@ include_once($root_path . "/include/header.php");
             save: <?php echo json_encode(t('account.notes_save'), JSON_UNESCAPED_UNICODE); ?>,
             saving: <?php echo json_encode(t('account.notes_saving'), JSON_UNESCAPED_UNICODE); ?>,
             conflict: <?php echo json_encode(t('account.notes_conflict'), JSON_UNESCAPED_UNICODE); ?>,
-            save_error: <?php echo json_encode(t('account.notes_save_error'), JSON_UNESCAPED_UNICODE); ?>
+            save_error: <?php echo json_encode(t('account.notes_save_error'), JSON_UNESCAPED_UNICODE); ?>,
+            archive: <?php echo json_encode(t('account.notes_archive'), JSON_UNESCAPED_UNICODE); ?>,
+            unarchive: <?php echo json_encode(t('account.notes_unarchive'), JSON_UNESCAPED_UNICODE); ?>,
+            screenshots: <?php echo json_encode(t('account.notes_screenshots'), JSON_UNESCAPED_UNICODE); ?>,
+            screenshot_linked: <?php echo json_encode(t('account.notes_screenshot_linked'), JSON_UNESCAPED_UNICODE); ?>,
+            screenshot_unavailable: <?php echo json_encode(t('account.notes_screenshot_unavailable'), JSON_UNESCAPED_UNICODE); ?>,
+            screenshot_delete_confirm: <?php echo json_encode(t('account.notes_screenshot_delete_confirm'), JSON_UNESCAPED_UNICODE); ?>,
+            kind_visible: <?php echo json_encode(t('account.notes_screenshot_kind_visible'), JSON_UNESCAPED_UNICODE); ?>,
+            kind_area: <?php echo json_encode(t('account.notes_screenshot_kind_area'), JSON_UNESCAPED_UNICODE); ?>,
+            kind_element: <?php echo json_encode(t('account.notes_screenshot_kind_element'), JSON_UNESCAPED_UNICODE); ?>
         };
+
+        // "websites" or "websites-archive": the notes shown (the archive exists from version 5.1 of the extension)
+        var currentStoreKey = "websites";
 
         // ── Filters ──
 
@@ -532,6 +588,14 @@ include_once($root_path . "/include/header.php");
             allFolders = [""].concat(Object.keys(folders).sort());
             allTags = Object.keys(tags).sort();
 
+            // the labels created on the devices but not used yet (version 5.1 of the extension)
+            var registry = NotefoxSync.getRegistryLabels(currentSnapshot);
+            registry.folders.forEach(function (folder) {
+                folders[folder] = true;
+            });
+            registry.tags.forEach(function (tag) {
+                tags[tag] = true;
+            });
             allFolderNames = Object.keys(folders).sort();
             allTagNames = Object.keys(tags).sort();
         }
@@ -587,6 +651,11 @@ include_once($root_path . "/include/header.php");
             }
         }
 
+        function originOf(url) {
+            var match = /^([a-z][a-z0-9+.-]*:\/\/[^\/]+)/i.exec(url);
+            return match ? match[1] : "";
+        }
+
         function entryNotes(entry) {
             if (entry["all-notes"] && Array.isArray(entry["all-notes"])) {
                 return entry["all-notes"];
@@ -632,7 +701,8 @@ include_once($root_path . "/include/header.php");
                 if (!Object.prototype.hasOwnProperty.call(websites, url)) continue;
                 var entry = websites[url];
                 if (!entry) continue;
-                var type = typeof entry.type === "number" ? entry.type : 2;
+                // a note of a subdomain (".../folder/*") is shown as a type of its own
+                var type = url.slice(-2) === "/*" ? 3 : (typeof entry.type === "number" ? entry.type : 2);
                 var list = entryNotes(entry);
                 for (var i = 0; i < list.length; i++) {
                     var n = list[i];
@@ -647,7 +717,8 @@ include_once($root_path . "/include/header.php");
                         tags: n["tags-text"] || [],
                         folder: n["tag-folder"] || "",
                         type: type,
-                        noteIndex: i
+                        noteIndex: i,
+                        attachments: NotefoxSync.getNoteAttachments(n)
                     });
                 }
             }
@@ -797,6 +868,20 @@ include_once($root_path . "/include/header.php");
             });
             actions.appendChild(copyBtn);
 
+            var archiveBtn = document.createElement("button");
+            archiveBtn.type = "button";
+            archiveBtn.className = "note-card-action-btn";
+            var inArchive = currentStoreKey === "websites-archive";
+            archiveBtn.title = inArchive ? STRINGS.unarchive : STRINGS.archive;
+            archiveBtn.setAttribute("aria-label", archiveBtn.title);
+            archiveBtn.innerHTML = inArchive
+                ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="5" rx="1"/><path d="M4 9v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9"/><polyline points="9 15 12 12 15 15"/><line x1="12" y1="12" x2="12" y2="18"/></svg>'
+                : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="5" rx="1"/><path d="M4 9v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9"/><polyline points="9 14 12 17 15 14"/><line x1="12" y1="11" x2="12" y2="17"/></svg>';
+            archiveBtn.addEventListener("click", function () {
+                archiveNote(note.url, note.noteIndex);
+            });
+            actions.appendChild(archiveBtn);
+
             var delBtn = document.createElement("button");
             delBtn.type = "button";
             delBtn.className = "note-card-action-btn note-card-action-btn--danger";
@@ -824,6 +909,8 @@ include_once($root_path . "/include/header.php");
             contentInner.innerHTML = sanitizeHtml(note.content);
             contentWrapper.appendChild(contentInner);
             card.appendChild(contentWrapper);
+
+            if (note.attachments.length > 0) card.appendChild(renderAttachments(note));
 
             var meta = document.createElement("div");
             meta.className = "note-card-meta";
@@ -1011,10 +1098,12 @@ include_once($root_path . "/include/header.php");
 
         // ── Delete ──
 
-        function deleteNote(url, noteIndex) {
-            if (!confirm(STRINGS.del_confirm)) return;
-
-            notefoxAuthenticatedApi("/data/get", {
+        /**
+         * Read the current snapshot, change it, and send it with its revision: a
+         * change made in the meantime by a device is never overwritten (409)
+         */
+        function changeSnapshot(change, messageId) {
+            return notefoxAuthenticatedApi("/data/get", {
                 "service": NOTEFOX_DEFAULT_SERVICE
             }).then(function (freshData) {
                 var snapshot;
@@ -1025,30 +1114,8 @@ include_once($root_path . "/include/header.php");
                     throw {code: 0, message: "Parse error"};
                 }
                 if (!snapshot.websites) snapshot.websites = {};
-
-                var entry = snapshot.websites[url];
-                var extras = entry && Array.isArray(entry["notes-extra"]) ? entry["notes-extra"] : [];
-                if (entry && entry["all-notes"] && Array.isArray(entry["all-notes"])) {
-                    if (entry["all-notes"].length > 1) entry["all-notes"].splice(noteIndex, 1);
-                    else delete snapshot.websites[url];
-                } else if (entry && extras.length > 0) {
-                    var target = legacyTarget(entry, noteIndex);
-                    if (target.kind === "extra") {
-                        extras.splice(target.i, 1);
-                    } else {
-                        // Promote the first extra note to primary
-                        var promoted = extras.shift() || {};
-                        LEGACY_NOTE_FIELDS.forEach(function (field) {
-                            if (promoted[field] !== undefined) entry[field] = promoted[field];
-                            else delete entry[field];
-                        });
-                    }
-                    if (extras.length === 0) delete entry["notes-extra"];
-                    if (!entry.notes && !entry.title && !entry["notes-extra"]) delete snapshot.websites[url];
-                } else {
-                    delete snapshot.websites[url];
-                }
-                snapshot["last-update"] = nowDateString();
+                var result = change(snapshot);
+                snapshot["last-update"] = NotefoxSync.nowDateString();
 
                 var payload = {
                     "service": NOTEFOX_DEFAULT_SERVICE,
@@ -1056,20 +1123,223 @@ include_once($root_path . "/include/header.php");
                     "data": JSON.stringify(snapshot)
                 };
                 if (revision != null) payload["base-revision"] = revision;
-
-                return notefoxAuthenticatedApi("/data/insert", payload);
-            }).then(function (result) {
-                currentRevision = result["revision"] || currentRevision;
-                lastUpdate = "";
-                return fetchNotes();
+                return notefoxAuthenticatedApi("/data/insert", payload).then(function (answer) {
+                    currentRevision = answer["revision"] || currentRevision;
+                    lastUpdate = "";
+                    return fetchNotes().then(function () {
+                        return result;
+                    });
+                });
             }).catch(function (error) {
-                if (error && error.code === 409) {
-                    showFormMessage("notes-message", STRINGS.conflict, true);
-                } else {
-                    showFormMessage("notes-message", STRINGS.save_error, true);
-                }
+                showFormMessage(messageId || "notes-message", error && error.code === 409 ? STRINGS.conflict : STRINGS.save_error, true);
+                throw error;
             });
         }
+
+        /**
+         * The screenshots of the deleted notes are deleted from the server too
+         * (only when this installation stores them)
+         */
+        function deleteAttachmentsOnServer(ids) {
+            if (!ids || ids.length === 0) return;
+            notefoxAuthenticatedApi("/attachments/delete", {"service": NOTEFOX_DEFAULT_SERVICE, "ids": ids}).catch(function () {
+                // The devices delete the images no note refers to anymore.
+            });
+            ids.forEach(function (id) {
+                delete attachmentImages[id];
+            });
+        }
+
+        function deleteNote(url, noteIndex) {
+            if (!confirm(STRINGS.del_confirm)) return;
+            changeSnapshot(function (snapshot) {
+                return NotefoxSync.deleteNote(snapshot, currentStoreKey, url, noteIndex);
+            }).then(function (removed) {
+                deleteAttachmentsOnServer(NotefoxSync.getNoteAttachments(removed).map(function (item) {
+                    return item.id;
+                }));
+            }).catch(function () {
+            });
+        }
+
+        function archiveNote(url, noteIndex) {
+            var target = currentStoreKey === "websites" ? "websites-archive" : "websites";
+            changeSnapshot(function (snapshot) {
+                return NotefoxSync.moveNote(snapshot, currentStoreKey, target, url, noteIndex);
+            }).catch(function () {
+            });
+        }
+
+        // ── Archive ──
+
+        var viewTabsEl = document.getElementById("notes-view-tabs");
+        var viewActiveBtn = document.getElementById("notes-view-active");
+        var viewArchiveBtn = document.getElementById("notes-view-archive");
+        var archiveCountEl = document.getElementById("notes-archive-count");
+
+        function countNotes(store) {
+            var total = 0;
+            for (var url in store || {}) {
+                if (Object.prototype.hasOwnProperty.call(store, url)) total += NotefoxSync.visibleNotes(store[url]).length;
+            }
+            return total;
+        }
+
+        function updateViewTabs() {
+            var archived = countNotes(currentSnapshot && currentSnapshot["websites-archive"]);
+            archiveCountEl.textContent = archived > 0 ? "(" + archived + ")" : "";
+            // the tabs only appear when there is an archive (or while it is shown)
+            viewTabsEl.classList.toggle("hidden2", archived === 0 && currentStoreKey === "websites");
+            viewActiveBtn.classList.toggle("notes-chip--active", currentStoreKey === "websites");
+            viewArchiveBtn.classList.toggle("notes-chip--active", currentStoreKey === "websites-archive");
+            viewActiveBtn.setAttribute("aria-selected", String(currentStoreKey === "websites"));
+            viewArchiveBtn.setAttribute("aria-selected", String(currentStoreKey === "websites-archive"));
+        }
+
+        function switchStore(key) {
+            if (key === currentStoreKey) return;
+            currentStoreKey = key;
+            allNotes = parseNotes((currentSnapshot && currentSnapshot[currentStoreKey]) || {});
+            updateViewTabs();
+            populateFilterOptions();
+            renderAll();
+        }
+
+        viewActiveBtn.addEventListener("click", function () {
+            switchStore("websites");
+        });
+        viewArchiveBtn.addEventListener("click", function () {
+            switchStore("websites-archive");
+        });
+
+        // ── Screenshots ──
+
+        var attachmentImages = {};
+        var viewerOverlay = document.getElementById("attachment-viewer-overlay");
+        var viewerImage = document.getElementById("attachment-viewer-image");
+        var viewerMissing = document.getElementById("attachment-viewer-missing");
+        var viewerTitle = document.getElementById("attachment-viewer-title");
+        var viewerMeta = document.getElementById("attachment-viewer-meta");
+        var viewerPage = document.getElementById("attachment-viewer-page");
+        var viewerDelete = document.getElementById("attachment-viewer-delete");
+        var viewerAttachment = null;
+
+        /**
+         * The image from the server (once per page): null when it isn't there (never
+         * uploaded, a device without account, or an installation without the table)
+         */
+        function loadAttachmentImage(id) {
+            if (attachmentImages[id] === undefined) {
+                attachmentImages[id] = notefoxAuthenticatedApi("/attachments/get", {
+                    "service": NOTEFOX_DEFAULT_SERVICE, "id": id
+                }).then(function (data) {
+                    var image = data && typeof data["data"] === "string" && /^data:image\/(webp|jpeg|png);base64,/.test(data["data"]) ? data["data"] : null;
+                    return image;
+                }).catch(function () {
+                    return null;
+                });
+            }
+            return attachmentImages[id];
+        }
+
+        function attachmentKindLabel(attachment) {
+            if (attachment.kind === "area") return STRINGS.kind_area;
+            if (attachment.kind === "element") return STRINGS.kind_element;
+            return STRINGS.kind_visible;
+        }
+
+        function renderAttachments(note) {
+            var strip = document.createElement("div");
+            strip.className = "note-card-attachments";
+            strip.setAttribute("aria-label", STRINGS.screenshots);
+            note.attachments.forEach(function (attachment) {
+                var thumb = document.createElement("button");
+                thumb.type = "button";
+                thumb.className = "note-attachment-thumb";
+                thumb.title = attachmentKindLabel(attachment);
+                var img = document.createElement("img");
+                img.alt = "";
+                img.loading = "lazy";
+                thumb.appendChild(img);
+                if (attachment.anchor) {
+                    var badge = document.createElement("span");
+                    badge.className = "note-attachment-linked";
+                    badge.title = STRINGS.screenshot_linked;
+                    badge.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
+                    thumb.appendChild(badge);
+                }
+                loadAttachmentImage(attachment.id).then(function (image) {
+                    if (image !== null) img.src = image;
+                    else {
+                        thumb.classList.add("note-attachment-thumb--missing");
+                        thumb.title = STRINGS.screenshot_unavailable;
+                    }
+                });
+                thumb.addEventListener("click", function () {
+                    openAttachmentViewer(attachment);
+                });
+                strip.appendChild(thumb);
+            });
+            return strip;
+        }
+
+        function openAttachmentViewer(attachment) {
+            viewerAttachment = attachment;
+            viewerTitle.textContent = attachmentKindLabel(attachment);
+            viewerMeta.textContent = [attachment.created ? formatDate(attachment.created) : "", attachment.anchor ? STRINGS.screenshot_linked : ""].filter(function (part) {
+                return part !== "";
+            }).join(" · ");
+            var page = makeNoteUrl(attachment.page || "");
+            if (page && /^https?:\/\//.test(page)) {
+                viewerPage.href = page;
+                viewerPage.classList.remove("hidden2");
+            } else {
+                viewerPage.classList.add("hidden2");
+            }
+            viewerImage.removeAttribute("src");
+            viewerImage.classList.add("hidden2");
+            viewerMissing.classList.add("hidden2");
+            hideFormMessage("attachment-viewer-message");
+            viewerDelete.disabled = false;
+            loadAttachmentImage(attachment.id).then(function (image) {
+                if (viewerAttachment !== attachment) return;
+                if (image !== null) {
+                    viewerImage.src = image;
+                    viewerImage.classList.remove("hidden2");
+                } else {
+                    viewerMissing.classList.remove("hidden2");
+                }
+            });
+            viewerOverlay.classList.remove("hidden2");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeAttachmentViewer() {
+            viewerAttachment = null;
+            viewerOverlay.classList.add("hidden2");
+            document.body.style.overflow = "";
+        }
+
+        document.getElementById("attachment-viewer-close").addEventListener("click", closeAttachmentViewer);
+        viewerOverlay.addEventListener("click", function (e) {
+            if (e.target === viewerOverlay) closeAttachmentViewer();
+        });
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape" && viewerAttachment !== null) closeAttachmentViewer();
+        });
+        viewerDelete.addEventListener("click", function () {
+            if (viewerAttachment === null || !confirm(STRINGS.screenshot_delete_confirm)) return;
+            var id = viewerAttachment.id;
+            viewerDelete.disabled = true;
+            changeSnapshot(function (snapshot) {
+                return NotefoxSync.removeAttachment(snapshot, id);
+            }, "attachment-viewer-message").then(function () {
+                deleteAttachmentsOnServer([id]);
+                closeAttachmentViewer();
+            }).catch(function () {
+                viewerDelete.disabled = false;
+            });
+        });
 
         // ── Polling ──
 
@@ -1102,7 +1372,8 @@ include_once($root_path . "/include/header.php");
                     if (newLastUpdate === lastUpdate) return;
                     lastUpdate = newLastUpdate;
                     currentSnapshot = snapshot;
-                    allNotes = parseNotes(snapshot.websites || {});
+                    allNotes = parseNotes(snapshot[currentStoreKey] || {});
+                    updateViewTabs();
                 } catch (e) {
                     showFormMessage("notes-message", "Could not parse synced data.", true);
                     return;
@@ -1393,7 +1664,7 @@ include_once($root_path . "/include/header.php");
             editingNoteIndex = typeof noteIndex === "number" ? noteIndex : 0;
             editorOpen = true;
 
-            var entry = currentSnapshot && currentSnapshot.websites ? currentSnapshot.websites[url] : null;
+            var entry = currentSnapshot && currentSnapshot[currentStoreKey] ? currentSnapshot[currentStoreKey][url] : null;
             var noteData = null;
             if (entry) {
                 var list = entryNotes(entry);
@@ -1471,11 +1742,14 @@ include_once($root_path . "/include/header.php");
                 }
 
                 if (!snapshot.websites) snapshot.websites = {};
+                if (!snapshot[currentStoreKey]) snapshot[currentStoreKey] = {};
+                var store = snapshot[currentStoreKey];
 
                 var now = nowDateString();
                 var newUrl = editorUrlEl.value.trim();
                 if (!newUrl) newUrl = editingUrl;
-                var entry = snapshot.websites[editingUrl] || {};
+                var entry = store[editingUrl] || {};
+                var entryBefore = JSON.parse(JSON.stringify(entry));
 
                 var isNewFormat = entry["all-notes"] && Array.isArray(entry["all-notes"]);
                 var noteData;
@@ -1506,13 +1780,19 @@ include_once($root_path . "/include/header.php");
                     if (typeof entry.type !== "number") entry.type = 2;
                 }
 
+                // the folder and the tags join the labels of the account (version 5.1 of the extension)
+                NotefoxSync.addLabels(snapshot, editorFolder, editorTags);
+
                 if (newUrl !== editingUrl) {
-                    delete snapshot.websites[editingUrl];
-                    entry.domain = domainOf(newUrl);
+                    // for the devices the notes leave the old url (otherwise they would put them back)
+                    if (store[editingUrl]) NotefoxSync.recordUrlChange(snapshot, editingUrl, entryBefore, entry);
+                    delete store[editingUrl];
                     if (newUrl === "**global") entry.type = 0;
                     else if (newUrl.indexOf("/", newUrl.indexOf("//") + 2) === -1 ||
                         newUrl.endsWith("/")) entry.type = 1;
                     else entry.type = 2;
+                    // as the extension: no domain for global and domain notes, the origin for the others
+                    entry.domain = entry.type === 2 ? originOf(newUrl) : "";
                 }
 
                 var isEmpty = isNewFormat
@@ -1524,9 +1804,11 @@ include_once($root_path . "/include/header.php");
                     }));
 
                 if (isEmpty) {
-                    delete snapshot.websites[newUrl];
+                    // the note emptied here is deleted: the devices must delete it too
+                    if (store[editingUrl] || newUrl !== editingUrl) NotefoxSync.recordEntryDeleted(snapshot, editingUrl, entryBefore);
+                    delete store[newUrl];
                 } else {
-                    snapshot.websites[newUrl] = entry;
+                    store[newUrl] = entry;
                 }
 
                 snapshot["last-update"] = now;
